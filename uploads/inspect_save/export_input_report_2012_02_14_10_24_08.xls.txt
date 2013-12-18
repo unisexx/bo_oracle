@@ -1,0 +1,89 @@
+<html class="cufon-active cufon-ready" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+</head>
+<body>
+<style>
+.tblist2
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 14px;
+	background: #fff;
+	margin:0;
+	margin-bottom:10px;
+	width: 100%;
+	border-collapse: collapse;
+}
+.tblist2 th
+{
+	font-size: 16px;
+	font-weight: normal;
+	padding: 10px 5px 3px 5px;
+	border-top: 0px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	text-align:left;
+	background-color:#fff;
+	color:#65358f;
+}
+.tblist2 td
+{
+	color:#333;
+	padding:5px;
+	height:30px;
+	border-top: 0px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+.tblist2 td.B, .tblist2 td strong { font-weight:700;}
+.tblist2 tr.total {  background:url(../images/bg_total.gif) repeat-x;}
+</style>		
+<table id="tblist2" class="tblist2">
+	<thead>
+	<tr>
+		<th colspan="13" style="text-align: center;">
+			รายงานผลการดำเนินงานและการเบิกจ่ายตามระบบ Back Office (จังหวัด) <br>
+			สำนักงานปลัดกระทรวง<br>
+			จังหวัดยโสธร  
+			ปีงบประมาณ 2555		</th>
+	</tr>
+	<tr>
+		<th>จังหวัด</th>
+				<th>ตุลาคม</th>
+				<th>พฤศจิกายน</th>
+				<th>ธันวาคม</th>
+				<th>มกราคม</th>
+				<th>กุมภาพันธ์</th>
+				<th>มีนาคม</th>
+				<th>เมษายน</th>
+				<th>พฤษภาคม</th>
+				<th>มิถุนายน</th>
+				<th>กรกฏาคม</th>
+				<th>สิงหาคม</th>
+				<th>กันยายน</th>
+			</tr>
+		
+	<tr class="odd">
+		<td>ยโสธร</td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;">14/02/2555</td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				<td style="text-align: center;"></td>
+				
+	</tr>
+		</thead>
+</table>	
+<script type="text/javascript">window.print();</script>
+</body>
+</html>

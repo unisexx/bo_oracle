@@ -1,0 +1,55 @@
+
+*****  DB2MOVE  *****
+
+Action:  EXPORT
+
+Start time:  Fri Jul 22 14:21:43 2011
+
+
+Connecting to database BUDGETQ ... successful!  Server : DB2 Common Server V9.7.2
+
+EXPORT:    116 rows from table "SYSTOOLS"."ALTOBJ_INFO"
+EXPORT:      0 rows from table "DB2INST1"."BUDGET_ADJUST"
+EXPORT:    362 rows from table "DB2INST1"."BUDGET_AREA"
+EXPORT:    213 rows from table "DB2INST1"."BUDGET_CURRENT_TARGET"
+EXPORT:      0 rows from table "DB2INST1"."BUDGET_EDIT_COMMENT"
+EXPORT:    408 rows from table "DB2INST1"."BUDGET_EXPENSE_TYPE"
+EXPORT:    145 rows from table "DB2INST1"."BUDGET_MASTER"
+EXPORT:   1114 rows from table "DB2INST1"."BUDGET_OPERATION_AREA"
+EXPORT:    505 rows from table "DB2INST1"."BUDGET_PROCESS"
+EXPORT:      0 rows from table "DB2INST1"."BUDGET_PRODUCTIVITY_KEY"
+EXPORT:      0 rows from table "DB2INST1"."BUDGET_SEND_REMARK"
+EXPORT:   6618 rows from table "DB2INST1"."BUDGET_TYPE_DETAIL"
+EXPORT:    236 rows from table "DB2INST1"."CNF_ASSET"
+EXPORT:    147 rows from table "DB2INST1"."CNF_BUDGET_TYPE"
+EXPORT:      0 rows from table "DB2INST1"."CNF_CODE_TYPE"
+EXPORT:     54 rows from table "DB2INST1"."CNF_COUNT_UNIT"
+EXPORT:      0 rows from table "DB2INST1"."CNF_HUMAN"
+EXPORT:      3 rows from table "DB2INST1"."CNF_NOTICE"
+EXPORT:     77 rows from table "DB2INST1"."CNF_PROVINCE_CODE"
+EXPORT:      9 rows from table "DB2INST1"."CNF_PROVINCE_GROUP"
+EXPORT:      7 rows from table "DB2INST1"."CNF_PROVINCE_ZONE"
+EXPORT:     93 rows from table "DB2INST1"."CNF_SECTION_CODE"
+EXPORT:      1 rows from table "DB2INST1"."CNF_SET_TIME"
+EXPORT:     60 rows from table "DB2INST1"."CNF_STRATEGY"
+EXPORT:      0 rows from table "DB2INST1"."CNF_STRATEGY_DETAIL"
+EXPORT:      0 rows from table "DB2INST1"."CNF_TYPE_HUMAN"
+EXPORT:    132 rows from table "DB2INST1"."CNF_WORK_GROUP"
+EXPORT:     11 rows from table "DB2INST1"."CONTACT_MESSAGES"
+EXPORT:      0 rows from table "SYSTOOLS"."DB2LOOK_INFO"
+EXPORT:      0 rows from table "DB2INST1"."DOCUMENTUPLOAD"
+EXPORT:      1 rows from table "SYSTOOLS"."STMG_DBSIZE_INFO"
+EXPORT:      0 rows from table "DB2INST1"."T20110613_145018"
+EXPORT:      0 rows from table "DB2INST1"."T20110613_145018_EXCEPTION"
+EXPORT:    502 rows from table "DB2INST1"."T20110624_133856"
+EXPORT:      0 rows from table "DB2INST1"."T20110624_133856_EXCEPTION"
+EXPORT:    152 rows from table "DB2INST1"."TESTUSER"
+EXPORT:    153 rows from table "DB2INST1"."USER"
+EXPORT:     52 rows from table "DB2INST1"."USERTYPE"
+EXPORT:   3710 rows from table "DB2INST1"."USER_LOGFILE"
+EXPORT:      4 rows from table "DB2INST1"."USER_TYPE_TITLE"
+EXPORT:      0 rows from table "DB2INST1"."WORKGROUP_SEND_CONFIRM"
+
+Disconnecting from database ... successful!
+
+End time:  Fri Jul 22 14:21:47 2011
