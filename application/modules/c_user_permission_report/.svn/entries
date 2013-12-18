@@ -1,0 +1,41 @@
+10
+
+dir
+760
+https://fd-back-office.googlecode.com/svn/trunk/bo/application/modules/c_user_permission_report
+https://fd-back-office.googlecode.com/svn
+
+
+
+2555-12-03T04:59:16.396925Z
+760
+ultraauchz@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ae2c7a09-1c02-0909-9860-756c9bed0cb0
+
+
+
+
+
+
+0
+
+controllers
+dir
+
+views
+dir
+

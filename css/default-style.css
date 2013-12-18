@@ -1,0 +1,195 @@
+html,body{
+	font-family:tahoma;
+	font-size:14px;
+	color:#555;
+}
+#header {
+	padding:0 20px;
+	height:128px;
+	background:url('../images/header-bg-rotage.png') repeat-x #deecbb;
+}
+#header p{
+	padding:15px 20px;
+}
+#header h1{
+	font-size:160%;
+	color:#BB7C00;
+}
+#header span{
+	display:block;
+	padding-top:3px;
+	font-size:110%;
+	color:#555;
+}
+#header #logo{
+	float:left;
+	width:50%;
+}
+#header #login-info{
+	float:right;
+	width:50%;
+	text-align:right;
+}
+#menu {
+	border-top:1px solid #e1e1d3; 
+	border-bottom:4px solid #8eb132;
+}
+#content {
+	padding:20px;
+}
+
+h1.data{
+	padding:5px 8px;
+	background:#8EB132;
+	color:#fff;
+	font-size:16px;
+}
+
+h2{
+	margin:10px 0;
+	font-size:16px;
+	color:#BB7C00;
+}
+h2 span{
+	color:#aecf58;
+	font-weight:normal;
+}
+
+hr{
+	background:#bf8200;
+	border:none;
+	height: 1px;
+	margin-bottom:20px;
+}
+
+a:link,a:visited{
+	color:#8eb132;
+	text-decoration:underline;
+}
+a:hover{
+	text-decoration:none;
+}
+
+a:link, a:visited{
+	color:#BB7C00;
+	text-decoration:underline;
+}
+a:hover{
+	text-decoration:none;
+}
+
+table.list{
+	width:100%;
+}
+table.list tr th, table.list tr td{
+	padding:5px 10px;
+	border-bottom:1px solid #eee;
+}
+table.list tr th{
+	text-align:left;
+	border-bottom:2px solid #8eb132;
+}
+table.list tr.odd td {
+	background:#fcfcfc;
+}
+table.list tr:hover td {
+	background:#f0fff0;
+}
+
+table.form{
+	width:100%;
+	color:#555;
+}
+table.form tr th, table.form tr td{
+	padding:5px 10px;
+	border-bottom:1px solid #eee;
+}
+table.form tr th{
+	width:250px;
+	text-align:left;
+	font-weight:normal;
+}
+table.form tr th.sub{
+	background:#f8f8f8;
+}
+
+table.table{
+	width:100%;
+}
+table.table tr th, table.table tr td{
+	padding:5px 10px;
+	border:1px solid #ccc;
+}
+table.table tr th{
+	color:#555;
+	font-weight:normal;
+	background-color:#eee;
+}
+table.table tr td{
+	text-align:center;
+}
+table.table tr.sub-header th{
+	background-color:#f8f8f8;
+}
+table.table tr.sum td{
+	background-color:#F3FDD6;
+}
+table.table tr td.left{
+	text-align:left;
+}
+/*
+table.form > tr:hover th, table.form > tr:hover td{
+	background-color:#f0f7df;
+}
+*/
+
+
+input.datepicker{
+	width:80px;
+}
+input.small{
+	width:100px;
+}
+.tabs ul{
+	border-bottom:3px solid #8eb132;
+	margin-bottom:10px;
+}
+.tabs ul li{
+	display:inline;
+}
+.tabs ul li a{
+	display:inline-block;
+	padding:5px 20px;
+	text-decoration:none;
+	color:#808080;
+	background:#eeeeee;	
+}
+.tabs ul li a.selected{
+	color:#fff;
+	background:#8eb132;	
+}
+
+.input-table{
+	text-align:center;
+}
+h3{
+	font-size:16px;
+}
+ul.report_menu{
+	margin: 10px 0 10px 10px;
+	font-size:14px;
+}
+ul.report_menu li{
+	margin: 10px 0 10px 30px;
+	list-style-type:disc;
+}
+span.notice{
+	color:#ff8040;
+}
+
+.box{
+	margin:10px 0;
+	padding:5px 10px;
+	border:1px solid #ccc;
+	background:#eee;
+}

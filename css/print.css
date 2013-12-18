@@ -1,0 +1,68 @@
+body{ background-color:#FFFFFF; background-image:none; color:#000000;font-size:11px;line-height:11px;}
+#header,#nav,#search,#breadcrumb,.pagination,.page-navigation,#topic,#report_bar{ display:none;} 
+#logo{display:block;} 
+#container{ width:98%;}
+img{width:26px; height:26px;}
+ 
+  
+  
+  
+.tblist
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Tahoma, Sans-Serif;
+/*
+	font-size: 13px;
+*/
+	background: #fff;
+	margin: 0;
+	margin-left:0;
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+	margin-bottom:10px;
+}
+.tblist th
+{
+	
+	font-size: 12px;
+
+	font-weight: 700;
+	color:#333;
+	padding: 10px 10px 0 10px;
+	border-bottom: 2px solid #999;
+	border-top: 0px solid #999;
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+}
+.extend th{
+	border-top: 1px solid #999;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+	text-align:center;
+	vertical-align:middle;
+}
+.tblist td
+{
+	color:#595959;
+	padding: 5px 10px;
+	height:35px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	vertical-align:middle;
+}
+.system_name
+{
+	font-size:14px;font-weight:700;text-align:right;
+}
+.report_name
+{
+	font-size:12px;font-weight:700;text-decoration:underline;  text-align:right;
+}
+.logo_report{
+	width:100px;
+	height:100px;
+}
+#logo{width:100%;border-bottom:solid 1px #000;margin-bottom:20px;}
+

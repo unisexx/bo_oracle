@@ -1,0 +1,90 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$("select[name=division]").change(function(){
+		var divisionid = $(this).val();
+		url = 'c_user/ajax_workgroup_list/0/'+divisionid;						
+		$("#workgroup").attr('disabled','disabled'); 
+		$("#dvWorkgroup").append("<img src='images/loading.gif' align='absmiddle'>");
+		$.get(url,function(data){			
+			$("#dvWorkgroup").html(data);
+			$("#workgroupid").attr("name","workgroup");
+			$("select[name=workgroup]").attr("id","workgroup");
+		});		
+	})
+	
+	$("#btn_export").click(function(){
+		var txtsearch = $("#txtsearch").val();
+		var division = $("select[name=division]").val();
+		var workgroup = $("select[name=workgroup]").val();
+		window.open('c_user_permission_report/export?txtsearch='+txtsearch+'&division='+division+'&workgroup='+workgroup);
+	})
+})				
+</script>
+<h3>ตั้งค่า ผู้ใช้งาน</h3>
+<form name="frmSearch" method="get" enctype="multipart/form-data" action="c_user_permission_report/index">
+<div id="search">
+<div id="searchBox">
+ชื่อ-สกุล / อีเมล์
+  <input name="txtsearch" id="txtsearch" type="text" size="30" value="<?php echo @$_GET['txtsearch'];?>" />     
+  <?  	
+  	echo form_dropdown("division",get_option("id","title","cnf_division"),@$_GET['division'],"","-- ทุกหน่วยงาน --");
+  ?> 
+  <div id="dvWorkgroup" style="display:inline;">
+  <?
+  	$condition = @$_GET['division'] > 0 ? " divisionid=".$_GET['division'] : ""; 
+  	echo form_dropdown("workgroup",get_option("id","title","cnf_workgroup",$condition),@$_GET['workgroup'],"","-- ทุกกลุ่มงาน --");
+  ?>
+  </div>  
+  <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" />
+</div>
+</div>
+</form>
+<div id="paging" class="frame_page">
+<?php echo $pagination;?>
+</div>
+<fieldset><input type="button" id="btn_export" name="btn_export" value="ส่งออก" ></fieldset>
+<table class="tblist">
+<tr>
+  	<th align="left">ลำดับ</th>
+  	<th align="left">ชื่อ - สกุล</th>
+  	<th align="left">User Name</th>
+  	<th align="left">หน่วยงาน / กลุ่มงาน</th>
+  	<th align="left">ระบบงานทะเบียนเครือข่าย</th>
+  	<th align="left">ระบบงานพ.ร.บ. ส่งเสริมการจัดสวัสดิการสังคมฯ </th>
+  	<th align="left">ระบบงานติดตามและประเมินผล</th>
+  	<th align="left">ระบบงานตรวจราชการ</th>
+  	<th align="left">ระบบงานบริหารกองทุน</th>
+  	<th align="left">ระบบงานพัฒนาระบบบริหาร</th>
+  </tr>
+  <?php 
+  $rowStyle = '';
+  $page = (isset($_GET['page']))? $_GET['page']:1;
+  $i=(isset($_GET['page']))? (($_GET['page'] -1)* 20)+1:1;
+  foreach($result as $item):
+	  $workgroup = $item['workgroupid'] > 0 ? $this->workgroup->get_one('title','id',$item['workgroupid']) : '';
+	  $division = $this->division->get_row($item['divisionid']);   	 
+	  $usergroup = $this->usertype_title->get_row($item['usertype']);	 
+  ?>  
+<tr <? if($rowStyle =='')$rowStyle = 'class="odd"';else $rowStyle = "";echo $rowStyle;?>  >
+  <td><?=$i;?></td>
+  <td><?=$item['name'];?> </td>
+  <td><?=$item['username'];?> </td>
+  <td>
+	<?php echo $division['title'];?>  
+  </td>        
+  <td><? check_permission('network',$item['username']);?>&nbsp;</td>
+  <td><? check_permission('msolaws',$item['username']);?>&nbsp;</td>
+  <td><? check_permission('monitor',$item['username']);?>&nbsp;</td>
+  <td><? check_permission('inspect',$item['username']);?>&nbsp;</td>
+  <td><? check_permission('funds',$item['username']);?>&nbsp;</td>
+  <td><? check_permission('management',$item['username']);?>&nbsp;</td>          
+</tr>
+<tr>
+<?php
+	$i++;
+	endforeach; 
+?>
+</table>
+<div id="paging" class="frame_page">
+<?php echo $pagination;?>
+</div>
