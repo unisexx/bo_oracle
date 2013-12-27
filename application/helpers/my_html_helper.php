@@ -261,7 +261,7 @@ function dbConvert(&$value,$key = null,$output='UTF-8')
 	}
 	else
 	{
-		$value = iconv($encode[$output],$output,$value);
+		@$value = iconv($encode[$output],$output,$value);
 	}
 }
 

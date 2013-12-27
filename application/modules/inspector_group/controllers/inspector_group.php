@@ -14,10 +14,11 @@ class Inspector_group extends Inspect_Controller
 	
 	function index()
 	{
+		// $this->db->debug = true;
 		$data['url_parameter'] = GetCurrentUrlGetParameter();
 		$condition = " 1=1 ";
 		$condition .= @$_GET['insp_name'] != '' ? " AND users.name LIKE '%".$_GET['insp_name']."%'": "";
-		$sql = "select group.users_id,group.year,users.name from insp_group group left join users on group.users_id = users.id where ".$condition." group by year,users_id,name order by year desc";
+		$sql = "select insp_group.users_id,insp_group.year,users.name from insp_group left join users on insp_group.users_id = users.id where ".$condition." group by year,users_id,name order by year desc";
 		$data['inspectors'] = $this->inspg->get($sql,'true');
 		$data['pagination'] = $this->inspg->pagination();
 		$this->template->build('inspector_group_index',$data);

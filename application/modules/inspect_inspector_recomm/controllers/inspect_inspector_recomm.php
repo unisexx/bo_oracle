@@ -16,6 +16,7 @@ class Inspect_inspector_recomm extends Inspect_Controller
 	}
 	function index()
 	{
+		//$this->db->debug = true;
 		$data['url_parameter'] = GetCurrentUrlGetParameter();
 		$data['budgetyear'] = @$_GET['budgetyear'];
 		$data['provincearea'] = @$_GET['provincearea'];
@@ -57,14 +58,15 @@ where id in (select province_area from insp_group where users_id = ".login_data(
 (select count(*) from INSP_INSPECTOR_RECOMM 
   WHERE budgetyear=insp1.budgetyear and divisionid=insp1.divisionid and provinceid=insp1.provinceid and provincearea_id=insp1.provincearea_id)nsuggestion
 ,(select count(*) from INSP_INSPECTOR_RECOMM  
-  WHERE VARCHAR(OPERATIONRESULT) <> '' and budgetyear=insp1.budgetyear
+  WHERE OPERATIONRESULT IS NOT NULL and budgetyear=insp1.budgetyear
  and divisionid=insp1.divisionid and provinceid=insp1.provinceid
  and provincearea_id=insp1.provincearea_id
 ) noperationresult
-FROM INSP_INSPECTOR_RECOMM as insp1
+FROM INSP_INSPECTOR_RECOMM insp1
 where ".$condition."
-group by budgetyear,divisionid,provinceid,provincearea_id";
+group by budgetyear,divisionid,provinceid,provincearea_id ORDER BY BUDGETYEAR desc";
 			$data['result'] = $this->recomm->get($sql,TRUE);
+			// echo $sql;
 		}else{
 			$data['result'] = $this->recomm->where($condition)->get(FALSE,TRUE);
 		}

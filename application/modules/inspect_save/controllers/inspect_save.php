@@ -108,7 +108,7 @@ class Inspect_save extends Inspect_Controller
 			
 			// รายละเอียด วัตถุประสงค์ของโครงการ
 			$sql = " SELECT INP.*,MP.TITLE projecttitle FROM insp_project INP LEFT JOIN MT_PROJECT MP ON INP.MTPROJECTID=MP.ID WHERE INP.ID=".$_GET['projectid'];
-			$project =  $this->db->getrow($sql,TRUE);
+			$project =  $this->db->GetRow($sql);
 			dbConvert($project);
 			$data['keyRiskDataList'] = $this->fn_key_risk_data($project,1,TRUE);
 			$data['politicalRiskDataList'] = $this->fn_key_risk_data($project,2,FALSE);
@@ -357,7 +357,11 @@ class Inspect_save extends Inspect_Controller
 		$data['main_activity'] = $this->mp->where("budgetyear = $budgetyear and insp_project_main_activity.projectid = $projectid and provincearea = $provincearea and province = $provinceid and mainacid = $mainacid")->get_row();
 		
 		$data['sub_activities'] = $this->sub_activity->where("budgetyear = $budgetyear and projectid = $projectid and provincearea = $provincearea and provinceid = $provinceid and mainacid = $mainacid")->get();
-		$data['files'] = $this->file->where("insp_project_sub_activity.mainacid = ".$mainacid." and budgetyear = ".$budgetyear." and insp_project_sub_activity.projectid = ".$projectid." and provincearea = ".$provincearea." and provinceid = ".$provinceid)->get();
+		
+		$sql = "select insp_project_sub_activity_file.*, insp_project_sub_activity.title from insp_project_sub_activity_file left join insp_project_sub_activity on insp_project_sub_activity_file.subactid = insp_project_sub_activity.id where insp_project_sub_activity.mainacid = ".$mainacid." and budgetyear = ".$budgetyear." and insp_project_sub_activity.projectid = ".$projectid." and provincearea = ".$provincearea." and provinceid = ".$provinceid;
+		$data['files'] = $this->file->get($sql);
+		
+		// $data['files'] = $this->file->where("insp_project_sub_activity.mainacid = ".$mainacid." and budgetyear = ".$budgetyear." and insp_project_sub_activity.projectid = ".$projectid." and provincearea = ".$provincearea." and provinceid = ".$provinceid)->get();
 		
 		if($mainacid > 0){
 			$action_type = "VIEW";

@@ -36,10 +36,21 @@
 ini_set("max_execution_time" , 300);
 $active_group = "default";
 $active_record = TRUE;
-$db['default']['hostname'] = "192.168.1.129";
+$db['default']['hostname'] = "localhost";
 $db['default']['username'] = "BOFFICE";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "BOFFICE";
+
+// $db['default']['hostname'] = "192.168.1.129";
+// $db['default']['username'] = "BOFFICE";
+// $db['default']['password'] = "1234";
+// $db['default']['database'] = "BOFFICE";
+
+// $db['default']['hostname'] = "27.254.33.52";
+// $db['default']['username'] = "BOFFICE";
+// $db['default']['password'] = "1234";
+// $db['default']['database'] = "BOFFICEORA";
+
 $db['default']['dbdriver'] = "oci8po";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;

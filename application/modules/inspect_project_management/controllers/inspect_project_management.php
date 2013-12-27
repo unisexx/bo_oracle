@@ -23,7 +23,7 @@ class Inspect_project_management extends Inspect_Controller
 	}
 	function index()
 	{
-		//$this->db->debug = true;
+		// $this->db->debug = true;
 		$data['url_parameter'] = GetCurrentUrlGetParameter();
 		$data['byear'] = $this->strategy->get("SELECT DISTINCT MTYEAR byear FROM MT_STRATEGY",TRUE);
 		$condition = "  1=1 ";		

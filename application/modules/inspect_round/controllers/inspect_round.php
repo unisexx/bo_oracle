@@ -36,7 +36,7 @@ Class Inspect_round extends Inspect_Controller
 		$data['pagination']=$this->round->pagination();	
 		
 		$action_type = "VIEW";
-		$action =" ดูรายละเอียดการตั้งค่ากำหนดรอบ ID :".$id." ปี ".($data['mt_year']+543);
+		$action =" ดูรายละเอียดการตั้งค่ากำหนดรอบ ID :".$id." ปี ".(@$data['mt_year']+543);
 		save_logfile($action_type,$action,$this->modules_name);
 			
 		$this->template->build('inspect_round_form',$data);
