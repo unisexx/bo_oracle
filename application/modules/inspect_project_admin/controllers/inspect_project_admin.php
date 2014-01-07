@@ -18,6 +18,7 @@ class Inspect_project_admin extends Inspect_Controller
 	}
 	function index()
 	{
+		//$this->db->debug = true;
 		$data['url_parameter'] = GetCurrentUrlGetParameter();
 		$data['byear'] = $this->strategy->get("SELECT DISTINCT MTYEAR byear FROM MT_STRATEGY",TRUE);
 		$condition = " WHERE 1=1 ";
@@ -28,7 +29,7 @@ class Inspect_project_admin extends Inspect_Controller
 		$sql.= " LEFT JOIN cnf_division cd ON MPJ.DIVISIONID=cd.ID ";
 		$sql.= " LEFT JOIN cnf_department cdp ON cd.DEPARTMENTID = cdp.ID ";
 		$sql.= $condition;
-		$sql.= " ORDER BY ID DESC ,IPJ.TITLE ";		
+		$sql.= " ORDER BY ID DESC ,CAST(IPJ.TITLE AS NVARCHAR2(1000)) ";		
 		$data['result'] = $this->insp_project->get($sql);
 		$data['pagination']=$this->insp_project->pagination();		
 		$this->template->build('inspect_project_admin_index',$data);
