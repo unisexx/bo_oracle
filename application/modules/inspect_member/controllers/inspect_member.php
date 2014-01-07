@@ -21,6 +21,7 @@ class Inspect_member extends Inspect_Controller
 	
 	function index()
 	{
+		// $this->db->debug = true;
 		$condition = " 1=1 ";
 		$condition .= @$_GET['areaid'] > 0 ? " and w_province_area.id = ".$_GET['areaid']:"";
 		$condition .= @$_GET['provinceid'] > 0 ? " and cnf_workgroup.wprovinceid = ".$_GET['provinceid']:"";
@@ -31,7 +32,7 @@ class Inspect_member extends Inspect_Controller
 		$condition2 .= @$_GET['budgetyear'] > 0 ? " and budgetyear = ".$_GET['budgetyear']:"";
 		$condition2 .= @$_GET['projectid'] > 0 ? " and projectid = ".$_GET['projectid']:"";
 		
-		$data['members'] = $this->memberlist->having($condition)->order_by('name','asc')->get();
+		// $data['members'] = $this->memberlist->having($condition)->order_by('name','asc')->get();
 		$sql = "SELECT users.id id,USERS.name name,users.workgroupid,CNF_WORKGROUP.title workgroup,users.divisionid,cnf_division.title division_name,user_type_title.title usertype,
 case 
 when users.workgroupid > 0 then cnf_workgroup.wprovinceid 

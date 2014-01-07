@@ -9,6 +9,7 @@ class Inspect_notification extends Inspect_Controller
 	}
 	
 	function index(){
+		// $this->db->debug = true;
 		$condition = " WHERE  1=1 ";
 		$condition .= @$_GET['budgetyear'] > 0 ? " and insp_project_risk_save.budgetyear = ". @$_GET['budgetyear'] : "";
 		$condition .= @$_GET['provinceid'] > 0 ? " and insp_project_risk_save.provinceid = ". @$_GET['provinceid'] : "";
@@ -19,7 +20,7 @@ class Inspect_notification extends Inspect_Controller
 			$condition .= " and provinceareaid in (select province_area from insp_group where users_id = ".login_data('id').") ";
 		}
 		
-		$sql = "SELECT distinct insp_project_risk_save.budgetyear,insp_project_risk_save.projectid,insp_project_risk_save.provinceareaid,insp_project_risk_save.provinceid,insp_project_risk_save.roundno,insp_project_risk_save.updatedate,insp_project_risk_save.status,cnf_province.title province,cnf_province_area.title provincearea,insp_project.title project
+		$sql = "SELECT distinct insp_project_risk_save.budgetyear,insp_project_risk_save.projectid,insp_project_risk_save.provinceareaid,insp_project_risk_save.provinceid,insp_project_risk_save.roundno,insp_project_risk_save.updatedate,insp_project_risk_save.status,cnf_province.title province,cnf_province_area.title provincearea,TO_CHAR(insp_project.title) project
 FROM insp_project_risk_save
 left join cnf_province on insp_project_risk_save.provinceid = cnf_province.id
 left join cnf_province_area on insp_project_risk_save.provinceareaid = cnf_province_area.id

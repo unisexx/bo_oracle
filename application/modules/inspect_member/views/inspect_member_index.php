@@ -112,7 +112,8 @@ left join users on risk.createuser = users.id group by risk.createuser,users.nam
 		  <!--<th>จัดการ</th>-->
 		</tr>
 		<?php
-			$sql = "SELECT M1.*,round_name FROM(SELECT DISTINCT ROUNDNO ,projectid,T2.title,T1.budgetyear,T1.approveuser,T1.status,createdate,createuser,provinceid,provinceareaid 
+			// $this->db->debug =true;
+			$sql = "SELECT M1.*,round_name FROM(SELECT DISTINCT ROUNDNO ,projectid,TO_CHAR(T2.title) project_title,T1.budgetyear,T1.approveuser,T1.status,createdate,createuser,provinceid,provinceareaid 
 FROM INSP_PROJECT_RISK_SAVE T1
 LEFT JOIN INSP_PROJECT T2 ON T1.projectid = T2.ID)M1
 LEFT JOIN insp_round_detail on M1.roundno = insp_round_detail.id 
@@ -122,7 +123,7 @@ where (createuser = ".$user['id']." or approveuser = ".$user['id'].")";
 		?>
 		<?php foreach($projects as $key=>$project):?>
 			<tr class="odd cursor" onclick="document.location='<?=basename($_SERVER['PHP_SELF'])?>/form?budgetyear=<?php echo $project['budgetyear']?>&projectid=<?php echo $project['projectid']?>&provincearea=<?php echo $project['provinceareaid']?>&provinceid=<?php echo $project['provinceid']?>'" >
-			  <td><?php echo $project['title']?> <?php echo "(".stamp_to_th_fulldate($project['createdate']).")"?></td>
+			  <td><?php echo $project['project_title']?> <?php echo "(".stamp_to_th_fulldate($project['createdate']).")"?></td>
 			  <td><?php echo $project['round_name']?></td>
 			  <td><?php echo $project['budgetyear']+543?></td>
 			  <td><?php echo $project['status']?></td>
