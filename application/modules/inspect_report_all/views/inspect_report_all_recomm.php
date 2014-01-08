@@ -81,11 +81,11 @@
 (select count(*) from INSP_INSPECTOR_RECOMM 
   WHERE budgetyear=insp1.budgetyear and divisionid=insp1.divisionid and provinceid=insp1.provinceid and provincearea_id=insp1.provincearea_id)nsuggestion
 ,(select count(*) from INSP_INSPECTOR_RECOMM  
-  WHERE VARCHAR(OPERATIONRESULT) <> '' and budgetyear=insp1.budgetyear
+  WHERE OPERATIONRESULT is not null and budgetyear=insp1.budgetyear
  and divisionid=insp1.divisionid and provinceid=insp1.provinceid
  and provincearea_id=insp1.provincearea_id
 ) noperationresult
-FROM INSP_INSPECTOR_RECOMM as insp1
+FROM INSP_INSPECTOR_RECOMM insp1
 where budgetyear = ".$_GET['budgetyear']." and divisionid = ".$_GET['divisionid']." and provinceid = ".$row['id']."
 group by budgetyear,divisionid,provinceid,provincearea_id";
 				$result = $this->recomm->get($sql,true);
