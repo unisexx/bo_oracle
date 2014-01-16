@@ -13,7 +13,7 @@ class Monitor_questionair_report extends Monitor_Controller
 	
 	function index()
 	{
-		//$this->db->debug= true;
+		// $this->db->debug= true;
 		$data='';
 		$data['start_date'] = @$_GET['start_date'];
 		$data['end_date'] = @$_GET['end_date'];
@@ -37,7 +37,7 @@ class Monitor_questionair_report extends Monitor_Controller
 		
 		$data['province'] = $this->province->get_row(@$_GET['pprovince_id']);
 		
-		$sql = " SELECT DISTINCT GUIDE FROM (SELECT VARCHAR(GUIDE)GUIDE  FROM MT_QUESTIONAIR WHERE 1=1".$condition." ) WHERE GUIDE <> '' ORDER BY GUIDE ";
+		$sql = " SELECT DISTINCT GUIDE FROM (SELECT TO_CHAR(GUIDE)GUIDE  FROM MT_QUESTIONAIR WHERE 1=1".$condition." ) WHERE GUIDE <> '' ORDER BY GUIDE ";
 		$data['remark'] = $this->monitor_questionair->get($sql,TRUE);
 				
 		$this->template->build('index',$data);		

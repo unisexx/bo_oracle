@@ -317,7 +317,7 @@ fieldset{
 			@$total_target3 += @$value3;//สาโรจน์
 			?></td>
 		<? endfor; ?>
-	  <td style="text-align: right;border:1px solid #CCC;"><?=number_format($total_target3);?></td>
+	  <td style="text-align: right;border:1px solid #CCC;"><?=number_format(@$total_target3);?></td>
 	  <? for($i=$start_month_idx;$i<=$end_month_idx;$i++):?>
 			<td style="text-align: right;border:1px solid #CCC;">
 				<?
