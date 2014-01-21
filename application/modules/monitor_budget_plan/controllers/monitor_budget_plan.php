@@ -17,6 +17,7 @@ class Monitor_budget_plan extends Monitor_Controller
 		$this->load->model('c_division/division_model','division');		
 		$this->load->model('finance_budget_plan/fn_budget_type_model','fn_budget_type');
 		$this->load->model('c_province/province_model','province');
+		$this->load->model('budget_master_model','budget_master');
 	}
 	
 	function index()
@@ -24,13 +25,13 @@ class Monitor_budget_plan extends Monitor_Controller
 		//$this->db->debug = true;		
 		if(!permission($this->modules_name,'canview'))redirect('monitor');	
 		$data['budget_level'] = array('','department_service_target','department_strategy','department_target_year','division_service_target','division_strategy','productivity','mainactivity','subactivity','project','subproject');
-		db_connect(BUDGET_DSN,BUDGET_DBUSER,BUDGET_DBPASSWORD);
+		//db_connect(BUDGET_DSN,BUDGET_DBUSER,BUDGET_DBPASSWORD);
 		$sql = "SELECT DISTINCT BUDGETYEAR FROM BUDGET_MASTER ORDER BY BUDGETYEAR DESC ";
-		$result = db_query($sql,BUDGET_DSN);
-		while($srow = db_fetch_array($result,0)){            
+		$result = $this->db->getarray($sql);
+		foreach($result as $srow){            
     	$option = '<option value="'.$srow['BUDGETYEAR'].'">'.($srow['BUDGETYEAR']+543).'</option>';             
 		}
-    	db_close(BUDGET_DSN);
+    	//db_close(BUDGET_DSN);
 		$data['option'] = $option;
 		$data['mtyear'] = isset($_GET['mtyear']) ? $_GET['mtyear'] : "";
 		$data['mtdepartment'] = isset($_GET['mtdepartment']) ? $_GET['mtdepartment'] : ""; 
