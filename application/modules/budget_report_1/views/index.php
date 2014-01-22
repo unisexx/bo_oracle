@@ -2,14 +2,14 @@
 	$(document).ready(function(){
 		$("select[name=budgetyear]").change(function(){
 			bgyear = $(this).val();
-			window.location='<?=JS_FIX_URLPATH;?>/budget_report_1/index?budgetyear=' + bgyear;
+			window.location='budget_report_1/index?budgetyear=' + bgyear;
 		})
 	})
 </script>
 <h3>ตารางแสดงความเชื่อมโยงแผนงบประมาณประจำปี  <?=@$budgetyear;?></h3>
 <fieldset>
 	<legend>ระบุปีงบประมาณ</legend> 
-<? echo form_dropdown("budgetyear",get_option("byear","varchar(byear)","cnf_set_time","status = 1 order by byear"),@$budgetyear,'','-- เลือกปีงบประมาณ --');?>
+<? echo form_dropdown("budgetyear",get_option_same("byear","cnf_set_time","status = 1 order by byear"),@$budgetyear,'','-- เลือกปีงบประมาณ --');?>
 </fieldset>
 <? if($budgetyear > 0):?>
 <table class="tbReport" >

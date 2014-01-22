@@ -127,6 +127,17 @@ function get_option($value,$text,$table,$where = FALSE)
 	return $result;
 }
 
+function get_option_same($value, $table, $where = FALSE)
+{
+	$CI =& get_instance();
+	$where = ($where) ? 'where '.$where : '';
+	$result = $CI->db->GetArray('select '.$value.' from '.$table.' '.$where);
+	array_walk($result,'dbConvert');
+	$data = array();
+	foreach($result as $item) $data[$item[$value]] = $item[$value];
+	return $data; 
+}
+
 function pagebreak($content){
 	$break = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
 	return substr("$content",0,strpos($content,$break)+strlen($break));

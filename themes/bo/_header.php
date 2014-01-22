@@ -19,7 +19,7 @@
         </li>
         <li><a href="#">ระบบงาน +</a>
             <ul style="width:210px;">
-            	<?php if(permission('budget', 'canview')): ?><li><a href="http://budget.m-society.go.th" target="_blank">ระบบจัดทำคำของบประมาณ</a></li><?php endif;?>
+            	<?php if(permission('budget', 'canview')): ?><li><a href="budget" target="_blank">ระบบจัดทำคำของบประมาณ</a></li><?php endif;?>
                 <?php if(permission('finance', 'canview')): ?><li><a href="finance" target="_blank">ระบบงานคลัง</a></li><?php endif;?>
         		<?php if(permission('monitor', 'canview')): ?><li><a href="monitor" target="_blank">ระบบติดตามและประเมินผล</a></li><?php endif;?>
         		<?php if(permission('inspect', 'canview')): ?><li><a href="inspect" target="_blank">ระบบตรวจราชการ</a></li><?php endif;?>
