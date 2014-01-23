@@ -17,7 +17,7 @@ class c_usergroup extends Admin_Controller
 		$condition .= isset($_GET['txtsearch']) ? " AND TITLE LIKE '%".$_GET['txtsearch']."%' " : "";
 		$condition .= @$_GET['division']!=''? $_GET['division'] > 0 ?  " AND DIVISIONID=".$_GET['division'] : "" :"";
 		$condition .= @$_GET['workgroup']!='' ? $_GET['workgroup'] > 0 ? " AND WORKGROUPID=".$_GET['workgroup'] : "" : "";
-		$sql = "SELECT * FROM USERS INNER JOIN USER_TYPE_TITLE ON USERS.ID = USER_TYPE_TITLE.USER_ID ".$condition." ORDER BY TITLE ASC";
+		$sql = "SELECT USER_TYPE_TITLE.* FROM USERS INNER JOIN USER_TYPE_TITLE ON USERS.ID = USER_TYPE_TITLE.USER_ID ".$condition." ORDER BY TITLE ASC";
 		
 		$data['result'] = $this->usertype_title->get($sql);
 		$data['pagination'] = $this->usertype_title->pagination();
