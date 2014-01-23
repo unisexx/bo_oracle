@@ -1,0 +1,26 @@
+<script type="text/javascript">
+$(document).ready(function(){
+		$("form").validate({
+			rules: {
+				pos_name:"required"
+			},
+			messages:{
+				pos_name:"กรุณาระบุตำแหน่งสายบริหาร"
+			}
+		});
+});
+</script>
+<h3>ตั้งค่า ตำแหน่งสายบริหาร (บันทึก / แก้ไข)</h3>
+<form action="<?php echo $urlpage;?>/save" method="post">
+<input type="hidden" name="id" id="id" class="form-control" value="<?php echo @$rs['id']?>" style="width:500px;" />
+<table class="tbadd">
+<tr>
+  <th>ชื่อตำแหน่งสายบริหาร<span class="Txt_red_12"> *</span></th>
+  <td><input type="text" name="pos_name" id="pos_name" value="<?php echo @$rs['pos_name']?>" class="form-control" style="width:500px;" /></td>
+</tr>
+</table>
+<div id="btnBoxAdd">
+  <input name="input" type="submit" title="บันทึก" value=" " class="btn_save"/>
+  <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
+</div>
+</form>
