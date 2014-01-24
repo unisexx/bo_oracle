@@ -1,0 +1,32 @@
+<? include "../include/config.php";?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?=$fn_title;?></title>
+<? include '_script.php'?>
+</head>
+
+<body>
+
+<div id="page">
+<div id="head"><? include '_header.php'?></div>
+<h3>บันทึก</h3>
+<div id="BOico">
+<div class="ico"><a href="#"><img src="images/icon/usergroup.png" width="48" height="48" /><h4>แผนงบประมาณ</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/user.png" width="48" height="48" /><h4>ผูกพันงบประมาณ</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/document.png" width="48" height="48" /><h4>อนุมัติเบิกเงิน</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/department.png" width="48" height="48" /><h4>คืนเงินงบประมาณ</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/division.png" width="48" height="48" /><h4>อนุมัติเบิกเงินเบิกแทน</h4></a></div>
+
+<h3 class="clear">รายงาน</h3>
+<div class="ico"><a href="#"><img src="images/icon/budget.png" width="48" height="48" /><h4>คืนงบประมาณค้างเบิก</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/finance.png" width="48" height="48" /><h4>เบิกจ่าย</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/monitor.png" width="48" height="48" /><h4>การโอน</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/inspect.png" width="48" height="48" /><h4>เบิกแทน</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/monitor.png" width="48" height="48" /><h4>เงินกัน</h4></a></div>
+<div class="ico"><a href="#"><img src="images/icon/inspect.png" width="48" height="48" /><h4>สถานะงบประมาณ</h4></a></div>
+</div>
+</div><!--page-->
+</body>
+</html>
