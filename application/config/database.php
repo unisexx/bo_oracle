@@ -34,24 +34,13 @@
 | the active record class
 */
 ini_set("max_execution_time" , 300);
-$active_group = "default";
+$active_group = "fd";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "BOFFICE";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "BOFFICE";
-
-// $db['default']['hostname'] = "192.168.1.129";
-// $db['default']['username'] = "BOFFICE";
-// $db['default']['password'] = "1234";
-// $db['default']['database'] = "BOFFICE";
-
-// $db['default']['hostname'] = "27.254.33.52";
-// $db['default']['username'] = "BOFFICE";
-// $db['default']['password'] = "1234";
-// $db['default']['database'] = "BOFFICEORA";
-
 $db['default']['dbdriver'] = "oci8po";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
@@ -60,6 +49,19 @@ $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
+
+$db['fd']['hostname'] = "27.254.33.52";
+$db['fd']['username'] = "BOFFICE";
+$db['fd']['password'] = "1234";
+$db['fd']['database'] = "BOFFICEORA";
+$db['fd']['dbdriver'] = "oci8po";
+$db['fd']['dbprefix'] = "";
+$db['fd']['pconnect'] = TRUE;
+$db['fd']['db_debug'] = TRUE;
+$db['fd']['cache_on'] = FALSE;
+$db['fd']['cachedir'] = "";
+$db['fd']['char_set'] = "utf8";
+$db['fd']['dbcollat'] = "utf8_unicode_ci";
 
 
 /* End of file database.php */

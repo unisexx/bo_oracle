@@ -36,7 +36,7 @@
 
 <h3 class="clear">ตั้งค่า</h3>
 <div class="lineico">
-<div class="ico"><a href="affiliate_set.php"><img src="themes/act/images/icon/affiliate_set.png" width="48" height="48" /><h4>หน่วยงานที่สังกัด (รายชื่อพนักงาน)</h4></a></div>
+<div class="ico"><a href="act/set_affiliate"><img src="themes/act/images/icon/affiliate_set.png" width="48" height="48" /><h4>หน่วยงานที่สังกัด (รายชื่อพนักงาน)</h4></a></div>
 <div class="ico"><a href="position_committee_set.php"><img src="themes/act/images/icon/position_committee_set.png" width="48" height="48" /><h4>ตำแหน่งใน คณะอนุกรรมการ</h4></a></div>
 <div class="ico"><a href="position_director_set"><img src="themes/act/images/icon/position_director_set.png" width="48" height="48" /><h4>ตำแหน่งใน คณะกรรมการ</h4></a></div>
 <div class="ico"><a href="committee_expert_set.php"><img src="themes/act/images/icon/committee_expert.png" width="48" height="48" /><h4>กรรมการ ผู้ทรงคุณวุฒิด้าน</h4></a></div>
