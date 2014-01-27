@@ -2,10 +2,17 @@
 $(document).ready(function(){
 		$("form").validate({
 			rules: {
-				measure_name:"required"
+				measure_name:{required:true, 
+							   remote:{
+							    url:'<? echo $urlpage; ?>/check_measure_name',
+							    data: { measure_name:function(){ return $('[name=measure_name]').val(); },	
+							   			id:function(){ return $('[name=id]').val(); }
+							    	  }
+							    }
+				    		}
 			},
 			messages:{
-				measure_name:"กรุณาระบุชื่อหน่วยวัด"
+				measure_name:{required:"กรุณาระบุชื่อหน่วยวัด", remote:"มีชื่อหน่วยวัดนี้แล้ว"}
 			}
 		});
 });

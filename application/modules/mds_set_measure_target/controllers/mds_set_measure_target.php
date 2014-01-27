@@ -66,5 +66,27 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 		$this->measure->delete($ID);		
 		redirect($urlpage);
 	}
+	function check_measure_name(){
+		if(@$_GET['measure_name'] != '' ){
+			$sql = "select * 
+					from mds_set_measure 
+					where measure_name = '".@$_GET['measure_name']."' ";
+			$chk = $this->measure->get($sql);
+			$num_row = count($chk);
+			if($num_row > 0){
+				if(@$_GET['id'] == @$chk['0']['id']){
+					echo 'true';
+				}else{
+					echo 'false';
+				}
+				
+			}else{
+				echo 'true';
+			}
+		}else{
+			echo 'true';
+		}
+		
+	}
 }
 ?>

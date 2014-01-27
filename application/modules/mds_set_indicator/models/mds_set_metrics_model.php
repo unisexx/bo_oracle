@@ -1,7 +1,7 @@
 <?php
-class Mds_set_indicator_model extends MY_Model{
+class Mds_set_metrics_model extends MY_Model{
 	
-	public $table = "MDS_SET_INDICATOR";
+	public $table = "MDS_SET_METRICS";
 	
     function __construct()
     {

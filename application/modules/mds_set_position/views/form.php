@@ -2,10 +2,17 @@
 $(document).ready(function(){
 		$("form").validate({
 			rules: {
-				pos_name:"required"
+				pos_name:{required:true, 
+							    		remote:{
+							    			url:'<? echo $urlpage; ?>/check_pos_name',
+							    			data: { pos_name:function(){ return $('[name=pos_name]').val(); },	
+							    					id:function(){ return $('[name=id]').val(); }
+							    				  }
+							    			}
+				    	}
 			},
 			messages:{
-				pos_name:"กรุณาระบุตำแหน่งสายบริหาร"
+				pos_name:{required:"กรุณาระบุตำแหน่งสายบริหาร", remote:"มีตำแหน่งสายบริหารชื่อนี้แล้ว"}
 			}
 		});
 });
