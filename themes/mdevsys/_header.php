@@ -10,7 +10,7 @@
         </li>
         <li><a href="#">ตั้งค่า +</a>
           <ul style="width:260px;">
-            <li><a href="indicator_set.php">มิติและตัวชี้วัด</a></li>
+            <li><a href="mds_set_indicator">มิติและตัวชี้วัด</a></li>
             <li><a href="">หน่วยวัดและเป้าหมาย</a></li>
             <li><a href="mds_set_assessment">หัวข้อประเด็นการประเมินผล</a></li>
             <li><a href="mds_set_score">คะแนนผลประเมิน</a></li>
