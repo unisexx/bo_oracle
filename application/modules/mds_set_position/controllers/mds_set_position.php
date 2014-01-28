@@ -65,5 +65,27 @@ Class Mds_set_position extends  Mdevsys_Controller{
 		$this->position->delete($ID);		
 		redirect($urlpage);
 	}
+	function check_pos_name(){
+		if(@$_GET['pos_name'] != '' ){
+			$sql = "select * 
+					from mds_set_position 
+					where pos_name = '".@$_GET['pos_name']."' ";
+			$chk = $this->position->get($sql);
+			$num_row = count($chk);
+			if($num_row > 0){
+				if(@$_GET['id'] == @$chk['0']['id']){
+					echo 'true';
+				}else{
+					echo 'false';
+				}
+				
+			}else{
+				echo 'true';
+			}
+		}else{
+			echo 'true';
+		}
+		
+	}
 }
 ?>

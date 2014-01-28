@@ -6,12 +6,15 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
+		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
 		
 	}
 	
 	public $urlpage = "mds_set_indicator";
 	public $modules_name = "mds_set_indicator";
-	public $modules_title = " ตั้งค่า มิติและตัวชี้วัด";
+	public $modules_title = " ตั้งค่า มิติ";
+
+	public $modules_title_2 = " ตั้งค่า ตัวชี้วัด";
 	
 	function index(){
 		$data['urlpage'] = $this->urlpage;
@@ -38,45 +41,118 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		$this->template->build('form',@$data);
 
 	}
-	function form_2($indicator_id=null, $id_1=null){
+
+	function form_2($indicator_id=null, $id=null,$action = null){
 		$data['urlpage'] = $this->urlpage;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
-		if($id_1 == '' && $indicator_id != ''){
+		
+		if($id == '' && $indicator_id != ''){
+			
 			$data['rs']['mds_set_indicator_id'] = $indicator_id;
 			$data['rs_indicator'] = $this->indicator->get_row($indicator_id);
 			if($data['rs_indicator']['id'] == ''){
 				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
 				redirect($data['urlpage']);
 			}
-		}else{
+			$data['rs']['parent_id'] = '0';
+			
+		}else if($id != '' && $indicator_id != '' && $action == ''){
+			
+			$data['rs_indicator'] = $this->indicator->get_row($indicator_id);
+			if($data['rs_indicator']['id'] == ''){
+				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
+				redirect($data['urlpage']);
+			}
 			$data['rs'] = $this->metrics->get_row($id);
+			
+		}else if($id != '' && $indicator_id != '' && $action == 'add'){
+			
+			$data['rs_indicator'] = $this->indicator->get_row($indicator_id);
+			if($data['rs_indicator']['id'] == ''){
+				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
+				redirect($data['urlpage']);
+			}
+			$data['rs']['parent_id'] = $id;
 		}
+		
+		
 		$this->template->build('form_2',@$data);
 
 	}
+	
 	function save(){
 		$urlpage = $this->urlpage;
 		$this->db->debug = true;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
-		if($_POST){			
+		if($_POST){
+			if($_POST['id']>0){
+		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
+				$_POST['UPDATE_BY'] = login_data('name');
+			}else{
+				$_POST['CREATE_DATE'] = date("Y-m-d");
+				$_POST['CREATE_BY'] = login_data('name');
+			}
+			$id = $this->indicator->save($_POST);
+						
 		   if($_POST['id']>0){
-		    $_POST['CREATE_DATE'] = date("Y-m-d");
-			$_POST['CREATE_BY'] = login_data('name');
-		   	new_save_logfile("EDIT",$this->modules_title,$this->indicator->table,"ID",$id,"ass_name",$this->modules_name);
+		   	new_save_logfile("EDIT",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
 		   }else{
-		   	$_POST['UPDATE_DATE'] = date("Y-m-d");
-			$_POST['UPDATE_BY'] = login_data('name');
-		   	new_save_logfile("ADD",$this->modules_title,$this->indicator->table,"ID",$id,"ass_name",$this->modules_name);
+		   	new_save_logfile("ADD",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
 		   }
 		   
-		   $id = $this->indicator->save($_POST);
+		   
 		   set_notify('success', lang('save_data_complete'));	  
 		}
 		redirect($urlpage.'/index?sch_budget_year='.@$_POST['budget_year']);
 
 	}
+	function save_2(){
+		$urlpage = $this->urlpage;
+		//return false;
+		//$this->db->debug = true;
+		if(!is_login())redirect("home");
+		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
+		if($_POST){
+			if($_POST['id']>0){
+				$_POST['UPDATE_DATE'] = date("Y-m-d");
+				$_POST['UPDATE_BY'] = login_data('name');
+			}else{
+				$_POST['CREATE_DATE'] = date("Y-m-d");
+				$_POST['CREATE_BY'] = login_data('name');
+			}
+			
+			$sql_update_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+							  FROM MDS_SET_METRICS METRICS
+							  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
+							  WHERE INDICATOR.BUDGET_YEAR = '".@$_POST['budget_year']."' AND METRICS.PARENT_ID = '".@$_POST['parent_id']."' 
+							  AND METRICS.METRICS_ON >= '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
+			$result_on = $this->metrics->get($sql_update_on);
+			foreach ($result_on as $key => $result) {
+				$update_on['id'] = $result['id'];
+				$update_on['metrics_on'] = $result['metrics_on']+1;
+				$this->metrics->save($update_on);
+			}
+			
+			
+			$id = $this->metrics->save($_POST);
+		   if($_POST['id']>0){
+		    
+		   	new_save_logfile("EDIT",$this->modules_title_2,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
+		   }else{
+		   	
+		   	new_save_logfile("ADD",$this->modules_title_2,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
+		   }
+		   
+		   
+		   set_notify('success', lang('save_data_complete'));	  
+		}
+		redirect($urlpage.'/index?sch_budget_year='.@$_POST['budget_year']);
+
+	}
+	
+	
 	function delete($budget_year = null,$ID=FALSE){
 		$urlpage = $this->urlpage;
 		if(!is_login())redirect("home");

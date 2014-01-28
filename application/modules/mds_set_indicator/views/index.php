@@ -68,7 +68,28 @@ $(function(){
 		<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดในมิตินี้"  onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>'"/>
 		<input type="button" class="btn_editico vtip" title="แก้ไขมิตินี้"  onclick="document.location='<?=$urlpage?>/form/<?=@$_GET['sch_budget_year']?>/<?=@$indicator['id']?>'" />
 		<input type="button" class="btn_deleteico vtip" onclick="document.location='<?=$urlpage?>/delete/<?=@$_GET['sch_budget_year']?>/<?=@$indicator['id']?>'" title="ลบมิตินี้" />
-		</ul></li>
+		
+		<? 
+			$sql_sub_1 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."'  ";
+			$result_sub_1 = $this->metrics->get($sql_sub_1);
+			$sub_1_all = count($result_sub_1);
+			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {	
+		?>
+			<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>. <?=@$sub_1['metrics_name']?>    
+			<? if(($key_sub_1+1) < $sub_1_all && $key_sub_1 == 0){ ?>
+				<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น"/>
+			<? }else if(($key_sub_1+1) < $sub_1_all && $key_sub_1 > 0){ ?>
+				<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น"/>
+				<input type="button" class="btn_downico vtip" title="เลื่อนลง" style="margin-left:20px" />
+			<? }else if(($key_sub_1+1) == $sub_1_all && $key_sub_1 > 0){ ?>
+				<input type="button" class="btn_downico vtip" title="เลื่อนลง" style="margin-left:20px" />
+			<? } ?>
+			<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย"/>
+			<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_1['id']?>'" />
+			<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" />
+			</li></ul>
+		<? } ?>
+		</li></ul>
 <?
 	}
 ?>
