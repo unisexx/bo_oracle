@@ -70,7 +70,7 @@ $(function(){
 		<input type="button" class="btn_deleteico vtip" onclick="document.location='<?=$urlpage?>/delete/<?=@$_GET['sch_budget_year']?>/<?=@$indicator['id']?>'" title="ลบมิตินี้" />
 		
 		<? 
-			$sql_sub_1 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."'  ";
+			$sql_sub_1 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' order by metrics_on asc  ";
 			$result_sub_1 = $this->metrics->get($sql_sub_1);
 			$sub_1_all = count($result_sub_1);
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {	
@@ -84,9 +84,9 @@ $(function(){
 			<? }else if(($key_sub_1+1) == $sub_1_all && $key_sub_1 > 0){ ?>
 				<input type="button" class="btn_downico vtip" title="เลื่อนลง" style="margin-left:20px" />
 			<? } ?>
-			<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย"/>
+			<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_1['id']?>/add'" />
 			<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_1['id']?>'" />
-			<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" />
+			<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" onclick="document.location='<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_1['id']?>'" />
 			</li></ul>
 		<? } ?>
 		</li></ul>

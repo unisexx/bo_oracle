@@ -7,7 +7,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		parent::__construct();
 		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
 		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
-		
+		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
 	}
 	
 	public $urlpage = "mds_set_indicator";
@@ -67,12 +67,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			$data['rs'] = $this->metrics->get_row($id);
 			
 		}else if($id != '' && $indicator_id != '' && $action == 'add'){
-			
+			$data['rs']['mds_set_indicator_id'] = $indicator_id;
 			$data['rs_indicator'] = $this->indicator->get_row($indicator_id);
 			if($data['rs_indicator']['id'] == ''){
 				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
 				redirect($data['urlpage']);
 			}
+			$data['parent_on'] = $this->metrics->get_row($id);
+			
 			$data['rs']['parent_id'] = $id;
 		}
 		
@@ -87,6 +89,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
+			
 			if($_POST['id']>0){
 		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
 				$_POST['UPDATE_BY'] = login_data('name');
@@ -115,6 +118,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
+			
+			$metrics_cancel = @$_POST['metrics_cancel'];
+			if($metrics_cancel == ''){
+				@$_POST['metrics_cancel'] = '';
+			}
+			
 			if($_POST['id']>0){
 				$_POST['UPDATE_DATE'] = date("Y-m-d");
 				$_POST['UPDATE_BY'] = login_data('name');
@@ -123,20 +132,89 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				$_POST['CREATE_BY'] = login_data('name');
 			}
 			
-			$sql_update_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+			if(@$_POST['id'] != ''){ // ตรวจสอบว่ามีเลขลำดับซ้ำกันหรือไม่
+				$chk_metrics_on = "SELECT METRICS.ID,METRICS.METRICS_ON
 							  FROM MDS_SET_METRICS METRICS
 							  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
 							  WHERE INDICATOR.BUDGET_YEAR = '".@$_POST['budget_year']."' AND METRICS.PARENT_ID = '".@$_POST['parent_id']."' 
-							  AND METRICS.METRICS_ON >= '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
-			$result_on = $this->metrics->get($sql_update_on);
-			foreach ($result_on as $key => $result) {
-				$update_on['id'] = $result['id'];
-				$update_on['metrics_on'] = $result['metrics_on']+1;
-				$this->metrics->save($update_on);
+							  AND METRICS.METRICS_ON = '".@$_POST['metrics_on']."' AND METRICS.ID != '".@$_POST['id']."' ORDER BY METRICS.METRICS_ON ASC ";
+				$result_chk_on = $this->metrics->get($chk_metrics_on);
+				$num_chk_on = count($result_chk_on);
+			}else{
+				$chk_metrics_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+							  FROM MDS_SET_METRICS METRICS
+							  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
+							  WHERE INDICATOR.BUDGET_YEAR = '".@$_POST['budget_year']."' AND METRICS.PARENT_ID = '".@$_POST['parent_id']."' 
+							  AND METRICS.METRICS_ON = '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
+				$result_chk_on = $this->metrics->get($chk_metrics_on);
+				$num_chk_on = count($result_chk_on);
 			}
 			
+			if($num_chk_on > 0){ // ถ้ามีเลขลำดับซ้ำกัน
+				$sql_update_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+								  FROM MDS_SET_METRICS METRICS
+								  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
+								  WHERE INDICATOR.BUDGET_YEAR = '".@$_POST['budget_year']."' AND METRICS.PARENT_ID = '".@$_POST['parent_id']."' 
+								  AND METRICS.METRICS_ON >= '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
+				$result_on = $this->metrics->get($sql_update_on);
+				foreach ($result_on as $key => $result) {
+					$update_on['id'] = $result['id'];
+					$update_on['metrics_on'] = $result['metrics_on']+1;
+					$this->metrics->save($update_on);
+				}
+			}
 			
 			$id = $this->metrics->save($_POST);
+			
+			$kpr_6['id'] = @$_POST['kpr_id_6'];
+			$kpr_9['id'] = @$_POST['kpr_id_9'];
+			$kpr_12['id'] = @$_POST['kpr_id_12'];
+			
+			if(@$_POST['metrics_start'] == 6){ // เรื่มที่รอบ 6 เดือน
+				
+				$kpr_6['kpr_users_id'] = $_POST['kpr_6'];
+				$kpr_6['control_users_id'] = $_POST['control_6'];
+				$kpr_6['round_month'] = '6';
+				$kpr_6['mds_set_metrics_id'] = $id;
+				$kpr_6_id = $this->kpr->save($kpr_6);
+				
+				if(@$_POST['sem_9'] == 6){
+					$kpr_9['kpr_users_id'] = $_POST['kpr_6'];
+					$kpr_9['control_users_id'] = $_POST['control_6'];
+					$kpr_9['round_month'] = '9';
+					$kpr_9['mds_set_metrics_id'] = $id;
+					$kpr_9_id = $this->kpr->save($kpr_9);
+				}else{
+					$kpr_9['kpr_users_id'] = $_POST['kpr_9'];
+					$kpr_9['control_users_id'] = $_POST['control_9'];
+					$kpr_9['round_month'] = '9';
+					$kpr_9['mds_set_metrics_id'] = $id;
+					$kpr_9_id = $this->kpr->save($kpr_9);
+				}
+				
+				if(@$_POST['sem_12'] == 6 || (@$_POST['sem_12'] == 9 && @$_POST['sem_9'] == 6)){
+					$kpr_12['kpr_users_id'] = $_POST['kpr_6'];
+					$kpr_12['control_users_id'] = $_POST['control_6'];
+					$kpr_12['round_month'] = '12';
+					$kpr_12['mds_set_metrics_id'] = $id;
+					$kpr_12_id = $this->kpr->save($kpr_12);
+					
+				}else if(@$_POST['sem_12'] == 9 && @$_POST['sem_9'] == 9){
+					$kpr_12['kpr_users_id'] = $_POST['kpr_9'];
+					$kpr_12['control_users_id'] = $_POST['control_9'];
+					$kpr_12['round_month'] = '12';
+					$kpr_12['mds_set_metrics_id'] = $id;
+					$kpr_12_id = $this->kpr->save($kpr_9);
+					
+				}else{
+					$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
+					$kpr_12['control_users_id'] = $_POST['control_12'];
+					$kpr_12['round_month'] = '12';
+					$kpr_12['mds_set_metrics_id'] = $id;
+					$kpr_12_id = $this->kpr->save($kpr_9);
+				}
+			}
+			
 		   if($_POST['id']>0){
 		    
 		   	new_save_logfile("EDIT",$this->modules_title_2,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
@@ -163,6 +241,19 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		set_notify('error', 'ลบข้อมูลเสร็จสิน');		
 		redirect($urlpage.'/index?sch_budget_year='.@$budget_year);
 	}
+	function delete_metrics($budget_year = null,$ID=FALSE){
+		$urlpage = $this->urlpage;
+		if(!is_login())redirect("home");
+		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
+		
+		new_save_logfile("DELETE",$this->modules_title,$this->indicator->table,"ID",$ID,"ass_name",$this->modules_name);					
+		
+		$this->metrics->where("parent_id = '".$ID."' ")->delete($ID); // ลบตัวชี้วัดภายใต้  id นี้
+		$this->metrics->delete($ID);
+		set_notify('error', 'ลบข้อมูลเสร็จสิน');		
+		redirect($urlpage.'/index?sch_budget_year='.@$budget_year);
+	}
+	
 	function chain_indicator()
 	{
 		if(!empty($_GET['sch_budget_year']))
@@ -226,6 +317,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			echo 'true';
 		}
 		
+	}
+	
+	function add_keyer(){
+		$data['month'] = @$_GET['month'];
+		$data['num'] = @$_GET['num'];
+		$this->load->view('mds_set_indicator/_keyer',@$data);
 	}
 }
 ?>
