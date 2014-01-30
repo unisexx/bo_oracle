@@ -109,14 +109,17 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		redirect($urlpage);
 	}
 	function cbox_users(){
+		$condition = '';
 		if(@$_GET['sch_txt'] != ''){
+			$condition = " AND ( name like '%".@$_GET['sch_txt']."%' 
+					or username like '%".@$_GET['sch_txt']."%' )";
+		}
 			$sql = "select users.* 
 					from users 
-					where name like '%".@$_GET['sch_txt']."%' 
-					or username like '%".@$_GET['sch_txt']."%' order by id asc ";
+					where 1=1 $condition  order by id asc";
 			$data['rs_users'] = $this->users->get($sql);
 			$data['pagination'] = $this->users->pagination();	
-		}
+		$_GET['page'] = (empty($_GET['page']))?0:($_GET['page']-1)*20;
 		$this->load->view('_users', @$data);
 	}
 	function check_users(){
@@ -142,5 +145,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		}
 		
 	}
+	
+	
 }
 ?>

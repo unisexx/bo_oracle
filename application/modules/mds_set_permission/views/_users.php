@@ -10,7 +10,7 @@
 		
 		if(count(@$rs_users) > 0){
 		
-		$i=0; foreach(@$rs_users as $tmp) {	?>
+		$i=1; foreach(@$rs_users as $tmp) {	?>
 			<tr>
 				<td style="width: 50px"><? echo $i+$_GET['page']; ?></td>
 				<td style="width: 400px"><? echo @$tmp['username']; ?></td>
