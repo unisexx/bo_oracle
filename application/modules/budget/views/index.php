@@ -29,8 +29,8 @@
 <?php if(permission('report', 'canview')): ?>
 <h3 class="clear">รายงาน</h3>
 <div class="lineico">
-	<div class="ico"><a href="budget_report_1"><h4>ตารางแสดง<br>ความเชื่อมโยง</h4></a></div>
-	<div class="ico"><a href="budget_request_commit"><h4>สรุปงบประมาณ<br>รายจ่ายประจำปี <br>จำแนกตาม<br>ผลผลิตโครงการ</h4></a></div>
+	<div class="ico"><a href="budget/report/report_1"><h4>ตารางแสดง<br>ความเชื่อมโยง</h4></a></div>
+	<div class="ico"><a href="budget/report/report_2"><h4>สรุปงบประมาณ<br>รายจ่ายประจำปี <br>จำแนกตาม<br>ผลผลิตโครงการ</h4></a></div>
 	<div class="ico"><a href="budget_request_commit"><h4>แผนงบประมาณ<br>รายจ่ายประจำ<br>ปีงบประมาณ</h4></a></div>
 	<div class="ico"><a href="budget_request_commit"><h4>การประมาณการ<br>รายจ่ายล่วงหน้า<br>ระยะปานกลาง</h4></a></div>
 	<div class="ico"><a href="budget_request_commit"><h4>ตารางแสดง<br>คำของบประมาณ<br>ระดับโครงการ/<br>งบรายจ่าย</h4></a></div>

@@ -2,7 +2,7 @@
 	$(document).ready(function(){
 		$("select[name=budgetyear]").change(function(){
 			bgyear = $(this).val();
-			window.location='budget_report_1/index?budgetyear=' + bgyear;
+			window.location='budget/report/report_1?budgetyear=' + bgyear;
 		})
 	})
 </script>
