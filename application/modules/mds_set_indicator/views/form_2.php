@@ -12,7 +12,15 @@
 			$('.metrics_9').show();
 			$('.metrics_12').show();
 			
-			
+			$('.metrics_dtl_6').show();
+			<?php if(@$rs['sem_9'] != '9'){ ?>
+				$('.metrics_dtl_9').hide();
+				$('#sem_9_6').attr('checked','checked');
+			<? } ?>
+			<?php if(@$rs['sem_12'] != '12'){ ?>
+				$('.metrics_dtl_12').hide();
+				$('#sem_12_6').attr('checked','checked');
+			<? } ?>
 			
 		}else if($('#metrics_start').val() == 9){
 			$('.metrics_cancel_6').hide();
@@ -23,7 +31,13 @@
 			$('.metrics_9').show();
 			$('.metrics_12').show();
 			
-			;
+			$('.metrics_dtl_6').hide();
+			$('.metrics_dtl_9').show();
+			$('#sem_9_9').attr('checked','checked');
+			<?php if(@$rs['sem_12'] != '12'){ ?>
+				$('.metrics_dtl_12').hide();
+				$('#sem_12_9').attr('checked','checked');
+			<? } ?>
 			
 		}else if($('#metrics_start').val() == 12){
 			$('.metrics_cancel_6').hide();
@@ -34,6 +48,10 @@
 			$('.metrics_9').hide();
 			$('.metrics_12').show();
 			
+			$('.metrics_dtl_6').hide();
+			$('.metrics_dtl_9').hide();
+			$('.metrics_dtl_12').show();
+			$('#sem_12_12').attr('checked','checked');
 		}
 	}
 	
@@ -46,18 +64,19 @@
 		
 	}
 $(function(){
-	<?php if(@$rs['sem_9'] == '6' || @$rs['sem_9'] == ''){ ?>
-			$('.metrics_dtl_9').hide();
-	<?php }
-	 if(@$rs['sem_12'] == '6' || @$rs['sem_12'] == '9' || @$rs['sem_12'] == ''){ ?>
-			$('.metrics_dtl_12').hide();
-	<?php } ?>
 	
 	$('#metrics_start').live('change', function(){
 		chang_strat()
 	});
 	chang_strat();
 	
+			<?php if(@$rs['sem_9'] == '9'){ ?>
+					$('.metrics_dtl_9').show();
+			<?php }
+			 if(@$rs['sem_12'] == '12'){ ?>
+					$('.metrics_dtl_12').show();
+			<?php } ?>
+			
 	$(".metrics_cancel").live('change', function () {
 			if ($(this).is(':checked')){
 				$(".metrics_cancel").removeAttr('checked');
@@ -69,7 +88,6 @@ $(function(){
 		chang_responsible($(this).val());
 	});
 	chang_responsible('<?=@$rs['metrics_responsible']?>');
-	
 	$('[name=sem_9]').live('click',function(){
 		if($(this).val()=='9'){
 			$('.metrics_dtl_9').show();
@@ -94,11 +112,38 @@ $(function(){
 	
 		$("<img class='loading' src='images/loading.gif' style='vertical-align:bottom'>").appendTo(".loading-icon_"+ref_m);
 		$.get('<? echo site_url(); ?>mds_set_indicator/add_keyer',
-		{ month:ref_m , num:num },
+		{ month:ref_m , num:i },
 			function(data){
 				$(".loading").remove();
 				$('#keyer_div_'+ref_m).before(data);
-		 		$('#keyer_num_'+ref_m).val(i);		
+		 		$('#keyer_num_'+ref_m).val(i);	
+		 		$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
+	        						       							  return $("#metrics_start").val() == '6';}
+											           , messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           	});
+				if(ref_m == 9){
+					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("[name=sem_9]:checked").val() == '9';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("#metrics_start").val() == '9';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+				}
+				if(ref_m == 12){
+					
+					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("[name=sem_12]:checked").val() == '12';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("#metrics_start").val() == '12';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+					//alert($("[name=sem_12]:checked").val());
+				}   
+				validate_form();
 		});		 
 	});
 	$('.bt_remove_keyer').live("click",function(){
@@ -107,44 +152,55 @@ $(function(){
 		var m = $(this).attr("ref_m");
 		$("#keyer_div_"+m+"_"+i).remove();
 	});
-	
-	$("form").validate({
-			rules: {
-				metrics_on:"required",
-				metrics_weight:"required",
-				metrics_name:"required",
-				mds_set_assessment_id:"required",
-				mds_set_measure_id:"required",
-				metrics_target:"required",
-				metrics_responsible:"required",
-				metrics_start:"required"
-			},
-			messages:{
-				metrics_on:"กรุณาระบุตัวชี้วัดที่",
-				metrics_weight:"กรุณาระบุน้ำหนักตัวชี้วัด",
-				metrics_name:"กรุณาระบุชื่อตัวชี้วัด",
-				mds_set_assessment_id:"กรุณาระบุประเด็นการประเมินผล",
-				mds_set_measure_id:"กรุณาระบุหน่วยวัด",
-				metrics_target:"กรุณาระบุเป้าหมาย",
-				metrics_responsible:"กรุณาระบุว่ามีผู้รับผิดชอบ หรือไม่",
-				metrics_start:"กรุณาระบุตัวชี้วัดเริ่มที่รอบ"
-				
-			},
-			errorPlacement: function(error, element) 
-   			{
-			        if (element.attr("name") == "metrics_responsible" )
-			          $('#error_responsible').html(error);
-			        else if (element.attr("name") == "metrics_weight" )
-	         		  $('#error_metrics_weight').html(error);
-			        else
-			          error.insertAfter(element);
-		     }
-	});
+	function validate_form(){
+		$("form").validate({
+				rules: {
+					metrics_on:"required",
+					metrics_weight:"required",
+					metrics_name:"required",
+					mds_set_assessment_id:"required",
+					mds_set_measure_id:"required",
+					metrics_target:"required",
+					metrics_responsible:"required",
+					metrics_start:"required",
+					kpr_6:{ required : function(element) {
+	        						   return $("#metrics_start").val() == '6';}
+	        			  },
+	        		control_6:{ required : function(element) {
+	        						       return $("#metrics_start").val() == '6';}
+	        				  }
+	        						   
+				},
+				messages:{
+					metrics_on:"กรุณาระบุตัวชี้วัดที่",
+					metrics_weight:"กรุณาระบุน้ำหนักตัวชี้วัด",
+					metrics_name:"กรุณาระบุชื่อตัวชี้วัด",
+					mds_set_assessment_id:"กรุณาระบุประเด็นการประเมินผล",
+					mds_set_measure_id:"กรุณาระบุหน่วยวัด",
+					metrics_target:"กรุณาระบุเป้าหมาย",
+					metrics_responsible:"กรุณาระบุว่ามีผู้รับผิดชอบ หรือไม่",
+					metrics_start:"กรุณาระบุตัวชี้วัดเริ่มที่รอบ",
+					kpr_6:"กรุณาเลือก กพร. ",
+					control_6:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด",
+					
+				},
+				errorPlacement: function(error, element) 
+	   			{
+				        if (element.attr("name") == "metrics_responsible" )
+				          $('#error_responsible').html(error);
+				        else if (element.attr("name") == "metrics_weight" )
+		         		  $('#error_metrics_weight').html(error);
+				        else
+				          error.insertAfter(element);
+			     }
+		});
+	}
+	validate_form();
 });
 </script>
 <h3>ตั้งค่า  มิติและตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
 <h5>ตัวชี้วัด</h5>
-<form action="<?php echo $urlpage;?>/save_2" method="POST">
+<form action="<?php echo $urlpage;?>/save_2" id="Myform" method="POST">
 <table class="tbadd">
   <tr>
     <th>ปีงบประมาณ</th>
@@ -267,44 +323,89 @@ for ($i=1; $i <= 3; $i++) {
 <? } ?>
 
 <?php 
-	$sql_kpr = "select * from mds_set_metrics_kpr where mds_set_metrics_id = '".@$rs['id']."' AND round_month = '".@$month."' ";
-	$result_kpr = $this->kpr->get($sql_kpr);
-	$kpr = @$result_kpr['0'];
+	$sql_kpr[$month] = "select * from mds_set_metrics_kpr where mds_set_metrics_id = '".@$rs['id']."' AND round_month = '".@$month."' ";
+	$result_kpr = $this->kpr->get($sql_kpr[$month]);
+	$kpr[$month] = @$result_kpr['0'];
+	
+	$sql_keyer[$month] = "select * from mds_set_metrics_keyer where mds_set_metrics_id = '".@$rs['id']."' AND round_month = '".@$month."' order by id asc ";
+	$result_keyer[$month] = $this->keyer->get($sql_keyer[$month]);
+	
 ?>
 <tr class="metrics_dtl_<?=$month?>">
 <th>กพร.<span class="Txt_red_12"> * </span></th>
 <td>
 <input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr['id']?>" />
-<?php echo form_dropdown("kpr_$month",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 1'),@$kpr['kpr_users_id'],'','-- กำหนดผู้รับผิดชอบ (กพร.) --') ?>
+<?php echo form_dropdown("kpr_$month",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 1'),@$kpr[$month]['kpr_users_id'],'','-- กำหนดผู้รับผิดชอบ (กพร.) --') ?>
 </td>
 </tr>
 <tr class="metrics_dtl_<?=$month?>">
   <th>ผู้กำกับดูแลตัวชี้วัด<span class="Txt_red_12"> * </span></th>
   <td>
-    <?php echo form_dropdown("control_$month",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 2'),@$kpr['control_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้กำกับดูแลตัวชี้วัด) --') ?>
+    <?php echo form_dropdown("control_$month",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 2'),@$kpr[$month]['control_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้กำกับดูแลตัวชี้วัด) --') ?>
    </td>
 </tr>
 <tr class="metrics_dtl_<?=$month?>">
   <th>ผู้จัดเก็บข้อมูล<span class="Txt_red_12"> * </span></th>
   <td>
   	<div style="width: 780px;text-align: right;"><input type="button" class="bt_add_keyer" style="width: 150px" ref_m="<?=$month?>" value=" เพิ่มผู้จัดเก็บข้อมูล " /></div>
-  	<? if(@$rs['id'] == ''){
-  		$num_keyer == 1; 
-  	?>
-  		
+  	<? 
+  		@$num_keyer = 1;
+		if(@$rs['id'] != ''){
+		@$num_keyer = 0;
+		foreach ($result_keyer[$month] as $key => $keyer) {
+		$num_keyer++;			
+  	?>	
   		<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
-	    <?php echo form_dropdown("keyer_".$month."[]",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 3'),@$keyer['users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
-	    <input type="text" name="activity_<?=$i?>_name[]" id="activity_<?=$i?>_name[]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
+	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+	 	<samp id="error_keyer"></samp>
 	 	</div>
-	 	<div id="keyer_div_<?=$month?>"></div>
+	 	 	
+  <? 	}
+		}else{ ?>
+  		<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
+	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 3'),@$keyer['users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
+	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+	 	<samp id="error_keyer"></samp>
+	 	</div>
+  	<? } ?>
+  
+  		<div id="keyer_div_<?=$month?>"></div>
 	 	<span class="loading-icon_<?=$month?>"></span>
-	 	
-  <? }else{ ?>
-  	
-  	
-  <? } ?>
   		<input type="hidden" name="keyer_num_<?=$month?>" id="keyer_num_<?=@$month?>" value="<?=@$num_keyer?>" />
+  		<script language="JavaScript">
+  		$(function(){
+  			for (var i=1; i <= '<?=@$num_keyer?>'; i++) {
+				$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("#metrics_start").val() == '<?=$month?>';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+				if(i == 9){
+					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("[name=sem_9]:checked").val() == '9';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("#metrics_start").val() == '9';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+				}
+				if(i == 12){
+					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("[name=sem_12]:checked").val() == '12';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+	        						       											 return $("#metrics_start").val() == '12';}
+											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+											           						});
+				}         						
+				
+			  }
+		});
+  		</script>
  </td>
 </tr>
 

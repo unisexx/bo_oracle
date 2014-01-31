@@ -52,7 +52,7 @@ $(function(){
 <div id="search">
 <div id="searchBox">
 ปีงบประมาณ <?php echo form_dropdown('sch_budget_year',get_year_option('2556'),@$_GET['sch_budget_year'],'','-- เลือกปีงบประมาณ --'); ?>
- มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name','mds_set_indicator'),@$_GET['sch_indicatorn_name'],'','-- เลือกมิติ --'); ?> 
+ มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name','mds_set_indicator'),@$_GET['sch_indicatorn'],'','-- เลือกมิติ --'); ?> 
 <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
 </div>

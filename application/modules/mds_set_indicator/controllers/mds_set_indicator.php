@@ -8,6 +8,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
 		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
 		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
+		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
 	}
 	
 	public $urlpage = "mds_set_indicator";
@@ -23,6 +24,9 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		$condition = " 1=1 ";
 		if(@$_GET['sch_budget_year'] != ''){
 			$condition .= " and budget_year = '".@$_GET['sch_budget_year']."' ";
+		}
+		if(@$_GET['sch_indicatorn'] != ''){
+			$condition .=" and indicator_on = '".@$_GET['sch_indicatorn']."' ";
 		}
 		$data['rs'] = $this->indicator->where($condition)->get('',true);
 		
@@ -177,6 +181,18 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				$kpr_6['round_month'] = '6';
 				$kpr_6['mds_set_metrics_id'] = $id;
 				$kpr_6_id = $this->kpr->save($kpr_6);
+
+				$this->keyer->where("round_month = '6' and mds_set_metrics_id = '".$id."'")->delete();
+				for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
+					$keyer_6['keyer_users_id'] = @$_POST['keyer_6'][$i];
+					$keyer_6['activity'] = @$_POST['activity_6'][$i];
+					$keyer_6['round_month'] = '6';
+					$keyer_6['mds_set_metrics_id'] = $id;
+					if(@$keyer_6['keyer_users_id'] != ''){
+						$this->keyer->save($keyer_6);
+					}
+					
+				}
 				
 				if(@$_POST['sem_9'] == 6){
 					$kpr_9['kpr_users_id'] = $_POST['kpr_6'];
@@ -184,12 +200,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					$kpr_9['round_month'] = '9';
 					$kpr_9['mds_set_metrics_id'] = $id;
 					$kpr_9_id = $this->kpr->save($kpr_9);
+					
+					$this->keyer->where("round_month = '9' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
+						$keyer_9['keyer_users_id'] = @$_POST['keyer_6'][$i];
+						$keyer_9['activity'] = @$_POST['activity_6'][$i];
+						$keyer_9['round_month'] = '9';
+						$keyer_9['mds_set_metrics_id'] = $id;
+						if(@$keyer_9['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_9);
+						}	
+					}
+					
 				}else{
 					$kpr_9['kpr_users_id'] = $_POST['kpr_9'];
 					$kpr_9['control_users_id'] = $_POST['control_9'];
 					$kpr_9['round_month'] = '9';
 					$kpr_9['mds_set_metrics_id'] = $id;
 					$kpr_9_id = $this->kpr->save($kpr_9);
+					
+					$this->keyer->where("round_month = '9' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
+						$keyer_9['keyer_users_id'] = @$_POST['keyer_9'][$i];
+						$keyer_9['activity'] = @$_POST['activity_9'][$i];
+						$keyer_9['round_month'] = '9';
+						$keyer_9['mds_set_metrics_id'] = $id;
+						if(@$keyer_9['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_9);
+						}	
+					}
 				}
 				
 				if(@$_POST['sem_12'] == 6 || (@$_POST['sem_12'] == 9 && @$_POST['sem_9'] == 6)){
@@ -199,6 +238,17 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					$kpr_12['mds_set_metrics_id'] = $id;
 					$kpr_12_id = $this->kpr->save($kpr_12);
 					
+					$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
+						$keyer_12['keyer_users_id'] = @$_POST['keyer_6'][$i];
+						$keyer_12['activity'] = @$_POST['activity_6'][$i];
+						$keyer_12['round_month'] = '12';
+						$keyer_12['mds_set_metrics_id'] = $id;
+						if(@$keyer_12['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_12);
+						}	
+					}
+					
 				}else if(@$_POST['sem_12'] == 9 && @$_POST['sem_9'] == 9){
 					$kpr_12['kpr_users_id'] = $_POST['kpr_9'];
 					$kpr_12['control_users_id'] = $_POST['control_9'];
@@ -206,13 +256,113 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					$kpr_12['mds_set_metrics_id'] = $id;
 					$kpr_12_id = $this->kpr->save($kpr_9);
 					
+					$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
+						$keyer_12['keyer_users_id'] = @$_POST['keyer_9'][$i];
+						$keyer_12['activity'] = @$_POST['activity_9'][$i];
+						$keyer_12['round_month'] = '12';
+						$keyer_12['mds_set_metrics_id'] = $id;
+						if(@$keyer_12['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_12);
+						}	
+					}
+					
 				}else{
 					$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
 					$kpr_12['control_users_id'] = $_POST['control_12'];
 					$kpr_12['round_month'] = '12';
 					$kpr_12['mds_set_metrics_id'] = $id;
 					$kpr_12_id = $this->kpr->save($kpr_9);
+					
+					$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_12'] ; $i++) { 
+						$keyer_12['keyer_users_id'] = @$_POST['keyer_12'][$i];
+						$keyer_12['activity'] = @$_POST['activity_12'][$i];
+						$keyer_12['round_month'] = '12';
+						$keyer_12['mds_set_metrics_id'] = $id;
+						if(@$keyer_12['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_12);
+						}	
+					}
 				}
+			}else if(@$_POST['metrics_start'] == 9){
+				
+				if(@$_POST['sem_9'] == 6){
+					$kpr_9['kpr_users_id'] = $_POST['kpr_9'];
+					$kpr_9['control_users_id'] = $_POST['control_9'];
+					$kpr_9['round_month'] = '9';
+					$kpr_9['mds_set_metrics_id'] = $id;
+					$kpr_9_id = $this->kpr->save($kpr_9);
+					
+					$this->keyer->where("round_month = '9' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
+						$keyer_9['keyer_users_id'] = @$_POST['keyer_9'][$i];
+						$keyer_9['activity'] = @$_POST['activity_9'][$i];
+						$keyer_9['round_month'] = '9';
+						$keyer_9['mds_set_metrics_id'] = $id;
+						if(@$keyer_9['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_9);
+						}	
+					}
+				}
+				
+				if(@$_POST['sem_12'] == 9 && @$_POST['sem_9'] == 9){
+					$kpr_12['kpr_users_id'] = $_POST['kpr_9'];
+					$kpr_12['control_users_id'] = $_POST['control_9'];
+					$kpr_12['round_month'] = '12';
+					$kpr_12['mds_set_metrics_id'] = $id;
+					$kpr_12_id = $this->kpr->save($kpr_12);
+					
+					$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
+						$keyer_12['keyer_users_id'] = @$_POST['keyer_9'][$i];
+						$keyer_12['activity'] = @$_POST['activity_9'][$i];
+						$keyer_12['round_month'] = '12';
+						$keyer_12['mds_set_metrics_id'] = $id;
+						if(@$keyer_12['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_12);
+						}	
+					}
+					
+				}else{
+					$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
+					$kpr_12['control_users_id'] = $_POST['control_12'];
+					$kpr_12['round_month'] = '12';
+					$kpr_12['mds_set_metrics_id'] = $id;
+					$kpr_12_id = $this->kpr->save($kpr_12);
+					
+					$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_12'] ; $i++) { 
+						$keyer_12['keyer_users_id'] = @$_POST['keyer_12'][$i];
+						$keyer_12['activity'] = @$_POST['activity_12'][$i];
+						$keyer_12['round_month'] = '12';
+						$keyer_12['mds_set_metrics_id'] = $id;
+						if(@$keyer_12['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_12);
+						}	
+					}
+				}
+			}else{
+				
+				if(@$_POST['sem_12'] == 9 && @$_POST['sem_9'] == 9){
+					$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
+					$kpr_12['control_users_id'] = $_POST['control_12'];
+					$kpr_12['round_month'] = '12';
+					$kpr_12['mds_set_metrics_id'] = $id;
+					$kpr_12_id = $this->kpr->save($kpr_12);
+					
+					$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
+					for($i=1; $i <= @$_POST['keyer_num_12'] ; $i++) { 
+						$keyer_12['keyer_users_id'] = @$_POST['keyer_12'][$i];
+						$keyer_12['activity'] = @$_POST['activity_12'][$i];
+						$keyer_12['round_month'] = '12';
+						$keyer_12['mds_set_metrics_id'] = $id;
+						if(@$keyer_12['keyer_users_id'] != ''){
+							$this->keyer->save($keyer_12);
+						}	
+					}	
+				}
+				
 			}
 			
 		   if($_POST['id']>0){
