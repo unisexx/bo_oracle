@@ -40,5 +40,10 @@ class Report extends Admin_Controller {
 		$data['step'] = @$_GET['step'];											
 		$this->template->build('report_2',$data);
 	}
+
+	public function report_3()
+	{
+		$this->template->build('report_3');
+	}
 	
 }
