@@ -5,25 +5,25 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_measure_target/Mds_set_measure_model','measure');
-		
+		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
+		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
 	}
 	
 	public $urlpage = "mds_set_measure_target";
 	public $modules_name = "mds_set_measure_target";
-	public $modules_title = " หน่วยวัด";
+	public $modules_title = " ตั้งค่า หน่วยวัดและเป้าหมาย";
 	
 	function index(){
 		$data['urlpage'] = $this->urlpage;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
-		
 		$condition = " 1=1 ";
-		if(@$_GET['sch_txt'] != ''){
-			$condition .= " and measure_name like '%".@$_GET['sch_txt']."%' ";
+		if(@$_GET['sch_budget_year'] != ''){
+			$condition .= " and budget_year = '".@$_GET['sch_budget_year']."' ";
 		}
-		$data['rs'] = $this->measure->where($condition)->get();
-		$data['pagination']=$this->measure->pagination();
+		
+		$data['rs'] = $this->indicator->where($condition)->get('');
+		$data['pagination']=$this->indicator->pagination();
 		$this->template->build('index',@$data);
 
 	}
@@ -31,62 +31,41 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 		$data['urlpage'] = $this->urlpage;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
-		
 		if($id != ''){
-			$data['rs'] = $this->measure->get_row($id);
+			$data['indicator'] = $this->indicator->get_row($id);
+			
+			$sql_assessment = "select distinct mds_set_metrics.mds_set_assessment_id , mds_set_assessment.ass_name ,mds_set_metrics.metrics_on
+							from mds_set_metrics
+							join mds_set_assessment on mds_set_metrics.mds_set_assessment_id = mds_set_assessment.id
+							where mds_set_metrics.parent_id = '0' and mds_set_metrics.mds_set_indicator_id = '".$id."' 
+							order by mds_set_metrics.metrics_on asc";
+			$data['rs_ass'] = $this->metrics->get($sql_assessment);
+			$data['mds_set_indicator_id'] = $id;
 		}
 		$this->template->build('form',@$data);
 
 	}
 	function save(){
 		$urlpage = $this->urlpage;
+		//$this->db->debug = true;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
-		
 		if($_POST){
 			
-		   $id = $this->measure->save($_POST);
-		   set_notify('success', lang('save_data_complete'));		   
-		   if($_POST['id']>0){
-		  
-		   	new_save_logfile("EDIT",$this->modules_title,$this->measure->table,"ID",$id,"measure_name",$this->modules_name);
-		   }else{
-		   	new_save_logfile("ADD",$this->modules_title,$this->measure->table,"ID",$id,"measure_name",$this->modules_name);
-		   }		   
-		}
-		redirect($urlpage);
-
-	}
-	function delete($ID=FALSE){
-		$urlpage = $this->urlpage;
-		if(!is_login())redirect("home");
-		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่		
-	
-		new_save_logfile("DELETE",$this->modules_title,$this->measure->table,"ID",$ID,"measure_name",$this->modules_name);					
-		$this->measure->delete($ID);		
-		redirect($urlpage);
-	}
-	function check_measure_name(){
-		if(@$_GET['measure_name'] != '' ){
-			$sql = "select * 
-					from mds_set_measure 
-					where measure_name = '".@$_GET['measure_name']."' ";
-			$chk = $this->measure->get($sql);
-			$num_row = count($chk);
-			if($num_row > 0){
-				if(@$_GET['id'] == @$chk['0']['id']){
-					echo 'true';
-				}else{
-					echo 'false';
-				}
-				
-			}else{
-				echo 'true';
+			for($i=1;$i<=$_POST['num_i'];$i++){
+				$update['id'] = @$_POST['id'][$i];
+				$update['mds_set_measure_id'] = @$_POST['mds_set_measure_id'][$i];
+				$update['metrics_target'] = @$_POST['metrics_target'][$i];
+				if(@$update['id'] != ''){
+					$id = $this->metrics->save($update);
+			   		new_save_logfile("EDIT",$this->modules_title,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
+			   }
 			}
-		}else{
-			echo 'true';
+		   
+		   set_notify('success', lang('save_data_complete'));	  
 		}
-		
+		redirect($urlpage.'/index?sch_budget_year='.@$_POST['budget_year']);
+
 	}
 }
 ?>

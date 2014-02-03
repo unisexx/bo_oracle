@@ -162,12 +162,38 @@ $(function(){
 					mds_set_measure_id:"required",
 					metrics_target:"required",
 					metrics_responsible:"required",
-					metrics_start:"required",
+					metrics_start:{ required : function(element) {
+	        						   return $("[name=metrics_responsible]:checked").val() == 'Y';}
+	        			  },
 					kpr_6:{ required : function(element) {
 	        						   return $("#metrics_start").val() == '6';}
 	        			  },
 	        		control_6:{ required : function(element) {
 	        						       return $("#metrics_start").val() == '6';}
+	        				 },
+	        		kpr_9:{ required : function(element) {
+	        						   return $("#metrics_start").val() == '9';}
+	        			  },
+	        		control_9:{ required : function(element) {
+	        						       return $("#metrics_start").val() == '9';}
+	        				 },
+	        		kpr_9:{ required : function(element) {
+	        						   return $("[name=sem_9]:checked").val() == '9';}
+	        			  },
+	        		control_9:{ required : function(element) {
+	        						       return $("[name=sem_9]:checked").val() == '9';}
+	        				 },
+	        		kpr_12:{ required : function(element) {
+	        						   return $("#metrics_start").val() == '12';}
+	        			  },
+	        		control_12:{ required : function(element) {
+	        						       return $("#metrics_start").val() == '12';}
+	        				 },
+	        		kpr_12:{ required : function(element) {
+	        						   return $("[name=sem_12]:checked").val() == '12';}
+	        			  },
+	        		control_12:{ required : function(element) {
+	        						       return $("[name=sem_12]:checked").val() == '12';}
 	        				  }
 	        						   
 				},
@@ -182,6 +208,10 @@ $(function(){
 					metrics_start:"กรุณาระบุตัวชี้วัดเริ่มที่รอบ",
 					kpr_6:"กรุณาเลือก กพร. ",
 					control_6:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด",
+					kpr_9:"กรุณาเลือก กพร. ",
+					control_9:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด",
+					kpr_12:"กรุณาเลือก กพร. ",
+					control_12:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด"
 					
 				},
 				errorPlacement: function(error, element) 
@@ -215,19 +245,19 @@ $(function(){
     <td>
     <input type="text" name="indicator_name" id="indicator_name" style="width:500px;" value="มิติที่ <?=@$rs_indicator['indicator_on']?> : <?=@$rs_indicator['indicator_name']?>" readonly="readonly"/></td>
   </tr>
-  <? if(@$parent_on['metrics_on'] != ''){ ?>
+  <? if(@$parent_on != ''){ ?>
   <tr>
     <th>ลำดับตัวชี้วัดหลัก<span class="Txt_red_12"> *</span></th>
-    <td><input type="text" name="parent_on" id="parent_on" style="width:70px;" readonly="readonly" value="<?=@$parent_on['metrics_on']?>" class="numOnly" /></td>
+    <td><input type="text" name="parent_on" id="parent_on" style="width:70px;" readonly="readonly" value="<?=@$parent_on?>" class="numOnly" /></td>
   </tr>
   <tr>
     <th>ลำดับตัวชี้วัดย่อยที่<span class="Txt_red_12"> *</span></th>
-    <td><input type="text" name="metrics_on" id="metrics_on" style="width:70px;" value="<?=@$rs['metrics_on']?>" class="numOnly" /></td>
+    <td><input type="text" name="metrics_on" id="metrics_on" style="width:70px;" value="<?=@$rs['metrics_on']?>" class="numOnly" <? if(@$rs['id'] != ''){ echo "readonly='readonly'" ;} ?> /></td>
   </tr>
   <? }else{ ?>
   <tr>
     <th>ตัวชี้วัดที่<span class="Txt_red_12"> *</span></th>
-    <td><input type="text" name="metrics_on" id="metrics_on" style="width:70px;" value="<?=@$rs['metrics_on']?>" class="numOnly" /></td>
+    <td><input type="text" name="metrics_on" id="metrics_on" style="width:70px;" value="<?=@$rs['metrics_on']?>" class="numOnly" <? if(@$rs['id'] != ''){ echo "readonly='readonly'" ;} ?> /></td>
   </tr>
   <? } ?>
   <tr>
@@ -238,10 +268,12 @@ $(function(){
     <th>ชื่อตัวชี้วัด<span class="Txt_red_12"> *</span></th>
     <td><input type="text" name="metrics_name" id="metrics_name" value="<?=@$rs['metrics_name']?>" style="width:500px;"/></td>
   </tr>
+  <? if(@$rs['parent_id'] == '0'){ ?>
   <tr>
     <th>ประเด็นการประเมินผล<span class="Txt_red_12"> *</span></th>
     <td><?php echo form_dropdown('mds_set_assessment_id',get_option('id','ass_name','mds_set_assessment'),@$rs['mds_set_assessment_id'],'','-- เลือกประเด็นการประเมินผล --') ?></td>
   </tr>
+  <? } ?>
   <tr>
     <th><span style="width:15%">หน่วยวัด</span><span class="Txt_red_12"> *</span></th>
     <td><?php echo form_dropdown('mds_set_measure_id',get_option('id','measure_name','mds_set_measure'),@$rs['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?></td>
@@ -298,7 +330,7 @@ for ($i=1; $i <= 3; $i++) {
 </tr>
 <tr class="metrics_<?=$month?>">
 <th>น้ำหนักตัวชี้วัดรอบ <?=$month?> เดือน</th>
-<td><input type="text" name="metrics_weight_<?=$month?>" id="metrics_weight_<?=$month?>"style="width:50px;" class="numDecimal"  /></td>
+<td><input type="text" name="metrics_weight_<?=$month?>" id="metrics_weight_<?=$month?>"style="width:50px;" class="numDecimal" value="<?=@$rs['metrics_weight_'.$month]?>" /></td>
 </tr>
 <?php if($month == '9'){ ?>
 	<th>ผู้รับผิดชอบ<span class="Txt_red_12"> * </span></th>
@@ -334,7 +366,7 @@ for ($i=1; $i <= 3; $i++) {
 <tr class="metrics_dtl_<?=$month?>">
 <th>กพร.<span class="Txt_red_12"> * </span></th>
 <td>
-<input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr['id']?>" />
+<input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr[$month]['id']?>" />
 <?php echo form_dropdown("kpr_$month",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 1'),@$kpr[$month]['kpr_users_id'],'','-- กำหนดผู้รับผิดชอบ (กพร.) --') ?>
 </td>
 </tr>
