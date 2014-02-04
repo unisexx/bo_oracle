@@ -37,20 +37,20 @@
 <h3 class="clear">ตั้งค่า</h3>
 <div class="lineico">
 <div class="ico"><a href="act/set_affiliate"><img src="themes/act/images/icon/affiliate_set.png" width="48" height="48" /><h4>หน่วยงานที่สังกัด (รายชื่อพนักงาน)</h4></a></div>
-<div class="ico"><a href="position_committee_set.php"><img src="themes/act/images/icon/position_committee_set.png" width="48" height="48" /><h4>ตำแหน่งใน คณะอนุกรรมการ</h4></a></div>
-<div class="ico"><a href="position_director_set"><img src="themes/act/images/icon/position_director_set.png" width="48" height="48" /><h4>ตำแหน่งใน คณะกรรมการ</h4></a></div>
-<div class="ico"><a href="committee_expert_set.php"><img src="themes/act/images/icon/committee_expert.png" width="48" height="48" /><h4>กรรมการ ผู้ทรงคุณวุฒิด้าน</h4></a></div>
-<div class="ico"><a href="practice_type_set.php"><img src="themes/act/images/icon/practice_type_set.png" width="48" height="48" /><h4>ลักษณะงานที่ปฏิบัติ (นักสังคมสงเคราะห์)</h4></a></div>
-<div class="ico"><a href="committee_type_set.php"><img src="themes/act/images/icon/committee_type_set.png" width="48" height="48" /><h4>ประเภท อนุกรรมการ</h4></a></div>
-<div class="ico"><a href="volunteer_type_set.php"><img src="themes/act/images/icon/volunteer_type_set.png" width="48" height="48" /><h4>ประเภท อาสาสมัคร</h4></a></div>
-<div class="ico"><a href="strategic_set.php"><img src="themes/act/images/icon/strategic_set.png" width="48" height="48" /><h4>ยุทธศาสตร์</h4></a></div>
-<div class="ico"><a href="consistent_plan_set.php"><img src="themes/act/images/icon/consistent_plan_set.png" width="48" height="48" /><h4>ความสอดคล้อง กับนโยบายแผน</h4></a></div>
-<div class="ico"><a href="plan_set.php"><img src="themes/act/images/icon/plan_set.png" width="48" height="48" /><h4>แผน</h4></a></div>
-<div class="ico"><a href="subplan_set.php"><img src="themes/act/images/icon/subplan_set.png" width="48" height="48" /><h4>แผนย่อย</h4></a></div>
-<div class="ico"><a href="operation_type_set.php"><img src="themes/act/images/icon/operation_type_set.png" width="48" height="48" /><h4>ลักษณะการดำเนินงาน (องค์กรสวัสดิการ ชุมชน)</h4></a></div>
-<div class="ico"><a href="branch_service_set.php"><img src="themes/act/images/icon/branch_service_set.png" width="48" height="48" /><h4>สาขาการให้บริการ (องค์กรสวัสดิการ ชุมชน)</h4></a></div>
-<div class="ico"><a href="project_set.php"><img src="themes/act/images/icon/project_set.png" width="48" height="48" /><h4>ลักษณะโครงการ</h4></a></div>
-<div class="ico"><a href="social_welfare_set.php"><img src="themes/act/images/icon/social_welfare_set.png" width="48" height="48" /><h4>ส่วนงานสวัสดิการสังคม</h4></a></div>
+<div class="ico"><a href="act/set_position_committee"><img src="themes/act/images/icon/position_committee_set.png" width="48" height="48" /><h4>ตำแหน่งใน คณะอนุกรรมการ</h4></a></div>
+<div class="ico"><a href="act/set_position_director"><img src="themes/act/images/icon/position_director_set.png" width="48" height="48" /><h4>ตำแหน่งใน คณะกรรมการ</h4></a></div>
+<div class="ico"><a href="act/set_committee_expert"><img src="themes/act/images/icon/committee_expert.png" width="48" height="48" /><h4>กรรมการ ผู้ทรงคุณวุฒิด้าน</h4></a></div>
+<div class="ico"><a href="act/set_practice_type"><img src="themes/act/images/icon/practice_type_set.png" width="48" height="48" /><h4>ลักษณะงานที่ปฏิบัติ (นักสังคมสงเคราะห์)</h4></a></div>
+<div class="ico"><a href="act/set_committee_type"><img src="themes/act/images/icon/committee_type_set.png" width="48" height="48" /><h4>ประเภท อนุกรรมการ</h4></a></div>
+<div class="ico"><a href="act/set_volunteer_type"><img src="themes/act/images/icon/volunteer_type_set.png" width="48" height="48" /><h4>ประเภท อาสาสมัคร</h4></a></div>
+<div class="ico"><a href="act/set_strategic"><img src="themes/act/images/icon/strategic_set.png" width="48" height="48" /><h4>ยุทธศาสตร์</h4></a></div>
+<div class="ico"><a href="act/set_consistent_plan"><img src="themes/act/images/icon/consistent_plan_set.png" width="48" height="48" /><h4>ความสอดคล้อง กับนโยบายแผน</h4></a></div>
+<div class="ico"><a href="act/set_plan"><img src="themes/act/images/icon/plan_set.png" width="48" height="48" /><h4>แผน</h4></a></div>
+<div class="ico"><a href="act/set_subplan"><img src="themes/act/images/icon/subplan_set.png" width="48" height="48" /><h4>แผนย่อย</h4></a></div>
+<div class="ico"><a href="act/set_operation_type"><img src="themes/act/images/icon/operation_type_set.png" width="48" height="48" /><h4>ลักษณะการดำเนินงาน (องค์กรสวัสดิการ ชุมชน)</h4></a></div>
+<div class="ico"><a href="act/set_branch_service"><img src="themes/act/images/icon/branch_service_set.png" width="48" height="48" /><h4>สาขาการให้บริการ (องค์กรสวัสดิการ ชุมชน)</h4></a></div>
+<div class="ico"><a href="act/set_project"><img src="themes/act/images/icon/project_set.png" width="48" height="48" /><h4>ลักษณะโครงการ</h4></a></div>
+<div class="ico"><a href="act/set_social_welfare"><img src="themes/act/images/icon/social_welfare_set.png" width="48" height="48" /><h4>ส่วนงานสวัสดิการสังคม</h4></a></div>
 <div class="clear"></div>
 </div>
 

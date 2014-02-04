@@ -6,6 +6,12 @@
 		<title><?php echo $template['title']; ?></title>
 		<?php require_once('themes/bo/_meta.php')?>
 		<?php echo $template['metadata']; ?>
+		<script type="text/javascript">
+			$(document).ready(function(){
+			    $(".tblist tr:odd").addClass("odd");
+			    $(".tblist tr:not(.odd)").addClass("even");  
+			});
+		</script>
 	</head>
 	<body>
 		<div id="head"><?php require_once('_header.php')?></div>
