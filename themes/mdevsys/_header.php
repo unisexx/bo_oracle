@@ -10,12 +10,12 @@
         </li>
         <li><a href="#">ตั้งค่า +</a>
           <ul style="width:260px;">
-            <li><a href="indicator_set.php">มิติและตัวชี้วัด</a></li>
-            <li><a href="">หน่วยวัดและเป้าหมาย</a></li>
+            <li><a href="mds_set_indicator">มิติและตัวชี้วัด</a></li>
+            <li><a href="mds_set_measure_target">หน่วยวัดและเป้าหมาย</a></li>
             <li><a href="mds_set_assessment">หัวข้อประเด็นการประเมินผล</a></li>
             <li><a href="mds_set_score">คะแนนผลประเมิน</a></li>
             <li><a href="mds_set_position">ตำแหน่งสายบริหาร</a></li>
-            <li><a href="mds_set_measure_target">หน่วยวัด</a></li>
+            <li><a href="mds_set_measure">หน่วยวัด</a></li>
             <li><a href="mds_set_permission">สิทธิ์การใช้ระบบ SAR CARD</a></li>
           </ul>
         </li>

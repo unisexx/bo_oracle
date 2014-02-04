@@ -62,5 +62,27 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 		$this->assessment->delete($ID);		
 		redirect($urlpage);
 	}
+	function check_ass_name(){
+		if(@$_GET['ass_name'] != '' ){
+			$sql = "select * 
+					from mds_set_assessment 
+					where ass_name = '".@$_GET['ass_name']."' ";
+			$chk = $this->assessment->get($sql);
+			$num_row = count($chk);
+			if($num_row > 0){
+				if(@$_GET['id'] == @$chk['0']['id']){
+					echo 'true';
+				}else{
+					echo 'false';
+				}
+				
+			}else{
+				echo 'true';
+			}
+		}else{
+			echo 'true';
+		}
+		
+	}
 }
 ?>

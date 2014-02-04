@@ -27,12 +27,12 @@
 
 <h3 class="clear">ตั้งค่า</h3>
 <div class="lineico">
-<div class="ico"><a href="indicator_set.php"><img src="themes/mdevsys/images/icon/indicator_set.png" width="48" height="48" /><h4>มิติและตัวชี้วัด</h4></a></div>
-<div class="ico"><a href="measure_target_set.php"><img src="themes/mdevsys/images/icon/assessment_target.png" width="48" height="48" /><h4>หน่วยวัดและเป้าหมาย</h4></a></div>
+<div class="ico"><a href="mds_set_indicator"><img src="themes/mdevsys/images/icon/indicator_set.png" width="48" height="48" /><h4>มิติและตัวชี้วัด</h4></a></div>
+<div class="ico"><a href="mds_set_measure_target"><img src="themes/mdevsys/images/icon/assessment_target.png" width="48" height="48" /><h4>หน่วยวัดและเป้าหมาย</h4></a></div>
 <div class="ico"><a href="mds_set_assessment"><img src="themes/mdevsys/images/icon/assessment.png" width="48" height="48" /><h4>หัวข้อประเด็น การประเมินผล</h4></a></div>
 <div class="ico"><a href="mds_set_score"><img src="themes/mdevsys/images/icon/score.png" width="48" height="48" /><h4>คะแนนผลประเมิน</h4></a></div>
 <div class="ico"><a href="mds_set_position"><img src="themes/mdevsys/images/icon/position.png" width="48" height="48" /><h4>ตำแหน่งสายบริหาร</h4></a></div>
-<div class="ico"><a href="mds_set_measure_target"><img src="themes/mdevsys/images/icon/measure.png" width="48" height="48" /><h4>หน่วยวัด</h4></a></div>
+<div class="ico"><a href="mds_set_measure"><img src="themes/mdevsys/images/icon/measure.png" width="48" height="48" /><h4>หน่วยวัด</h4></a></div>
 <div class="ico"><a href="mds_set_permission"><img src="themes/mdevsys/images/icon/permission.png" width="48" height="48" /><h4>สิทธิการใช้ระบบ SAR CARD</h4></a></div>
 <div class="clear"></div>
 </div>

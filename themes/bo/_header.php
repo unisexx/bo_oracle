@@ -24,6 +24,8 @@
         		<?php if(permission('monitor', 'canview')): ?><li><a href="monitor" target="_blank">ระบบติดตามและประเมินผล</a></li><?php endif;?>
         		<?php if(permission('inspect', 'canview')): ?><li><a href="inspect" target="_blank">ระบบตรวจราชการ</a></li><?php endif;?>
 				<?php if(permission('fund_contract', 'canview')): ?><li><a href="fund" target="_blank">ระบบบริหารกองทุน</a></li><?php endif;?>
+				<?php if(permission('fund_contract', 'canview')): ?><li><a href="mds" target="_blank">งานพัฒนาระบบบริหาร</a></li><?php endif;?>
+				<?php if(permission('fund_contract', 'canview')): ?><li><a href="act" target="_blank">ระบบงาน พ.ร.บ. ส่งเสริมการจัดสวัสดิการสังคม</a></li><?php endif;?>
             </ul>
         </li>
         <?php

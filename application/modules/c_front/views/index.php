@@ -49,7 +49,10 @@ permission('fund_contract', 'canview')
 <?php if(permission('finance', 'canview')): ?><div class="ico"><a href="finance" target="_blank"><img src="themes/bo/images/icon/finance.png" width="48" height="48" /><h4>งานการคลัง</h4></a></div><?php endif;?>
 <?php if(permission('monitor', 'canview')): ?><div class="ico"><a href="monitor" target="_blank"><img src="themes/bo/images/icon/monitor.png" width="48" height="48" /><h4>ติดตามและประเมินผล</h4></a></div><?php endif;?>
 <?php if(permission('inspect', 'canview')): ?><div class="ico"><a href="inspect" target="_blank"><img src="themes/bo/images/icon/inspect.png" width="48" height="48" /><h4>ตรวจราชการ</h4></a></div><?php endif;?>
-<?php if(permission('fund_contract', 'canview')): ?><div class="ico"><a href="fund" target="_blank"><img src="themes/bo/images/icon/group.png" width="48" height="48" /><h4>บริหารกองทุน</h4></a></div><?php endif;?>
+<?php if(permission('fund_contract', 'canview')): ?><div class="ico"><a href="fund" target="_blank"><img src="images/icon/fund.png" width="48" height="48" /><h4>ระบบบริหารกองทุน</h4></a></div><?php endif;?>
+<?php if(permission('fund_contract', 'canview')): ?><div class="ico"><a href="mds" target="_blank"><img src="images/icon/mdevsys.png" width="48" height="48" /><h4>งานพัฒนา ระบบบริหาร</h4></a></div><?php endif;?>
+<?php if(permission('fund_contract', 'canview')): ?><div class="ico"><a href="act" target="_blank"><img src="images/icon/promotion_act.png" width="48" height="48" /><h4>ระบบงาน พ.ร.บ. ส่งเสริมการจัด สวัสดิการสังคม</h4></a></div><?php endif;?>
+
 <div class="clear"></div>
 </div>
 </div><!--BOico-->
