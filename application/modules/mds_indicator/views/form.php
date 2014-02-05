@@ -52,7 +52,7 @@
 	<th>สถานะ</th>
 	<th>ลบ </th>
 </tr>
-<? foreach ($variable as $key => $value) { ?>
+<? foreach ($rs as $key => $value) { ?>
 <tr>
   <td>6 เดือน <img src="images/see.png" alt="" width="24" height="24" /></td>
   <td>นายวัชรินทร์ เจริญเผ่า <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : 023068736&lt;br&gt; อีเมล์ :" /></td>

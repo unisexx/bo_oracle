@@ -71,6 +71,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				  	et_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
 				  }	
 				}
+			$data['parent_on'] = '';
 			$parent_on_id = $data['rs_metrics']['id'];
 			if(@$data['rs_metrics']['parent_id'] != '0'){
 				for ($i=1; $i <= 4 ; $i++) {
@@ -78,15 +79,15 @@ Class Mds_indicator extends  Mdevsys_Controller{
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
 					$parent_on_id = $parent_on['parent_id'];
-					if($parent_on['parent_id'] == '0'){
-						$data['mds_set_assessment_id'] = $parent_on['mds_set_assessment_id'];
-						$i = 5;
-					}
+					
 					
 					if($data['parent_on'] != ''){
 						$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
 					}else{
-						$data['parent_on'] = @$data['metrics_on'];
+						$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
+					}
+					if($parent_on['parent_id'] == '0'){
+						$i = 5;
 					}
 					
 				}
