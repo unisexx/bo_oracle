@@ -1,20 +1,16 @@
 <h3>ตั้งค่า หน่วยงานที่สังกัด </h3>
+
+<form method="get" action="act/set_affiliate">
 <div id="search">
 <div id="searchBox">ชื่อหน่วยงานที่สังกัด
-  <input name="textfield" type="text" id="textfield" style="width:300px;" />
-  <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
+  <input name="search" type="text" style="width:300px;" value="<?php echo @$_GET['search']?>"/>
+  <input type="submit" name="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
+</form>
 
 <div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='act/set_affiliate/form'" class="btn_add"/></div>
 
-<div id="paging" class="paginationEMP">
-<span class="nextprev">&laquo;previous</span>
-<span class="current">1</span>
-<span><a href="javascript:;">2</a></span>
-<span><a href="javascript:;">3</a></span>
-<span><a href="javascript:;">4</a></span>
-<span><a href="javascript:;">next&raquo;</a></span>        
-</div>
+<?php echo $pagination;?>
 
 <table class="tblist">
 <tr>
@@ -22,38 +18,15 @@
   <th align="left">ชื่อหน่วยงานที่สังกัด</th>
   <th align="left">ลบ</th>
   </tr>
-<tr class="odd cursor" onclick="window.location='<?=basename($_SERVER['PHP_SELF'])?>?act=form'">
-  <td>1</td>
-  <td nowrap="nowrap">สำนักงานคณะกรรมการส่งเสริมการจัดสวัสดิการสังคมแห่งชาติ</td>
-  <td><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td>
+  <?php $i=(isset($_GET['page']))? (($_GET['page'] -1)* 10)+1:1; ?>
+  <?php foreach($affiliates as $row):?>
+  <tr class="cursor" onclick="window.location='act/set_affiliate/form/<?php echo $row['id']?>'">
+	  <td><?php echo $i?></td>
+	  <td nowrap="nowrap"><?php echo $row['affiliate_name']?></td>
+	  <td><a href="act/set_affiliate/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td></a>
   </tr>
-<tr>
-  <td>2</td>
-  <td>&nbsp;</td>
-  <td><input type="submit" name="button2" id="button2" value="x" class="btn_delete" /></td>
-</tr>
-<tr class="odd">
-  <td>3</td>
-  <td>&nbsp;</td>
-  <td><input type="submit" name="button3" id="button3" value="x" class="btn_delete" /></td>
-</tr>
-<tr>
-  <td>4</td>
-  <td>&nbsp;</td>
-  <td><input type="submit" name="button4" id="button4" value="x" class="btn_delete" /></td>
-</tr>
-<tr class="odd">
-  <td>5</td>
-  <td nowrap="nowrap" class="odd cursor">&nbsp;</td>
-  <td><input type="submit" name="button5" id="button5" value="x" class="btn_delete" /></td>
-</tr>
+  <?$i++;?> 
+  <?php endforeach;?>
 </table>
 
-<div id="paging" class="paginationEMP">
-<span class="nextprev">&laquo;previous</span>
-<span class="current">1</span>
-<span><a href="javascript:;">2</a></span>
-<span><a href="javascript:;">3</a></span>
-<span><a href="javascript:;">4</a></span>
-<span><a href="javascript:;">next&raquo;</a></span>        
-</div>
+<?php echo $pagination;?>

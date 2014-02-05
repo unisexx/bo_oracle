@@ -1,10 +1,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" type="text/css" href="themes/bo/css/template.css">
+<link rel="stylesheet" type="text/css" media="screen"  href="themes/bo/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="themes/bo/css/vtip.css">
 <link rel="stylesheet" type="text/css" href="themes/bo/css/custom-theme/jquery.ui.all.css">
 <link rel="stylesheet"  href="themes/bo/css/treeview/jquery.treeview.css" />
 <link rel="stylesheet"  href="css/icheckbox_style.css" />
-
 <link rel="stylesheet" type="text/css" media="screen"  href="themes/bo/css/pagination.css" />
 <link rel="stylesheet" type="text/css" media="screen"  href="themes/bo/css/colorbox.css" />
 <link type="text/css" href="js/jquery.datepick/redmond.datepick.css" rel="stylesheet" />

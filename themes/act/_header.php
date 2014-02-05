@@ -1,5 +1,5 @@
-<div id="headerFund">
-<div id="home"><a href="fund/index"><img src="themes/bo/images/home.png" width="32" height="32" class="vtip" title="หน้าหลักระบบงานบริหารกองทุน"/></a></div>
+<div id="headerActpromote">
+<div id="home"><a href="act/index"><img src="themes/bo/images/home.png" width="32" height="32" class="vtip" title="หน้าหลักระบบงานบริหารกองทุน"/></a></div>
 <div id="menu">
 <ul id="navmenu-h">
         <li><a href="#">บันทึก +</a>

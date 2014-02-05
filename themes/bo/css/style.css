@@ -80,6 +80,10 @@ legend { padding:0 5px; color:#666;}
 
 /************************* Fund STYLE **************************************/
 
+/************************* ACT STYLE **************************************/
+#headerActpromote { background:url(../images/header_actpromote.jpg) no-repeat; width:980px; height:132px; position:relative;}
+/************************* Monitor STYLE **************************************/
+
 /************************* mdevsys STYLE **************************************/
 #headerMdevsys { background:url(../images/header_mdevsys.jpg) no-repeat; width:980px; height:132px; position:relative;}
 /************************* mdevsys STYLE **************************************/
