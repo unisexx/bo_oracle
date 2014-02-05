@@ -9,7 +9,7 @@
 <h3>บันทึกข้อมูล</h3>
 <div id="BOico">
 <div class="lineico">
-<div class="ico"><a href="indicator.php"><img src="themes/mdevsys/images/icon/indicator.png" width="48" height="48" /><h4>ตัวชี้วัด</h4></a></div>
+<div class="ico"><a href="mds_indicator"><img src="themes/mdevsys/images/icon/indicator.png" width="48" height="48" /><h4>ตัวชี้วัด</h4></a></div>
 <div class="ico"><a href="indicator_certify.php"><img src="themes/mdevsys/images/icon/indicator_certify.png" width="48" height="48" /><h4>ตรวจรับรองผล การทำตัวชี้วัด</h4></a></div>
 <div class="clear"></div>
 </div>

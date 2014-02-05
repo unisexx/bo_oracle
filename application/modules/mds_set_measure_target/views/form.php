@@ -5,7 +5,7 @@ $(document).ready(function(){
 				budget_year:{required:true}
 			},
 			messages:{
-				budget_year:{required:"กรุณาระบุชื่อหน่วยวัด"}
+				budget_year:{required:"กรุณาระบุปีงบประมาณ"}
 			}
 		});
 });
@@ -62,13 +62,9 @@ $(document).ready(function(){
 	<td colspan="11"><strong><?=@$ass_name?></strong></td>
 </tr>
 		
-<? 			$sql_metrics = "select *
-							from mds_set_metrics
-							where mds_set_metrics.parent_id = '0' 
-							and mds_set_metrics.mds_set_indicator_id = '".$mds_set_indicator_id."' 
-							and mds_set_assessment_id = '".$assessment['mds_set_assessment_id']."'  ";
-			$result_metrics = $this->metrics->get($sql_metrics);
-			foreach ($result_metrics as $key => $metrics) { ?>
+<? 			
+			$result_metrics = metrics_set_indicator($mds_set_indicator_id,$assessment['mds_set_assessment_id'],'0');
+			foreach (@$result_metrics as $key => $metrics) { ?>
 				<tr>
 				  <td><?=$metrics['metrics_on']?></td>
 				  <td><?=$metrics['metrics_name']?></td>
@@ -96,11 +92,7 @@ $(document).ready(function(){
 				});
 		  	  </script>
 <?				$i++;
-				$sql_metrics_sub_1 = "select *
-									from mds_set_metrics
-									where mds_set_metrics.parent_id = '".$metrics['id']."' 
-									and mds_set_metrics.mds_set_indicator_id = '".$mds_set_indicator_id."'  ";
-				$result_metrics_sub_1 = $this->metrics->get($sql_metrics_sub_1);
+				$result_metrics_sub_1 = metrics_set_indicator($mds_set_indicator_id,false,$metrics['id']);
 				foreach ($result_metrics_sub_1 as $key => $metrics_sub_1) {?>
 						<tr>
 						  <td><?=$metrics['metrics_on']?>.<?=$metrics_sub_1['metrics_on']?></td>
@@ -130,12 +122,9 @@ $(document).ready(function(){
 				  	  </script>
 				<?
 					$i++;
-					$sql_metrics_sub_2 = "select *
-										from mds_set_metrics
-										where mds_set_metrics.parent_id = '".$metrics_sub_1['id']."' 
-										and mds_set_metrics.mds_set_indicator_id = '".$mds_set_indicator_id."'  ";
-					$result_metrics_sub_2 = $this->metrics->get($sql_metrics_sub_2);
-					foreach ($result_metrics_sub_2 as $key => $metrics_sub_2) {?>
+					
+					$result_metrics_sub_2 = metrics_set_indicator($mds_set_indicator_id,false,$metrics_sub_1['id']);
+					foreach (@$result_metrics_sub_2 as $key => $metrics_sub_2) {?>
 							<tr>
 							  <td><?=$metrics['metrics_on']?>.<?=$metrics_sub_1['metrics_on']?>.<?=$metrics_sub_2['metrics_on']?></td>
 							  <td><?=$metrics_sub_2['metrics_name']?></td>
@@ -164,12 +153,8 @@ $(document).ready(function(){
 					  	  </script>
 					<?
 						$i++;
-						$sql_metrics_sub_3 = "select *
-											from mds_set_metrics
-											where mds_set_metrics.parent_id = '".$metrics_sub_2['id']."' 
-											and mds_set_metrics.mds_set_indicator_id = '".$mds_set_indicator_id."'  ";
-						$result_metrics_sub_3 = $this->metrics->get($sql_metrics_sub_3);
-						foreach ($result_metrics_sub_3 as $key => $metrics_sub_3) { ?>
+						$result_metrics_sub_3 = metrics_set_indicator($mds_set_indicator_id,false,$metrics_sub_2['id']);
+						foreach (@$result_metrics_sub_3 as $key => $metrics_sub_3) { ?>
 							<tr>
 							  <td><?=$metrics['metrics_on']?>.<?=$metrics_sub_1['metrics_on']?>.<?=$metrics_sub_2['metrics_on']?>.<?=$metrics_sub_3['metrics_on']?></td>
 							  <td><?=$metrics_sub_3['metrics_name']?></td>
