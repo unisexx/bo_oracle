@@ -32,19 +32,23 @@ margin-left:5px;
 
 <script language='javascript'>
 $(function(){
-	$('[NAME=sch_budget_year]').live('change', function(){
-		sch_budget_year = $('[name=sch_budget_year]').val();
-		sch_indicatorn_id = $('[name=sch_indicatorn]').val();
+	function budget_year(){
 		
-		$('[name=sch_indicatorn]').attr('disabled', 'disabled');
-		$.get('<? echo site_url(); ?>mds_set_indicator/chain_indicator', {
-			sch_budget_year:sch_budget_year,
-			sch_indicatorn_id:sch_indicatorn_id
-		}, function(data){
-			$('[name=sch_indicatorn]').html(data);
-			$('[name=sch_indicatorn]').removeAttr('disabled');
-		});
-	});	
+			sch_budget_year = $('[name=sch_budget_year]').val();
+			sch_indicator_id = '<?=@$_GET['sch_indicatorn']?>';
+			
+			$('[name=sch_indicatorn]').attr('disabled', 'disabled');
+			$.get('<? echo site_url(); ?>mds_set_indicator/chain_indicator', {
+				sch_budget_year:sch_budget_year,
+				sch_indicator_id:sch_indicator_id
+			}, function(data){
+				$('[name=sch_indicatorn]').html(data);
+				$('[name=sch_indicatorn]').removeAttr('disabled');
+			});
+		
+	}	
+	$('[NAME=sch_budget_year]').live('change', function(){budget_year()});
+	budget_year();
 	
 	$('.btn_downico').live('click', function(){
 		var id = $(this).attr('ref_id');
@@ -81,7 +85,7 @@ $(function(){
 <div id="search">
 <div id="searchBox">
 ปีงบประมาณ <?php echo form_dropdown('sch_budget_year',get_year_option('2556'),@$_GET['sch_budget_year'],'','-- เลือกปีงบประมาณ --'); ?>
- มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name','mds_set_indicator'),@$_GET['sch_indicatorn'],'','-- เลือกมิติ --'); ?> 
+ มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกมิติ --'); ?> 
 <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
 </div>

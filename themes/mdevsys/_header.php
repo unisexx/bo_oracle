@@ -4,7 +4,7 @@
 <ul id="navmenu-h">
         <li><a href="#">บันทึก +</a>
           <ul style="width:220px;">
-            <li><a href="indicator.php">ตัวชี้วัด</a></li>
+            <li><a href="mds_indicator">ตัวชี้วัด</a></li>
             <li><a href="indicator_certify.php">ตรวจรับรองผลการทำตัวชี้วัด</a></li>
           </ul>
         </li>
