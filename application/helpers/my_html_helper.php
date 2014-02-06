@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 if(!function_exists('set_notify'))
 {
@@ -41,10 +41,10 @@ if(!function_exists('notify'))
 						    		html: "'.$CI->session->flashdata('msg').'",
 						    		delay: 2000,
 						    		animationSpeed: "normal"
-						  		});  
+						  		});
 							});
 						</script>';
-			return $js; 
+			return $js;
 		}
 	}
 }
@@ -73,7 +73,7 @@ if(!function_exists('caution'))
 		if($CI->session->flashdata('caution'))
 		{
 		    $js = '<div class="notification '.$CI->session->flashdata('type').' png_bg"><div>'.$CI->session->flashdata('msg').'</div></div>';
-			return $js; 
+			return $js;
 		}
 	}
 }
@@ -88,10 +88,10 @@ if(!function_exists('js_caution'))
 		    $html = "<div class='notification ".$CI->session->flashdata('type')." png_bg'><div>".$CI->session->flashdata('msg')."</div></div>";
 			$js = '<script type="text/javascript">
 		    				$(function () {
-						  		$("'.$CI->session->flashdata('selector').'").'.$CI->session->flashdata('position').'("'.$html.'") 
+						  		$("'.$CI->session->flashdata('selector').'").'.$CI->session->flashdata('position').'("'.$html.'")
 							});
 						</script>';
-			return $js; 
+			return $js;
 		}
 	}
 }
@@ -103,11 +103,11 @@ if(!function_exists('menu_active'))
 		$CI =& get_instance();
 		if($controller)
 		{
-			return ($CI->router->fetch_module() == $module && $CI->router->fetch_class() == $controller) ? 'class='.$class : '';	
+			return ($CI->router->fetch_module() == $module && $CI->router->fetch_class() == $controller) ? 'class='.$class : '';
 		}
 		else
 		{
-			return ($CI->router->fetch_module() == $module) ? 'class='.$class : '';	
+			return ($CI->router->fetch_module() == $module) ? 'class='.$class : '';
 		}
 	}
 }
@@ -135,7 +135,7 @@ function get_option_same($value, $table, $where = FALSE)
 	array_walk($result,'dbConvert');
 	$data = array();
 	foreach($result as $item) $data[$item[$value]] = $item[$value];
-	return $data; 
+	return $data;
 }
 
 function pagebreak($content){
@@ -208,7 +208,7 @@ function js_checkbox()
 				$("input:checkbox").checkbox({empty:"js/checkbox/empty.png"});
 				$("input:checkbox").click(function(){
 					var value = this.checked ? 0 : 1;
-					$.post("'.$CI->router->fetch_module().'/admin/'.$CI->router->fetch_module().'/save",{id:this.value ,active:value}); 
+					$.post("'.$CI->router->fetch_module().'/admin/'.$CI->router->fetch_module().'/save",{id:this.value ,active:value});
 				});
 			});
 		</script>';
@@ -292,5 +292,5 @@ function fix_file(&$files)
         }
     }
 }
- 
+
 ?>

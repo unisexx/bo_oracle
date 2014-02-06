@@ -38,7 +38,7 @@ $active_group = "fd";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
-$db['default']['username'] = "BOFFICE";
+$db['default']['username'] = "boffice";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "BOFFICE";
 $db['default']['dbdriver'] = "oci8po";
