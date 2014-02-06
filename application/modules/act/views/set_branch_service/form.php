@@ -1,0 +1,17 @@
+<h3>ตั้งค่า สาขาการให้บริการ (บันทึก / แก้ไข)</h3>
+
+<form method="post" action="act/set_branch_service/save">
+<table class="tbadd">
+<tr>
+  <th>ชื่อสาขาการให้บริการ<span class="Txt_red_12"> *</span></th>
+  <td><input name="branch_service_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $branch_service['branch_service_name']?>" /></td>
+</tr>
+</table>
+
+
+<div id="btnBoxAdd">
+	<input type="hidden" name="id" value="<?php echo $branch_service['id']?>">
+  <input type="submit" title="บันทึก" value=" " class="btn_save"/>
+  <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
+</div>
+</form>
