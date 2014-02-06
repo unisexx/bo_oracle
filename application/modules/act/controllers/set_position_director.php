@@ -7,7 +7,7 @@ Class Set_position_director extends  Act_Controller{
 	
 	function index(){
 		$condition = @$_GET['search']!='' ? " position_director_name like '%".$_GET['search']."%'" : "";
-		$data['pds'] = $this->pd->where($condition)->get(false,true);
+		$data['pds'] = $this->pd->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->pd->pagination();
 		$this->template->build('set_position_director/index',$data);
 	}
