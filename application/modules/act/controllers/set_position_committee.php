@@ -7,7 +7,7 @@ Class Set_position_committee extends  Act_Controller{
 	
 	function index(){
 		$condition = @$_GET['search']!='' ? " position_committee_name like '%".$_GET['search']."%'" : "";
-		$data['pcs'] = $this->pc->where($condition)->get(false,true);
+		$data['pcs'] = $this->pc->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->pc->pagination();
 		$this->template->build('set_position_committee/index',$data);
 	}

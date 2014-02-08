@@ -7,7 +7,7 @@ Class Set_affiliate extends  Act_Controller{
 	
 	function index(){
 		$condition = @$_GET['search']!='' ? " affiliate_name like '%".$_GET['search']."%'" : "";
-		$data['affiliates'] = $this->affiliate->where($condition)->get(false,true);
+		$data['affiliates'] = $this->affiliate->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->affiliate->pagination();
 		$this->template->build('set_affiliate/index',$data);
 	}
