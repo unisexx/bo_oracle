@@ -492,7 +492,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				}
 				 
 			} else {
-				$rs = '<option value=\'\'>--กรุณาเลือกปีงบประมาณ--</option';
+				$rs = '<option value=\'\'>-- เลือกชื่อมิติ --</option';
 			}
 		echo $rs;
 	}

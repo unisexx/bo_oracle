@@ -56,7 +56,7 @@ $(function(){
 <div id="search">
 <div id="searchBox">
 ปีงบประมาณ <?php echo form_dropdown('sch_budget_year',get_year_option('2556'),@$_GET['sch_budget_year'],'','-- เลือกปีงบประมาณ --'); ?>
- มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกมิติ --'); ?> 
+ มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกชื่อมิติ --'); ?> 
 <input type="text" name="sch_metrics_name" id="sch_metrics_name" placeholder="ชื่อตัวชี้วัด" value="<?=@$_GET['sch_metrics_name']?>" style="width:300px;" />
 <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
@@ -74,7 +74,7 @@ $(function(){
 	$_GET['page'] = (empty($_GET['page']))?1:$_GET['page'];
 	$i = 1;
 	foreach ($rs as $key => $item) {
-		$premit = is_permit(login_data('id',1));
+		$premit = is_permit(login_data('id'),'1');
 				if($premit == "")
 				{
 					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$item['id']);	

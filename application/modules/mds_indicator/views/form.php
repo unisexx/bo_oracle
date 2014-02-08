@@ -21,7 +21,7 @@
   </tr>
   <tr>
     <th>หน่วยงานรับผิดชอบ</th>
-    <td><input name="textfield" type="text" id="textfield" style="width:500px;" value="สำนักงานปลัดกระทรวง (สป.) - สำนักบริหารงานกลาง (หาจากไหน)" readonly="readonly"/></td>
+    <td><input name="textfield" type="text" id="textfield" style="width:500px;" value="สำนักงานปลัดกระทรวง (สป.) - สำนักบริหารงานกลาง (รอถาม)" readonly="readonly"/></td>
   </tr>
   <tr>
     <th>มิติ</th>
@@ -40,29 +40,69 @@
 			if($chk_keyer_indicator == 'Y'){
 					
 ?>
-<div id="btnBox"><input type="button" title="เพิ่มผลปฎิบัติราชการ" value=" " onclick="document.location='<?=basename($_SERVER['PHP_SELF'])?>?act=form2'" class="btn_add_indicator vtip"/></div>
+<div id="btnBox"><input type="button" title="เพิ่มผลปฎิบัติราชการ" value=" " onclick="document.location='<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>'" class="btn_add_indicator vtip"/></div>
 <? } }?>
 <table class="tblist2">
 <tr>
-  	<th>แบบฟอร์มรายงานผล</th>
-	<th>ผู้กำกับดูแล</th>
-	<th>ผู้จัดเก็บข้อมูล</th>
-	<th>วันที่</th>
-	<th>ขั้นตอน</th>
-	<th>สถานะ</th>
-	<th>ลบ </th>
+  	<th style="width: 15%">แบบฟอร์มรายงานผล</th>
+	<th style="width: 30%">ผู้กำกับดูแล</th>
+	<th style="width: 30%">ผู้จัดเก็บข้อมูล</th>
+	<th style="width: 5%">วันที่</th>
+	<th style="width: 10%">ขั้นตอน</th>
+	<th style="width: 10%">สถานะ</th>
+	<th style="width: 5%">ลบ </th>
 </tr>
-<? foreach ($rs as $key => $value) { ?>
+<? 	
+foreach ($rs as $key => $item_result) { ?>
 <tr>
-  <td>6 เดือน <img src="images/see.png" alt="" width="24" height="24" /></td>
-  <td>นายวัชรินทร์ เจริญเผ่า <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : 023068736&lt;br&gt; อีเมล์ :" /></td>
-  <td>นางวันดี กำหนดศรี <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : 023068736&lt;br&gt; อีเมล์ :" /></td>
-  <td><img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : 10/12/56 &lt;br&gt; ขออนุมัติส่ง : 10/12/56 &lt;br&gt; พิจารณาส่ง : 12/12/56 &lt;br&gt; กพร.พิจารณาอนุมัติ : 15/12/56 " /></td>
-  <td>บันทึก, ขออนุมัติส่ง, พิจารณาส่ง, กพร.พิจารณาอนุมัติ</td>
-  <td>อนุมัติ,ไม่อนุมัติ, ผ่าน, ไม่ผ่าน</td>
+  <td><?=@$item_result['round_month']?> เดือน <img src="images/see.png" alt="" width="24" height="24" /></td>
+  <td>
+  	<?
+  			    $chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
+								  ,mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name
+							from 
+							mds_set_metrics_kpr 
+							left join mds_set_permission permission on mds_set_metrics_kpr.control_users_id = permission.users_id
+							left join users on permission.users_id = users.id
+							left join mds_set_position on permission.mds_set_position_id = mds_set_position.id 
+							left join cnf_division on users.divisionid = cnf_division.id 
+							left join cnf_department on users.departmentid = cnf_department.id 
+							where mds_set_metrics_kpr.mds_set_metrics_id = '".$item_result['mds_set_metrics_id']."' and mds_set_metrics_kpr.round_month = '".@$item_result['round_month']."' ";
+				$result_kpr = $this->kpr->get($chk_kpr);
+				$kpr = @$result_kpr['0'];
+  	?>
+  	<?=@$kpr['name']?> <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : <?=(empty($kpr['tel']))?'-':$kpr['tel'];?>&lt;br&gt; อีเมล์ : <?=(empty($kpr['email']))?'-':$kpr['email'];?>" /></td>
+  <td><?=@$item_result['name']?> <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : <?=(empty($item_result['tel']))?'-':$item_result['tel'];?>&lt;br&gt; อีเมล์ : <?=(empty($item_result['email']))?'-':$item_result['email'];?>" /></td>
+  <td>
+  	<? 
+  		$create = explode('-', @$item_result['create_date']);
+		$year =  substr($create['0'],2)+43;
+		$date_create = @$create['2'].'/'.@$create['1'].'/'.$year;
+		if($item_result['is_save'] == 1){
+			$date_2 = " - ";
+			$date_3 = " - ";
+			$date_4 = " - ";
+		}
+  	?>
+  	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date_create?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
+  <td><? 
+  		if($item_result['is_save'] == 1){
+  			echo "บันทึก";
+  		}else{
+  			
+  		}
+  	  ?>
+  </td>
+  <td><? 
+  		if($item_result['is_save'] == 1){
+  			echo " - ";
+  		}else{
+  			
+  		}
+  	  ?>
+  </td>
   <td><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td>
 </tr>
 <? } ?>
-
 
 </table>

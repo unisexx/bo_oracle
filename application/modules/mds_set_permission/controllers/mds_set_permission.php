@@ -8,6 +8,9 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		$this->load->model('mds_set_permission/Mds_set_permission_model','permission');
 		$this->load->model('mds_set_permission/users_model','users');
 		
+		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
+		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
+		
 	}
 	
 	public $urlpage = "mds_set_permission";
@@ -32,12 +35,12 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		
 		//$this->db->debug = true;
 		$sql = "select permission.* , users.name , users.email , users.tel , users.username 
-				,mds_set_position.pos_name , cnf_department.title , mds_set_permit_type.permit_name
+				,mds_set_position.pos_name , cnf_division.title , mds_set_permit_type.permit_name
 				from mds_set_permission permission
 				left join users on permission.users_id = users.id
 				left join mds_set_position on permission.mds_set_position_id = mds_set_position.id
 				left join mds_set_permit_type on permission.mds_set_permit_type_id = mds_set_permit_type.id  
-				left join cnf_department on users.departmentid = cnf_department.id 
+				left join cnf_division on users.divisionid = cnf_division.id 
 				where $condition order by permission.id asc ";
 		
 		$data['rs'] = $this->permission->get($sql);
@@ -90,10 +93,12 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		   
 		   set_notify('success', lang('save_data_complete'));		   
 		   if($_POST['id']>0){
-		   	new_save_logfile("EDIT",$this->modules_title,$this->permission->table,"ID",$id,"pos_name",$this->modules_name);
-		   	new_save_logfile("EDIT",$this->modules_title2,$this->users->table,"ID",$_POST['users_id'],"name",$this->modules_name2);
+		    save_logfile("EDIT","แก้ไข ".$this->modules_title." ID : ".$id." ".get_one('name', $this->modules_name2,'id',$_POST['users_id']),$this->modules_name);
+		   	//new_save_logfile("EDIT",$this->modules_title,$this->permission->table,"ID",$id,$_POST['users_id'],"name",$this->modules_name2);
+		   	//new_save_logfile("EDIT",$this->modules_title2,$this->users->table,"ID",$_POST['users_id'],"name",$this->modules_name2);
 		   }else{
-		   	new_save_logfile("ADD",$this->modules_title,$this->permission->table,"ID",$id,"pos_name",$this->modules_name);
+		   	save_logfile("ADD","เพิ่ม ".$this->modules_title." ID : ".$id." ".get_one('name', $this->modules_name2,'id',$_POST['users_id']),$this->modules_name);
+		   	//new_save_logfile("ADD",$this->modules_title,$this->permission->table,"ID",$id,$_POST['users_id'],"name",$this->modules_name2);
 		   }		   
 		}
 		redirect($urlpage);
@@ -104,8 +109,28 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
-		new_save_logfile("DELETE",$this->modules_title,$this->permission->table,"ID",$ID,"pos_name",$this->modules_name);					
-		$this->permission->delete($ID);		
+		if($ID != ''){
+			$users_id = get_one('users_id',$this->modules_name,'id',$ID);
+			$users_type = get_one('mds_set_permit_type_id',$this->modules_name,'id',$ID);
+			if($users_type == '1' || $users_type == '2'){
+				$chk_users = "select * from mds_set_metrics_kpr where kpr_users_id = '".$users_id."' or control_users_id = '".$users_id."' ";
+				$result_kpr =  $this->kpr->get($chk_users);
+				$num_chk = count($result_kpr);
+			}else if( $users_type == '3'){
+				$chk_users = "select * from mds_set_metrics_keyer where keyer_users_id = '".$users_id."' ";
+				$result_keyer =  $this->keyer->get($chk_users);
+				$num_chk = count($result_keyer);
+			}
+			if(@$num_chk == 0){
+				set_notify('error', "ลบข้อมูลเสร็จสิน");
+				save_logfile("DELETE","ลบ ".$this->modules_title." ID : ".$ID." ".get_one('name', $this->modules_name2,'id',$users_id),$this->modules_name);				
+				$this->permission->delete($ID);
+			}else{
+				set_notify('error', "ไม่สามารถลบสิทธิ์ การใช้งานได้เนื่องจากมีข้อมูลในตั้วชี้วัด");
+			}
+					
+		}
+		
 		redirect($urlpage);
 	}
 	function cbox_users(){
