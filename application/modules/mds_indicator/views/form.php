@@ -13,6 +13,19 @@
 						margin-top: 5px;
 						}
 </style>
+<script language="JavaScript">
+$(function(){
+		$('.btn_delete').live('click', function(){
+			var id = $(this).attr('ref_id');
+			var metrics_id = $(this).attr('ref_metrics');
+			if(confirm('ท่านลบผลปฎิบัติราชการ ใช่ หรือ ไม่')) {
+				document.location = 'mds_indicator/delete/?id='+id+'&metrics_id='+metrics_id;
+			}
+		});
+	
+});
+</script>
+
 <h3>บันทึก ตัวชี้วัด (บันทึก / แก้ไข)</h3>
 <table class="tbadd">
   <tr>
@@ -55,7 +68,7 @@
 <? 	
 foreach ($rs as $key => $item_result) { ?>
 <tr>
-  <td><?=@$item_result['round_month']?> เดือน <img src="images/see.png" alt="" width="24" height="24" /></td>
+  <td><?=@$item_result['round_month']?> เดือน <a href="<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>/<?=@$item_result['id']?>"><img src="images/see.png" alt="" width="24" height="24" /></a></td>
   <td>
   	<?
   			    $chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
@@ -82,6 +95,13 @@ foreach ($rs as $key => $item_result) { ?>
 			$date_2 = " - ";
 			$date_3 = " - ";
 			$date_4 = " - ";
+		}else{
+			$update = explode('-', @$item_result['create_date']);
+			$update_year =  substr($update['0'],2)+43;
+			$date_update = @$update['2'].'/'.@$update['1'].'/'.$update_year;
+			$date_2 = $date_update;
+			$date_3 = " - ";
+			$date_4 = " - ";
 		}
   	?>
   	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date_create?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
@@ -101,7 +121,7 @@ foreach ($rs as $key => $item_result) { ?>
   		}
   	  ?>
   </td>
-  <td><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td>
+  <td><input type="submit" name="button" id="button" ref_id="<?=@$item_result['id']?>" ref_metrics="<?=@$rs_metrics['id']?>" value="" class="btn_delete" /></td>
 </tr>
 <? } ?>
 

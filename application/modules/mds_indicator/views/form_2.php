@@ -23,10 +23,10 @@ $(function(){
 		var num = $('#num_ref').val();
 		var i =  parseInt(num)+parseInt(1);
 		
-		var upload  = '<div id="div_document_ref_'+i+'">';
+		var upload  = '<div id="div_document_ref_'+i+'" style="margin-top: 10px">';
 			upload +=	'<span style="margin-right: 40px;"></span>';
-			upload +=	'<input type="file" name="document_plan_ref['+i+']" id="document_plan_ref['+i+']">';
-			upload +=	'<span style="margin-right: 155px;"></span>';
+			upload +=	'<div style="width: 426px;display: inline-block"><input type="file" name="document_plan_ref['+i+']" id="document_plan_ref['+i+']">';
+			upload +=	'</div>';
 			upload +=	'<input type="button" value="ลบ" ref="'+i+'" style="width: 50px;" class="dt_delete_ref_uploads" />';
 			upload += '</div>';
 		
@@ -42,8 +42,12 @@ $(function(){
 	$('.dt_delete_document').live('click', function(){
 		var id = $(this).attr('ref_id');
 		var result_id = $(this).attr('ref_result_id');
+		var indicator_id = $('#mds_set_indicator_id').val();
+		var keyer_users_id = $('#keyer_users_id').val();
+		var round_month = $('#round_month').val();
+		var type_doc =  $(this).attr('type_doc');
 		if(confirm('ท่านลบเอกสารแนบ ใช่ หรือ ไม่')) {
-			document.location = 'mds_indicator/delete_doc/?id='+id+'&result_id='+result_id;
+			document.location = 'mds_indicator/delete_doc/?id='+id+'&result_id='+result_id+'&indicator_id='+indicator_id+'&keyer_users_id='+keyer_users_id+'&round_month='+round_month+'&type_doc='+type_doc;
 		}
 	});
 	
@@ -64,10 +68,18 @@ $(function(){
 		}
 		cal_weight();
 	});
+	
+	 cal_weight();
+	 
 	$('.btn_save').live('click', function(){
 		$('#is_save').val('1');
 		$( "#Myform" ).submit();
 	});
+	$('.btn_savesend').live('click', function(){
+		$('#is_save').val('2');
+		$( "#Myform" ).submit();
+	});
+	
 });
 </script>
 <h3>บันทึก ตัวชี้วัด มิติที่ <?=@$rs_indicator['indicator_on']?> : <?=@$rs_indicator['indicator_name']?> (บันทึก / แก้ไข)</h3>
@@ -182,15 +194,22 @@ $(function(){
 												$metrics_weight = $rs_metrics['metrics_weight'];
 											}
 							
-                                    	?>
+                                    	 $readonly = '';
+										 if(login_data('id') != @$rs['keyer_users_id']){
+										 	$readonly = 'readonly="readonly"';
+										 }
+										 if(@$rs['is_save'] == '2'){
+										 	$readonly = 'readonly="readonly"';
+										 }
+										?>
                                         <input type="text" name="metrics_weight" style="width: 60px" size="7" value="<?=@$metrics_weight?>"  id="metrics_weight" readonly="readonly" style="color:#999999">
                                         <input type="hidden" name="weight_perc_tot" id="weight_perc_tot" value="<?=@$weight_perc_tot?>">
                                     </center></td>
                                     <td><center>
-                                      <input type="text" name="result_metrics" style="width: 60px" size="7" id="result_mertics" value="<?=(empty($rs['result_ac']))?'N/A':$temp_keyer['result_ac'];?>" >
+                                      <input type="text" name="result_metrics" style="width: 60px" size="7" id="result_mertics" value="<?=(empty($rs['result_ac']))?'N/A':$temp_keyer['result_ac'];?>" <?=$readonly?> >
                                     </center></td>
                                     <td id="ac"><center> 
-                                    <input type="text" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$rs['score_ac']?>"  maxlength="6" class="numDecimal2">
+                                    <input type="text" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" <?=$readonly?>>
                                     </center></td>
                                     <td id="score_weight"><center>
                                       <input type="text" name="score_weight" style="width: 60px" size="7" value="" class="numDecimal2" readonly="readonly">
@@ -214,9 +233,18 @@ $(function(){
 						foreach ($result_doc as $key => $doc) { ?>
 							<div>
 								<span style="margin-right: 40px;"></span>
+								<div style="width: 420px;display: inline-block">
 								<a target="_blank" href="uploads/mds/<?=@$doc['doc_name_upload']?>"><?=@$doc['doc_name']?></a>
-								<span style="margin-right: 40px;"></span>
-								<input type="button" value="ลบ" ref_id="<?=@$doc['id']?>" ref_result_id="<?=@$rs['id']?>" style="width: 50px;" id="dt_delete_document" />
+								</div>
+								<? 
+									if(login_data('id') == @$rs['keyer_users_id']){
+										if(@$rs['is_save'] != '2'){ 
+								?>
+								<input type="button" value="ลบ" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" id="dt_delete_document" />
+								<? 
+										} 
+									}
+								?>
 							</div>
 						<?}
 					}
@@ -231,7 +259,15 @@ $(function(){
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4">
 				<span style="margin-right: 20px;"></span><b><u>หลักฐานอ้างอิง</u></b>
+				<?
+					if(login_data('id') == @$rs['keyer_users_id']){
+						if(@$rs['is_save'] != '2'){ 
+				?>
 				<span style="margin-right: 20px;"></span><input type="button" class="bt_add_document_ref" style="width: 150px" value=" เพิ่มแถบอัพโหลด " />
+				<?
+						}
+					}
+				?>
 			</td>
 		</tr>
 		<tr>
@@ -242,23 +278,39 @@ $(function(){
 						$sql_doc_ref = "SELECT * FROM MDS_METRICS_DOCUMENT WHERE MDS_METRICS_RESULT_ID = '".@$rs['id']."' AND TYPE_DOC = '2' ";
 						$result_doc_ref = $this->doc->get($sql_doc_ref,'true');
 						foreach ($result_doc_ref as $key => $doc_ref) {?>
-							<div>
+							<div style="margin-top: 10px">
 								<span style="margin-right: 40px;"></span><?=$key+1?>. 
-								<span style="margin-right: 150px;">
+								<div style="width: 405px;display: inline-block">
 									<a target="_blank" href="uploads/mds/<?=@$doc_ref['doc_name_upload']?>"><?=@$doc_ref['doc_name']?></a>
-								</span>
-								<input type="button" value="ลบ" ref_id="<?=@$doc_ref['id']?>" ref_result_id="<?=@$rs['id']?>" style="width: 50px;" class="dt_delete_document" />
+								</div>
+								<? 
+									if(login_data('id') == @$rs['keyer_users_id']){
+										if(@$rs['is_save'] != '2'){ 
+								?>
+								<input type="button" value="ลบ" ref_id="<?=@$doc_ref['id']?>" type_doc='2' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" class="dt_delete_document" />
+								<? 
+										} 
+									}
+								?>
 							</div>
 					<?		
 						}
 					
-				  } ?>
-				<div id="div_document_ref_<?=$num_ref?>">
+				  } 
+						if(login_data('id') == @$rs['keyer_users_id']){
+							if(@$rs['is_save'] != '2'){ 
+					?>
+				<div id="div_document_ref_<?=$num_ref?>" style="margin-top: 10px">
 					<span style="margin-right: 40px;"></span>
+					<div style="width: 422px;display: inline-block">
 					<input type="file" name="document_plan_ref[<?=$num_ref?>]" >
-					<span style="margin-right: 150px;"></span>
-					<input type="button" value="ลบ" ref="<?=$num_ref?>" style="width: 50px;" class="dt_delete_ref_uploads" />
+					</div>					
+					<input type="button" value="ลบ" ref="<?=$num_ref?>" style="width: 50px;" class="dt_delete_ref_uploads" />	
 				</div>
+				<?
+							}
+						}		
+				?>
 				<div id="document_ref"></div>
 				<input type="hidden" name="num_ref" id="num_ref" value="<?=@$num_ref?>" />
 			</td>
@@ -269,9 +321,22 @@ $(function(){
 </div>
 
 
-<div align="center">
+<div align="center" style="margin-top: 10px">
+<?
+ if(is_permit(login_data('id'),'3') != ''){
+	 $chk_keyer_indicator = chk_keyer_indicator(@$rs_indicator['id'],@$rs_metrics['id']);
+		 if($chk_keyer_indicator == 'Y'){
+		 	if(login_data('id') == @$rs['keyer_users_id']){
+		 		if(@$rs['is_save'] != '2'){
+?>
   <input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
   <input name="input" type="button" title="บันทึกพร้อมส่ง" value=" " class="btn_savesend"/>
+<?   		
+				}
+			}
+		}	
+  }
+ ?>
   <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
 </div>
 </form>

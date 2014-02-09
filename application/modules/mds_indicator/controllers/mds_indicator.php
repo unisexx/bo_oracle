@@ -85,7 +85,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				{
 				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id']);
 				  if($chk_keyer_indicator != 'Y'){
-				  	et_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
+				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
 				  }	
 				}
 			
@@ -140,7 +140,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				
 				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id']);
 				  if($chk_keyer_indicator != 'Y'){
-				  	et_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
+				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
 				  }	
 
 				$data['parent_on'] = '';
@@ -220,7 +220,71 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				
 				  $data['rs'] = $this->metrics_result->get_row($result_id);
+				
+				$data['parent_on'] = '';
+				$parent_on_id = $data['rs_metrics']['id'];
+				if(@$data['rs_metrics']['parent_id'] != '0'){
+					for ($i=1; $i <= 4 ; $i++) {
+						
+						$parent_on = '';
+						$parent_on = $this->metrics->get_row($parent_on_id);
+						$parent_on_id = $parent_on['parent_id'];
+						
+						
+						if($data['parent_on'] != ''){
+							$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
+						}else{
+							$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
+						}
+						if($parent_on['parent_id'] == '0'){
+							$i = 5;
+						}
+						
+					}
+				}else{
+					$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
+				}
+				$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
+				
+				$data['round_month'] = '6'; //รอบการส่งประเมิน
 					
+				// หา น้ำหนักของทั้งมิติ //
+				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['round_month']);
+				// หา น้ำหนักของทั้งมิติ //
+				
+				
+				//$this->db->debug = true;
+				$chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
+								  ,mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name
+							from 
+							mds_set_metrics_kpr 
+							left join mds_set_permission permission on mds_set_metrics_kpr.control_users_id = permission.users_id
+							left join users on permission.users_id = users.id
+							left join mds_set_position on permission.mds_set_position_id = mds_set_position.id 
+							left join cnf_division on users.divisionid = cnf_division.id 
+							left join cnf_department on users.departmentid = cnf_department.id 
+							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."' ";
+				$result_kpr = $this->kpr->get($chk_kpr);
+				$data['kpr'] = @$result_kpr['0'];
+				
+				//$this->db->debug =true;
+				$chk_keyer = "select mds_set_metrics_keyer.*, users.name , users.email , users.tel , users.username 
+							from 
+							mds_set_metrics_keyer 
+							left join mds_set_permission permission on mds_set_metrics_keyer.keyer_users_id = permission.users_id
+							left join users on permission.users_id = users.id
+							where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' ";
+				$data['keyer'] = $this->keyer->get($chk_keyer);
+				
+				$chk_keyer_activity = "select mds_set_metrics_keyer.*, users.name , users.email , users.tel , users.username 
+										from 
+										mds_set_metrics_keyer 
+										left join mds_set_permission permission on mds_set_metrics_keyer.keyer_users_id = permission.users_id
+										left join users on permission.users_id = users.id
+										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
+										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".login_data('id')."' ";
+				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+				$data['keyer_activity'] = @$result_keyer_activity['0'];
 		}
 
 		$this->template->build('form_2',@$data);
@@ -239,7 +303,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		$chk_keyer_indicator = chk_keyer_indicator(@$_POST['mds_set_indicator_id'],$_POST['mds_set_metrics_id']);
 		// ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		echo "<pre>";
-		print_r($_POST);
+		print_r($_FILES);
 		echo "</pre>";
 		if($_POST){
 			
@@ -252,41 +316,39 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			}
 			$id = $this->metrics_result->save($_POST);
 			
-				if($_FILES['document_plan']['name'] != ''){
+				if(@$_FILES['document_plan']['name'] != ''){
 					
 					$ext = pathinfo($_FILES['document_plan']['name'], PATHINFO_EXTENSION);
 					$upload_1['TYPE_DOC']= '1';	
 					$upload_1['MDS_METRICS_RESULT_ID'] = $id;
 					$upload_1['CREATE_DATE'] = date("Y-m-d");
 					$upload_1['CREATE_BY'] = login_data('id');
-					$file_name = 'mds_'.$id."_doc_(1)_".date("Y_m_d_H_i_s")."_".'.'.$ext;
+					$file_name = 'mds_'.$id."_doc_(1)_".date("Y_m_d_H_i_s").'.'.$ext;
 					$upload_1['DOC_NAME_UPLOAD'] = $file_name;
 					$upload_1['DOC_NAME']=$_FILES['document_plan']['name'];
 					$this->doc->save($upload_1);
 					$uploaddir = 'uploads/mds/';
 					$fpicname = $uploaddir.$file_name;
 					move_uploaded_file($_FILES['document_plan']['tmp_name'], $fpicname);
-					
-					
 				}
 				
 			for ($i=1; $i <= $_POST['num_ref']; $i++) { 
-				if($_FILES['document_plan_ref']['name'][$i] !=''){
-					$ext = pathinfo($_FILES['document_plan_ref']['name'][$i], PATHINFO_EXTENSION);
+				if(@$_FILES['document_plan_ref']['name'][$i] !=''){
+					$ext_2 = pathinfo($_FILES['document_plan_ref']['name'][$i], PATHINFO_EXTENSION);
 					$upload_2['TYPE_DOC']= '2';	
 					$upload_2['MDS_METRICS_RESULT_ID'] = $id;
 					$upload_2['CREATE_DATE'] = date("Y-m-d");
 					$upload_2['CREATE_BY'] = login_data('id');
-					$file_name = 'mds_'.$id."_doc_ref_(2)_".date("Y_m_d_H_i_s")."_$i_".'.'.$ext;
-					$upload_2['DOC_NAME_UPLOAD'] = $file_name;
+					$file_name_2 = 'mds_'.$id."_doc_ref_(2)_".date("Y_m_d_H_i_s")."_".$i.".".$ext_2;
+					$upload_2['DOC_NAME_UPLOAD'] = $file_name_2;
 					$upload_2['DOC_NAME']=$_FILES['document_plan_ref']['name'][$i];
 					$this->doc->save($upload_2);
-					$uploaddir = 'uploads/mds/';
-					$fpicname = $uploaddir.$file_name;
-					move_uploaded_file($_FILES['document_plan_ref']['name'][$i], $fpicname);		
+					$uploaddir_2 = 'uploads/mds/';
+					$fpicname_2 = $uploaddir_2.$file_name_2;
+					move_uploaded_file($_FILES['document_plan_ref']['tmp_name'][$i], $fpicname_2);		
 				}
 			}
-			
+			//return false;
 		   if($_POST['id']>0){
 		   	save_logfile("EDIT","แก้ไข  ".$this->modules_title." ID : ".$id." รอบ ".$_POST['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$_POST['keyer_users_id']),$this->modules_name);
 		   }else{
@@ -296,7 +358,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		   
 		   set_notify('success', lang('save_data_complete'));	  
 		}
-		redirect($urlpage.'/form/'.@$_POST['mds_set_indicator_id']);
+		redirect($urlpage.'/form/'.@$_POST['mds_set_metrics_id']);
 
 	}
 
@@ -308,18 +370,84 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			$premit_2 = is_permit(login_data('id'),'3');
 			if($premit_2 == ''){ set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
-		
-		$chk_metrics = $this->metrics->get("select * from mds_set_metrics where mds_set_indicator_id = '".$ID."' ");
-		$num_chk = count($chk_metrics);
-		if($num_chk == 0){
-			new_save_logfile("DELETE",$this->modules_title,$this->indicator->table,"ID",$ID,"ass_name",$this->modules_name);					
-			$this->indicator->delete($ID);
-			set_notify('error', 'ลบข้อมูลเสร็จสิน');	
+		$id = $_GET['id'];
+		$metrics_id = $_GET['metrics_id'];
+		if(@$id != '' && @$metrics_id != ''){
+			$chk_result = $this->metrics_result->get_row($id);
+			if(count($chk_result) > 0){
+				if(login_data('id') == $chk_result['keyer_users_id']){
+					
+					if($chk_result['is_save'] != 2){
+						$chk_doc = $this->doc->where("mds_metrics_result_id = '".$id."' ")->get();
+						foreach ($chk_doc as $key => $doc_name) {
+							$this->doc->delete($doc_name['id']);
+							unlink("uploads/mds/".$doc_name['doc_name_upload']);
+						}		
+						save_logfile("DELETE","ลบ  ".$this->modules_title." ID : ".$id." รอบ ".$chk_result['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$chk_result['keyer_users_id']),$this->modules_name);					
+							$this->metrics_result->delete($id);
+						set_notify('error', 'ลบข้อมูลเสร็จสิน');	
+					}else{
+						set_notify('error', 'ไม่สามารถลบผลการปฎิบัติราชการได้ เนื่องจากทำการบันทึกส่งไปแล้ว');		
+					}	
+					redirect($urlpage.'/form/'.$metrics_id);
+				}else{
+					set_notify('error', 'ท่านไม่สามารถลบผลการปฎิบัติราชการได้ เนื่องจากท่านไม่ใช่ผู้กรอกข้อมูลผลการปฎิบัติราชการ');
+					redirect($urlpage.'/form/'.$metrics_id);
+				}
+				
+			}else{
+				set_notify('error', 'ไม่พบข้อมูลที่ท่านต้องการลบ');
+				redirect($urlpage.'/form/'.$metrics_id);
+			}
 		}else{
-			set_notify('error', 'ไม่สามารถลบข้อมูลได้เนื่องจากมีตัวชี้วัดในมิตินี้');	
-		}	
-		redirect($urlpage.'/index?sch_budget_year='.@$budget_year);
+			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
+			redirect($urlpage);
+		}
+		
 	}
 	
+	function delete_doc(){
+		$urlpage = $this->urlpage;
+		$id = $_GET['id'];
+		$result_id = $_GET['result_id'];
+		$indicator_id = $_GET['indicator_id'];
+		$keyer_users_id = $_GET['keyer_users_id'];
+		$round_month = $_GET['round_month'];
+		$type_doc = $_GET['type_doc'];
+		if($id != '' && $result_id != '' && $indicator_id != '' && $keyer_users_id != '' && $round_month != '' && $type_doc != ''){
+			$chk_result = $this->metrics_result->get_row($result_id);
+			if($chk_result['keyer_users_id'] == $keyer_users_id){
+				if($chk_result['is_save'] != '2'){
+					$doc_name = $this->doc->get_row($id);
+					if($doc_name['id'] != ''){
+						$this->doc->delete($id);
+						unlink("uploads/mds/".$doc_name['doc_name_upload']);	
+						if($type_doc == '1'){
+						$doc = "เอกสารแบบฟอร์มรายงาน";
+						}else{
+							$doc = "เอกสารหลักฐานอ้างอิง ";
+						}
+						save_logfile("DELETE","ลบ เอกสาร  ".$doc." ".$this->modules_title." ID : ".$result_id." รอบ ".$round_month." ของผู้บันทึก ".get_one('name', 'users','id',$keyer_users_id)." ชื่อไฟล์เอกสาร  ".$doc_name['doc_name'],$this->modules_name);
+						set_notify('error', 'ลบ '.$doc.' เรียบร้อย');
+						redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+					}else{
+						set_notify('error', 'ไม่พบไฟล์เอกสารแนบ');
+						redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+					}		
+				}else{
+					set_notify('error', 'ไม่สามารถลบเอกสารได้เนื่องจากบันทึกส่งไปแล้ว');
+					redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);	
+				}
+				
+			}else{
+				set_notify('error', 'ท่านไม่มีสิทธิในการลบเอกสาร');
+				redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+			}
+			
+		}else{
+			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
+			redirect($urlpage);
+		}
+	}
 }
 ?>
