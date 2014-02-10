@@ -122,6 +122,7 @@
 <script type="text/javascript">
 $(function(){
 	$('input.numDecimal').number( true, 2 );
+	$('input.numDecimal2').number( true, 4 );
 	$('input.numInt').number( true, 0 );
 	
 	$('input.numOnly').bind('keypress', function(e) {

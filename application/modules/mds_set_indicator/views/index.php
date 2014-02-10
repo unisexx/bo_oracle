@@ -56,7 +56,7 @@ $(function(){
 		var indicator_id = $(this).attr('indicator_id');
 		var metrics_on = parseInt($(this).attr('metrics_on'))+parseInt(1);
 		var year = '<?=@$_GET['sch_budget_year']?>';
-		if(confirm('คุณต้องการเปลี่ยนลำดับตัวชี้วัด')) {
+		if(confirm('ท่านต้องการเปลี่ยนลำดับตัวชี้วัด')) {
 			document.location = 'mds_set_indicator/move_metrics/?id='+id+'&parent_id='+parent_id+"&indicator_id="+indicator_id+"&metrics_on="+metrics_on+"&year="+year+"&act=down";
 		}
 	});
@@ -67,13 +67,13 @@ $(function(){
 		var indicator_id = $(this).attr('indicator_id');
 		var metrics_on = parseInt($(this).attr('metrics_on'))-parseInt(1);
 		var year = '<?=@$_GET['sch_budget_year']?>';
-		if(confirm('คุณต้องการเปลี่ยนลำดับตัวชี้วัด')) {
+		if(confirm('ท่านต้องการเปลี่ยนลำดับตัวชี้วัด')) {
 			document.location = 'mds_set_indicator/move_metrics/?id='+id+'&parent_id='+parent_id+"&indicator_id="+indicator_id+"&metrics_on="+metrics_on+"&year="+year+"&act=up";
 		}
 	});
 	
 	$('.btn_deleteico').live('click', function(){
-		if(confirm('คุณต้องการที่จะลบข้อมูล')) {
+		if(confirm('ท่านต้องการที่จะลบข้อมูล')) {
 			document.location = $(this).attr('link');
 		}
 	});
@@ -85,7 +85,7 @@ $(function(){
 <div id="search">
 <div id="searchBox">
 ปีงบประมาณ <?php echo form_dropdown('sch_budget_year',get_year_option('2556'),@$_GET['sch_budget_year'],'','-- เลือกปีงบประมาณ --'); ?>
- มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกมิติ --'); ?> 
+ มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกชื่อมิติ --'); ?> 
 <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
 </div>

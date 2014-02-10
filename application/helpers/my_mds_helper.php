@@ -80,4 +80,29 @@ function metrics_set_indicator($mds_set_indicator_id = null,$mds_set_assessment_
 	}
 	return @$result;
 }
+function indicator_weight($id = null , $round_month = null){
+		$weight_perc_tot='0';
+		$CI =& get_instance();
+			if($id != '' && $round_month != ''){
+				// หา น้ำหนักของทั้งมิติ //
+				
+				$sel_indicator_weight = "SELECT * FROM MDS_SET_METRICS WHERE MDS_SET_INDICATOR_ID = '".$id."' ";
+				$result_indicator_weight = $CI->db->getarray($sel_indicator_weight);
+				dbConvert($result_indicator_weight);
+				foreach ($result_indicator_weight as $key => $indicator_weight) {
+					if($round_month == '6' && $indicator_weight['metrics_weight_6'] != ''){
+						$weight_perc_tot += $indicator_weight['metrics_weight_6'];
+					}else if($round_month == '9' && $indicator_weight['metrics_weight_9'] != ''){
+						$weight_perc_tot += $indicator_weight['metrics_weight_9'];
+					}else if($round_month == '12' && $indicator_weight['metrics_weight_12'] != ''){
+						$weight_perc_tot += $indicator_weight['metrics_weight_12'];
+					}else{
+						$weight_perc_tot += $indicator_weight['metrics_weight'];
+					}
+					  
+				}
+				// หา น้ำหนักของทั้งมิติ //
+			}
+	 return $weight_perc_tot;
+}
 ?>
