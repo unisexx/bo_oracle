@@ -1,17 +1,17 @@
 <style>
-	.btn_add_indicator {
-						width: 162px;
-						height: 28px;
-						border: none;
-						background: transparent url(images/btn_add_indicator.gif) no-repeat center;
-						overflow: hidden;
-						line-height: 0px;
-						display: inline;
-						color: #a63606;
-						cursor: pointer;
-						cursor: hand;
-						margin-top: 5px;
-						}
+	.btn_confirm_indicator {
+							width: 168px;
+							height: 28px;
+							border: none;
+							background: transparent url(images/btn_confirm_indicator.gif) no-repeat center;
+							overflow: hidden;
+							line-height: 0px;
+							display: inline;
+							color: #a63606;
+							cursor: pointer;
+							cursor: hand;
+							margin-top: 5px;
+						  }
 </style>
 <script language="JavaScript">
 $(function(){
@@ -26,7 +26,7 @@ $(function(){
 });
 </script>
 
-<h3>บันทึก ตัวชี้วัด (บันทึก / แก้ไข)</h3>
+<h3>บันทึก ตรวจรับรองผลการทำตัวชี้วัด  (บันทึก / แก้ไข)</h3>
 <table class="tbadd">
   <tr>
     <th>ปีงบประมาณ</th>
@@ -46,15 +46,13 @@ $(function(){
   </tr>
 </table>
 <?
-		$premit = is_permit(login_data('id',3));
-		if($premit != "")
-		{
-			$chk_keyer_indicator = chk_keyer_indicator(@$rs_indicator['id'],$rs_metrics['id']);	
-			if($chk_keyer_indicator == 'Y'){
+		
+			//$chk_keyer_indicator = chk_keyer_indicator(@$rs_indicator['id'],$rs_metrics['id']);	
+			//if($chk_keyer_indicator == 'Y'){
 					
 ?>
-<div id="btnBox"><input type="button" title="เพิ่มผลปฎิบัติราชการ" value=" " onclick="document.location='<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>'" class="btn_add_indicator vtip"/></div>
-<? } }?>
+<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>'" class="btn_confirm_indicator vtip"></div>
+<? //} ?>
 <table class="tblist2">
 <tr>
   	<th style="width: 15%">แบบฟอร์มรายงานผล</th>

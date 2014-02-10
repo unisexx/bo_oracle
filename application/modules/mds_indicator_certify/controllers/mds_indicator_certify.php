@@ -1,5 +1,5 @@
 <?php
-Class Mds_indicator extends  Mdevsys_Controller{
+Class Mds_indicator_certify extends  Mdevsys_Controller{
 	
 		
 	
@@ -15,8 +15,8 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		$this->load->model('mds_indicator/Mds_status_topic_model','status_topic');
 	}
 	
-	public $urlpage = "mds_indicator";
-	public $modules_name = "mds_indicator";
+	public $urlpage = "mds_indicator_certify";
+	public $modules_name = "mds_indicator_certify";
 	public $modules_title = " บันทึก ตัวชี้วัด";
 	
 	function index(){

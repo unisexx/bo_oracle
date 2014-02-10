@@ -155,10 +155,10 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			
 			if($_POST['id']>0){
 		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
-				$_POST['UPDATE_BY'] = login_data('name');
+				$_POST['UPDATE_BY'] = login_data('id');
 			}else{
 				$_POST['CREATE_DATE'] = date("Y-m-d");
-				$_POST['CREATE_BY'] = login_data('name');
+				$_POST['CREATE_BY'] = login_data('id');
 			}
 			$id = $this->indicator->save($_POST);
 						
@@ -189,10 +189,10 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			
 			if($_POST['id']>0){
 				$_POST['UPDATE_DATE'] = date("Y-m-d");
-				$_POST['UPDATE_BY'] = login_data('name');
+				$_POST['UPDATE_BY'] = login_data('id');
 			}else{
 				$_POST['CREATE_DATE'] = date("Y-m-d");
-				$_POST['CREATE_BY'] = login_data('name');
+				$_POST['CREATE_BY'] = login_data('id');
 			}
 			
 			if(@$_POST['id'] != ''){ // ตรวจสอบว่ามีเลขลำดับซ้ำกันหรือไม่
@@ -347,7 +347,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					}
 				}else if(@$_POST['metrics_start'] == 9){
 					
-					if(@$_POST['sem_9'] == 6){
+					if(@$_POST['sem_9'] == 9){
 						$kpr_9['kpr_users_id'] = $_POST['kpr_9'];
 						$kpr_9['control_users_id'] = $_POST['control_9'];
 						$kpr_9['round_month'] = '9';
