@@ -1,0 +1,23 @@
+<h3>ตั้งค่า แผนย่อย (บันทึก / แก้ไข)</h3>
+
+<form method="post" action="act/set_subplan/save">
+<table class="tbadd">
+<tr>
+  <th>แผน</th>
+  <td>
+  	<?php echo form_dropdown('plan_id',get_option('id', 'plan_name', 'act_plan'),$subplan['plan_id'])?>
+  </td>
+</tr>
+<tr>
+  <th>ชื่อแผนย่อย<span class="Txt_red_12"> *</span></th>
+  <td><input name="subplan_name" type="text" class="form-control" style="width:500px;"   value="<?php echo $subplan['subplan_name']?>"/></td>
+</tr>
+</table>
+
+
+<div id="btnBoxAdd">
+  <input type="hidden" name="id" value="<?php echo $subplan['id']?>">
+  <input type="submit" title="บันทึก" value=" " class="btn_save"/>
+  <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
+</div>
+</form>

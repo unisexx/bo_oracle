@@ -65,6 +65,13 @@
 	}
 $(function(){
 	
+	$('#metrics_on').live('keyup',function(){
+		var metrics_on =  $('#metrics_on').val();
+		if( metrics_on > '<?=@$max_mrtrics_on?>'){
+			$('#metrics_on').val('<?=@$max_mrtrics_on?>');
+		}
+	});
+	
 	$('#metrics_start').live('change', function(){
 		chang_strat()
 	});
@@ -155,7 +162,9 @@ $(function(){
 	function validate_form(){
 		$("form").validate({
 				rules: {
-					metrics_on:"required",
+					metrics_on:{ required:true,
+								 max: <?=@$max_mrtrics_on?>
+								},
 					metrics_weight:"required",
 					metrics_name:"required",
 					mds_set_assessment_id:"required",
@@ -198,7 +207,7 @@ $(function(){
 	        						   
 				},
 				messages:{
-					metrics_on:"กรุณาระบุตัวชี้วัดที่",
+					metrics_on:{required:"กรุณาระบุตัวชี้วัดที่", max:"ลำดับที่ใส่ได้มากที่สุด คือ  <?=@$max_mrtrics_on?> " },
 					metrics_weight:"กรุณาระบุน้ำหนักตัวชี้วัด",
 					metrics_name:"กรุณาระบุชื่อตัวชี้วัด",
 					mds_set_assessment_id:"กรุณาระบุประเด็นการประเมินผล",
@@ -273,6 +282,8 @@ $(function(){
     <th>ประเด็นการประเมินผล<span class="Txt_red_12"> *</span></th>
     <td><?php echo form_dropdown('mds_set_assessment_id',get_option('id','ass_name','mds_set_assessment'),@$rs['mds_set_assessment_id'],'','-- เลือกประเด็นการประเมินผล --') ?></td>
   </tr>
+  <? }else{ ?>
+  	<input type="hidden" name="mds_set_assessment_id" value="<?=@$mds_set_assessment_id?>" />
   <? } ?>
   <tr>
     <th><span style="width:15%">หน่วยวัด</span><span class="Txt_red_12"> *</span></th>

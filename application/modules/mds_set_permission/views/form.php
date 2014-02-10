@@ -83,7 +83,9 @@ $(document).ready(function(){
   <th>บุคลากร<span class="Txt_red_12"> *</span></th>
   <td> 	
   	<input name="users_name" type="text" id="users_name" class="form-control" readonly="readonly" style="width:400px;" value="<?=@$rs['name']?>" />
+  	<? if(@$rs['id'] == ''){ ?>
   	<a class="search_users" href="#" onclick="return false;"><img src="themes/mdevsys/images/search_user.png" width="32" height="32" /></a>
+  	<? } ?>
   	<input type="hidden" name="users_id" id="users_id" value="<?=@$rs['users_id']?>" />
   </td>
 </tr>
@@ -113,6 +115,6 @@ $(document).ready(function(){
 		<div id="search_users" class="search">
 			ชื่อ-สกุล / Username  : <input type="text" name="sch_txt" value=""> <input type="button" style="width: 100px" name="btn_search_users" id="btn_search_users" value="ค้นหา">
 		</div>
-		<div id="result_users">xxxx</div>
+		<div id="result_users"></div>
 	</div>
 </div>

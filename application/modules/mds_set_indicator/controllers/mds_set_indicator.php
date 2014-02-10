@@ -26,7 +26,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			$condition .= " and budget_year = '".@$_GET['sch_budget_year']."' ";
 		}
 		if(@$_GET['sch_indicatorn'] != ''){
-			$condition .=" and indicator_on = '".@$_GET['sch_indicatorn']."' ";
+			$condition .=" and id = '".@$_GET['sch_indicatorn']."' ";
 		}
 		$data['rs'] = $this->indicator->where($condition)->get('',true);
 		
@@ -53,6 +53,11 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		
 		if($id == '' && $indicator_id != ''){
 			
+			$sql_max_metrics_on = "select max(metrics_on) as max_metrics_on from mds_set_metrics 
+								   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '0' "; 
+			$result_max = $this->metrics->get($sql_max_metrics_on);
+			$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
+			
 			$data['rs']['mds_set_indicator_id'] = $indicator_id;
 			$data['rs_indicator'] = $this->indicator->get_row($indicator_id);
 			if($data['rs_indicator']['id'] == ''){
@@ -69,22 +74,31 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				redirect($data['urlpage']);
 			}
 			
+			$sql_max_metrics_on = "select max(metrics_on) as max_metrics_on from mds_set_metrics 
+								   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '".$id."' "; 
+			$result_max = $this->metrics->get($sql_max_metrics_on);
+			$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
+			
 			$data['rs'] = $this->metrics->get_row($id);
 			$data['parent_on'] = '';
 			$parent_on_id = $data['rs']['id'];
 			if($data['rs']['parent_id'] != '0'){
 				for ($i=1; $i <= 4 ; $i++) {
-					if($data['parent_on'] != ''){
-						$data['parent_on'] = $data['parent_on'].'.'.@$parent_on['metrics_on'];
-					}else{
-						$data['parent_on'] = @$parent_on['metrics_on'];
-					}	
+					
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
 					$parent_on_id = $parent_on['parent_id'];
 					if($parent_on['parent_id'] == '0'){
+						$data['mds_set_assessment_id'] = $parent_on['mds_set_assessment_id'];
 						$i = 5;
 					}
+					
+					if($data['parent_on'] != ''){
+						$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
+					}else{
+						$data['parent_on'] = @$parent_on['metrics_on'];
+					}	
+					
 				}
 			}
 			
@@ -95,22 +109,32 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
 				redirect($data['urlpage']);
 			}
+			
+			$sql_max_metrics_on = "select max(metrics_on) as max_metrics_on from mds_set_metrics 
+								   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '".$id."' "; 
+			$result_max = $this->metrics->get($sql_max_metrics_on);
+			$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
+			
 			$data['parent_on'] = '';
 			$parent_on = $this->metrics->get_row($id);
 			$parent_on_id = $parent_on['id'];
-			if(@$parent_on['metrics_on'] != '0'){
+			if(@$parent_on['parent_id'] != '0'){
 				for ($i=1; $i <= 4 ; $i++) {
-					if($data['parent_on'] != ''){
-						$data['parent_on'] = $data['parent_on'].'.'.@$parent_on['metrics_on'];
-					}else{
-						$data['parent_on'] = @$parent_on['metrics_on'];
-					}
+					
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
 					$parent_on_id = $parent_on['parent_id'];
 					if($parent_on['parent_id'] == '0'){
+						$data['mds_set_assessment_id'] = $parent_on['mds_set_assessment_id'];
 						$i = 5;
 					}
+					
+					if($data['parent_on'] != ''){
+						$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
+					}else{
+						$data['parent_on'] = @$parent_on['metrics_on'];
+					}
+					
 				}
 			}
 			$data['rs']['parent_id'] = $id;
@@ -455,20 +479,20 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 	function chain_indicator()
 	{
 		if(!empty($_GET['sch_budget_year']))
-			{	$qry = "SELECT ID, INDICATOR_NAME  AS TEXT FROM MDS_SET_INDICATOR WHERE BUDGET_YEAR = '".$_GET['sch_budget_year']."'";
+			{	$qry = "SELECT ID, INDICATOR_NAME  AS TEXT,INDICATOR_ON FROM MDS_SET_INDICATOR WHERE BUDGET_YEAR = '".$_GET['sch_budget_year']."'";
 				$course = $this->indicator->get($qry);
 				
-				$rs = '<option value=\'\'>--กรุณาเลือก--</option>';
+				$rs = '<option value=\'\'>-- เลือกชื่อมิติ --</option>';
 				foreach($course as $tmp){
 					$selected = '';
 					if(@$_GET['sch_indicator_id'] == $tmp['id']){
 						$selected=' selected="selected"';
 					}
-					 $rs .= "<option value='".$tmp['id']."' ".$selected.">".$tmp['text']."</option>"; 
+					 $rs .= "<option value='".$tmp['id']."' ".$selected.">"."มิติที่ ".$tmp['indicator_on']." : ".$tmp['text']."</option>"; 
 				}
 				 
 			} else {
-				$rs = '<option value=\'\'>--กรุณาเลือกปีงบประมาณ--</option';
+				$rs = '<option value=\'\'>-- เลือกชื่อมิติ --</option';
 			}
 		echo $rs;
 	}
