@@ -348,6 +348,9 @@ Class Mds_indicator extends  Mdevsys_Controller{
 					move_uploaded_file($_FILES['document_plan_ref']['tmp_name'][$i], $fpicname_2);		
 				}
 			}
+			if($_POST['is_save'] == '2'){
+				
+			}
 			//return false;
 		   if($_POST['id']>0){
 		   	save_logfile("EDIT","แก้ไข  ".$this->modules_title." ID : ".$id." รอบ ".$_POST['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$_POST['keyer_users_id']),$this->modules_name);
@@ -410,11 +413,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		$urlpage = $this->urlpage;
 		$id = $_GET['id'];
 		$result_id = $_GET['result_id'];
-		$indicator_id = $_GET['indicator_id'];
+		$metrics_id = $_GET['metrics_id'];
 		$keyer_users_id = $_GET['keyer_users_id'];
 		$round_month = $_GET['round_month'];
 		$type_doc = $_GET['type_doc'];
-		if($id != '' && $result_id != '' && $indicator_id != '' && $keyer_users_id != '' && $round_month != '' && $type_doc != ''){
+		if($id != '' && $result_id != '' && $metrics_id != '' && $keyer_users_id != '' && $round_month != '' && $type_doc != ''){
 			$chk_result = $this->metrics_result->get_row($result_id);
 			if($chk_result['keyer_users_id'] == $keyer_users_id){
 				if($chk_result['is_save'] != '2'){
@@ -429,19 +432,19 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						}
 						save_logfile("DELETE","ลบ เอกสาร  ".$doc." ".$this->modules_title." ID : ".$result_id." รอบ ".$round_month." ของผู้บันทึก ".get_one('name', 'users','id',$keyer_users_id)." ชื่อไฟล์เอกสาร  ".$doc_name['doc_name'],$this->modules_name);
 						set_notify('error', 'ลบ '.$doc.' เรียบร้อย');
-						redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+						redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);
 					}else{
 						set_notify('error', 'ไม่พบไฟล์เอกสารแนบ');
-						redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+						redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);
 					}		
 				}else{
 					set_notify('error', 'ไม่สามารถลบเอกสารได้เนื่องจากบันทึกส่งไปแล้ว');
-					redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);	
+					redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);	
 				}
 				
 			}else{
 				set_notify('error', 'ท่านไม่มีสิทธิในการลบเอกสาร');
-				redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+				redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);
 			}
 			
 		}else{

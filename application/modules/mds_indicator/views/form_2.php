@@ -42,12 +42,12 @@ $(function(){
 	$('.dt_delete_document').live('click', function(){
 		var id = $(this).attr('ref_id');
 		var result_id = $(this).attr('ref_result_id');
-		var indicator_id = $('#mds_set_indicator_id').val();
+		var metrics_id = $('#mds_set_metrics_id').val();
 		var keyer_users_id = $('#keyer_users_id').val();
 		var round_month = $('#round_month').val();
 		var type_doc =  $(this).attr('type_doc');
-		if(confirm('ท่านลบเอกสารแนบ ใช่ หรือ ไม่')) {
-			document.location = 'mds_indicator/delete_doc/?id='+id+'&result_id='+result_id+'&indicator_id='+indicator_id+'&keyer_users_id='+keyer_users_id+'&round_month='+round_month+'&type_doc='+type_doc;
+		if(confirm('ท่านต้องการลบเอกสารแนบ ใช่ หรือ ไม่')) {
+			document.location = 'mds_indicator/delete_doc/?id='+id+'&result_id='+result_id+'&metrics_id='+metrics_id+'&keyer_users_id='+keyer_users_id+'&round_month='+round_month+'&type_doc='+type_doc;
 		}
 	});
 	
@@ -121,7 +121,9 @@ $(function(){
 		   } ?>
     </td>
 </table>
+<? if(@$rs['is_save'] != '2'){ ?>
 <form enctype="multipart/form-data" action="<?php echo $urlpage;?>/save" id="Myform" method="POST">
+<? } ?>
 	<input type="hidden" name="round_month" id="round_month" value="<?=@$round_month?>" />
 	<input type="hidden" name="mds_set_metrics_id" id="mds_set_metrics_id" value="<?=@$rs_metrics['id']?>" />
 	<input type="hidden" name="mds_set_indicator_id" id="mds_set_indicator_id" value="<?=@$rs_indicator['id']?>" />
