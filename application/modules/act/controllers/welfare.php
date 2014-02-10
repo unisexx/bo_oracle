@@ -88,7 +88,7 @@ Class Welfare extends  Act_Controller{
 	function ajax_tumbon($type=NULL)
 	{
 		$text = ($type == 'report') ? '-- ทุกตำบล --' : '- เลือกตำบล -';
-		$result = $this->db->GetArray('select tumbon_code,tumbon_name as text from act_tumbon where ampor_code = ?',$_GET['q']);
+		$result = $this->db->GetArray('select tumbon_code,tumbon_name as text from act_tumbon where province_code = ? and ampor_code = ?',array($_GET['p'],$_GET['q']));
 		dbConvert($result);
         if($type == 'report' and !empty($_GET['q'])) array_unshift($result, array('tumbon_code' => '', 'text' => $text));
 		echo $result ? json_encode($result) : '[{"id":"","text":"'.$text.'"}]';

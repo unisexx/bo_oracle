@@ -25,15 +25,25 @@ $(document).ready(function(){
     	label: 'text'
     });
     
-    $('[name=tumbon_code]').chainedSelect({
-    	parent: '[name=ampor_code]',
-    	url: 'act/welfare/ajax_tumbon?p='+$("#province").val(),
-    	value: 'tumbon_code',
-    	label: 'text'
+    $("[name=province_code]").live('change',function(){
+    	$('[name=tumbon_code]').chainedSelect({
+	    	parent: '[name=ampor_code]',
+	    	url: 'act/welfare/ajax_tumbon?p='+$(this).val(),
+	    	value: 'tumbon_code',
+	    	label: 'text'
+	    });
     });
     
     $('[name=co_ampor_code]').chainedSelect({parent: '[name=co_province_code]',url: 'act/welfare/ajax_ampor',value: 'ampor_code',label: 'text'});
-    $('[name=co_tumbon_code]').chainedSelect({parent: '[name=co_ampor_code]',url: 'act/welfare/ajax_tumbon',value: 'tumbon_code',label: 'text'});
+    
+    $("[name=co_province_code]").live('change',function(){
+    	$('[name=co_tumbon_code]').chainedSelect({
+    		parent: '[name=co_ampor_code]',
+    		url: 'act/welfare/ajax_tumbon?p='+$(this).val(),
+    		value: 'tumbon_code',
+    		label: 'text'
+    	});
+    });
 });
 </script>
 
@@ -129,18 +139,16 @@ $(document).ready(function(){
   </tr>
   <tr>
     <th>ผู้บริหารองค์การ</th>
-    <td><select name="EXECUTIVE_TITLE">
-      <option>-- คำนำหน้า --</option>
-    </select>      
+    <td>
+    	<?php echo form_dropdown('executive_title', get_option('title_id', 'title_name', 'act_title_name', '1=1 order by title_name asc'), @$rs['executive_title'], null, '-- คำนำหน้า --'); ?> 
     <input name="EXECUTIVE_NAME" type="text" style="width:250px;"/> 
     ตำแหน่ง 
     <input name="EXECUTIVE_POSITION" type="text" style="width:300px;"/></td>
   </tr>
   <tr>
     <th>ผู้ประสานงาน</th>
-    <td><select name="CO_TITLE">
-      <option>-- คำนำหน้า --</option>
-    </select>
+    <td>
+    	<?php echo form_dropdown('co_title', get_option('title_id', 'title_name', 'act_title_name', '1=1 order by title_name asc'), @$rs['co_title'], null, '-- คำนำหน้า --'); ?> 
       <input name="CO_NAME" type="text" style="width:250px;"/>
 ตำแหน่ง
 <input name="CO_POSITION" type="text" style="width:300px;"/></td>
@@ -347,7 +355,7 @@ $(document).ready(function(){
       <input type="radio" name="UNDER_TYPE_SUB" value="3" />
 มูลนิธิ</span> <span>
 <input type="radio" name="UNDER_TYPE_SUB" value="4" />
-สมาคม    </span><span><input type="UNDER_TYPE_SUB" name="radio" value="5" />
+สมาคม    </span><span><input type="radio" name="UNDER_TYPE_SUB" value="5" />
 องค์กรภาคเอกชน    </span></td>
   </tr>
   <tr>
@@ -362,8 +370,7 @@ $(document).ready(function(){
   </tr>
   <tr>
     <th>ปีที่จดทะเบียนก่อตั้งหน่วยงานหรือปีที่เริ่มดำเนินการ</th>
-    <td><input class="datepicker" name="ESTABLISH_DATE" type="text" style="width:80px;"/>
-    <img src="../themes/act/images/calendar.png" width="16" height="16" /></td>
+    <td><input class="datepicker" name="ESTABLISH_DATE" type="text" style="width:80px;"/></td>
   </tr>
   <tr>
     <th>สถานที่ตั้ง/สถานที่ติดต่อ (สำนักงานใหญ่)  <span class="Txt_red_12"> *</span></th>
@@ -404,21 +411,19 @@ $(document).ready(function(){
   </tr>
   <tr>
     <th>ผู้บริหารองค์การ</th>
-    <td><select name="MA_TITLE" id="select4">
-      <option>-- คำนำหน้า --</option>
-    </select>      
+    <td>
+    	<?php echo form_dropdown('ma_title', get_option('title_id', 'title_name', 'act_title_name', '1=1 order by title_name asc'), @$rs['ma_title'], null, '-- คำนำหน้า --'); ?>    
     <input name="MA_NAME" type="text" id="textfield17" style="width:250px;"/> 
     ตำแหน่ง 
     <input name="MA_POSITION" type="text" id="textfield18" style="width:300px;"/></td>
   </tr>
   <tr>
     <th>ผู้ประสานงาน</th>
-    <td><select name="CO_TITLE" id="select5">
-      <option>-- คำนำหน้า --</option>
-    </select>
-      <input name="CO_NAME" type="text" id="textfield19" style="width:250px;"/>
+    <td>
+    	<?php echo form_dropdown('co_title', get_option('title_id', 'title_name', 'act_title_name', '1=1 order by title_name asc'), @$rs['co_title'], null, '-- คำนำหน้า --'); ?>
+      <input name="CO_NAME" type="text" style="width:250px;"/>
 ตำแหน่ง
-<input name="CO_POSITION" type="text" id="textfield20" style="width:300px;"/></td>
+<input name="CO_POSITION" type="text" style="width:300px;"/></td>
   </tr>
   <tr>
     <th>สถานที่ตั้ง/สถานที่ติดต่อ ผู้ประสานงาน
@@ -888,11 +893,11 @@ $(document).ready(function(){
   <tr>
     <th>อื่นๆ
      </th>
-    <td><textarea name="NOTE" rows="3" id="textfield34" style="width:500px;"></textarea></td>
+    <td><textarea name="NOTE" rows="3" style="width:500px;"></textarea></td>
   </tr>
   <tr>
     <th>จดทะเบียนองค์กร</th>
-    <td><input type="CHECK_HELP" name="checkbox" id="checkbox" />
+    <td><input type="checkbox" name="CHECK_HELP" />
     จดทะเบียน</td>
   </tr>
   <tr>
