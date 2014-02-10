@@ -28,12 +28,19 @@ class budget_report_9 extends Budget_Controller
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
 
-		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y');
+		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y')-1;
 		$data['thyear'] = $data['year'] + 543;
 
         //$data['userWorkgroup'] = $_GET['workgroup']!='' ? $data['userWorkgroup'] = $_GET['workgroup'] : $data['userWorkgroup'];
+        //$result = $this->db->GetArray("SELECT * FROM CNF_STRATEGY WHERE PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=2013");
+        //array_walk($result,'dbConvert');
+		//var_dump($result);exit;
+
 		$data['user_divisionid'] = login_data("DIVISIONID");
 		$this->template->build('index',$data);
 	}
-}
+
+
+
+	}
 ?>

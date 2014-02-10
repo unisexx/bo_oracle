@@ -56,17 +56,25 @@ class ajax extends Monitor_Controller
 
 	function ajax_productivity_list(){
 		if($_GET['type']=="productivity"){
-			echo form_dropdown('productivity',get_option('id','title','cnf_strategy','PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR='.$_GET['year']),'id="productivity"','เลือกผลผลิต','0');
+			$where = "PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
+			$text = "เลือกผลผลิต";
+
 		}else if($_GET['type']=="main"){
 			$condition = $_GET['productivity']!='' ? " AND BUDGETPOLICYID > 0 AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
-			echo form_dropdown('mainactivity',get_option('id','title','cnf_strategy','MAINACTID = 0 '.$condition.' AND SYEAR='.$_GET['year']),'','id="mainactivity"','เลือกกิจกรรมหลัก','0');
+			$where = "MAINACTID = 0 '.$condition.' AND SYEAR=".$_GET['year'];
+			$text = "เลือกกิจกรรมหลัก";
+
 		}else if($_GET['type']=="sub"){
 			$condition = '';
 			$condition = $_GET['productivity']!='' ? " AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
 			$condition .=  $_GET['mainactivity']!='' ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
 			$condition .= $_GET['missiontype']!='' ? " AND MISSIONTYPE='".trim($_GET['missiontype'])."' ": "";
-			echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',"syear='".$year.$condition),'','id="subactivity"','เลือกกิจกรรมย่อย','0');
+			$where = "year=".$_GET['year'].$condition;
+			$text = "เลือกกิจกรรมย่อย";
 		}
+		$result = $this->db->GetArray("select id,title as text from cnf_strategy WHERE ".$where);
+		array_unshift($result, array('id' => '0', 'text' => $text));
+		echo $result ? json_encode($result) : '[{"id":"0","text":"'.$text.'"}]';
 	}
 	function ajax_workgroup_list(){
 		$condition = " WHERE 1=1 ";

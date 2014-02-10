@@ -117,12 +117,12 @@ function cycle($key,$odd = 'odd',$even = '')
 	return ($key&1) ? 'class="'.$even.'"' : 'class="'.$odd.'"';
 }
 
-function get_option($value,$text,$table,$where = FALSE)
+function get_option($value,$text,$table,$where = FALSE,$order=FALSE)
 {
 	$CI =& get_instance();
-	//$CI->db->debug=TRUE;
-	$where = ($where) ? 'where '.$where : '';
-	$result = $CI->db->GetAssoc('select '.$value.','.$text.' from '.$table.' '.$where);
+	$order = ($order) ? ' order by '.$order : '';
+	$where = ($where) ? ' where '.$where : '';
+	$result = $CI->db->GetAssoc('select '.$value.','.$text.' from '.$table.' '.$where.$order);
 	array_walk($result,'dbConvert');
 	return $result;
 }
@@ -265,6 +265,7 @@ if (!function_exists('json_encode'))
 function dbConvert(&$value,$key = null,$output='UTF-8')
 {
 	$encode = array('UTF-8'=>'TIS-620','TIS-620'=>'UTF-8');
+
 	if(is_array($value))
 	{
 		$value = array_change_key_case($value);
@@ -272,10 +273,10 @@ function dbConvert(&$value,$key = null,$output='UTF-8')
 	}
 	else
 	{
-		@$value = iconv($encode[$output],$output,$value);
+		@$value = iconv($encode[$output],'utf-8//TRANSLIT',$value);
+
 	}
 }
-
 function fix_file(&$files)
 {
     $names = array( 'name' => 1, 'type' => 1, 'tmp_name' => 1, 'error' => 1, 'size' => 1);
