@@ -355,10 +355,10 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 					}
 					$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 					
-					$data['round_month'] = '6'; //รอบการส่งประเมิน
+					$data['round_month'] = $data['rs']['round_month']; //รอบการส่งประเมิน
 						
 					// หา น้ำหนักของทั้งมิติ //
-					$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['round_month']);
+					$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['rs']['round_month']);
 					// หา น้ำหนักของทั้งมิติ //
 					
 					

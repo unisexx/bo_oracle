@@ -19,6 +19,21 @@
 </style>
 <script language="JavaScript">
 $(function(){
+	$("form").validate({
+				rules: {
+					score_metrics:{ required:true,max: 5},
+					result_metrics:{ required:true},
+					document_plan:{ required : function(element) {
+	        				return $("#is_save").val() == '2';}
+	        			  }
+				},
+				messages:{
+					score_metrics:{required:"กรุณาระบุค่าคะแนนที่ได้", max:"ลำดับที่ใส่ได้มากที่สุด คือ  5 " },
+					result_metrics:{required:"กรุณาระบุผลการดำเนินงาน"},
+					document_plan:{required:"กรุณาแนบ แบบฟอร์มรายงาน" }
+					
+				}
+	});
 	$('.bt_add_document_ref').live('click',function(){
 		var num = $('#num_ref').val();
 		var i =  parseInt(num)+parseInt(1);
@@ -54,7 +69,7 @@ $(function(){
 	function cal_weight(){
 	
 		var weight_perc_tot = $('#weight_perc_tot').val();
-		var score_mertics = $('#score_mertics').val();
+		var score_mertics = $('#score_metrics').val();
 		var metrics_weight = $('#metrics_weight').val();
 		
 		var cal = (score_mertics*metrics_weight)/weight_perc_tot;
@@ -62,7 +77,7 @@ $(function(){
 		$('[name=score_weight]').val(cal); // ปัดเศษ
 	}
 	
-	$('#score_mertics').live('keyup',function(){
+	$('#score_metrics').live('keyup',function(){
 		if($(this).val() > 5){
 			$(this).val('5')
 		}
@@ -211,7 +226,7 @@ $(function(){
                                     	<input type="text" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($rs['result_metrics']))?'N/A':$rs['result_metrics'];?>" <?=$readonly?> >
                                     </center></td>
                                     <td id="ac"><center> 
-                                    <input type="text" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" <?=$readonly?>>
+                                    <input type="text" name="score_metrics" style="width: 60px" id="score_metrics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" <?=$readonly?>>
                                     </center></td>
                                     <td id="score_weight"><center>
                                       <input type="text" name="score_weight" style="width: 60px" size="7" value="" class="numDecimal2" readonly="readonly">

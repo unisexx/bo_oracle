@@ -19,7 +19,17 @@
 </style>
 <script language="JavaScript">
 $(function(){
-	
+		$("form").validate({
+				rules: {
+					result_comment:{ required : function(element) {
+	        				return $("#control_status:checked").val() == '2' || $("#kpr_status:checked").val() == '2';}
+	        			  }
+				},
+				messages:{
+					result_comment:{required:"กรุณาระบุหมายเหตุ" }
+					
+				}
+		});
 	function cal_weight(){
 	
 		var weight_perc_tot = $('#weight_perc_tot').val();
@@ -27,7 +37,7 @@ $(function(){
 		var metrics_weight = $('#metrics_weight').val();
 		
 		var cal = (score_mertics*metrics_weight)/weight_perc_tot;
-		
+			cal =cal.toFixed(4);
 		$('[name=score_weight]').html(cal); // ปัดเศษ
 	}
 	
