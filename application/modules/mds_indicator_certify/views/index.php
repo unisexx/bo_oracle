@@ -77,7 +77,7 @@ $(function(){
 		$premit = is_permit(login_data('id'),'1');
 				if($premit == "")
 				{
-					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$item['id']);	
+					 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$item['id']);	
 				}else{
 					 $chk_keyer_indicator = 'Y';
 				}
@@ -97,7 +97,7 @@ $(function(){
 				
 				if($premit == "")
 				{
-					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_1['id']);	
+					 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_1['id']);	
 				}else{
 					 $chk_keyer_indicator = 'Y';
 				}
@@ -116,7 +116,7 @@ $(function(){
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
 						if($premit == "")
 						{
-							 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_2['id']);	
+							 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_2['id']);	
 						}else{
 							 $chk_keyer_indicator = 'Y';
 						}
@@ -133,7 +133,7 @@ $(function(){
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
 								if($premit == "")
 								{
-									 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_3['id']);	
+									 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_3['id']);	
 								}else{
 									 $chk_keyer_indicator = 'Y';
 								}

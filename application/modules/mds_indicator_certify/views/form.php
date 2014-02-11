@@ -26,7 +26,7 @@ $(function(){
 });
 </script>
 
-<h3>บันทึก ตรวจรับรองผลการทำตัวชี้วัด  (บันทึก / แก้ไข)</h3>
+<h3>บันทึก ตรวจรับรองผลการทำตัวชี้วัด (บันทึก / แก้ไข)</h3>
 <table class="tbadd">
   <tr>
     <th>ปีงบประมาณ</th>
@@ -45,14 +45,7 @@ $(function(){
     <td><input name="textfield2" type="text" id="textfield2" style="width:600px;" value="<?=@$parent_on?> : <?=@$rs_metrics['metrics_name']?>" readonly="readonly"/></td>
   </tr>
 </table>
-<?
-		
-			//$chk_keyer_indicator = chk_keyer_indicator(@$rs_indicator['id'],$rs_metrics['id']);	
-			//if($chk_keyer_indicator == 'Y'){
-					
-?>
-<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>'" class="btn_confirm_indicator vtip"></div>
-<? //} ?>
+<?=@$pagination;?> 
 <table class="tblist2">
 <tr>
   	<th style="width: 15%">แบบฟอร์มรายงานผล</th>
@@ -61,12 +54,12 @@ $(function(){
 	<th style="width: 5%">วันที่</th>
 	<th style="width: 10%">ขั้นตอน</th>
 	<th style="width: 10%">สถานะ</th>
-	<th style="width: 5%">ลบ </th>
+	<th style="width: 15%">ตรวจรับรองผลตัวชี้วัด</th>
 </tr>
 <? 	
 foreach ($rs as $key => $item_result) { ?>
 <tr>
-  <td><?=@$item_result['round_month']?> เดือน <a href="<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>/<?=@$item_result['id']?>"><img src="images/see.png" alt="" width="24" height="24" /></a></td>
+  <td><?=@$item_result['round_month']?> เดือน <img src="images/see.png" alt="" width="24" height="24" /></td>
   <td>
   	<?
   			    $chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
@@ -87,10 +80,16 @@ foreach ($rs as $key => $item_result) { ?>
   <td>
   	<? 
   		
-		
-  		$create = explode('-', @$item_result['create_date']);
-		$year =  substr($create['0'],2)+43;
-		$date_create = @$create['2'].'/'.@$create['1'].'/'.$year;
+		if($item_result['update_date'] == ''){
+			$create = explode('-', @$item_result['create_date']);
+			$year =  substr($create['0'],2)+43;
+			$date = @$create['2'].'/'.@$create['1'].'/'.$year;
+		}else{
+			$update = explode('-', @$item_result['update_date']);
+			$year =  substr($update['0'],2)+43;
+			$date = @$update['2'].'/'.@$update['1'].'/'.$year;
+		}
+  		
 		if($item_result['is_save'] == 1){
 			$date_2 = " - ";
 			$date_3 = " - ";
@@ -101,7 +100,7 @@ foreach ($rs as $key => $item_result) { ?>
 			$date_4 = chk_date_approve($item_result['id'],'1','1');
 		}
   	?>
-  	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date_create?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
+  	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
   <td><? 
   	   	$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
 							FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
@@ -124,8 +123,19 @@ foreach ($rs as $key => $item_result) { ?>
   		}
   	  ?>
   </td>
-  <td><input type="submit" name="button" id="button" ref_id="<?=@$item_result['id']?>" ref_metrics="<?=@$rs_metrics['id']?>" value="" class="btn_delete" /></td>
+  <td>
+  	<?
+		
+			$chk_control_indicator = chk_control_indicator(@$rs_indicator['id'],$rs_metrics['id'],$item_result['id']);
+			$chk_kpr_indicator = chk_kpr_indicator(@$rs_indicator['id'],$rs_metrics['id'],$item_result['id']);	
+			if($chk_control_indicator == 'Y' || $chk_kpr_indicator == 'Y'){
+					
+	?>
+	<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=$urlpage?>/form_list/<?=@$item_result['id']?>'" class="btn_confirm_indicator vtip"></div>
+	<?  } ?>
+  </td>
 </tr>
 <? } ?>
 
 </table>
+<?=@$pagination;?> 

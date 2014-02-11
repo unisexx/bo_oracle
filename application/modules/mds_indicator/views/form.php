@@ -90,9 +90,15 @@ foreach ($rs as $key => $item_result) { ?>
   	<? 
   		
 		
-  		$create = explode('-', @$item_result['create_date']);
-		$year =  substr($create['0'],2)+43;
-		$date_create = @$create['2'].'/'.@$create['1'].'/'.$year;
+  		if($item_result['update_date'] == ''){
+			$create = explode('-', @$item_result['create_date']);
+			$year =  substr($create['0'],2)+43;
+			$date = @$create['2'].'/'.@$create['1'].'/'.$year;
+		}else{
+			$update = explode('-', @$item_result['update_date']);
+			$year =  substr($update['0'],2)+43;
+			$date = @$update['2'].'/'.@$update['1'].'/'.$year;
+		}
 		if($item_result['is_save'] == 1){
 			$date_2 = " - ";
 			$date_3 = " - ";
@@ -103,7 +109,7 @@ foreach ($rs as $key => $item_result) { ?>
 			$date_4 = chk_date_approve($item_result['id'],'1','1');
 		}
   	?>
-  	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date_create?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
+  	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
   <td><? 
   	   	$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
 							FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS

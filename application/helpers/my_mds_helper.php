@@ -40,14 +40,14 @@ function metrics_dtl_indicator($indicator_id = null,$parent_id = null){ // ห�
 	return @$result;
 }
 
-function chk_keyer_indicator($indicator_id = null,$id = null){ //check ว่าเป็นผู้บันทึกตัวชี้วัดหรือไม่
+function chk_keyer_indicator($indicator_id = null,$id = null,$round_month=null){ //check ว่าเป็นผู้บันทึกตัวชี้วัดหรือไม่
 	$result = 'N';
-	if($indicator_id != '' && $id != ''){
+	if($indicator_id != '' && $id != '' && $round_month == ''){
 			$CI =& get_instance();
 			$condition = '';
 			$sql = "select metrics.*
 						  from mds_set_metrics metrics
-						  left join mds_set_metrics_keyer metrics_keyer on metrics.id = metrics_keyer.mds_set_metrics_id
+						  join mds_set_metrics_keyer metrics_keyer on metrics.id = metrics_keyer.mds_set_metrics_id
 						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
 						  		and  metrics_keyer.keyer_users_id = '".login_data('id')."'
 						  order by metrics.metrics_on asc  ";
@@ -56,6 +56,96 @@ function chk_keyer_indicator($indicator_id = null,$id = null){ //check ว่า
 			if($num_result > 0){
 				$result = 'Y';
 			}
+	}else if($indicator_id != '' && $id != '' && $round_month != ''){
+			$CI =& get_instance();
+			$condition = '';
+			$sql = "select metrics.*
+						  from mds_set_metrics metrics
+						  join mds_set_metrics_keyer metrics_keyer on metrics.id = metrics_keyer.mds_set_metrics_id
+						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
+						  		and  metrics_keyer.keyer_users_id = '".login_data('id')."' and metrics_keyer.round_month = '".$round_month."' 
+						  order by metrics.metrics_on asc  ";
+			$result_1 = $CI->db->getarray($sql); 
+			$num_result = count($result_1);
+			if($num_result > 0){
+				$result = 'Y';
+			}
+		
+	}
+	return @$result;
+}
+
+function chk_control_indicator($indicator_id = null,$id = null,$result_id = null){ //check ว่าเป็น ผู็กำกับ ตัวชี้วัดหรือไม่
+	$result = 'N';
+	if($indicator_id != '' && $id != '' && $result_id == ''){
+			$CI =& get_instance();
+			$condition = '';
+			$sql = "select metrics.*
+						  from mds_set_metrics metrics
+						  join mds_set_metrics_kpr metrics_kpr on metrics.id = metrics_kpr.mds_set_metrics_id
+						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
+						  		and  metrics_kpr.control_users_id = '".login_data('id')."'
+						  order by metrics.metrics_on asc  ";
+			$result_1 = $CI->db->getarray($sql); 
+			$num_result = count($result_1);
+			if($num_result > 0){
+				$result = 'Y';
+			}
+	}else if($indicator_id != '' && $id != '' && $result_id != ''){
+			$CI =& get_instance();
+			$condition = '';
+			
+			$sql = "select metrics.*
+						  from mds_set_metrics metrics
+						  join mds_metrics_result on metrics.id = mds_metrics_result.mds_set_metrics_id
+						  join mds_set_metrics_kpr metrics_kpr on metrics.id = metrics_kpr.mds_set_metrics_id and mds_metrics_result.round_month = metrics_kpr.round_month
+						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
+						  		and mds_metrics_result.id = '".$result_id."' 
+						  		and  metrics_kpr.control_users_id = '".login_data('id')."'
+						  order by metrics.metrics_on asc  ";
+			$result_1 = $CI->db->getarray($sql); 
+			$num_result = count($result_1);
+			if($num_result > 0){
+				$result = 'Y';
+			}
+		
+	}
+	return @$result;
+}
+
+function chk_kpr_indicator($indicator_id = null,$id = null,$result_id = null){ //check ว่าเป็น ผู็กำกับ ตัวชี้วัดหรือไม่
+	$result = 'N';
+	if($indicator_id != '' && $id != '' && $result_id == ''){
+			$CI =& get_instance();
+			$condition = '';
+			$sql = "select metrics.*
+						  from mds_set_metrics metrics
+						  join mds_set_metrics_kpr metrics_kpr on metrics.id = metrics_kpr.mds_set_metrics_id
+						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
+						  		and  metrics_kpr.kpr_users_id = '".login_data('id')."'
+						  order by metrics.metrics_on asc  ";
+			$result_1 = $CI->db->getarray($sql); 
+			$num_result = count($result_1);
+			if($num_result > 0){
+				$result = 'Y';
+			}
+	}else if($indicator_id != '' && $id != '' && $result_id != ''){
+			$CI =& get_instance();
+			$condition = '';
+			$sql = "select metrics.*
+						  from mds_set_metrics metrics
+						  join mds_metrics_result on metrics.id = mds_metrics_result.mds_set_metrics_id
+						  join mds_set_metrics_kpr metrics_kpr on metrics.id = metrics_kpr.mds_set_metrics_id and mds_metrics_result.round_month = metrics_kpr.round_month
+						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
+						  		and mds_metrics_result.id = '".$result_id."' 
+						  		and  metrics_kpr.kpr_users_id = '".login_data('id')."'
+						  order by metrics.metrics_on asc  ";
+			$result_1 = $CI->db->getarray($sql); 
+			$num_result = count($result_1);
+			if($num_result > 0){
+				$result = 'Y';
+			}
+		
 	}
 	return @$result;
 }
@@ -136,8 +226,9 @@ function chk_date_approve($result_id = null , $permit_type = null,$status_id = n
 		$CI =& get_instance();
 		if($result_id != '' && $permit_type != '' && $status_id != ''){
 		
-			$sql_chk_status = "SELECT *
+			$sql_chk_status = "SELECT RESULT_STATUS.*,MDS_METRICS_RESULT.IS_SAVE
 							FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
+							JOIN MDS_METRICS_RESULT ON RESULT_STATUS.MDS_METRICS_RESULT_ID = MDS_METRICS_RESULT.ID
 							WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$result_id."' AND PERMIT_TYPE_ID = '".$permit_type."' AND RESULT_STATUS_ID = '".$status_id."'
 							ORDER BY RESULT_STATUS.ID DESC";
 			$result_chk_status = $CI->db->getarray($sql_chk_status);
@@ -148,23 +239,17 @@ function chk_date_approve($result_id = null , $permit_type = null,$status_id = n
 				$update_year =  substr(@$update['0'],2)+43;
 				$date = @$update['2'].'/'.@$update['1'].'/'.@$update_year;
 				
-				$sql_chk = "SELECT *
-								FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
-								WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$result_id."' 
-								ORDER BY RESULT_STATUS.ID DESC";
-				$result_chk = $CI->db->getarray($sql_chk);
-				dbConvert($result_chk);
-				$chk = $result_chk['0'];
+			
 				if($permit_type == 3){
-					if(($chk['permit_type_id'] == '2' && $chk['result_status_id'] == '1') || ($chk['permit_type_id'] == '1' && $chk['result_status_id'] == '1')){
+					if($result['is_save'] == '1' ){
 						$date = "-";
 					}
 				}else if($permit_type == 2){
-					if($chk['permit_type_id'] == '1' && $chk['result_status_id'] == '1'){
+					if($result['permit_type_id'] == '2' && $result['result_status_id'] == '2'){
 						$date = "-";
 					}
 				}else if($permit_type == 1){
-					if($chk['permit_type_id'] == '2' && $chk['result_status_id'] == '1'){
+					if($result['permit_type_id'] == '1' && $result['result_status_id'] == '2'){
 						$date = "-";
 					}
 				}
@@ -176,5 +261,41 @@ function chk_date_approve($result_id = null , $permit_type = null,$status_id = n
 		}
 	return $date;	
 }
-			
+
+function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_start = null){
+	$CI =& get_instance();
+	$data['round_month'] = '';
+	if($users_keyer != ''&& $metrics_id != '' && $metrics_start != ''){
+		$sql_result = "select result.*
+						from mds_metrics_result result 
+						where result.keyer_users_id = '".$users_keyer."' and RESULT.MDS_SET_METRICS_ID = '".$metrics_id."' 
+						order by result.id asc";
+		$result_chk = $CI->db->getarray($sql_result);
+		dbConvert($result_chk);
+		if(count($result_chk) == '0'){
+			$data['round_month'] = $metrics_start;
+		}else{
+			foreach ($result_chk as $key => $chk) {
+				if($chk['control_status'] == '' && $chk['kpr_status'] == ''){
+					$data['round_month'] = $result_chk['0']['round_month'];
+					$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบ ".$result_chk['0']['round_month']." เดือน ยังไม่มีการตรวจรับรอง";
+				}else if($chk['control_status'] == '1' && $chk['kpr_status'] == ''){
+						
+					$data['round_month'] = $result_chk['0']['round_month'];
+					$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบ ".$result_chk['0']['round_month']."ไม่ผ่านการอนุมัติ";
+					
+				}else if($chk['control_status'] == '1' && $chk['kpr_status'] == '1'){
+					if($result_chk['0']['round_month'] < '12'){
+						$data['round_month'] = $result_chk['0']['round_month']+3;
+					}else{
+						$data['error'] = "ท่านทำการกรอกข้อมูลถึงรอบ 12 เดือนแล้ว ไม่สามารถเพิ่มผลการปฎิบัติราชการได้";
+					}	
+				}
+			}
+		}
+		
+	}
+	return $data;
+}
+		
 ?>

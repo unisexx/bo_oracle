@@ -498,6 +498,7 @@ for ($i=1; $i <= 3; $i++) {
 	
 	<tr><th>กพร.<span class="Txt_red_12"> * </span></th>
 	<td>
+		<input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr[$month]['id']?>" />
 		<input type="hidden" name="kpr_<?=$month?>" value="<?=@$kpr[$month]['kpr_users_id']?>" />
 	<?echo get_one("name","users","id",@$kpr[$month]['kpr_users_id']); ?>
 	</td></tr>

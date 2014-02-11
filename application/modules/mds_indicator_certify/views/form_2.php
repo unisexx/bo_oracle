@@ -19,37 +19,6 @@
 </style>
 <script language="JavaScript">
 $(function(){
-	$('.bt_add_document_ref').live('click',function(){
-		var num = $('#num_ref').val();
-		var i =  parseInt(num)+parseInt(1);
-		
-		var upload  = '<div id="div_document_ref_'+i+'" style="margin-top: 10px">';
-			upload +=	'<span style="margin-right: 40px;"></span>';
-			upload +=	'<div style="width: 426px;display: inline-block"><input type="file" name="document_plan_ref['+i+']" id="document_plan_ref['+i+']">';
-			upload +=	'</div>';
-			upload +=	'<input type="button" value="ลบ" ref="'+i+'" style="width: 50px;" class="dt_delete_ref_uploads" />';
-			upload += '</div>';
-		
-		$("#document_ref").before(upload);
-		$('#num_ref').val(i);
-	});
-	
-	$('.dt_delete_ref_uploads').live('click',function(){
-		var i = $(this).attr('ref');
-		$("#div_document_ref_"+i).remove();
-	});
-	
-	$('.dt_delete_document').live('click', function(){
-		var id = $(this).attr('ref_id');
-		var result_id = $(this).attr('ref_result_id');
-		var metrics_id = $('#mds_set_metrics_id').val();
-		var keyer_users_id = $('#keyer_users_id').val();
-		var round_month = $('#round_month').val();
-		var type_doc =  $(this).attr('type_doc');
-		if(confirm('ท่านต้องการลบเอกสารแนบ ใช่ หรือ ไม่')) {
-			document.location = 'mds_indicator/delete_doc/?id='+id+'&result_id='+result_id+'&metrics_id='+metrics_id+'&keyer_users_id='+keyer_users_id+'&round_month='+round_month+'&type_doc='+type_doc;
-		}
-	});
 	
 	function cal_weight(){
 	
@@ -59,77 +28,52 @@ $(function(){
 		
 		var cal = (score_mertics*metrics_weight)/weight_perc_tot;
 		
-		$('[name=score_weight]').val(cal); // ปัดเศษ
+		$('[name=score_weight]').html(cal); // ปัดเศษ
 	}
 	
-	$('#score_mertics').live('keyup',function(){
-		if($(this).val() > 5){
-			$(this).val('5')
-		}
-		cal_weight();
-	});
-	
 	 cal_weight();
-	 
-	$('.btn_save').live('click', function(){
-		$('#is_save').val('1');
-		$( "#Myform" ).submit();
-	});
-	$('.btn_savesend').live('click', function(){
-		$('#is_save').val('2');
-		$( "#Myform" ).submit();
-	});
+	function control_status(){
+		
+			if($('#control_status:checked').val() == 2){
+				$('.comment_control').show();
+			}else{
+				$('.comment_control').hide();
+			}
+		
+	}
+	$('#control_status').live('click',function(){ control_status(); });
+	control_status();
 	
+	function kpr_status(){
+		
+			if($('#kpr_status:checked').val() == 2){
+				$('.comment_kpr').show();
+			}else{
+				$('.comment_kpr').hide();
+			}
+	}
+	$('#kpr_status').live('click',function(){ kpr_status(); });
+	kpr_status();
+	
+	$('.btn_save_control').live('click', function(){
+		$('#permit_type_id').val('2');
+		$( "#Myform" ).submit();
+	});
+	$('.btn_save_kpr').live('click', function(){
+		$('#permit_type_id').val('1');
+		$( "#Myform" ).submit();
+	});
 });
 </script>
-<h3>บันทึก ตัวชี้วัด มิติที่ <?=@$rs_indicator['indicator_on']?> : <?=@$rs_indicator['indicator_name']?> (บันทึก / แก้ไข)</h3>
-<table class="tbadd">
-  <tr>
-    <th>หน่วยงานรับผิดชอบ</th>
-    <td style="font-size: 14px"><?=@$kpr['department_name']."-".@$kpr['title']?></td>
-  </tr>
-  <tr>
-    <th>ผู้กำกับดูแลตัวชี้วัด</th>
-    <td style="font-size: 14px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?></td>
-  </tr>
-  <tr>
-    <th>ติดต่อผู้กำกับ </th>
-    <td style="font-size: 14px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?> <br /> <?=(empty($kpr['email']))?'-':$kpr['email'];?> 
-    </td>
-  <tr>
-    <th>ผู้จัดเก็บข้อมูล</th>
-    <td style="font-size: 14px;">
-    	<? foreach ($keyer as $key => $temp_keyer) {
-			 if($key == '0'){
-			 	echo $temp_keyer['name'];
-			 }else{
-			 	echo ' , '.$temp_keyer['name'];
-			 }
-		   } ?>
-    </td>
-  </tr>
-  <tr>
-    <th>เบอร์โทรผู้จัดเก็บข้อมูล </th>
-    <td style="font-size: 14px;">
-    	<? foreach ($keyer as $key => $temp_keyer) {
-			 if($key == '0'){
-			 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
-			 }else{
-			 	echo ' , ';
-			 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
-			 }
-		   } ?>
-    </td>
-</table>
-<? if(@$rs['is_save'] != '2'){ ?>
+<h3>บันทึก ตรวจรับรองผลการทำตัวชี้วัด  มิติที่ <?=@$rs_indicator['indicator_on']?> : <?=@$rs_indicator['indicator_name']?> (บันทึก / แก้ไข)</h3>
+<? if(@$rs['is_save'] == '2'){ ?>
 <form enctype="multipart/form-data" action="<?php echo $urlpage;?>/save" id="Myform" method="POST">
 <? } ?>
-	<input type="hidden" name="round_month" id="round_month" value="<?=@$round_month?>" />
 	<input type="hidden" name="mds_set_metrics_id" id="mds_set_metrics_id" value="<?=@$rs_metrics['id']?>" />
-	<input type="hidden" name="mds_set_indicator_id" id="mds_set_indicator_id" value="<?=@$rs_indicator['id']?>" />
+	<input type="hidden" name="mds_set_indicator_id" id="mds_set_indicator_id" value="<?=@$rs_indicator['id']?>"/>
 	<input type="hidden" name="keyer_users_id" id="keyer_users_id" value="<?=@$rs['keyer_users_id']?>" />
 	<input type="hidden" name="id" id="id" value="<?=@$rs['id']?>" />
-	<input type="hidden" name="is_save" id="is_save" value="" />
+	<input type="hidden" name="permit_type_id" id="permit_type_id" value="" />
 <div align="center">
 <div style="border: 2px solid;border-color: #999999;width: 80%;margin-top: 10px;text-align: center">
 	<table width="100%" style="margin-top: 10px;text-align: center;">
@@ -137,37 +81,37 @@ $(function(){
 			<td style="font-size: 16px;" colspan="4"><b>รายงานผลการปฎิบัติราชการตามคำรับรองฯ (รายตัวชี้วัด)</b></td>
 		</tr>
 		<tr>
-			<td style="font-size: 16px;text-align: right;" colspan="4"><b>รอบ <?=@$round_month?> เดือน</b><span style="margin-left: 20px;"></span></td>
+			<td style="font-size: 16px;text-align: right;" colspan="4"><b>รอบ <?=@$round_month?> เดือน</b><span style="margin-left: 20px;">&nbsp;</span></td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;"></span><b>ชื่อตัวชี้วัด</b></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>ชื่อตัวชี้วัด</b></td>
 			<td style="text-align: left;padding-top: 10px" colspan="3">
 				<?=@$parent_on?> <?=@$rs_metrics['metrics_name']?>
 				<?=(empty($keyer_activity['activity']))?'':' ('.$keyer_activity['activity'].')'?>
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;"></span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 20px;"></span></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 20px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<?=@$keyer_activity['name']; ?>
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;"></span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 20px;"></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 20px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>โทรศัพท์ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<?=(empty($keyer_activity['tel']))?'-':$keyer_activity['tel']; ?>
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;"></span><b>อีเมลล์ผู้กำกับดูแล</b></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>อีเมลล์ผู้กำกับดูแล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['email']))?'-':$kpr['email'];?></td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 20px;"></span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>
+			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 20px;">&nbsp;</span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>
 		</tr>
 		<tr>
 			<td colspan="4">
@@ -183,7 +127,7 @@ $(function(){
                                   </tr>
                                   <tr>
                                     <td style="text-align: left;"><?=@$parent_on?> <?=@$rs_metrics['metrics_name']?></td>
-                                    <td><center>
+                                    <td style="height: 50px"><center>
                                     	<? 
                                     		$metrics_weight = '';
                                     		if(@$rs_metrics['metrics_weight_6'] != '' && $round_month == '6'){
@@ -196,25 +140,20 @@ $(function(){
 												$metrics_weight = $rs_metrics['metrics_weight'];
 											}
 							
-                                    	 $readonly = '';
-										 if(login_data('id') != @$rs['keyer_users_id']){
-										 	$readonly = 'readonly="readonly"';
-										 }
-										 if(@$rs['is_save'] == '2'){
-										 	$readonly = 'readonly="readonly"';
-										 }
+                                    	
 										?>
-                                        <input type="text" name="metrics_weight" style="width: 60px" size="7" value="<?=@$metrics_weight?>"  id="metrics_weight" readonly="readonly" style="color:#999999">
+                                        <input type="hidden" name="metrics_weight" style="width: 60px" size="7" value="<?=@$metrics_weight?>"  id="metrics_weight" readonly="readonly" style="color:#999999">
                                         <input type="hidden" name="weight_perc_tot" id="weight_perc_tot" value="<?=@$weight_perc_tot?>">
+                                        <?=@$metrics_weight?>
                                     </center></td>
                                     <td><center>
-                                      <input type="text" name="result_metrics" style="width: 60px" size="7" id="result_mertics" value="<?=(empty($rs['result_ac']))?'N/A':$temp_keyer['result_ac'];?>" <?=$readonly?> >
-                                    </center></td>
+                                      <input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($rs['result_metrics']))?'N/A':$rs['result_metrics'];?>" >
+                                    </center><?=@$rs['result_metrics']?></td>
                                     <td id="ac"><center> 
-                                    <input type="text" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" <?=$readonly?>>
-                                    </center></td>
+                                    <input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" >
+                                    </center><?=@$rs['score_metrics']?></td>
                                     <td id="score_weight"><center>
-                                      <input type="text" name="score_weight" style="width: 60px" size="7" value="" class="numDecimal2" readonly="readonly">
+                                      <span name="score_weight"></span>
                                     </center> 
                                     </td>
                                   </tr>
@@ -223,7 +162,7 @@ $(function(){
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 20px;"></span><b><u>แบบฟอร์มรายงาน</u></b></td>
+			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 20px;">&nbsp;</span><b><u>แบบฟอร์มรายงาน</u></b></td>
 		</tr>
 		<tr>
 			<td colspan="4" style="text-align: left;padding-top: 10px">
@@ -234,42 +173,24 @@ $(function(){
 						$result_doc = $this->doc->get($sql_doc,'true');
 						foreach ($result_doc as $key => $doc) { ?>
 							<div>
-								<span style="margin-right: 40px;"></span>
+								<span style="margin-right: 40px;">&nbsp;</span>
 								<div style="width: 420px;display: inline-block">
 								<a target="_blank" href="uploads/mds/<?=@$doc['doc_name_upload']?>"><?=@$doc['doc_name']?></a>
 								</div>
-								<? 
-									if(login_data('id') == @$rs['keyer_users_id']){
-										if(@$rs['is_save'] != '2'){ 
-								?>
-								<input type="button" value="ลบ" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" id="dt_delete_document" />
-								<? 
-										} 
-									}
-								?>
 							</div>
 						<?}
 					}
 					
 					if(count(@$result_doc) == '0'){
 				?>
-					<span style="margin-right: 40px;"></span>
+					<span style="margin-right: 40px;">&nbsp;</span>
 					<input type="file" name="document_plan">
 				<? } ?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4">
-				<span style="margin-right: 20px;"></span><b><u>หลักฐานอ้างอิง</u></b>
-				<?
-					if(login_data('id') == @$rs['keyer_users_id']){
-						if(@$rs['is_save'] != '2'){ 
-				?>
-				<span style="margin-right: 20px;"></span><input type="button" class="bt_add_document_ref" style="width: 150px" value=" เพิ่มแถบอัพโหลด " />
-				<?
-						}
-					}
-				?>
+				<span style="margin-right: 20px;">&nbsp;</span><b><u>หลักฐานอ้างอิง</u></b>
 			</td>
 		</tr>
 		<tr>
@@ -281,38 +202,15 @@ $(function(){
 						$result_doc_ref = $this->doc->get($sql_doc_ref,'true');
 						foreach ($result_doc_ref as $key => $doc_ref) {?>
 							<div style="margin-top: 10px">
-								<span style="margin-right: 40px;"></span><?=$key+1?>. 
+								<span style="margin-right: 40px;">&nbsp;</span><?=$key+1?>. 
 								<div style="width: 405px;display: inline-block">
 									<a target="_blank" href="uploads/mds/<?=@$doc_ref['doc_name_upload']?>"><?=@$doc_ref['doc_name']?></a>
 								</div>
-								<? 
-									if(login_data('id') == @$rs['keyer_users_id']){
-										if(@$rs['is_save'] != '2'){ 
-								?>
-								<input type="button" value="ลบ" ref_id="<?=@$doc_ref['id']?>" type_doc='2' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" class="dt_delete_document" />
-								<? 
-										} 
-									}
-								?>
 							</div>
 					<?		
 						}
 					
-				  } 
-						if(login_data('id') == @$rs['keyer_users_id']){
-							if(@$rs['is_save'] != '2'){ 
-					?>
-				<div id="div_document_ref_<?=$num_ref?>" style="margin-top: 10px">
-					<span style="margin-right: 40px;"></span>
-					<div style="width: 422px;display: inline-block">
-					<input type="file" name="document_plan_ref[<?=$num_ref?>]" >
-					</div>					
-					<input type="button" value="ลบ" ref="<?=$num_ref?>" style="width: 50px;" class="dt_delete_ref_uploads" />	
-				</div>
-				<?
-							}
-						}		
-				?>
+				  } ?>
 				<div id="document_ref"></div>
 				<input type="hidden" name="num_ref" id="num_ref" value="<?=@$num_ref?>" />
 			</td>
@@ -321,20 +219,185 @@ $(function(){
 	</table>
 </div>
 </div>
+<div align="center"> <!-- ส่วนของผู้กำกับตัวชี้วัด -->
+<div style="border: 2px solid;border-color: #999999;width: 80%;margin-top: 10px;text-align: center">
+	<table width="100%" border="0">
+            <tbody>
+            <tr>
+              <th style="padding-top: 20px"><span style="margin-right: 20px;">&nbsp;</span><strong>รับรองผลการดำเนินงานจากผู้กำกับดูแลตัวชี้วัด</strong></th>
+            </tr>
+            <tr>
+              <? 				$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+												FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
+												LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
+												WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' AND RESULT_STATUS.PERMIT_TYPE_ID = '2' ORDER BY RESULT_STATUS.ID DESC";
+								$result_status = $this->result_status->get($sql_chk_status);
+								$result_status = @$result_status['0'];
+              
+              					$sql_chk = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+												FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
+												LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
+												WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' ORDER BY RESULT_STATUS.ID DESC";
+								$result_chk = $this->result_status->get($sql_chk);
+								$result_chk = @$result_chk['0'];
+								if($result_chk['permit_type_id'] == '3' && $result_chk['result_status_id'] == '2'){
+									$result_status['result_status_id'] = '';
+									$result_status['result_comment'] = '';
+									$result_status['status_dtl'] = '';
+								}
+		 					if(@$rs['control_status'] != '' && @$rs['is_save'] == '2'){
+		 						
+              ?>
+              				<td style="text-align: left;padding-top: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong> <?=@$result_status['status_dtl']?></td>
+              <? 			}else{
+              						
+              				if(is_permit(login_data('id'),'2') != '' && $result_chk['permit_type_id'] != '1'){
+		              			$chk_control_indicator = chk_control_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
+				 					if($chk_control_indicator == 'Y'){
+				 						
+              ?>
+              	 				<td style="text-align: left;padding-top: 10px">
+              	 					<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong><br />
+              	 					<span style="margin-right: 60px;">&nbsp;</span>
+              	 					<?
+              	 						$checked_1 = '';
+										$checked_2 = '';
+              	 						if(@$result_status['result_status_id'] == '2'){
+              	 							$checked_2 = 'checked="checked"';
+              	 						}else{
+              	 							$checked_1 = 'checked="checked"';
+              	 						}
+              	 					?>
+              	 						<input type="radio" name="control_status" id="control_status" value="1" <?=@$checked_1?> /> อนุมัติ <br />
+              	 					<span style="margin-right: 60px;">&nbsp;</span>
+              	 						<input type="radio" name="control_status" id="control_status" value="2" <?=@$checked_2?> /> ไม่อนุมัติ
+              	 					<div style="display: none;margin-top: 10px" class="comment_control">
+              	 						<span style="margin-right: 60px;">&nbsp;</span>
+              	 						หมายเหตุ : <br />
+              	 						<span style="margin-right: 60px;">&nbsp;</span>
+              	 						<textarea cols="20" rows="5" name="result_comment" style="width:80%; height:100px"><?=@$result_status['result_comment']?> </textarea>
+              	 					</div>
+              	 				</td>
+              			<?	}
+						}else{?>
+						<td style="text-align: left;padding-top: 10px">
+							<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง : </strong><?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
+							<? if(@$result_status['result_status_id'] == '2'){ ?>
+								<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
+							<? } ?>
+						</td>	
+					  <?}
+				} 
+			  ?>
+            </tr>
+            <tr>
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$kpr['name']?></td> 
+            </tr>
+          </tbody></table>
+</div>
+</div>
 
-
+<? 
+$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+					FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
+					LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
+					WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' AND RESULT_STATUS.PERMIT_TYPE_ID = '1' ORDER BY RESULT_STATUS.ID DESC";
+		$result_status = $this->result_status->get($sql_chk_status);
+		$result_status = @$result_status['0'];
+$sql_chk = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+			FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
+			LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
+			WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' ORDER BY RESULT_STATUS.ID DESC";
+	$result_chk = $this->result_status->get($sql_chk);
+	$result_chk = @$result_chk['0'];
+	$num_kpr = count($result_status);
+	if(($result_chk['permit_type_id'] == '3' && $result_chk['result_status_id'] == '2') || ($result_chk['permit_type_id'] == '2' && $result_chk['result_status_id'] == '1')){
+				$result_status['result_status_id'] = '';
+				$result_status['result_comment'] = '';
+				$result_status['status_dtl'] = '';
+				$num_kpr = 0;
+	}
+if((@$rs['control_status'] == '1' && @$rs['is_save'] == '2') || ($num_kpr > 0)){ 
+?>
+<div align="center"> <!-- ส่วนของ กพร ตัวชี้วัด -->
+<div style="border: 2px solid;border-color: #999999;width: 80%;margin-top: 10px;text-align: center">
+	<table width="100%" border="0">
+            <tbody>
+            <tr>
+              <th style="padding-top: 20px"><span style="margin-right: 20px;">&nbsp;</span><strong>รับรองผลการดำเนินงานจาก กพร.</strong></th>
+            </tr>
+            <tr>
+              <? 				
+		 			if(@$rs['control_status'] == '1' && @$rs['is_save'] == '2' && @$rs['kpr_status'] != ''){
+		 						
+              ?>
+              <td style="text-align: left;padding-top: 10px"><span style="margin-right: 40px;"></span><strong>ผลการรับรอง :</strong> <?=@$result_status['status_dtl']?></td>
+              <? 			}else{
+			              	if(is_permit(login_data('id'),'1') != ''){
+				              		$chk_kpr_indicator = chk_kpr_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
+						 				if($chk_kpr_indicator == 'Y'){
+						 					
+              	 						$checked_1 = '';
+										$checked_2 = '';
+              	 						if(@$result_status['result_status_id'] == '2'){
+              	 							$checked_2 = 'checked="checked"';
+              	 						}else{
+              	 							$checked_1 = 'checked="checked"';
+              	 						}
+              	 					
+              ?>
+              	 				<td style="text-align: left;padding-top: 10px">
+              	 					<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong><br />
+              	 					<span style="margin-right: 60px;">&nbsp;</span>
+              	 						<input type="radio" name="kpr_status" id="kpr_status" value="1" <?=$checked_1?> /> ผ่าน <br />
+              	 					<span style="margin-right: 60px;">&nbsp;</span>
+              	 						<input type="radio" name="kpr_status" id="kpr_status" value="2" <?=$checked_2?> /> ไม่ผ่าน
+              	 					<div style="display: none;margin-top: 10px" class="comment_kpr">
+              	 						<span style="margin-right: 60px;">&nbsp;</span>
+              	 						หมายเหตุ : <br />
+              	 						<span style="margin-right: 60px;">&nbsp;</span>
+              	 						<textarea cols="20" rows="5" name="result_comment" style="width:80%; height:100px"><?=@$result_status['result_comment']?></textarea>
+              	 					</div>
+              	 				</td>
+              			<?	}
+						}else{?>
+						<td style="text-align: left;padding-top: 10px">
+							<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง : </strong><?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
+							<? if(@$result_status['result_status_id'] == '2'){ ?>
+								<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
+							<? } ?>
+						</td>	
+					  <?}
+					}
+			  ?>
+            </tr>
+            <tr>
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=get_one('name','users','id',@$kpr['kpr_users_id'])?></td> 
+            </tr>
+          </tbody></table>
+</div>
+</div>
+<? } ?>
 <div align="center" style="margin-top: 10px">
 <?
- if(is_permit(login_data('id'),'3') != ''){
-	 $chk_keyer_indicator = chk_keyer_indicator(@$rs_indicator['id'],@$rs_metrics['id']);
-		 if($chk_keyer_indicator == 'Y'){
-		 	if(login_data('id') == @$rs['keyer_users_id']){
-		 		if(@$rs['is_save'] != '2'){
+ if(is_permit(login_data('id'),'2') != '' || is_permit(login_data('id'),'1') != ''){
+	 $chk_control_indicator = chk_control_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
+		 if($chk_control_indicator == 'Y'){
+		 	
+		 	if(@$rs['control_status'] == '' && @$rs['is_save'] == '2'){
 ?>
-  <input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
-  <input name="input" type="button" title="บันทึกพร้อมส่ง" value=" " class="btn_savesend"/>
+  <input name="input" type="button" title="บันทึก" value=" " class="btn_save btn_save_control"/>
 <?   		
-				}
+				
+			}
+		}	
+		$chk_kpr_indicator = chk_kpr_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
+		 if($chk_kpr_indicator == 'Y'){	 	
+		 	if(@$rs['control_status'] == '1' && @$rs['is_save'] == '2' && @$rs['kpr_status'] == ''){
+?>
+  <input name="input" type="button" title="บันทึก" value=" " class="btn_save btn_save_kpr"/>
+<?   		
+				
 			}
 		}	
   }

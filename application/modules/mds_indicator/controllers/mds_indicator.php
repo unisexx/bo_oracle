@@ -136,11 +136,20 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			if($premit_2 == ''){ set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		
+		
+		
 		if($result_id == '' && $metrics_id != ''){
 			
 			$data['rs_metrics'] = $this->metrics->get_row($metrics_id);
-				
-				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id']);
+				if($metrics_id != ''){
+					$chk_round_month = chk_result_round_month(login_data('id'),$metrics_id,@$data['rs_metrics']['metrics_start']);
+					if(@$chk_round_month['error'] != ''){
+						set_notify('error', $chk_round_month['error']);
+						redirect($data['urlpage'].'/form/'.@$metrics_id);
+					}
+				}
+				  $data['round_month'] = $chk_round_month['round_month']; //รอบการส่งประเมิน
+				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id'],$data['round_month']);
 				  if($chk_keyer_indicator != 'Y'){
 				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
 				  }	
@@ -170,7 +179,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 				
-				$data['round_month'] = '6'; //รอบการส่งประเมิน
+				
 					
 				// หา น้ำหนักของทั้งมิติ //
 				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['round_month']);
