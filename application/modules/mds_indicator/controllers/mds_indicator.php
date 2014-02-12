@@ -68,14 +68,14 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$sql_result = "select result.*,users.name ,users.tel,users.email
 								from mds_metrics_result result
 								left join users on result.keyer_users_id = users.id
-								where mds_set_metrics_id = '".$id."' and keyer_users_id = '".login_data('id')."' ";
+								where mds_set_metrics_id = '".$id."' and keyer_users_id = '".login_data('id')."' order by round_month asc ";
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
 			}else{
 				$sql_result = "select result.*,users.name ,users.tel,users.email
 								from mds_metrics_result result
 								left join users on result.keyer_users_id = users.id
-								where mds_set_metrics_id = '".$id."' ";
+								where mds_set_metrics_id = '".$id."' order by round_month asc ";
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
 				

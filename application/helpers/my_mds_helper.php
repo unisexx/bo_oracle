@@ -269,7 +269,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 		$sql_result = "select result.*
 						from mds_metrics_result result 
 						where result.keyer_users_id = '".$users_keyer."' and RESULT.MDS_SET_METRICS_ID = '".$metrics_id."' 
-						order by result.id asc";
+						order by result.id desc";
 		$result_chk = $CI->db->getarray($sql_result);
 		dbConvert($result_chk);
 		if(count($result_chk) == '0'){

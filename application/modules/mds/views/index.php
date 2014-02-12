@@ -9,13 +9,15 @@
 <h3>บันทึกข้อมูล</h3>
 <div id="BOico">
 <div class="lineico">
+<? if(is_permit(login_data('id'),'1') != '' || is_permit(login_data('id'),'3') != ''){ ?>
 <div class="ico"><a href="mds_indicator"><img src="themes/mdevsys/images/icon/indicator.png" width="48" height="48" /><h4>ตัวชี้วัด</h4></a></div>
+<? } ?>
 <? if(is_permit(login_data('id'),'1') != '' || is_permit(login_data('id'),'2') != ''){ ?>
 <div class="ico"><a href="mds_indicator_certify"><img src="themes/mdevsys/images/icon/indicator_certify.png" width="48" height="48" /><h4>ตรวจรับรองผล การทำตัวชี้วัด</h4></a></div>
 <? } ?>
 <div class="clear"></div>
 </div>
-
+<? if(is_permit(login_data('id'),'1') != ''){ ?>
 <h3 class="clear">รายงาน</h3>
 <div class="lineico">
 <div class="ico"><a href="#"><img src="themes/mdevsys/images/icon/report_esar.png" width="48" height="48" /><h4>Sar Card หน่วยงาน</h4></a></div>
@@ -26,7 +28,7 @@
 
 <div class="clear"></div>
 </div>
-<? if(is_permit(login_data('id'),'1') != ''){ ?>
+
 <h3 class="clear">ตั้งค่า</h3>
 <div class="lineico">
 <div class="ico"><a href="mds_set_indicator"><img src="themes/mdevsys/images/icon/indicator_set.png" width="48" height="48" /><h4>มิติและตัวชี้วัด</h4></a></div>

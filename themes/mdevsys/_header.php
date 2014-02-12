@@ -4,7 +4,9 @@
 <ul id="navmenu-h">
         <li><a href="#">บันทึก +</a>
           <ul style="width:220px;">
+          	<? if(is_permit(login_data('id'),'1') != '' || is_permit(login_data('id'),'3') != ''){ ?>
             <li><a href="mds_indicator">ตัวชี้วัด</a></li>
+            <? } ?>
             <? if(is_permit(login_data('id'),'1') != '' || is_permit(login_data('id'),'2') != ''){ ?>
             <li><a href="mds_indicator_certify">ตรวจรับรองผลการทำตัวชี้วัด</a></li>
             <? } ?>
@@ -22,7 +24,7 @@
             <li><a href="mds_set_permission">สิทธิ์การใช้ระบบ SAR CARD</a></li>
           </ul>
         </li>
-        <? } ?>
+        
         <li><a href="#">รายงาน +</a>
             <ul style="width:310px;">
             	<li><a href="#">Sar Card หน่วยงาน</a></li>
@@ -33,7 +35,7 @@
                 <li><a href="logfile.php">Log File</a></li>
             </ul>
         </li>
-		
+		<? } ?>
 </ul>
 </div>
 <div id="login">

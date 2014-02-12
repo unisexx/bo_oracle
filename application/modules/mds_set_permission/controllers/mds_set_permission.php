@@ -126,7 +126,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 				save_logfile("DELETE","ลบ ".$this->modules_title." ID : ".$ID." ".get_one('name', $this->modules_name2,'id',$users_id),$this->modules_name);				
 				$this->permission->delete($ID);
 			}else{
-				set_notify('error', "ไม่สามารถลบสิทธิ์ การใช้งานได้เนื่องจากมีข้อมูลในตั้วชี้วัด");
+				set_notify('error', "ไม่สามารถลบสิทธิ์ การใช้งานได้ เนื่องจากมีข้อมูลในตั้วชี้วัด");
 			}
 					
 		}
