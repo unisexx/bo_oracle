@@ -1,13 +1,14 @@
+
 <h3 id="topic"><br />แผนงบประมาณรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="" method="get">
+<form name="frmAsset" enctype="multipart/form-data" action="budget_report_9/index" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">
 <tr>
 	<th>ปีงบประมาณ</th>
     <td>
-        <?php echo form_dropdown('year',get_option('(byear-543) as byear_id','byear','cnf_set_time',' 1=1 order by byear'),$year,'','เลือกปีงบประมาณ'); ?>
+        <?php echo form_dropdown('year',get_option('(byear-543) as byear_id','byear','cnf_set_time',' 1=1 order by byear'),$year,'id="year"','เลือกปีงบประมาณ'); ?>
     </td>
 </tr>
 <tr>
@@ -29,7 +30,7 @@
   <th>ผลผลิต</th>
   <td>
     <div id="dvProductivity" >
-        <?php echo form_dropdown('productivity',get_option('id','title','cnf_strategy','productivityid = 0 AND sectionstrategyid > 0 AND syear='.$year),$productivity,'','เลือกผลผลิต'); ?>
+        <?php echo form_dropdown('productivity',get_option1('id','title','cnf_strategy','PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR='.$year),'','id="productivity"','เลือกผลผลิต','0'); ?>
       </div>
     &nbsp;</td>
 </tr>
@@ -39,36 +40,36 @@
     <div id="dvMainActivity">
         <?php
         $condition = $productivity != '' ? " AND PRODUCTIVITYID=".$productivity : "";
-        echo form_dropdown('mainactivity',get_option('id','title','cnf_strategy','MAINACTID = 0 AND BUDGETPOLICYID > 0 AND SYEAR='.$year.$condition),$mainactivity,'','เลือกกิจกรรมหลัก') ?>
+        echo form_dropdown('mainactivity',get_option1('id','title','cnf_strategy','MAINACTID = 0 AND BUDGETPOLICYID > 0 AND SYEAR='.$year.$condition),'','id="mainactivity"','เลือกกิจกรรมหลัก','0') ?>
       </div>
     &nbsp;</td>
 </tr>
 <tr>
   <th>ภาค</th>
-  <td><?php echo form_dropdown('pzone',get_option('id','title','cnf_province_zone'),@$_GET['zone'],'id="pzone"','ภาคทั้งหมด') ?></td>
+  <td><?php echo form_dropdown('pzone',get_option1('id','title ','cnf_province_zone'),$pzone,'id="pzone"','ภาคทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>กลุ่มจังหวัด</th>
-  <td><?php echo form_dropdown('pgroup',get_option('id','description','cnf_province_group','1=1 order by description'),@$_GET['group'],'','กลุ่มจังหวัดทั้งหมด') ?></td>
+  <td><?php echo form_dropdown('pgroup',get_option1('id','description','cnf_province_group','',' description'),@$_GET['group'],'id="pgroup"','กลุ่มจังหวัดทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>จังหวัด</th>
   <td><div id="dvProvinceList">
-    <?php echo form_dropdown('province',get_option('id','title','cnf_province','1=1 order by title'),@$_GET['province'],'','เลือกจังหวัด','0'); ?>
+    <?php echo form_dropdown('province',get_option1('id','title','cnf_province','','title'),$province,'id="province"','เลือกจังหวัด'); ?>
   </div></td>
 </tr>
 <tr>
   <th>หน่วยงาน</th>
   <td><div id="dvSectionList">
-  	<?php echo form_dropdown('division',get_option('id','title','cnf_division','1=1 order by title'),@$_GET['division'],'','เลือกหน่วยงาน','0') ?>
+  	<?php echo form_dropdown('division',get_option1('id','title','cnf_division','','title'),$division,'id="division"','เลือกหน่วยงาน'); ?>
   </div></td>
 </tr>
 <tr>
   <th>กลุ่มงาน</th>
   <td><div id="dvWorkgroupList">
     <?php
-     $scondition = (!empty($_GET['division'])) ? " divisionid=".$_GET['division']." " : "";
-     echo form_dropdown('workgroup',get_option('id','title','cnf_workgroup',$condition),@$_GET['workgroup'],'','เลือกทุกกลุ่ม','0') ?>
+     $condition = (!empty($_GET['division'])) ? " divisionid=".$_GET['division']: "";
+     echo form_dropdown('workgroup',get_option1('id','title','cnf_workgroup',$condition),$workgroup,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
   </div></td>
 </tr>
 <tr>
@@ -81,6 +82,10 @@
 </fieldset>
 </form>
 </div>
+<?php include('report.php') ?>
+
+
+
 <script type="text/javascript">
 function LoadProvinceZone(pZone)
 {
@@ -170,12 +175,20 @@ function LoadSubActivity(pYear,pProductivity,pMainActivity,pControl)
 	})
 
 }
-<script>
-
-$(document).ready(function(){
-  $('select[name=productivity]').chainedSelect({parent: 'select[name=year]',url: 'ajax/ajax_productivity_list',value: 'id',label: 'text'});
-
-
-
-})
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#year').change(function(){
+		LoadMainActivity(<?=$year;?>,$('#year option:selected').val(),'dvMainActivity');
+		LoadSubActivity(<?=$year;?>,$('#year option:selected').val(),'','dvSubActivity');
+	})
+	$('#productivity').live('change',function(){
+		pProductivity = $(this).val();
+		alert(pProductivity);
+		LoadMainActivity(<?=$year;?>,$('#productivity option:selected').val(),'dvMainActivity');
+		LoadSubActivity(<?=$year;?>,$('#productivity option:selected').val(),'','dvSubActivity');
+	})
+});
+</script>
+
+

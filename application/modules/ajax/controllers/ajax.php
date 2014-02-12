@@ -58,23 +58,29 @@ class ajax extends Monitor_Controller
 		if($_GET['type']=="productivity"){
 			$where = "PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
 			$text = "เลือกผลผลิต";
+			$name= 'productivity';
 
 		}else if($_GET['type']=="main"){
-			$condition = $_GET['productivity']!='' ? " AND BUDGETPOLICYID > 0 AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
-			$where = "MAINACTID = 0 '.$condition.' AND SYEAR=".$_GET['year'];
+			$condition = (!empty($_GET['productivity'])) ? " AND BUDGETPOLICYID > 0 AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
+			$where = "MAINACTID = 0 $condition AND SYEAR=".$_GET['year'];
 			$text = "เลือกกิจกรรมหลัก";
+			$name= "mainproductivity";
 
 		}else if($_GET['type']=="sub"){
 			$condition = '';
-			$condition = $_GET['productivity']!='' ? " AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
-			$condition .=  $_GET['mainactivity']!='' ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
-			$condition .= $_GET['missiontype']!='' ? " AND MISSIONTYPE='".trim($_GET['missiontype'])."' ": "";
+			$condition = (!empty($_GET['productivity'])) ? " AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
+			$condition .=  (!empty($_GET['mainactivity'])) ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
+			$condition .= (!empty($_GET['missiontype'])) ? " AND MISSIONTYPE='".trim($_GET['missiontype'])."' ": "";
 			$where = "year=".$_GET['year'].$condition;
 			$text = "เลือกกิจกรรมย่อย";
+			$name = "subproductivity";
 		}
 		$result = $this->db->GetArray("select id,title as text from cnf_strategy WHERE ".$where);
-		array_unshift($result, array('id' => '0', 'text' => $text));
-		echo $result ? json_encode($result) : '[{"id":"0","text":"'.$text.'"}]';
+		array_walk($result,'dbConvert1');
+		//array_unshift($result, array('id' => '0', 'text' => $text));
+		//echo $result ? json_encode($result) : '[{"id":"0","text":"'.$text.'"}]';
+		$extra = 'id="'.$name.'"';
+		echo form_dropdown($name,get_option1('id','title','cnf_strategy',$where),'',$extra,$text,'0');
 	}
 	function ajax_workgroup_list(){
 		$condition = " WHERE 1=1 ";

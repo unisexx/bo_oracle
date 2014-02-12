@@ -28,19 +28,19 @@ class budget_report_9 extends Budget_Controller
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
 
+		$data['userSection'] = (!empty($_GET['section'])) ? $_GET['section']:'';
+		$data['userWorkgroup'] = (!empty($_GET['workgroup'])) ? $_GET['workgroup']:'' ;
+		$data['pzone'] = (!empty($_GET['pzone'])) ? $_GET['pzone']:'';
+		$data['pgroup'] = (!empty($_GET['pgroup'])) ? $_GET['pgroup']:'';
+		$data['province'] = (!empty($_GET['province'])) ? $_GET['province']:'';
+
 		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y')-1;
 		$data['thyear'] = $data['year'] + 543;
-
-        //$data['userWorkgroup'] = $_GET['workgroup']!='' ? $data['userWorkgroup'] = $_GET['workgroup'] : $data['userWorkgroup'];
-        //$result = $this->db->GetArray("SELECT * FROM CNF_STRATEGY WHERE PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=2013");
-        //array_walk($result,'dbConvert');
-		//var_dump($result);exit;
-
-		$data['user_divisionid'] = login_data("DIVISIONID");
+		//$data['user_divisionid'] = login_data("DIVISIONID");
 		$this->template->build('index',$data);
 	}
 
 
 
-	}
+}
 ?>
