@@ -1,4 +1,5 @@
 <?php
+header("content-type: application/x-javascript; charset=TIS-620");
 class ajax extends Monitor_Controller
 {
 	public function __construct()
@@ -54,7 +55,8 @@ class ajax extends Monitor_Controller
 			echo form_dropdown('workgroupid',get_option('id','title','cnf_workgroup',$condition),$select_data,'','-- เลือกกลุ่มงาน --','0');
 		}
 
-	function ajax_productivity_list(){
+	function ajax_productivity_list()
+	{
 		if($_GET['type']=="productivity"){
 			$where = "PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
 			$text = "เลือกผลผลิต";
@@ -64,23 +66,34 @@ class ajax extends Monitor_Controller
 			$condition = (!empty($_GET['productivity'])) ? " AND BUDGETPOLICYID > 0 AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
 			$where = "MAINACTID = 0 $condition AND SYEAR=".$_GET['year'];
 			$text = "เลือกกิจกรรมหลัก";
-			$name= "mainproductivity";
+			$name= "mainactivity";
 
 		}else if($_GET['type']=="sub"){
-			$condition = '';
 			$condition = (!empty($_GET['productivity'])) ? " AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
-			$condition .=  (!empty($_GET['mainactivity'])) ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
+			$condition .= (!empty($_GET['mainactivity'])) ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
 			$condition .= (!empty($_GET['missiontype'])) ? " AND MISSIONTYPE='".trim($_GET['missiontype'])."' ": "";
-			$where = "year=".$_GET['year'].$condition;
+			$where = "syear=".$_GET['year'].$condition;
 			$text = "เลือกกิจกรรมย่อย";
-			$name = "subproductivity";
+			$name = "subactivity";
 		}
-		$result = $this->db->GetArray("select id,title as text from cnf_strategy WHERE ".$where);
-		array_walk($result,'dbConvert1');
-		//array_unshift($result, array('id' => '0', 'text' => $text));
-		//echo $result ? json_encode($result) : '[{"id":"0","text":"'.$text.'"}]';
-		$extra = 'id="'.$name.'"';
-		echo form_dropdown($name,get_option1('id','title','cnf_strategy',$where),'',$extra,$text,'0');
+		//$this->db->debug=true;
+		$sql = "select id,title from cnf_strategy where $where";
+		$result = $this->db->GetArray(ConvertCommand($sql));
+		dbConvert1($result);
+		echo '<select name="'.$name.'" id="'.$name.'">';
+		echo '<option value="0">'.$text.'</optionv>';
+		foreach($result as $item){
+			echo '<option value="'.$item['id'].'">'.$item['title'].'</option>';
+		}
+		echo '</select>';
+		//echo form_dropdown($name,get_option('id','title','cnf_strategy',$where),'',$extra,$text,'0');
+	}
+	function ajax_province_list(){
+		$condition = " 1=1 ";
+		$condition .= $_GET['zone']!= '' ? " AND ZONE='".$_GET['zone']."' " : "";
+		$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
+		$sql = "SELECT * FROM CNF_PROVINCE_CODE $condition ORDER BY TITLE ";
+		echo form_dropdown('province',get_option1('id','title','cnf_province','','title'),$province,'id="province"','เลือกจังหวัด');
 	}
 	function ajax_workgroup_list(){
 		$condition = " WHERE 1=1 ";

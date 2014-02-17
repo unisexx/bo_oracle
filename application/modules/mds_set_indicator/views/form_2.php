@@ -116,7 +116,7 @@ $(function(){
 	var ref_m = $(this).attr('ref_m');
 	var num = $('#keyer_num_'+ref_m).val();
 	var i =  parseInt(num)+parseInt(1);
-	
+		$('.bt_add_keyer').attr('disabled', 'disabled');
 		$("<img class='loading' src='images/loading.gif' style='vertical-align:bottom'>").appendTo(".loading-icon_"+ref_m);
 		$.get('<? echo site_url(); ?>mds_set_indicator/add_keyer',
 		{ month:ref_m , num:i },
@@ -124,33 +124,29 @@ $(function(){
 				$(".loading").remove();
 				$('#keyer_div_'+ref_m).before(data);
 		 		$('#keyer_num_'+ref_m).val(i);	
+		 		$('.bt_add_keyer').removeAttr('disabled');
 		 		$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
 	        						       							  return $("#metrics_start").val() == '6';}
 											           , messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
 											           	});
 				if(ref_m == 9){
+					
 					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("[name=sem_9]:checked").val() == '9';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("#metrics_start").val() == '9';}
+	        						       											 return ($("[name=sem_9]:checked").val() == '9' || $("#metrics_start").val() <= '9');}
 											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
 											           						});
 				}
 				if(ref_m == 12){
 					
+					
 					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("[name=sem_12]:checked").val() == '12';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-					$("[name='keyer_"+ref_m+"["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("#metrics_start").val() == '12';}
+	        						       											 return ($("#metrics_start").val() <= parseInt('12') || $("[name=sem_12]:checked").val() == parseInt('12'));}
 											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
 											           						});
 					//alert($("[name=sem_12]:checked").val());
-				}   
+				}			
 				validate_form();
+				
 		});		 
 	});
 	$('.bt_remove_keyer').live("click",function(){
@@ -294,12 +290,27 @@ $(function(){
     </span></th>
     <td><input type="text" name="metrics_target" id="metrics_target" style="width:30px;" value="<?=@$rs['metrics_target']?>" class="numOnly" /></td>
   </tr>
+  <? 
+  	$sql_result = "select * from mds_metrics_result where mds_set_metrics_id = '".@$rs['id']."' ";
+  	$chk_result = $this->metrics_result->get($sql_result);
+	$num_chk_result = count($chk_result);
+  ?>
   <tr>
     <th>ผู้รับผิดชอบ<span class="Txt_red_12"> *</span></th> 
     <td>
+    	<? if($num_chk_result > 0){?>
+    		<input type="hidden" name="metrics_responsible" value="<?=@$rs['metrics_responsible']?>" />
+    		
+    	<?  if(@$rs['metrics_responsible']== 'Y'){
+    		 	echo "มี";
+    		}else{
+    			echo "ไม่มี";
+    		}
+		  }else{ ?>
     	<span><input type="radio" name="metrics_responsible" id="metrics_responsible_y" value="Y" <? if(@$rs['metrics_responsible']== 'Y' || @$rs['metrics_responsible'] == ''){ echo 'checked="checked"'; } ?> />      มี</span>
         <span><input type="radio" name="metrics_responsible" id="metrics_responsible_n" value="N" <? if(@$rs['metrics_responsible']== 'N'){ echo 'checked="checked"'; } ?> /> ไม่มี</span>
     	<div id="error_responsible"></div>
+        <? } ?>
     </td>
   </tr>
   <tr>
@@ -313,12 +324,19 @@ $(function(){
     		$selcet_12 = 'selected="selected"';
     	}
     ?>
-    <td><select name="metrics_start" id="metrics_start">
-      <option value="">-- เลือกรอบตัวชี้วัด --</option>
-      <option value="6" <?=@$selcet_6?>>เริ่มที่รอบ 6 เดือน</option>
-      <option value="9" <?=@$selcet_9?>>เริ่มที่รอบ 9 เดือน</option>
-      <option value="12" <?=@$selcet_12?>>เริ่มที่รอบ 12 เดือน</option>
-    </select></td>
+    <td>
+    <? if($num_chk_result > 0){ ?> 
+    	<input type="hidden" name="metrics_start" id="metrics_start" value="<?=@$rs['metrics_start']?>" />
+    <?	echo "เริ่มที่รอบ ".@$rs['metrics_start']." เดือน";
+      }else{ ?>
+      <select name="metrics_start" id="metrics_start">
+	      <option value="">-- เลือกรอบตัวชี้วัด --</option>
+	      <option value="6" <?=@$selcet_6?>>เริ่มที่รอบ 6 เดือน</option>
+	      <option value="9" <?=@$selcet_9?>>เริ่มที่รอบ 9 เดือน</option>
+	      <option value="12" <?=@$selcet_12?>>เริ่มที่รอบ 12 เดือน</option>
+   	  </select>
+   	  <? } ?>
+    </td>
   </tr>
   <tr>
     <th>ตัวชี้วัดนี้ยกเลิกที่รอบ</th>
@@ -343,25 +361,55 @@ for ($i=1; $i <= 3; $i++) {
 <th>น้ำหนักตัวชี้วัดรอบ <?=$month?> เดือน</th>
 <td><input type="text" name="metrics_weight_<?=$month?>" id="metrics_weight_<?=$month?>"style="width:50px;" class="numDecimal" value="<?=@$rs['metrics_weight_'.$month]?>" /></td>
 </tr>
-<?php if($month == '9'){ ?>
+<?php 
+	$sql_result_round = "select * from mds_metrics_result where mds_set_metrics_id = '".@$rs['id']."' and round_month = '".$month."' ";
+  	$chk_result_round = $this->metrics_result->get($sql_result_round);
+	$num_chk_round = count($chk_result_round);
+	if($month == '9'){ ?>
 	<th>ผู้รับผิดชอบ<span class="Txt_red_12"> * </span></th>
-	  <td><span class="metrics_6">
+	<td>
+	<? if($num_chk_round == 0 && $month == '9'){ ?>  
+	  	<span class="metrics_6">
 	    <input type="radio" name="sem_9" id="sem_9_6" value="6" <? if(@$rs['sem_9'] == '6' || @$rs['sem_9']==''){ echo  'checked="checked"'; } ?> />
 	    กลุ่มเดียวกับ รอบ 6 เดือน  </span> 
 	  <span>
 	  <input type="radio" name="sem_9" id="sem_9_9" value="9" <? if(@$rs['sem_9'] == '9'){ echo  'checked="checked"'; } ?> />
-	  เปลี่ยนกลุ่มรับผิดชอบ</span></td>
+	  เปลี่ยนกลุ่มรับผิดชอบ</span>
+	 <? }else{?>
+	 	<input type="hidden" name="sem_9" value="<?=@$rs['sem_9']?>" />
+	 	<?
+		 	if(@$rs['sem_9'] == '6'){
+		 		echo "กลุ่มเดียวกับ รอบ 6 เดือน";
+		 	}else if(@$rs['sem_9'] == '9'){
+		 		echo "เปลี่ยนกลุ่มรับผิดชอบ";
+			}
+	 	} ?>
+	</td>
 	</tr>
 <? }else if($month == '12'){ ?>
 	<tr class="metrics_12">
 	  <th>ผู้รับผิดชอบ<span class="Txt_red_12"> * </span></th>
-	  <td><span class="metrics_6">
+	  <td>
+	  	<? if($num_chk_round == 0 && $month == '12'){ ?>
+	  	<span class="metrics_6">
 	    <input type="radio" name="sem_12" id="sem_12_6" value="6" <? if(@$rs['sem_12'] == '6' || @$rs['sem_12']==''){ echo  'checked="checked"'; } ?> />
 	    	กลุ่มเดียวกับ รอบ 6 เดือน</span>
 	    <span class="metrics_9"><input type="radio" name="sem_12" id="sem_12_9" value="9" <? if(@$rs['sem_12'] == '9'){ echo  'checked="checked"'; } ?> />
 		กลุ่มเดียวกับ รอบ 9 เดือน</span> <span>
 	    <input type="radio" name="sem_12" id="sem_12_12" value="12" <? if(@$rs['sem_12'] == '12'){ echo  'checked="checked"'; } ?> />
-	   	 เปลี่ยนกลุ่มรับผิดชอบ</span></td>
+	   	 เปลี่ยนกลุ่มรับผิดชอบ</span>
+	   	 <? }else{ ?>
+	   	 	<input type="hidden" name="sem_12" value="<?=@$rs['sem_12']?>" />
+	   	 <?
+	   	 		if(@$rs['sem_12'] == '6'){
+		 			echo "กลุ่มเดียวกับ รอบ 6 เดือน";
+			 	}else if(@$rs['sem_12'] == '9'){
+			 		echo "กลุ่มเดียวกับ รอบ 9 เดือน";
+				}else if(@$rs['sem_12'] == '12'){
+					echo "เปลี่ยนกลุ่มรับผิดชอบ";
+				}
+	   	 } ?>
+	  </td>
 	</tr>
 <? } ?>
 
@@ -374,6 +422,7 @@ for ($i=1; $i <= 3; $i++) {
 	$result_keyer[$month] = $this->keyer->get($sql_keyer[$month]);
 	
 ?>
+<?if($num_chk_round == 0){// ตรวจสอบว่ามีการบันทึกข้อมูลแล้วหรือยัง ?>
 <tr class="metrics_dtl_<?=$month?>">
 <th>กพร.<span class="Txt_red_12"> * </span></th>
 <td>
@@ -408,7 +457,7 @@ for ($i=1; $i <= 3; $i++) {
   <? 	}
 		}else{ ?>
   		<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
-	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 3'),@$keyer['users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('users_id','name','mds_set_permission permission left join users on permission.users_id = users.id where permission.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
 	 	<samp id="error_keyer"></samp>
@@ -421,37 +470,60 @@ for ($i=1; $i <= 3; $i++) {
   		<script language="JavaScript">
   		$(function(){
   			for (var i=1; i <= '<?=@$num_keyer?>'; i++) {
-				$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("#metrics_start").val() == '<?=$month?>';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-				if(i == 9){
+  					
 					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("[name=sem_9]:checked").val() == '9';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("#metrics_start").val() == '9';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-				}
-				if(i == 12){
-					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("[name=sem_12]:checked").val() == '12';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-					$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
-	        						       											 return $("#metrics_start").val() == '12';}
-											           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
-											           						});
-				}         						
-				
+		        						       											 return $("#metrics_start").val() <= parseInt('<?=$month?>');}
+												           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+												           						});
+					
+					if(i == 9){
+						$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+		        						       											 return $("[name=sem_9]:checked").val() == '9';}
+												           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+												           						});
+					}
+					if(i == 12){
+						$("[name='keyer_<?=$month?>["+i+"]']").rules( 'add', {required: function(element) {
+		        						       											 return $("[name=sem_12]:checked").val() == '12';}
+												           						, messages: {required: "กรุณาเลือก ผู้จัดเก็บข้อมูล" }
+												           						});
+					
+				  }
 			  }
 		});
   		</script>
  </td>
 </tr>
-
+<? }else{?>
+	
+	<tr><th>กพร.<span class="Txt_red_12"> * </span></th>
+	<td>
+		<input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr[$month]['id']?>" />
+		<input type="hidden" name="kpr_<?=$month?>" value="<?=@$kpr[$month]['kpr_users_id']?>" />
+	<?echo get_one("name","users","id",@$kpr[$month]['kpr_users_id']); ?>
+	</td></tr>
+	<tr><th>ผู้กำกับดูแลตัวชี้วัด<span class="Txt_red_12"> * </span></th>
+	<td>
+		<input type="hidden" name="control_<?=$month?>" value="<?=@$kpr[$month]['control_users_id']?>" />
+	<?echo get_one("name","users","id",@$kpr[$month]['control_users_id']); ?>
+	</td></tr>
+	<tr><th>ผู้จัดเก็บข้อมูล<span class="Txt_red_12"> * </span></th>
+		<td>
+	<? 	@$num_keyer =0;
+		foreach ($result_keyer[$month] as $key => $keyer) {
+			$num_keyer++;
+		echo "<div><div style='display: inline-block;width: 300px;'>";
+		echo  get_one("name","users","id",@$keyer['keyer_users_id'])."</div>";
+		echo  " กิจกรรม ".(empty($keyer['activity'])?" - ":$keyer['activity']);
+		echo "</div>";
+		?>
+		<input type="hidden" name="keyer_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_users_id']?>" />
+		<input type="hidden" name="activity_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['activity']?>" />
+	   <?} ?>
+	   <input type="hidden" name="keyer_num_<?=$month?>" id="keyer_num_<?=@$month?>" value="<?=@$num_keyer?>" />
+	   </td>
+	</tr>
+<?  } ?>
 <? $month = $month+3; } ?>
 
 </table>

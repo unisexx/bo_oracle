@@ -324,6 +324,7 @@ function tis620_to_utf8($in) {
    }
    return $out;
 }
+
 function ThaiToUtf8($string)
 {
     if(false == preg_match('#[\241-\377]#i', $string))

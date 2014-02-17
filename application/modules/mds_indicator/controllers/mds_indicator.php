@@ -11,6 +11,8 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
 		$this->load->model('mds_indicator/Mds_metrics_result_model','metrics_result');
 		$this->load->model('mds_indicator/Mds_metrics_document_model','doc');
+		$this->load->model('mds_indicator/Mds_metrics_result_status_model','result_status');
+		$this->load->model('mds_indicator/Mds_status_topic_model','status_topic');
 	}
 	
 	public $urlpage = "mds_indicator";
@@ -134,11 +136,20 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			if($premit_2 == ''){ set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		
+		
+		
 		if($result_id == '' && $metrics_id != ''){
 			
 			$data['rs_metrics'] = $this->metrics->get_row($metrics_id);
-				
-				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id']);
+				if($metrics_id != ''){
+					$chk_round_month = chk_result_round_month(login_data('id'),$metrics_id,@$data['rs_metrics']['metrics_start']);
+					if(@$chk_round_month['error'] != ''){
+						set_notify('error', $chk_round_month['error']);
+						redirect($data['urlpage'].'/form/'.@$metrics_id);
+					}
+				}
+				  $data['round_month'] = $chk_round_month['round_month']; //รอบการส่งประเมิน
+				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id'],$data['round_month']);
 				  if($chk_keyer_indicator != 'Y'){
 				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
 				  }	
@@ -168,7 +179,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 				
-				$data['round_month'] = '6'; //รอบการส่งประเมิน
+				
 					
 				// หา น้ำหนักของทั้งมิติ //
 				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['round_month']);
@@ -246,10 +257,10 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 				
-				$data['round_month'] = '6'; //รอบการส่งประเมิน
+				$data['round_month'] = $data['rs']['round_month']; //รอบการส่งประเมิน
 					
 				// หา น้ำหนักของทั้งมิติ //
-				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['round_month']);
+				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['rs']['round_month']);
 				// หา น้ำหนักของทั้งมิติ //
 				
 				
@@ -348,6 +359,15 @@ Class Mds_indicator extends  Mdevsys_Controller{
 					move_uploaded_file($_FILES['document_plan_ref']['tmp_name'][$i], $fpicname_2);		
 				}
 			}
+			if($_POST['is_save'] == '2'){
+				$update_status['mds_metrics_result_id'] = $id;
+				$update_status['permit_type_id'] = '3';
+				$update_status['result_status_id'] = '2';
+				$update_status['users_id'] = login_data('id');
+				$update_status['CREATE_DATE'] = date("Y-m-d");
+				$update_status['CREATE_BY'] = login_data('id');
+				$this->result_status->save($update_status);
+			}
 			//return false;
 		   if($_POST['id']>0){
 		   	save_logfile("EDIT","แก้ไข  ".$this->modules_title." ID : ".$id." รอบ ".$_POST['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$_POST['keyer_users_id']),$this->modules_name);
@@ -410,11 +430,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		$urlpage = $this->urlpage;
 		$id = $_GET['id'];
 		$result_id = $_GET['result_id'];
-		$indicator_id = $_GET['indicator_id'];
+		$metrics_id = $_GET['metrics_id'];
 		$keyer_users_id = $_GET['keyer_users_id'];
 		$round_month = $_GET['round_month'];
 		$type_doc = $_GET['type_doc'];
-		if($id != '' && $result_id != '' && $indicator_id != '' && $keyer_users_id != '' && $round_month != '' && $type_doc != ''){
+		if($id != '' && $result_id != '' && $metrics_id != '' && $keyer_users_id != '' && $round_month != '' && $type_doc != ''){
 			$chk_result = $this->metrics_result->get_row($result_id);
 			if($chk_result['keyer_users_id'] == $keyer_users_id){
 				if($chk_result['is_save'] != '2'){
@@ -429,19 +449,19 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						}
 						save_logfile("DELETE","ลบ เอกสาร  ".$doc." ".$this->modules_title." ID : ".$result_id." รอบ ".$round_month." ของผู้บันทึก ".get_one('name', 'users','id',$keyer_users_id)." ชื่อไฟล์เอกสาร  ".$doc_name['doc_name'],$this->modules_name);
 						set_notify('error', 'ลบ '.$doc.' เรียบร้อย');
-						redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+						redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);
 					}else{
 						set_notify('error', 'ไม่พบไฟล์เอกสารแนบ');
-						redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+						redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);
 					}		
 				}else{
 					set_notify('error', 'ไม่สามารถลบเอกสารได้เนื่องจากบันทึกส่งไปแล้ว');
-					redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);	
+					redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);	
 				}
 				
 			}else{
 				set_notify('error', 'ท่านไม่มีสิทธิในการลบเอกสาร');
-				redirect($urlpage.'/form_2/'.$indicator_id.'/'.$result_id);
+				redirect($urlpage.'/form_2/'.$metrics_id.'/'.$result_id);
 			}
 			
 		}else{

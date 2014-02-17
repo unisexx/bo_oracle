@@ -9,14 +9,18 @@
 <link rel="stylesheet" type="text/css" media="screen"  href="themes/bo/css/colorbox.css" />
 <link type="text/css" href="js/jquery.datepick/redmond.datepick.css" rel="stylesheet" />
 <link type="text/css" href="css/tip-twitter.css" rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+
+
+<!-- <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script> -->
+<script type="text/javascript" src="themes/bo/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="themes/bo/js/jquery.chainedSelect.min.js"></script>
 <script type="text/javascript" src="themes/bo/js/SWFSupport.js"></script>
 <script type="text/javascript" src="themes/bo/js/vtip.js"></script>
 <script type="text/javascript" src="themes/bo/js/core.js"></script>
 <script type="text/javascript" src="themes/bo/js/ui/jquery.ui.core.js"></script>
 <script type="text/javascript" src="themes/bo/js/ui/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="themes/bo/js/ui/jquery.ui.tabs.js"></script>
-<script type="text/javascript" src="js/jquery.ui.accordion.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.ui.accordion.js"></script> -->
 
 <script type="text/javascript" src="themes/bo/js/cufon/cufon-yui.js"></script>
 <script type="text/javascript" src="themes/bo/js/cufon/supermarket_400.font.js"></script>
@@ -32,8 +36,9 @@
 <script type="text/javascript" src="js/iphone-style-checkboxes.js"></script>
 <script type="text/javascript" src="js/jquery.livequery.js"></script>
 <script type="text/javascript" src="js/jquery.poshytip.js"></script>
-<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
-<script type="text/javascript" src="media/js/jquery.chainedSelects.js"></script>
+<!--<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>-->
+<!-- <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script> -->
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 

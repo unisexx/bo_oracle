@@ -1,5 +1,4 @@
-
-<h3 id="topic"><br />แผนงบประมาณรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
+<h3 id="topic">แผนงบประมาณรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
 <div id="search">
 <form name="frmAsset" enctype="multipart/form-data" action="budget_report_9/index" method="get">
 <fieldset>
@@ -30,9 +29,9 @@
   <th>ผลผลิต</th>
   <td>
     <div id="dvProductivity" >
-        <?php echo form_dropdown('productivity',get_option1('id','title','cnf_strategy','PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR='.$year),'','id="productivity"','เลือกผลผลิต','0'); ?>
+        <?php echo form_dropdown('productivity',get_option1('id','title','cnf_strategy','PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR='.$year),$productivity,'id="productivity"','เลือกผลผลิต','0'); ?>
       </div>
-    &nbsp;</td>
+	</td>
 </tr>
 <tr>
   <th>กิจกรรมหลัก</th>
@@ -40,13 +39,13 @@
     <div id="dvMainActivity">
         <?php
         $condition = $productivity != '' ? " AND PRODUCTIVITYID=".$productivity : "";
-        echo form_dropdown('mainactivity',get_option1('id','title','cnf_strategy','MAINACTID = 0 AND BUDGETPOLICYID > 0 AND SYEAR='.$year.$condition),'','id="mainactivity"','เลือกกิจกรรมหลัก','0') ?>
+        echo form_dropdown('mainactivity',get_option1('id','title','cnf_strategy','MAINACTID = 0 AND BUDGETPOLICYID > 0 AND SYEAR='.$year.$condition),$mainactivity,'id="mainactivity"','เลือกกิจกรรมหลัก','0') ?>
       </div>
-    &nbsp;</td>
+    </td>
 </tr>
 <tr>
   <th>ภาค</th>
-  <td><?php echo form_dropdown('pzone',get_option1('id','title ','cnf_province_zone'),$pzone,'id="pzone"','ภาคทั้งหมด') ?></td>
+  <td><?php echo form_dropdown('pzone',get_option1('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ภาคทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>กลุ่มจังหวัด</th>
@@ -55,7 +54,7 @@
 <tr>
   <th>จังหวัด</th>
   <td><div id="dvProvinceList">
-    <?php echo form_dropdown('province',get_option1('id','title','cnf_province','','title'),$province,'id="province"','เลือกจังหวัด'); ?>
+    <?php echo form_dropdown('province',get_option1('id','title','cnf_province','','title'),@$_GET['province'],'id="province"','เลือกจังหวัด'); ?>
   </div></td>
 </tr>
 <tr>
@@ -73,110 +72,16 @@
   </div></td>
 </tr>
 <tr>
-  <th>&nbsp;</th>
-  <td>
-    <input type="submit" id="btnSubmit" name="btnSubmit" value="ค้นหา" class="btn_search" />
-    </td>
+  <th></th>
+  <td><input type="submit" id="btnSubmit" name="btnSubmit" value="ค้นหา" class="btn_search" /></td>
 </tr>
 </table>
 </fieldset>
 </form>
 </div>
 <?php include('report.php') ?>
-
-
-
 <script type="text/javascript">
-function LoadProvinceZone(pZone)
-{
-	document.getElementById('pgroup').value = '';
-	url = 'include/admin/ajax_province_list.php?zone='+pZone;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvProvinceList');
-
-	url = 'include/admin/ajax_section_list.php?zone='+pZone;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvSectionList');
-
-	url = 'include/admin/ajax_workgroup_list.php?zone='+pZone;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvWorkgroupList');
-}
-function LoadProvinceGroup(pGroup)
-{
-	document.getElementById('pzone').value = '';
-	url = 'include/admin/ajax_province_list.php?group='+pGroup;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvProvinceList');
-
-	url = 'include/admin/ajax_section_list.php?group='+pGroup;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvSectionList');
-
-	url = 'include/admin/ajax_workgroup_list.php?group='+pGroup;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvWorkgroupList');
-
-}
-function LoadSection(pProvince)
-{
-	url = 'include/admin/ajax_section_list.php?province='+pProvince;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvSectionList');
-
-	url = 'include/admin/ajax_workgroup_list.php?province='+pProvince;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvWorkgroupList');
-}
-function LoadWorkgroup(pSection)
-{
-	url = 'include/admin/ajax_workgroup_list.php?section='+pSection;
-	url = urlEncode(url,false);
-	//alert(url);
-	ajaxpage(url,'dvWorkgroupList');
-
-}
-function LoadProductivity(pYear,pControl)
-{
-	$.get('ajax/ajax_productivity_list',{
-		'year':pYear,
-		'type':'productivity'
-	},function(data){
-		$("#"+pControl).html(data);
-	})
-}
-function LoadMainActivity(pYear,pProductivity,pControl)
-{
-	$.get('ajax/ajax_productivity_list',{
-		'year':pYear,
-		'type':'main',
-		'productivity':pProductivity
-	},function(data){
-		$("#"+pControl).html(data);
-	})
-}
-function LoadSubActivity(pYear,pProductivity,pMainActivity,pControl)
-{
-	$.get('ajax/ajax_productivity_list',{
-		'year':pYear,
-		'type':'sub',
-		'productivity':pProductivity,
-		'mainactivity':pMainActivity
-	},function(data){
-		$("#"+pControl).html(data);
-	})
-
-}
-</script>
-<script type="text/javascript">
+<?php include('js/function.js'); ?>
 $(document).ready(function(){
 	$('#year').change(function(){
 		LoadMainActivity(<?=$year;?>,$('#year option:selected').val(),'dvMainActivity');
@@ -184,9 +89,21 @@ $(document).ready(function(){
 	})
 	$('#productivity').live('change',function(){
 		pProductivity = $(this).val();
-		alert(pProductivity);
+		//alert(pProductivity);
 		LoadMainActivity(<?=$year;?>,$('#productivity option:selected').val(),'dvMainActivity');
 		LoadSubActivity(<?=$year;?>,$('#productivity option:selected').val(),'','dvSubActivity');
+	});
+	$('#province').live('change',function(){
+		var pProvince = $('#province option:selected').val();
+		if(pProvince.length>0){
+			LoadSection(pProvince);
+		};
+	});
+	$('#division').live('change',function(){
+		var pSection = $('#division option:selected').val();
+		if(pSection.length>0){
+			LoadWorkgroup(pSection);
+		};
 	})
 });
 </script>
