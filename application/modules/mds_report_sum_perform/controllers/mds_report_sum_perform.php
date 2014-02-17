@@ -1,5 +1,5 @@
 <?php
-Class Mds_report_sum_metrics extends  Mdevsys_Controller{
+Class Mds_report_sum_perform extends  Mdevsys_Controller{
 	
 		
 	
@@ -19,9 +19,9 @@ Class Mds_report_sum_metrics extends  Mdevsys_Controller{
 		}
 	}
 	
-	public $urlpage = "mds_report_sum_metrics";
-	public $modules_name = "mds_report_sum_metrics";
-	public $modules_title = " รายงานสรุปรายละเอียดตัวชี้วัด";
+	public $urlpage = "mds_report_sum_perform";
+	public $modules_name = "mds_report_sum_perform";
+	public $modules_title = " รายงานสรุปผลการปฏิบัติราชการตามคำรับรองการปฏิบัติราชการ";
 	
 	function index($mode=false){
 		$data['urlpage'] = $this->urlpage;
@@ -29,11 +29,11 @@ Class Mds_report_sum_metrics extends  Mdevsys_Controller{
 		
 		$condition = " 1=1 ";
 		$condition_join = '';
-		if(@$_GET['sch_budget_year'] != '' && $_GET['sch_round_month'] != ''){
+		if(@$_GET['sch_budget_year'] != ''){
 			$condition .= " and mds_set_indicator.budget_year = '".@$_GET['sch_budget_year']."' and mds_set_metrics.metrics_start <= '".$_GET['sch_round_month']."' ";
 		}
 	
-		$sql = "select distinct mds_set_indicator.* 
+		 $sql = "select distinct mds_set_indicator.* 
 				from mds_set_indicator
 				join mds_set_metrics on mds_set_indicator.id = mds_set_metrics.mds_set_indicator_id
 				where $condition order by  mds_set_indicator.indicator_on asc";
@@ -43,7 +43,7 @@ Class Mds_report_sum_metrics extends  Mdevsys_Controller{
 		switch($mode){
 			case 'export':
 				header('Content-type:application/xls');
-				$filename= "mds_report_sum_metrics_".date("Y-m-d_H_i_s").".xls";
+				$filename= "mds_report_sum_perform_".date("Y-m-d_H_i_s").".xls";
 				header("Content-Disposition: attachment; filename=".$filename);
 				$this->load->view('export',@$data);
 			break;

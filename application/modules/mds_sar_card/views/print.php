@@ -4,7 +4,7 @@
 
 	.tblist3 th{
 		border-top: 1px solid #000000;
-		border-bottom: 2px solid #000000;
+		border-bottom: 1px solid #000000;
 		border-left: 1px solid #000000;
 		border-right: 1px solid #000000;
 		color: #000000;
@@ -15,7 +15,7 @@
 	}
 	.tblist3 td{
 		border-top: 1px solid #000000;
-		border-bottom: 2px solid #000000;
+		border-bottom: 1px solid #000000;
 		border-left: 1px solid #000000;
 		border-right: 1px solid #000000;
 		font-size: 12px;
