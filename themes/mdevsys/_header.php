@@ -2,7 +2,7 @@
 <div id="home"><a href="mds"><img src="themes/mdevsys/images/home.png" width="32" height="32" class="vtip" title="หน้าหลักงานพัฒนาระบบบริหาร"/></a></div>
 <div id="menu">
 <ul id="navmenu-h">
-        <li><a href="#">บันทึก +</a>
+        <li><a href="#" onclick="return false;">บันทึก +</a>
           <ul style="width:220px;">
           	<? if(is_permit(login_data('id'),'1') != '' || is_permit(login_data('id'),'3') != ''){ ?>
             <li><a href="mds_indicator">ตัวชี้วัด</a></li>
@@ -13,7 +13,7 @@
           </ul>
         </li>
         <? if(is_permit(login_data('id'),'1') != ''){ ?>
-        <li><a href="#">ตั้งค่า +</a>
+        <li><a href="#" onclick="return false;">ตั้งค่า +</a>
           <ul style="width:260px;">
             <li><a href="mds_set_indicator">มิติและตัวชี้วัด</a></li>
             <li><a href="mds_set_measure_target">หน่วยวัดและเป้าหมาย</a></li>
@@ -25,12 +25,11 @@
           </ul>
         </li>
         
-        <li><a href="#">รายงาน +</a>
+        <li><a href="#" onclick="return false;">รายงาน +</a>
             <ul style="width:310px;">
-            	<li><a href="#">Sar Card หน่วยงาน</a></li>
-                <li><a href="#">สรุปรายละเอียดตัวชี้วัด</a></li>
+            	<li><a href="mds_sar_card">Sar Card หน่วยงาน</a></li>
+                <li><a href="mds_report_sum_metrics">สรุปรายละเอียดตัวชี้วัด</a></li>
                 <li><a href="#">ตารางสรุปผลการปฏิบัติราชการ</a></li>
-                <li><a href="#">การใช้จ่ายของกลุ่ม</a></li>
                 <li><a href="#">การเปรียบเทียบปีการประเมินผลจากตัวชี้วัด</a></li>
                 <li><a href="logfile.php">Log File</a></li>
             </ul>

@@ -32,7 +32,20 @@
 			<td onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'" ><?php echo $item['name'];?></td>
 			<td onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'" ><?php echo $item['pos_name'];?></td>
 			<td onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'" ><?php echo $item['title']; ?></td>
-			<td onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'" ><?php echo $item['permit_name']; ?></td>
+			<td onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'" >
+				<?php 
+					$sql_permission = "select mds_set_permission_type.*,mds_set_permit_type.permit_name from mds_set_permission_type 
+										left join mds_set_permit_type on mds_set_permission_type.mds_set_permit_type_id = mds_set_permit_type.id
+										where mds_set_permission_type.mds_set_permission_id = '".$item['id']."' ";
+					$result_permission = $this->permission_type->get($sql_permission);
+					foreach ($result_permission as $key => $permis) {
+						if($key != '0'){
+							echo ",";
+						}
+						echo $permis['permit_name']; 
+					}
+				?>
+			</td>
 			<td>
 			  	<a href="<?php echo @$urlpage;?>/delete/<?php echo $item['id'];?>" style="text-decoration:none;" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">	 
 				<input type="button" class="btn_delete" >

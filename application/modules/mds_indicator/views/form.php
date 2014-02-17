@@ -33,10 +33,6 @@ $(function(){
     <td><input name="budget_year" type="text" id="budget_year" style="width:70px;" value="<?=@$rs_indicator['budget_year']?>" readonly="readonly"/></td>
   </tr>
   <tr>
-    <th>หน่วยงานรับผิดชอบ</th>
-    <td><input name="textfield" type="text" id="textfield" style="width:500px;" value="สำนักงานปลัดกระทรวง (สป.) - สำนักบริหารงานกลาง (รอถาม)" readonly="readonly"/></td>
-  </tr>
-  <tr>
     <th>มิติ</th>
     <td><input name="textfield3" type="text" id="textfield3" style="width:500px;" value="มิติที่ <?=@$rs_indicator['indicator_on']?> : <?=@$rs_indicator['indicator_name']?>" readonly="readonly"/></td>
   </tr>
@@ -57,9 +53,10 @@ $(function(){
 <? } }?>
 <table class="tblist2">
 <tr>
-  	<th style="width: 15%">แบบฟอร์มรายงานผล</th>
-	<th style="width: 30%">ผู้กำกับดูแล</th>
-	<th style="width: 30%">ผู้จัดเก็บข้อมูล</th>
+  	<th style="width: 10%">แบบฟอร์มรายงานผล</th>
+  	<th style="width: 15%">ชื่อตัวชี้วัด</th>
+	<th style="width: 25%">ผู้กำกับดูแล</th>
+	<th style="width: 25%">ผู้จัดเก็บข้อมูล</th>
 	<th style="width: 5%">วันที่</th>
 	<th style="width: 10%">ขั้นตอน</th>
 	<th style="width: 10%">สถานะ</th>
@@ -69,17 +66,17 @@ $(function(){
 foreach ($rs as $key => $item_result) { ?>
 <tr>
   <td><?=@$item_result['round_month']?> เดือน <a href="<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>/<?=@$item_result['id']?>"><img src="images/see.png" alt="" width="24" height="24" /></a></td>
+  <td><?=@$item_result['mds_set_metrics_name']?> </td>
   <td>
   	<?
-  			    $chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
-								  ,mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name
-							from 
-							mds_set_metrics_kpr 
-							left join mds_set_permission permission on mds_set_metrics_kpr.control_users_id = permission.users_id
-							left join users on permission.users_id = users.id
-							left join mds_set_position on permission.mds_set_position_id = mds_set_position.id 
-							left join cnf_division on users.divisionid = cnf_division.id 
-							left join cnf_department on users.departmentid = cnf_department.id 
+  			   $chk_kpr = "select mds_set_metrics_kpr.*,
+							mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username ,
+							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
+							from mds_set_metrics_kpr 
+							left join mds_set_permission_dtl on mds_set_metrics_kpr.control_permission_id = mds_set_permission_dtl.mds_set_permission_id
+							left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id 
+							left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
+							left join cnf_department on mds_set_permission_dtl.departmentid = cnf_department.id 
 							where mds_set_metrics_kpr.mds_set_metrics_id = '".$item_result['mds_set_metrics_id']."' and mds_set_metrics_kpr.round_month = '".@$item_result['round_month']."' ";
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$kpr = @$result_kpr['0'];

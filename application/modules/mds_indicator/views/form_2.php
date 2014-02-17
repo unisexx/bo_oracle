@@ -32,7 +32,16 @@ $(function(){
 					result_metrics:{required:"กรุณาระบุผลการดำเนินงาน"},
 					document_plan:{required:"กรุณาแนบ แบบฟอร์มรายงาน" }
 					
-				}
+				},
+				errorPlacement: function(error, element) 
+	   			{
+				        if (element.attr("name") == "document_plan" ){
+				        	error.insertAfter(element);
+				          	alert("กรุณาแนบ แบบฟอร์มรายงาน");
+				        }else{
+				          error.insertAfter(element);
+				        }
+			     }
 	});
 	$('.bt_add_document_ref').live('click',function(){
 		var num = $('#num_ref').val();
@@ -141,9 +150,15 @@ $(function(){
 <? } ?>
 	<input type="hidden" name="round_month" id="round_month" value="<?=@$round_month?>" />
 	<input type="hidden" name="mds_set_metrics_id" id="mds_set_metrics_id" value="<?=@$rs_metrics['id']?>" />
+	<? if(@$rs['id']==''){?>
+		<input type="hidden" name="mds_set_metrics_name" id="mds_set_metrics_name" value="<?=@$parent_on?> <?=@$rs_metrics['metrics_name']?>" />
+	<? }else{ ?>
+		<input type="hidden" name="mds_set_metrics_name" id="mds_set_metrics_name" value="<?=@$rs['mds_set_metrics_name']?>" />
+	<? } ?>
 	<input type="hidden" name="mds_set_indicator_id" id="mds_set_indicator_id" value="<?=@$rs_indicator['id']?>" />
 	<input type="hidden" name="keyer_users_id" id="keyer_users_id" value="<?=@$rs['keyer_users_id']?>" />
 	<input type="hidden" name="id" id="id" value="<?=@$rs['id']?>" />
+	
 	<input type="hidden" name="is_save" id="is_save" value="" />
 <div align="center">
 <div style="border: 2px solid;border-color: #999999;width: 80%;margin-top: 10px;text-align: center">
@@ -157,7 +172,7 @@ $(function(){
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>ชื่อตัวชี้วัด</b></td>
 			<td style="text-align: left;padding-top: 10px" colspan="3">
-				<?=@$parent_on?> <?=@$rs_metrics['metrics_name']?>
+				<?=(empty($rs['mds_set_metrics_name']))? @$parent_on." ".@$rs_metrics['metrics_name'] : $rs['mds_set_metrics_name'] ?>
 				<?=(empty($keyer_activity['activity']))?'':' ('.$keyer_activity['activity'].')'?>
 			</td>
 		</tr>
@@ -275,7 +290,7 @@ $(function(){
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4">
-				<span style="margin-right: 20px;">&nbsp;</span><b><u>หลักฐานอ้างอิง</u></b>
+				<span style="margin-right: 20px;">&nbsp;</span><b><u>แนบไฟล์ หลักฐานอ้างอิง</u></b>
 				<?
 					if(login_data('id') == @$rs['keyer_users_id']){
 						if(@$rs['is_save'] != '2'){ 

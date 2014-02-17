@@ -34,8 +34,9 @@
 | the active record class
 */
 ini_set("max_execution_time" , 300);
-$active_group = "fd";
+//$active_group = "fd";
 $active_record = TRUE;
+$active_group = "default";
 
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "BOFFICE";
@@ -49,7 +50,7 @@ $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
-
+/*
 $db['fd']['hostname'] = "27.254.33.52";
 $db['fd']['username'] = "BOFFICE";
 $db['fd']['password'] = "1234";

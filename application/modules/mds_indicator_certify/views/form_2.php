@@ -96,7 +96,7 @@ $(function(){
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>ชื่อตัวชี้วัด</b></td>
 			<td style="text-align: left;padding-top: 10px" colspan="3">
-				<?=@$parent_on?> <?=@$rs_metrics['metrics_name']?>
+				<?=@$rs['mds_set_metrics_name']?>
 				<?=(empty($keyer_activity['activity']))?'':' ('.$keyer_activity['activity'].')'?>
 			</td>
 		</tr>
@@ -136,7 +136,7 @@ $(function(){
                                     <td width="13%"><div align="center"><strong>ค่าคะแนน<br>ถ่วง<br>น้ำหนัก</strong></div></td>
                                   </tr>
                                   <tr>
-                                    <td style="text-align: left;"><?=@$parent_on?> <?=@$rs_metrics['metrics_name']?></td>
+                                    <td style="text-align: left;"><?=@$rs['mds_set_metrics_name']?></td>
                                     <td style="height: 50px"><center>
                                     	<? 
                                     		$metrics_weight = '';
