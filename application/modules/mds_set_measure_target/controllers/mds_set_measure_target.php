@@ -42,6 +42,10 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 							order by mds_set_metrics.metrics_on asc";
 			$data['rs_ass'] = $this->metrics->get($sql_assessment);
 			$data['mds_set_indicator_id'] = $id;
+			new_save_logfile("VIEW",$this->modules_title,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
+		}else{
+			set_notify('error', 'การเข้าถึงข้อมูลไม่ภูกต้อง');	
+			redirect($data['urlpage'] );
 		}
 		$this->template->build('form',@$data);
 

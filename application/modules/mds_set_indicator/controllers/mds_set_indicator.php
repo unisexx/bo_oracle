@@ -41,6 +41,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($id != ''){
 			$data['rs'] = $this->indicator->get_row($id);
+			new_save_logfile("VIEW",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
 		}else{
 			$data['rs']['budget_year'] = $budget_year;
 		}
@@ -79,8 +80,10 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
 				redirect($data['urlpage']);
 			}
-	
+			
 			$data['rs'] = $this->metrics->get_row($id);
+			// log
+			new_save_logfile("VIEW",$this->modules_title_2,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
 			
 			if($data['rs']['parent_id'] ==  0){
 				$sql_max_metrics_on = "select max(mds_set_metrics.metrics_on) as max_metrics_on 

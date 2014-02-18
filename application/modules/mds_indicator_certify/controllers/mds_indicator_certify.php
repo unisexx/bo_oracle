@@ -277,7 +277,9 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 						  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการตรวจสอบตัวชี้วัดนี้'); 
 						  	redirect("mds");
 						  }
-					
+				// log
+				save_logfile("VIEW","ดูลายละเอียด  ".$this->modules_title." ID : ".$result_id." รอบ ".$data['rs']['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$data['rs']['keyer_users_id'])." ".$status,$this->modules_name);
+				
 					$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 					
 					$data['round_month'] = $data['rs']['round_month']; //รอบการส่งประเมิน
@@ -417,10 +419,10 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				$update_status['permission_id'] = chk_permission_id(login_data('id'));
 				if($_POST['kpr_status'] == '1'){
 					$update_status['result_comment'] = '';
-					$status = "อนุมัติ";
+					$status = "ผ่าน";
 				}else{
 					$update_status['result_comment'] = $_POST['result_comment'];
-					$status = "ไม่อนุมัติ";
+					$status = "ไม่ผ่าน";
 				}		
 				$update_status['users_id'] = login_data('id');
 				$update_status['CREATE_DATE'] = date("Y-m-d");

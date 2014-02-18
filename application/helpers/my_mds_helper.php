@@ -374,7 +374,7 @@ function metrics_weight($metrics_id = null , $round_month = null,$budget_year = 
 					if(@$result_imp['0']['score_id'] != ''){
 						if($link == true){
 							$url = "window.open('mds_indicator/form_2/".$metrics_id."/".@$result_chk_result['0']['id']."')";
-							$data['img'] = '<a class="link_img" href="#" onclick="'.$url.'" ><img src="themes/mdevsys/images/circle_'.@$result_imp['0']['score_id'].'.png" title="'.@$data['score_metrics'].'" width="16" height="16" ></a>';
+							$data['img'] = '<a class="link_img" href="#" onclick="'.$url.'" ><img src="'.base_url().'themes/mdevsys/images/circle_'.@$result_imp['0']['score_id'].'.png" title="'.@$data['score_metrics'].'" width="16" height="16" ></a>';
 							$data['dtl_img'] = "1";
 						}else{
 							$data['img'] = '<img src="'.base_url().'themes/mdevsys/images/circle_'.@$result_imp['0']['score_id'].'.png" title="'.@$data['score_metrics'].'" width="16" height="16" >';

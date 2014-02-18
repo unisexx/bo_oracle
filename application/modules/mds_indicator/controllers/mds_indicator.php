@@ -220,7 +220,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$data['keyer_activity'] = @$result_keyer_activity['0'];
 				
 				$data['rs']['keyer_users_id'] = login_data('id');
-		
+			
 		}else if($result_id != '' && $metrics_id != ''){
 				$data['rs_metrics'] = $this->metrics->get_row($metrics_id);
 				if($premit == ''){
@@ -235,6 +235,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
 						redirect($data['urlpage'].'/form/'.@$metrics_id);
 					} 
+				save_logfile("VIEW","ดูรายละเอียด  ".$this->modules_title." ID : ".$result_id." รอบ ".$data['rs']['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$data['rs']['keyer_users_id']),$this->modules_name);
 				$data['parent_on'] = '';
 				$parent_on_id = $data['rs_metrics']['id'];
 				if(@$data['rs_metrics']['parent_id'] != '0'){

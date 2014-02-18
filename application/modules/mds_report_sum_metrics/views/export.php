@@ -3,10 +3,6 @@
 <style>
 
 	.tblist3 th{
-		border-top: 1px solid #000000;
-		border-bottom: 2px solid #000000;
-		border-left: 1px solid #000000;
-		border-right: 1px solid #000000;
 		color: #000000;
 		font-weight: bold;
 		font-size: 12px;
@@ -14,16 +10,12 @@
 
 	}
 	.tblist3 td{
-		border-top: 1px solid #000000;
-		border-bottom: 2px solid #000000;
-		border-left: 1px solid #000000;
-		border-right: 1px solid #000000;
 		font-size: 12px;
 		height: 25px;
 
 	}
 </style>
-<table class="tblist3" cellspacing="0" cellpadding="0">
+<table class="tblist3" cellspacing="0" cellpadding="0" border="1">
 <tr style="background-color: #D6DFF7;">
   <th align="center" style="width: 5%">มิติ</th>
   <th align="center" style="width: 30%">ชื่อตัวชี้วัด</th>

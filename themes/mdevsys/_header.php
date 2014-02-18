@@ -30,8 +30,8 @@
             	<li><a href="mds_sar_card">Sar Card หน่วยงาน</a></li>
                 <li><a href="mds_report_sum_metrics">สรุปรายละเอียดตัวชี้วัด</a></li>
                 <li><a href="mds_report_sum_perform">ตารางสรุปผลการปฏิบัติราชการ</a></li>
-                <li><a href="#">การเปรียบเทียบปีการประเมินผลจากตัวชี้วัด</a></li>
-                <li><a href="logfile.php">Log File</a></li>
+                <li><a href="mds_report_compare">การเปรียบเทียบปีการประเมินผลจากตัวชี้วัด</a></li>
+                <li><a href="mds_log">Log File</a></li>
             </ul>
         </li>
 		<? } ?>
