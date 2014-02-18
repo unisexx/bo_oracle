@@ -56,15 +56,16 @@ class ajax extends Monitor_Controller
 		}
 
 	function ajax_productivity_list()
-	{
+	{$CI =& get_instance();
+	 $CI->load->model('cnf_strategy_model','cnf_strategy');
 		if($_GET['type']=="productivity"){
-			$where = "PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
+			$where = " PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
 			$text = "เลือกผลผลิต";
 			$name= 'productivity';
 
 		}else if($_GET['type']=="main"){
 			$condition = (!empty($_GET['productivity'])) ? " AND BUDGETPOLICYID > 0 AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
-			$where = "MAINACTID = 0 $condition AND SYEAR=".$_GET['year'];
+			$where = " MAINACTID = 0 $condition AND SYEAR=".$_GET['year'];
 			$text = "เลือกกิจกรรมหลัก";
 			$name= "mainactivity";
 
@@ -72,28 +73,27 @@ class ajax extends Monitor_Controller
 			$condition = (!empty($_GET['productivity'])) ? " AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
 			$condition .= (!empty($_GET['mainactivity'])) ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
 			$condition .= (!empty($_GET['missiontype'])) ? " AND MISSIONTYPE='".trim($_GET['missiontype'])."' ": "";
-			$where = "syear=".$_GET['year'].$condition;
+			$where = " syear=".$_GET['year'].$condition;
 			$text = "เลือกกิจกรรมย่อย";
 			$name = "subactivity";
 		}
+		$extra = 'id ="'.$name.'"';
 		//$this->db->debug=true;
 		$sql = "select id,title from cnf_strategy where $where";
-		$result = $this->db->GetArray(ConvertCommand($sql));
-		dbConvert1($result);
+		$result = $CI->cnf_strategy->get($sql);
 		echo '<select name="'.$name.'" id="'.$name.'">';
 		echo '<option value="0">'.$text.'</optionv>';
 		foreach($result as $item){
 			echo '<option value="'.$item['id'].'">'.$item['title'].'</option>';
 		}
 		echo '</select>';
-		//echo form_dropdown($name,get_option('id','title','cnf_strategy',$where),'',$extra,$text,'0');
 	}
 	function ajax_province_list(){
 		$condition = " 1=1 ";
 		$condition .= $_GET['zone']!= '' ? " AND ZONE='".$_GET['zone']."' " : "";
 		$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
 		$sql = "SELECT * FROM CNF_PROVINCE_CODE $condition ORDER BY TITLE ";
-		echo form_dropdown('province',get_option1('id','title','cnf_province','','title'),$province,'id="province"','เลือกจังหวัด');
+		echo form_dropdown('province',get_option('id','title','cnf_province','','title'),$province,'id="province"','เลือกจังหวัด');
 	}
 	function ajax_workgroup_list(){
 		$condition = " WHERE 1=1 ";

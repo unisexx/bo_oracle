@@ -36,7 +36,7 @@
 <tr>
   <th>ผลผลิต</th>
   <td><div id="dvProductivity" >
-    <?php echo form_dropdown('productivity',get_option1('id','title','cnf_strategy','PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR='.$year),$productivity,'id="productivity"','เลือกผลผลิต','0'); ?>
+    <?php echo form_dropdown('productivity',get_option('id','title','cnf_strategy','PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR='.$year),$productivity,'id="productivity"','เลือกผลผลิต','0'); ?>
   </div>
    </td>
 </tr>
@@ -45,7 +45,7 @@
   <td><div id="dvMainActivity">
         <?php
         $condition = $productivity != '' ? " AND PRODUCTIVITYID=".$productivity : "";
-        echo form_dropdown('mainactivity',get_option1('id','title','cnf_strategy','MAINACTID = 0 AND BUDGETPOLICYID > 0 AND SYEAR='.$year.$condition),$mainactivity,'id="mainactivity"','เลือกกิจกรรมหลัก','0') ?>
+        echo form_dropdown('mainactivity',get_option('id','title','cnf_strategy','MAINACTID = 0 AND BUDGETPOLICYID > 0 AND SYEAR='.$year.$condition),$mainactivity,'id="mainactivity"','เลือกกิจกรรมหลัก','0') ?>
   </div>
  </td>
 </tr>
@@ -57,28 +57,28 @@
 		$condition = (!empty($productivity)) ? "  AND PRODUCTIVITYID=".$productivity : "";
 		$condition = (!empty($mainactivity)) ? " AND MAINACTID=".$mainactivity : $condition;
 		$condition = (!empty($missionType)) ? " AND MISSIONTYPE = '".trim($missionType)."' " : $condition;
-	    echo form_dropdown('subactivity',get_option1('id','title','cnf_strategy','MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
+	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy','MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
       </div>
      </td>
 </tr>
 <tr>
   <th>ภาค</th>
-  <td><?php echo form_dropdown('pzone',get_option1('id','title ','cnf_province_zone','zone_type_id=2','id'),@$_GET['zone'],'id="pzone"','ภาคทั้งหมด') ?></td>
+  <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),@$_GET['zone'],'id="pzone"','ภาคทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>กลุ่มจังหวัด</th>
-  <td><?php echo form_dropdown('pgroup',get_option1('id','description','cnf_province_group','',' description'),@$_GET['group'],'id="pgroup"','กลุ่มจังหวัดทั้งหมด') ?></td>
+  <td><?php echo form_dropdown('pgroup',get_option('id','description','cnf_province_group','',' description'),@$_GET['group'],'id="pgroup"','กลุ่มจังหวัดทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>จังหวัด</th>
   <td><div id="dvProvinceList">
-     <?php echo form_dropdown('province',get_option1('id','title','cnf_province','','title'),@$_GET['province'],'id="province"','เลือกจังหวัด'); ?>
+     <?php echo form_dropdown('province',get_option('id','title','cnf_province','','title'),@$_GET['province'],'id="province"','เลือกจังหวัด'); ?>
   </div></td>
 </tr>
 <tr>
   <th>หน่วยงาน</th>
   <td><div id="dvSectionList">
-    <?php echo form_dropdown('division',get_option1('id','title','cnf_division','','title'),$divisionid,'id="division"','เลือกหน่วยงาน'); ?>
+    <?php echo form_dropdown('division',get_option('id','title','cnf_division','','title'),$divisionid,'id="division"','เลือกหน่วยงาน'); ?>
   </div></td>
 </tr>
 <tr>
@@ -86,7 +86,7 @@
   <td><div id="dvWorkgroupList">
     <?php
      $condition = (!empty($_GET['division'])) ? " divisionid=".$_GET['division']: "";
-     echo form_dropdown('workgroup',get_option1('id','title','cnf_workgroup',$condition),$workgroupid,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
+     echo form_dropdown('workgroup',get_option('id','title','cnf_workgroup',$condition),$workgroupid,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
   </div></td>
 </tr>
 <tr>
@@ -102,19 +102,13 @@
 
 
 <? if($step!=''&& $subactivity != ''){
-	//$subactivityData = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivity);
-	//$subactivityData = $this->cnf_strategy->get_row($subactivity);
-	$subactivityData = $this->db->GetRow("select * from cnf_strategy where id = ? ",$subactivity);
-	array_walk($subactivityData,'dbConvert1');
-	//$mainactivityData = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivityData['MAINACTID']);
-	$mainactivityData = $this->db->GetRow("select * from cnf_strategy where id = ? ",$subactivityData['MAINACTID']);
-	array_walk($mainactivityData,'dbConvert1');
-	//$productivityData = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivityData['PRODUCTIVITYID']);
-	$productivityData = $this->db->GetRow("select * from cnf_strategy where id = ? ",$subactivityData['PRODUCTIVITYID']);
-	array_walk($productivityData,'dbConvert1');
+	$subactivityData  = $this->cnf_strategy->get_row($subactivity);
+	var_dump($subactivityData);
+	$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+	$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
+
 ?>
 <div id="main">
-
 <fieldset>
 	<legend>ส่งออก</legend>
     <table >
@@ -126,28 +120,15 @@
 </fieldset>
 
 <?
-//$subActivityRow = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivity);
-$subActivityRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$subactivity);
-array_walk($subActivityRow,'dbConvert1');
-$missionType = $subActivityRow['MISSIONTYPE'];
-//$mainActivityRow = SelectData("CNF_STRATEGY"," WHERE ID=".$subActivityRow['MAINACTID']);
-$mainActivityRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$subActivityRow['MAINACTID']);
-array_walk($mainActivityRow,'dbConvert1');
-//$planRow = SelectData("CNF_STRATEGY","WHERE ID=".$mainActivityRow["PLANID"]);
-$planRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$mainActivityRow["PLANID"]);
-array_walk($planRow,'dbConvert1');
-//$ministryTargetRow = SelectData("CNF_STRATEGY"," WHERE ID=".$mainactivityRow["MINISTRYTARGETID"]);
-$ministryTargetRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$mainActivityRow["MINISTRYTARGETID"]);
-array_walk($ministryTargetRow,'dbConvert1');
-//$ministryStrategyRow = SelectData("CNF_STRATEGY"," WHERE ID=".$mainActivityRow['MINISTRYSTRATEGYID']);
-$ministryStrategyRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$mainActivityRow['MINISTRYSTRATEGYID']);
-array_walk($ministryStrategyRow,'dbConvert1');
-//$sectionTargetRow = SelectData("CNF_STRATEGY", " WHERE ID=".$mainactivityRow['SECTIONTARGETID']);
-$sectionTargetRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$mainActivityRow['SECTIONTARGETID']);
-array_walk($sectionTargetRow,'dbConvert1');
-//$productivityRow = SelectData("CNF_STRATEGY"," WHERE ID=".$mainActivityRow['PRODUCTIVITYID']);
-$productivityRow = $this->db->GetRow("select * from cnf_strategy where id = ? ",$mainActivityRow['PRODUCTIVITYID']);
-array_walk($productivityRow,'dbConvert1');
+$subActivityRow 	 = $this->cnf_strategy->get_row($subactivity);
+$missionType 		 = $subActivityRow['missiontype'];
+$mainActivityRow 	 = $this->cnf_strategy->get_row($subActivityRow['mainactid']);
+$planRow 			 = $this->cnf_strategy->get_row($mainActivityRow["planid"]);
+$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow["ministrytargetid"]);
+$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow['ministrystrategyid']);
+$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow['sectiontargetid']);
+$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivityid']);
+
 ?>
 <br />
 &nbsp;
@@ -156,9 +137,9 @@ array_walk($productivityRow,'dbConvert1');
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['TITLE'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['TITLE'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['TITLE'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
 </tr>
 <tr>
   <td align="left" style="padding-bottom:10px;">ภาค :
@@ -226,8 +207,8 @@ array_walk($productivityRow,'dbConvert1');
 <div style="display:block; padding-top:10px; padding-bottom:10px;" align="center">
 <input type="checkbox" id="chkMisstype" disabled="disabled" value="ภารกิจพื้นฐาน" <? if($missionType=='ภารกิจพื้นฐาน')echo "checked";?>  /> ภารกิจพื้นฐาน
 <input type="checkbox" id="chkMisstype" disabled="disabled" value="ภารกิจพื้นฐาน" <? if($missionType=='ภารกิจยุทธศาสตร์')echo "checked";?>  /> ภารกิจยุทธศาสตร์
-<input type="checkbox" id="chkPolicy" disabled="disabled" value="นโยบายต่อเนื่อง" <? if($missionType=='นโยบายต่อเนื่อง')echo "checked";?>  /> นโยบายต่อเนื่อง
-<input type="checkbox" id="chkPolicy" disabled="disabled" value="นโยบายใหม่" <? if($missionType=='นโยบายใหม่')echo "checked";?>  /> นโยบายใหม่
+<input type="checkbox" id="chkPolicy"   disabled="disabled" value="นโยบายต่อเนื่อง" <? if($missionType=='นโยบายต่อเนื่อง')echo "checked";?>  /> นโยบายต่อเนื่อง
+<input type="checkbox" id="chkPolicy"   disabled="disabled" value="นโยบายใหม่" <? if($missionType=='นโยบายใหม่')echo "checked";?>  /> นโยบายใหม่
 </div>
 <table class="tbToDoList">
 <tr bgcolor="#EFF7E8">
@@ -274,8 +255,7 @@ array_walk($productivityRow,'dbConvert1');
     <?
 		$i=0;
 		$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=0 ORDER BY ORDERNO ";
-		$mainTypeResult = $this->db->GetArray($sql);
-		array_walk($mainTypeResult,'dbConvert1');
+		$mainTypeResult = $this->budget_type->get($sql);
 		foreach($mainTypeResult  as $mainTypeRow)
 		{
 			$i++;
@@ -303,8 +283,7 @@ array_walk($productivityRow,'dbConvert1');
     </tr>
     	    <?
 				$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=".$mainTypeRow['id']." ORDER BY ORDERNO ";
-				$secondTypeResult = $this->db->GetArray($sql);
-				array_walk($secondTypeResult,'dbConvert1');
+				$secondTypeResult = $this->budget_type->get($sql);
 				foreach($secondTypeResult as $secondTypeRow)
 				{
 			?>
@@ -331,8 +310,7 @@ array_walk($productivityRow,'dbConvert1');
 	</tr>
 					<?
                         $sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=".$secondTypeRow['id']." ORDER BY ORDERNO ";
-						$thirdTypeResult = $this->db->GetArray($sql);
-						array_walk($thirdTypeResult,'dbConvert1');
+						$thirdTypeResult = $this->budget_type->get($sql);
 						foreach($thirdTypeResult as $thirdTypeRow )
                         {
                     ?>
