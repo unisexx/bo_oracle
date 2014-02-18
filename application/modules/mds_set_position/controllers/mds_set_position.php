@@ -6,7 +6,7 @@ Class Mds_set_position extends  Mdevsys_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->load->model('mds_set_position/Mds_set_position_model','position');
-		
+		$this->load->model('mds_set_permission/Mds_set_permission_model','permission');
 	}
 	
 	public $urlpage = "mds_set_position";
@@ -60,9 +60,20 @@ Class Mds_set_position extends  Mdevsys_Controller{
 		$urlpage = $this->urlpage;		
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
+		if($ID != ''){
+				$chk_permission = "select * from mds_set_permission where mds_set_position_id = '".$ID."'";
+				$result_chk_permission =  $this->permission->get($chk_permission);
+				$num_chk = count($result_chk_permission);
+				if($num_chk == '0'){
+					new_save_logfile("DELETE",$this->modules_title,$this->position->table,"ID",$ID,"pos_name",$this->modules_name);					
+					$this->position->delete($ID);
+					set_notify('error', 'ลบข้อมูลเสร็จสิน');	
+				}else{
+					set_notify('error', "ไม่สามารถลบตำแหน่งสายบริหารได้ เนื่องจากมีการใช้ชื่อตำแหน่งสายบริหารนี้อยู่");
+				}
+					
+		}
 		
-		new_save_logfile("DELETE",$this->modules_title,$this->position->table,"ID",$ID,"pos_name",$this->modules_name);					
-		$this->position->delete($ID);		
 		redirect($urlpage);
 	}
 	function check_pos_name(){

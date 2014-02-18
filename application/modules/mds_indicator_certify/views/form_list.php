@@ -34,7 +34,7 @@ $(function(){
   </tr>
   <tr>
     <th>หน่วยงานรับผิดชอบ</th>
-    <td><input name="textfield" type="text" id="textfield" style="width:500px;" value="สำนักงานปลัดกระทรวง (สป.) - สำนักบริหารงานกลาง (รอถาม)" readonly="readonly"/></td>
+    <td><input name="textfield" type="text" id="textfield" style="width:500px;" value="<?=@$kpr['department_name']." - ".@$kpr['title']?>" readonly="readonly"/></td>
   </tr>
   <tr>
     <th>มิติ</th>
@@ -85,7 +85,7 @@ foreach ($rs as $key => $result_status) { ?>
 
   ?>
   <td><?=$steps?></td>
-  <td><?=get_one('name','users','id',@$result_status['users_id'])?></td>
+  <td><?=get_one('name','mds_set_permission_dtl','mds_set_permission_id',@$result_status['permission_id'])?></td>
   <td><?=$status?></td>
   <td><?=@$result_status['result_comment']?></td>
 </tr>

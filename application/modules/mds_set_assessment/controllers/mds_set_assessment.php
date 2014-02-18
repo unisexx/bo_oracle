@@ -6,7 +6,7 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 	function __construct(){
 		parent::__construct();
 		$this->load->model('mds_set_assessment/Mds_set_assessment_model','assessment');
-		
+		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
 	}
 	
 	public $urlpage = "mds_set_assessment";
@@ -57,9 +57,18 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 		$urlpage = $this->urlpage;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
-		
-		new_save_logfile("DELETE",$this->modules_title,$this->assessment->table,"ID",$ID,"ass_name",$this->modules_name);					
-		$this->assessment->delete($ID);		
+		if($ID != ''){
+				$chk_metrics = "select * from mds_set_metrics where mds_set_assessment_id = '".$ID."'";
+				$result_chk_metrics =  $this->metrics->get($chk_metrics);
+				echo $num_chk = count($result_chk_metrics);
+			if($num_chk == '0'){
+				new_save_logfile("DELETE",$this->modules_title,$this->assessment->table,"ID",$ID,"ass_name",$this->modules_name);					
+				$this->assessment->delete($ID);	
+				set_notify('error', 'ลบข้อมูลเสร็จสิน');		
+			}else{
+			    set_notify('error', "ไม่สามารถลบหัวข้อประเด็นการประเมินผลได้ เนื่องจากมีการใช้หัวข้อประเด็นการประเมินผลนี้อยู่");
+			}
+		}	
 		redirect($urlpage);
 	}
 	function check_ass_name(){

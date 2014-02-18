@@ -15,7 +15,7 @@ $(document).ready(function(){
 		border-right: 1px solid #ccc;
 	}
 </style>
-<h3>บันทึก หน่วยวัดและเป้าหมาย (บันทึก / แก้ไข)</h3>
+<h3>ตั้งค่า หน่วยวัดและเป้าหมาย (บันทึก / แก้ไข)</h3>
 <form action="<?php echo $urlpage;?>/save" method="post">
 <table class="tbadd">
   <tr>
@@ -78,12 +78,22 @@ $(document).ready(function(){
 				  	</label>
 				  </td>
 				  <td><?=$metrics['metrics_weight']?></td>
-				  <td>N/A</td>
-				  <td>&nbsp;</td>
-				  <td>&nbsp;</td>
-				  <td>&nbsp;</td>
-				  <td>&nbsp;</td>
-				  <td>&nbsp;</td>
+				 			<?
+						  		$sql_chk_result_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics['id']."' and round_month = '6' ";
+						  		$chk_result_6 = $this->metrics_result->get($sql_chk_result_6);
+								
+								$sql_chk_result_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics['id']."' and round_month = '9' ";
+						  		$chk_result_9 = $this->metrics_result->get($sql_chk_result_9);
+								
+								$sql_chk_result_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics['id']."' and round_month = '12' ";
+						  		$chk_result_12 = $this->metrics_result->get($sql_chk_result_12);
+						  	?>
+					<td><?=@$chk_result_6['0']['result_metrics']?></td>
+					<td><?=@$chk_result_6['0']['score_metrics']?></td>
+					<td><?=@$chk_result_9['0']['result_metrics']?></td>
+					<td><?=@$chk_result_9['0']['score_metrics']?></td>
+					<td><?=@$chk_result_12['0']['result_metrics']?></td>
+					<td><?=@$chk_result_12['0']['score_metrics']?></td>
 			  </tr>
 			  <script language="JavaScript">
 		  		$(function(){
@@ -107,12 +117,22 @@ $(document).ready(function(){
 						  	</label>
 						  </td>
 						  <td><?=$metrics_sub_1['metrics_weight']?></td>
-						  <td>N/A</td>
-						  <td>&nbsp;</td>
-						  <td>&nbsp;</td>
-						  <td>&nbsp;</td>
-						  <td>&nbsp;</td>
-						  <td>&nbsp;</td>
+						  	<?
+						  		$sql_chk_result_1_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_1['id']."' and round_month = '6' ";
+						  		$chk_result_1_6 = $this->metrics_result->get($sql_chk_result_1_6);
+								
+								$sql_chk_result_1_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_1['id']."' and round_month = '9' ";
+						  		$chk_result_1_9 = $this->metrics_result->get($sql_chk_result_1_9);
+								
+								$sql_chk_result_1_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_1['id']."' and round_month = '12' ";
+						  		$chk_result_1_12 = $this->metrics_result->get($sql_chk_result_1_12);
+						  	?>
+						  <td><?=@$chk_result_1_6['0']['result_metrics']?></td>
+						  <td><?=@$chk_result_1_6['0']['score_metrics']?></td>
+						  <td><?=@$chk_result_1_9['0']['result_metrics']?></td>
+						  <td><?=@$chk_result_1_9['0']['score_metrics']?></td>
+						  <td><?=@$chk_result_1_12['0']['result_metrics']?></td>
+						  <td><?=@$chk_result_1_12['0']['score_metrics']?></td>
 					  </tr>
 					  <script language="JavaScript">
 				  		$(function(){
@@ -138,12 +158,22 @@ $(document).ready(function(){
 							  	</label>
 							  </td>
 							  <td><?=$metrics_sub_2['metrics_weight']?></td>
-							  <td>N/A</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
+								 <?
+							  		$sql_chk_result_2_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_2['id']."' and round_month = '6' ";
+							  		$chk_result_2_6 = $this->metrics_result->get($sql_chk_result_2_6);
+									
+									$sql_chk_result_2_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_2['id']."' and round_month = '9' ";
+							  		$chk_result_2_9 = $this->metrics_result->get($sql_chk_result_2_9);
+									
+									$sql_chk_result_2_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_2['id']."' and round_month = '12' ";
+							  		$chk_result_2_12 = $this->metrics_result->get($sql_chk_result_2_12);
+							  	?>
+							  <td><?=@$chk_result_2_6['0']['result_metrics']?></td>
+							  <td><?=@$chk_result_2_6['0']['score_metrics']?></td>
+							  <td><?=@$chk_result_2_9['0']['result_metrics']?></td>
+							  <td><?=@$chk_result_2_9['0']['score_metrics']?></td>
+							  <td><?=@$chk_result_2_12['0']['result_metrics']?></td>
+							  <td><?=@$chk_result_2_12['0']['score_metrics']?></td>
 						  </tr>
 						  <script language="JavaScript">
 					  		$(function(){
@@ -168,12 +198,22 @@ $(document).ready(function(){
 							  	</label>
 							  </td>
 							  <td><?=$metrics_sub_3['metrics_weight']?></td>
-							  <td>N/A</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
-							  <td>&nbsp;</td>
+								  <?
+							  		$sql_chk_result_3_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_3['id']."' and round_month = '6' ";
+							  		$chk_result_3_6 = $this->metrics_result->get($sql_chk_result_3_6);
+									
+									$sql_chk_result_3_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_3['id']."' and round_month = '9' ";
+							  		$chk_result_3_9 = $this->metrics_result->get($sql_chk_result_3_9);
+									
+									$sql_chk_result_3_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_3['id']."' and round_month = '12' ";
+							  		$chk_result_3_12 = $this->metrics_result->get($sql_chk_result_3_12);
+							  	?>
+							  <td><?=@$chk_result_3_6['0']['result_metrics']?></td>
+							  <td><?=@$chk_result_3_6['0']['score_metrics']?></td>
+							  <td><?=@$chk_result_3_9['0']['result_metrics']?></td>
+							  <td><?=@$chk_result_3_9['0']['score_metrics']?></td>
+							  <td><?=@$chk_result_3_12['0']['result_metrics']?></td>
+							  <td><?=@$chk_result_3_12['0']['score_metrics']?></td>
 						  </tr>
 						  <script language="JavaScript">
 					  		$(function(){
@@ -193,7 +233,7 @@ $(document).ready(function(){
 ?>
 </table>
 <input type="hidden" name="num_i" id="num_i" value="<?=$i?>" />
-<div id="btnBoxAdd">
+<div  style="text-align: center">
   <input name="input" type="submit" title="บันทึก" value=" " class="btn_save"/>
   <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
 </div>

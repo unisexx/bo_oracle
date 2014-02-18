@@ -65,17 +65,19 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		if($id != ''){
 			if($premit == ''){
-				$sql_result = "select result.*,users.name ,users.tel,users.email
-								from mds_metrics_result result
-								left join users on result.keyer_users_id = users.id
-								where mds_set_metrics_id = '".$id."' and keyer_users_id = '".login_data('id')."' ";
+				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+								from mds_metrics_result result 
+								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id and result.round_month = mds_set_metrics_keyer.round_month
+								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
+								where result.mds_set_metrics_id = '".$id."' and result.keyer_users_id = '".login_data('id')."' order by result.round_month asc ";
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
 			}else{
-				$sql_result = "select result.*,users.name ,users.tel,users.email
-								from mds_metrics_result result
-								left join users on result.keyer_users_id = users.id
-								where mds_set_metrics_id = '".$id."' ";
+				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+								from mds_metrics_result result 
+								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id and result.round_month = mds_set_metrics_keyer.round_month
+								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
+								where result.mds_set_metrics_id = '".$id."' order by result.round_month asc ";
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
 				
@@ -151,7 +153,8 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				  $data['round_month'] = $chk_round_month['round_month']; //รอบการส่งประเมิน
 				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id'],$data['round_month']);
 				  if($chk_keyer_indicator != 'Y'){
-				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");
+				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในบันทึกตัวชี้วัดในรอบถัดไป'); 
+				  	redirect($data['urlpage'].'/form/'.$metrics_id);
 				  }	
 
 				$data['parent_on'] = '';
@@ -182,38 +185,35 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				
 					
 				// หา น้ำหนักของทั้งมิติ //
-				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['round_month']);
+				$data['weight_perc_tot'] = indicator_all_weight($data['rs_indicator']['budget_year'],$data['round_month']);
 				// หา น้ำหนักของทั้งมิติ //
 				
 				
 				//$this->db->debug = true;
-				$chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
-								  ,mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name
-							from 
-							mds_set_metrics_kpr 
-							left join mds_set_permission permission on mds_set_metrics_kpr.control_users_id = permission.users_id
-							left join users on permission.users_id = users.id
-							left join mds_set_position on permission.mds_set_position_id = mds_set_position.id 
-							left join cnf_division on users.divisionid = cnf_division.id 
-							left join cnf_department on users.departmentid = cnf_department.id 
-							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."' ";
+				$chk_kpr = "select mds_set_metrics_kpr.*,
+							mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username ,
+							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
+							from mds_set_metrics_kpr 
+							left join mds_set_permission_dtl on mds_set_metrics_kpr.control_permission_id = mds_set_permission_dtl.mds_set_permission_id
+							left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id 
+							left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
+							left join cnf_department on mds_set_permission_dtl.departmentid = cnf_department.id 
+							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."'";
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$data['kpr'] = @$result_kpr['0'];
 				
 				//$this->db->debug =true;
-				$chk_keyer = "select mds_set_metrics_keyer.*, users.name , users.email , users.tel , users.username 
-							from 
-							mds_set_metrics_keyer 
-							left join mds_set_permission permission on mds_set_metrics_keyer.keyer_users_id = permission.users_id
-							left join users on permission.users_id = users.id
-							where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' ";
+				$chk_keyer = "select mds_set_metrics_keyer.*,
+								mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
+								from mds_set_metrics_keyer 
+								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
+								where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."'";
 				$data['keyer'] = $this->keyer->get($chk_keyer);
 				
-				$chk_keyer_activity = "select mds_set_metrics_keyer.*, users.name , users.email , users.tel , users.username 
-										from 
-										mds_set_metrics_keyer 
-										left join mds_set_permission permission on mds_set_metrics_keyer.keyer_users_id = permission.users_id
-										left join users on permission.users_id = users.id
+				$chk_keyer_activity = "select mds_set_metrics_keyer.*,
+										mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
+										from mds_set_metrics_keyer 
+										left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".login_data('id')."' ";
 				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
@@ -231,7 +231,10 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				
 				  $data['rs'] = $this->metrics_result->get_row($result_id);
-				
+					if($data['rs']['id'] == ''){
+						set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
+						redirect($data['urlpage'].'/form/'.@$metrics_id);
+					} 
 				$data['parent_on'] = '';
 				$parent_on_id = $data['rs_metrics']['id'];
 				if(@$data['rs_metrics']['parent_id'] != '0'){
@@ -260,44 +263,43 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$data['round_month'] = $data['rs']['round_month']; //รอบการส่งประเมิน
 					
 				// หา น้ำหนักของทั้งมิติ //
-				$data['weight_perc_tot'] = indicator_weight($data['rs_indicator']['id'],$data['rs']['round_month']);
+				$data['weight_perc_tot'] = indicator_all_weight($data['rs_indicator']['budget_year'],$data['rs']['round_month']);
 				// หา น้ำหนักของทั้งมิติ //
 				
 				
 				//$this->db->debug = true;
-				$chk_kpr = "select mds_set_metrics_kpr.*, users.name , users.email , users.tel , users.username 
-								  ,mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name
-							from 
-							mds_set_metrics_kpr 
-							left join mds_set_permission permission on mds_set_metrics_kpr.control_users_id = permission.users_id
-							left join users on permission.users_id = users.id
-							left join mds_set_position on permission.mds_set_position_id = mds_set_position.id 
-							left join cnf_division on users.divisionid = cnf_division.id 
-							left join cnf_department on users.departmentid = cnf_department.id 
-							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."' ";
+				$chk_kpr = "select mds_set_metrics_kpr.*,
+							mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username ,
+							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
+							from mds_set_metrics_kpr 
+							left join mds_set_permission_dtl on mds_set_metrics_kpr.control_permission_id = mds_set_permission_dtl.mds_set_permission_id
+							left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id 
+							left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
+							left join cnf_department on mds_set_permission_dtl.departmentid = cnf_department.id 
+							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."'";
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$data['kpr'] = @$result_kpr['0'];
 				
 				//$this->db->debug =true;
-				$chk_keyer = "select mds_set_metrics_keyer.*, users.name , users.email , users.tel , users.username 
-							from 
-							mds_set_metrics_keyer 
-							left join mds_set_permission permission on mds_set_metrics_keyer.keyer_users_id = permission.users_id
-							left join users on permission.users_id = users.id
-							where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' ";
+				$chk_keyer = "select mds_set_metrics_keyer.*,
+								mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
+								from mds_set_metrics_keyer 
+								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
+								where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."'";
 				$data['keyer'] = $this->keyer->get($chk_keyer);
 				
-				$chk_keyer_activity = "select mds_set_metrics_keyer.*, users.name , users.email , users.tel , users.username 
-										from 
-										mds_set_metrics_keyer 
-										left join mds_set_permission permission on mds_set_metrics_keyer.keyer_users_id = permission.users_id
-										left join users on permission.users_id = users.id
+				$chk_keyer_activity = "select mds_set_metrics_keyer.*,
+										mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
+										from mds_set_metrics_keyer 
+										left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
-										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".login_data('id')."' ";
+										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".@$data['rs']['keyer_users_id']."'";
 				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
 				$data['keyer_activity'] = @$result_keyer_activity['0'];
+		}else{
+			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
+			redirect($data['urlpage'].'/form/'.@$metrics_id);
 		}
-
 		$this->template->build('form_2',@$data);
 
 	}
@@ -314,16 +316,17 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		$chk_keyer_indicator = chk_keyer_indicator(@$_POST['mds_set_indicator_id'],$_POST['mds_set_metrics_id']);
 		// ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		echo "<pre>";
-		print_r($_FILES);
+		print_r($_POST);
 		echo "</pre>";
+		
 		if($_POST){
 			
 			if($_POST['id']>0){
 		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
-				$_POST['UPDATE_BY'] = login_data('id');
+				$_POST['UPDATE_BY'] = login_data('name');
 			}else{
 				$_POST['CREATE_DATE'] = date("Y-m-d");
-				$_POST['CREATE_BY'] = login_data('id');
+				$_POST['CREATE_BY'] = login_data('name');
 			}
 			$id = $this->metrics_result->save($_POST);
 			
@@ -364,8 +367,9 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$update_status['permit_type_id'] = '3';
 				$update_status['result_status_id'] = '2';
 				$update_status['users_id'] = login_data('id');
+				$update_status['permission_id'] = chk_permission_id(login_data('id'));
 				$update_status['CREATE_DATE'] = date("Y-m-d");
-				$update_status['CREATE_BY'] = login_data('id');
+				$update_status['CREATE_BY'] = login_data('name');
 				$this->result_status->save($update_status);
 			}
 			//return false;

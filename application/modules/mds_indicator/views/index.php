@@ -142,7 +142,7 @@ $(function(){
 						<tr class="odd cursor" onclick="window.location='<?php echo @$urlpage;?>/form/<?=$sub_3['id'];?>'">
 				  			<td><? echo $i;?></td>
 				  			<td><?=@$sub_3['ass_name']?></td>
-				  			<td nowrap="nowrap"><?=@$item['metrics_on']?>.<?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_2['metrics_on']?></td>
+				  			<td nowrap="nowrap"><?=@$item['metrics_on']?>.<?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?></td>
 				  			<td nowrap="nowrap"><?=@$sub_3['metrics_name']?></td>
 				  		<tr>
 				  <? $i++;}}//sub3 ?>

@@ -35,14 +35,28 @@ $(document).ready(function(){
 				
 			$('.btn_users_slc').live('click', function(){
 				var users_id = $(this).attr('users_id');
-				var users_name = $(this).attr('users_name');
+				var name = $(this).attr('name');
+				var usersname = $(this).attr('usersname');
 				var users_tel = $(this).attr('users_tel');
 				var users_email= $(this).attr('users_email');
+				var firstname = $(this).attr('firstname');
+				var lastname = $(this).attr('lastname');
+				var departmentid= $(this).attr('departmentid');
+				var divisionid= $(this).attr('divisionid');
+				var division_name = $(this).attr('division_name');
+				var department_name = $(this).attr('department_name');
 				
 				$('[name=users_id]').val(users_id);
-				$('[name=users_name]').val(users_name);
+				$('[name=name]').val(name);
+				$('[name=username]').val(usersname);
 				$('[name=tel]').val(users_tel);
 				$('[name=email]').val(users_email);
+				$('[name=firstname]').val(firstname);
+				$('[name=lastname]').val(lastname);
+				$('[name=departmentid]').val(departmentid);
+				$('[name=divisionid]').val(divisionid);
+				$('[name=division_name]').val(division_name);
+				$('[name=department_name]').val(department_name);
 
 	
 				jQuery('#cboxClose').click();
@@ -53,40 +67,82 @@ $(document).ready(function(){
 
 		$("form").validate({
 			rules: {
-				mds_set_permit_type_id:{required:true, 
-							    		remote:{
-							    			url:'<? echo $urlpage; ?>/check_users',
-							    			data: { permit_id:function(){ return $('[name=mds_set_permit_type_id]').val(); }, 
-							    					users_id:function(){ return $('[name=users_id]').val(); } ,
-							    					id:function(){ return $('[name=id]').val(); }
-							    				  }
-							    			}
-				    				  },
-				users_name:"required"
+				'mds_set_permit_type_id[]':{required:true},
+				name:{ required:true,
+					   remote:{
+							 url:'<? echo $urlpage; ?>/check_users',
+							 data: { users_id:function(){ return $('[name=users_id]').val(); },	
+							    	 id:function(){ return $('[name=id]').val(); }
+							    	}
+						}
+					 }
 			},
 			messages:{
-				mds_set_permit_type_id:{required:"กรุณาระบุประเภทสิทธิ์", remote:"ผู้ใช้นี้มีสิทธิ์นี้อยู่ในระบบแล้ว"},
-				users_name:"กรุณาตรวจสอบชื่อผู้ใช้"
+				'mds_set_permit_type_id[]':{required:"กรุณาระบุประเภทสิทธิ์"},
+				name:{required:"กรุณาระบุชื่อผู้ใช้",remote:"มีผู้ใช้งานนนี้ในระบบแล้ว"}
+			},
+			errorPlacement: function(error, element) 
+	   		{
+				if (element.attr("name") == "mds_set_permit_type_id[]" )
+					$('#error_permit').html(error);
+				else if (element.attr("name") == "name" )
+					$('#error_name').html(error);
+				else
+				   error.insertAfter(element);
 			}
 		});
 });
 </script>
 <h3>ตั้งค่า ตำแหน่งสายบริหาร (บันทึก / แก้ไข)</h3>
 <form action="<?php echo $urlpage;?>/save" method="post">
-<input type="hidden" name="id" id="id" class="form-control" value="<?php echo @$rs['id']?>" style="width:500px;" />
+<input type="hidden" name="id" id="id" class="form-control" value="<?php echo @$rs['permission_id']?>" style="width:500px;" />
 <table class="tbadd">
 <tr>
   <th>ประเภทสิทธิ์ <span class="Txt_red_12">*</span></th>
-  <td><?php echo form_dropdown("mds_set_permit_type_id",get_option("id","permit_name","mds_set_permit_type order by id"),@$rs['mds_set_permit_type_id'],'','-- ทุกประเภทสิทธิ์การใช้งาน --') ?></td>
+  <td>
+  	<?
+  	 if(@$rs['permission_id'] != ''){
+  		$sql_permission = "select mds_set_permission_type.*,mds_set_permit_type.permit_name from mds_set_permission_type 
+							left join mds_set_permit_type on mds_set_permission_type.mds_set_permit_type_id = mds_set_permit_type.id
+							where mds_set_permission_type.mds_set_permission_id = '".$rs['permission_id']."' ";
+		$result_permission = $this->permission_type->get($sql_permission);
+		foreach ($result_permission as $key => $permis) {
+			if($permis['mds_set_permit_type_id'] == '1'){
+				$permit_1 = 'checked="checked"';
+			}else if($permis['mds_set_permit_type_id'] == '2'){
+				$permit_2 = 'checked="checked"';
+			}else if($permis['mds_set_permit_type_id'] == '3'){
+				$permit_3 = 'checked="checked"';
+			}	
+  	 	}
+	 }
+	?>
+	
+  	<span style="width: 150px"><input type="checkbox" name="mds_set_permit_type_id[]" value="1" <?=@$permit_1?> /> กพร.</span>
+  	<span><input type="checkbox" name="mds_set_permit_type_id[]" value="2" <?=@$permit_2?> /> ผู้กำกับดูแลตัวชี้วัด</span>
+  	<span><input type="checkbox" name="mds_set_permit_type_id[]" value="3" <?=@$permit_3?> /> ผู้จัดเก็บข้อมูล</span>
+  	<div id="error_permit"></div>
+  </td>
 </tr>
 <tr>
   <th>บุคลากร<span class="Txt_red_12"> *</span></th>
   <td> 	
-  	<input name="users_name" type="text" id="users_name" class="form-control" readonly="readonly" style="width:400px;" value="<?=@$rs['name']?>" />
-  	<? if(@$rs['id'] == ''){ ?>
+  	<input name="name" type="text" id="name" class="form-control" readonly="readonly" style="width:400px;" value="<?=@$rs['name']?>" />
+  	<? if(@$rs['permission_id'] == ''){ ?>
   	<a class="search_users" href="#" onclick="return false;"><img src="themes/mdevsys/images/search_user.png" width="32" height="32" /></a>
   	<? } ?>
-  	<input type="hidden" name="users_id" id="users_id" value="<?=@$rs['users_id']?>" />
+  	<div id="error_name"></div>
+  	<input type="hidden" name="dtl_id" id="dtl_id" value="<?=@$rs['id']?>" />
+  	<input type="hidden" name="users_id" id="users_id" value="<?=@$rs['permission_users_id']?>" />
+  	<input type="hidden" name="username" id="username" value="<?=@$rs['username']?>" />
+  	<input type="hidden" name="firstname" id="firstname" value="<?=@$rs['firstname']?>" />
+  	<input type="hidden" name="lastname" id="lastname" value="<?=@$rs['lastname']?>" />
+  	<input type="hidden" name="departmentid" id="departmentid" value="<?=@$rs['departmentid']?>" />
+  	<input type="hidden" name="divisionid" id="divisionid" value="<?=@$rs['divisionid']?>" />
+  	<input type="hidden" name="division_name" id="division_name" value="<?=@$rs['division_name']?>" />
+  	<input type="hidden" name="department_name" id="department_name" value="<?=@$rs['department_name']?>" />
+  	
+  	
   </td>
 </tr>
 <tr>
