@@ -6,7 +6,7 @@
  * Version: 0.6
  */
 class MY_Model extends Model{
-	
+
 	public $table = '';
 	public $primary_key = 'ID';
 	public $mode = '';
@@ -22,15 +22,15 @@ class MY_Model extends Model{
 	public $current_page = '';
 	public $record_count = '';
 	public $handle;
-	
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->sort($this->primary_key);
 		$this->target();
-		$this->current_page = number_format(@$_GET['page']);	
+		$this->current_page = number_format(@$_GET['page']);
 	}
-	
+
 	function free_result()
 	{
 		$this->mode = '';
@@ -43,24 +43,24 @@ class MY_Model extends Model{
 		$this->current_page = '';
 		$this->__construct();
 	}
-	
+
 	function primary_key($field)
 	{
 		$this->primary_key = $field;
 		return $this;
 	}
-	
+
 	function table($table)
 	{
 		$this->table = $table;
 		return $this;
 	}
-	
+
 	function target($target = FALSE)
 	{
 		if($target)
 		{
-			$this->target = $target;	
+			$this->target = $target;
 		}
 		else
 		{
@@ -71,19 +71,19 @@ class MY_Model extends Model{
 		}
 		return $this;
 	}
-	
+
 	function current_page($param)
 	{
 		$this->current_page = $param;
 		return $this;
 	}
-	
+
 	function select($field = ' * ')
 	{
 		$this->select = $field;
 		return $this;
 	}
-	
+
 	function where($condition)
 	{
 		if($condition)
@@ -92,13 +92,13 @@ class MY_Model extends Model{
 		}
 		return $this;
 	}
-	
+
 	function join($condition)
 	{
 		$this->join = $condition;
 		return $this;
 	}
-	
+
 	function sort($sort)
 	{
 		$this->sort = 'order by ' . $sort;
@@ -112,26 +112,26 @@ class MY_Model extends Model{
 		}
 		return $this;
 	}
-	
+
 	function order($order)
 	{
 		$this->order = $order;
 		return $this;
 	}
-	
+
 	function limit($limit)
 	{
 		$this->limit = $limit;
 		return $this;
 	}
-	
+
 	function order_by($sort,$order)
 	{
 		$this->sort($sort);
 		$this->order($order);
 		return $this;
 	}
-	
+
 	function get($sql = FALSE,$noSplitPage = FALSE,$custom_order=FALSE)
 	{
 		if($custom_order){
@@ -140,7 +140,7 @@ class MY_Model extends Model{
 			$sql = $sql ? $sql : 'select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' '.$this->having.' '.$this->sort.' '.$this->order;
 		}
 		//$sql = $sql ? $sql : 'select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' '.$this->having.' '.$this->sort.' '.$this->order;
-		
+
 		$sql = iconv('UTF-8','TIS-620',$sql);
 		if($noSplitPage==FALSE)
 		{
@@ -150,8 +150,8 @@ class MY_Model extends Model{
 			$page->limit($this->limit);
 			@$page->currentPage($this->current_page);
 			$rs = $this->db->PageExecute($sql,$page->limit,$page->page);
-			$page->Items($rs->_maxRecordCount);			
-			$this->pagination = $page->show();						
+			$page->Items($rs->_maxRecordCount);
+			$this->pagination = $page->show();
 		}
 		else
 		{
@@ -160,17 +160,17 @@ class MY_Model extends Model{
 		$this->free_result();
 		$data = $rs->GetArray();
 		array_walk($data,'dbConvert');
-		
+
 		return $data;
 	}
-	
-	
+
+
 	function get_one($field=FALSE,$id=FALSE,$value = FALSE)
 	{
 		//$this->db->debug=TRUE;
 		if($value)
 		{
-			$result = $this->db->getone('select '.$field.' from '.$this->table.' where '.$this->table.'.'.$id.' = ?',$value);	
+			$result = $this->db->getone('select '.$field.' from '.$this->table.' where '.$this->table.'.'.$id.' = ?',$value);
 		}
 		else if($id!=FALSE)
 		{
@@ -183,15 +183,15 @@ class MY_Model extends Model{
 		dbConvert($result);
 		return $result;
 	}
-	
+
 	function get_row($id = FALSE,$value = FALSE,$sql = FALSE)
 	{
 		if($sql){
-			$result = $this->db->getrow($sql.' where '.$id.' = ?',$value);			
-		}else{					
+			$result = $this->db->getrow($sql.' where '.$id.' = ?',$value);
+		}else{
 			if($value)
 			{
-				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' where '.$this->table.'.'.$id.' = ?',$value);	
+				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' where '.$this->table.'.'.$id.' = ?',$value);
 			}
 			else if($id)
 			{
@@ -206,14 +206,14 @@ class MY_Model extends Model{
 		@array_walk($result,'dbConvert');
 		return @array_change_key_case($result);
 	}
-	
+
 	function pagination()
 	{
 		return $this->pagination;
 	}
-	
+
 	function save($data,$INSERT_WITH_ID=FALSE)
-	{	
+	{
 		$columns = $this->db->MetaColumnNames($this->table);
 		$meta = $this->db->MetaColumns($this->table);
 		array_walk($data,'dbConvert','TIS-620');
@@ -222,7 +222,7 @@ class MY_Model extends Model{
 		@$mode = ($data[$this->primary_key]) ? 'UPDATE' : 'INSERT';
 		@$where = ($data[$this->primary_key]) ? $this->primary_key.' = '.$data[$this->primary_key] : FALSE;
 		@$pk = $data[$this->primary_key];
-		
+
 		if($INSERT_WITH_ID==TRUE){
 			$column = '';
 			$value = '';
@@ -231,9 +231,9 @@ class MY_Model extends Model{
 			{
 				$column .= $comma.''.$key.'';
 				//echo $meta[$key]->type;
-				
+
 				if($meta[$key]->type=='N' || $meta[$key]->type=='I' )
-				{					
+				{
 						$value .= $item == '' ? $comma."0" : $comma.str_replace(',','',$item);
 				}
 				else if($meta[$key]->type=='D')
@@ -246,12 +246,12 @@ class MY_Model extends Model{
 						$item = str_replace('"','\"',$item);
 						$value .=  $comma.'\''.$item.'\'';
 				}
-			
+
 				$comma = ',';
 			}
 			$sql = 'INSERT INTO '.$this->table.'('.$column.') VALUES ('.$value.')';
 			//echo $sql;
-			
+
 			$this->db->Execute($sql);
 		}
 		else if($mode=='INSERT')
@@ -264,9 +264,9 @@ class MY_Model extends Model{
 			{
 				$column .= $comma.'"'.$key.'"';
 				//echo $meta[$key]->type;
-				
+
 				if($meta[$key]->type=='N' || $meta[$key]->type=='I' )
-				{					
+				{
 						$value .= $item == '' ? $comma."0" : $comma.str_replace(',','',$item);
 				}
 				else if($meta[$key]->type=='D')
@@ -277,12 +277,12 @@ class MY_Model extends Model{
 				{
 						$value .=  $comma.'\''.$item.'\'';
 				}
-			
+
 				$comma = ',';
 			}
 			$sql = 'INSERT INTO '.$this->table.'('.$this->primary_key.','.$column.') VALUES ('.'(select COALESCE(max('.$this->primary_key.'),0)+1 from '.$this->table.'),'.$value.')';
 			//echo $sql;
-			
+
 			$this->db->Execute($sql);
 		}
 		else
@@ -310,11 +310,11 @@ class MY_Model extends Model{
 		}
 		return ($mode == 'UPDATE') ? $pk : $this->db->getOne('select MAX('.$this->primary_key.') from '.$this->table);
 	}
-	
+
 	function delete($id=FALSE,$value = FALSE,$all = FALSE)
 	{
 		if($all)
-		{				
+		{
 			$this->db->Execute('delete from '.$this->table);
 		}
 		else
@@ -332,7 +332,7 @@ class MY_Model extends Model{
 			}
 			else
 			{
-				$this->db->Execute('delete from '.$this->table.' '.$this->where);				
+				$this->db->Execute('delete from '.$this->table.' '.$this->where);
 			}
 		}
 	}
@@ -340,7 +340,7 @@ class MY_Model extends Model{
 	function get_option($value,$text,$table = FALSE,$condition=FALSE)
 	{
 		$table = $table ? $table : $this->table;
-		$condition = $condition != FALSE || $condition != '' ? " WHERE ".$condition : "";		
+		$condition = $condition != FALSE || $condition != '' ? " WHERE ".$condition : "";
 		$result = $this->db->getassoc('select '.$value.','.$text.' from '.$table.$condition);
 		array_walk($result,'dbConvert');
 		return $result;
@@ -350,15 +350,15 @@ class MY_Model extends Model{
 	{
 		$table = $table ? $table : $this->table;
 		$result = $this->db->getone('select '.$field.' from '.$table.' where '.$option.$field.' = ?',$data);
-		return $result ? FALSE : TRUE;	
+		return $result ? FALSE : TRUE;
 	}
-	
+
 	function counter($id,$field = 'counter',$table = FALSE)
 	{
 		$table = $table ? $table : $this->table;
 		$this->db->execute('update '.$table.' set '.$field.' = '.$field.' + 1 where id = ?',$id);
 	}
-	
+
 	function upload(&$file,$path = 'uploads/',$resize = FALSE,$width = FALSE,$height = FALSE,$ratio = FALSE)
 	{
 		if($file['name'])
@@ -372,18 +372,18 @@ class MY_Model extends Model{
 			if($resize)
 			{
 				return $this->thumb($path, $width, $height, $ratio);
-			} 
+			}
 			else
 			{
 				$this->handle->process($path);
-				if($this->handle->processed) 
+				if($this->handle->processed)
 				{
 					return $this->handle->file_dst_name;
 				}
-			}	
-		}	
+			}
+		}
 	}
-	
+
 	function thumb($path,$width,$height,$ratio = FALSE)
 	{
 		if($this->handle)
@@ -395,27 +395,27 @@ class MY_Model extends Model{
 				if($ratio == 'x')
 				{
 					$this->handle->image_y = $height;
-					$this->handle->image_ratio_x = TRUE;			
+					$this->handle->image_ratio_x = TRUE;
 				}
 				if($ratio == 'y')
 				{
 					$this->handle->image_x = $width;
-					$this->handle->image_ratio_y = TRUE;			
+					$this->handle->image_ratio_y = TRUE;
 				}
 			}
 			else
 			{
-				$this->handle->image_x = $width;	
+				$this->handle->image_x = $width;
 				$this->handle->image_y = $width;
 			}
 			$this->handle->process($path);
-			if($this->handle->processed) 
+			if($this->handle->processed)
 			{
 				return $this->handle->file_dst_name;
 			}
 		}
 	}
-	
+
 	function delete_file($id,$path,$field = 'image',$value)
 	{
 		$file = $this->get_one($field,$id,$value);

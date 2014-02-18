@@ -75,7 +75,7 @@ legend { padding:0 5px; color:#666;}
 #print p strong { font-weight:700; white-space:nowrap;}
 #print #sign { float:right; margin-top:20px;}
 #print #sign div { padding:5px 0;}
-#print .signpage { position:absolute; top:1010px; right:0;} 
+#print .signpage { position:absolute; top:1010px; right:0;}
 #print label {color: none;}
 
 /************************* Fund STYLE **************************************/
@@ -377,7 +377,7 @@ legend { padding:0 5px; color:#666;}
 .tbadd tbody tr:hover td
 {
 	background:#FBF9FF;
-	
+
 }
 
 .tbadd td.B { font-weight:700;}
@@ -428,7 +428,7 @@ legend { padding:0 5px; color:#666;}
 .tbadd2 tbody tr:hover td
 {
 	background:#FBF9FF;
-	
+
 }
 
 .tbadd2 td.B { font-weight:700;}
@@ -469,9 +469,49 @@ legend { padding:0 5px; color:#666;}
 }
 .type1 tbody tr:hover td
 {
-	
-	
+
+
 }
+.tbToDoList
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 13px;
+	background: #fff;
+	margin: 0;
+	margin-left:0;
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+}
+.tbToDoList th
+{
+	font-size: 14px;
+	font-weight: normal;
+	color:#06C;
+	padding: 10px 5px;
+	border-bottom: 2px solid #999;
+	border-top: 0px solid #999;
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	text-align: center;
+	text-align:left;
+}
+.tbToDoList td
+{
+	color:#595959;
+	padding: 5px;
+	height:25px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+.tbToDoList tbody tr:hover td
+{
+
+
+}
+
 /************************* TABLE STYLE **************************************/
 
 label.error{color:red;margin-left:5px;}
@@ -499,7 +539,7 @@ label.error{color:red;margin-left:5px;}
 	margin-left:12px;
 	margin-right:5px;
 	background:url('../images/RemoveFile.png') no-repeat;
-	
+
 }
 body .show_file span{
     float:none;
@@ -515,19 +555,19 @@ body .show_file span{
     border-bottom-color: #91D7F9;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    
+
     border-right-color: #91D7F9;
     border-right-style: solid;
     border-right-width: 1px;
-    
+
     border-left-color: #91D7F9;
     border-left-style: solid;
     border-left-width: 1px;
-    
+
     border-top-color: #91D7F9;
     border-top-style: solid;
     border-top-width: 1px;
-    
+
     /*border-left-color-ltr-source: physical;
     border-left-color-rtl-source: physical;
     border-left-color-value: #91D7F9;
@@ -546,7 +586,7 @@ body .show_file span{
     border-right-width-ltr-source: physical;
     border-right-width-rtl-source: physical;
     border-right-width-value: 1px;*/
-    
+
 }
 
 #tbAdjustBudget
@@ -591,7 +631,7 @@ body .show_file span{
     background-image: none;
     background-origin: padding-box;
     background-position: 0 0;
-    background-repeat: repeat;    
+    background-repeat: repeat;
     border-collapse: collapse;
     font-family: "Lucida Sans Unicode","Lucida Grande",Sans-Serif;
     font-size: 13px;
@@ -602,7 +642,7 @@ body .show_file span{
     text-align: left;
 }
 .tbReport td {
-	border:1px solid #CCCCCC;    
+	border:1px solid #CCCCCC;
     color: #595959;
     height: 25px;
     padding-bottom: 5px;
