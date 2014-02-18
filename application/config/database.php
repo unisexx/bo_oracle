@@ -37,11 +37,10 @@ ini_set("max_execution_time" , 300);
 $active_group = "fd";
 $active_record = TRUE;
 
-//$active_group = "default";
+
 /*
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "BOFFICE";
->>>>>>> 450a1dc8ca6157b0cf7137bbd3be43a7d43b2f0d
 $db['default']['password'] = "1234";
 $db['default']['database'] = "BOFFICE";
 $db['default']['dbdriver'] = "oci8po";
@@ -54,7 +53,6 @@ $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
 */
 $db['fd']['hostname'] = "27.254.33.52";
-//$dt['fd']['hostname'] = "192.168.1.50";
 $db['fd']['username'] = "BOFFICE";
 $db['fd']['password'] = "1234";
 $db['fd']['database'] = "BOFFICEORA";
