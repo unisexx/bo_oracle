@@ -205,6 +205,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 	}
 	function save_2(){
 		$urlpage = $this->urlpage;
+		/*
+		echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+		 * 
+		 */
 		//return false;
 		//$this->db->debug = true;
 		if(!is_login())redirect("home");
@@ -290,6 +296,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						}else{
 							$keyer_6['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
 						}
+						// ผู้บันทึกคะแนน
+						if(@$_POST['keyer_score_6']['0'] == $i){
+							$keyer_6['keyer_score'] = '1';
+						}else{
+							$keyer_6['keyer_score'] = '0';
+						}
 						
 						$keyer_6['activity'] = @$_POST['activity_6'][$i];
 						$keyer_6['round_month'] = '6';
@@ -328,6 +340,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
 							}
 							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_6']['0'] == $i){
+								$keyer_9['keyer_score'] = '1';
+							}else{
+								$keyer_9['keyer_score'] = '0';
+							}
+							
 							$keyer_9['activity'] = @$_POST['activity_6'][$i];
 							$keyer_9['round_month'] = '9';
 							$keyer_9['mds_set_metrics_id'] = $id;
@@ -362,6 +381,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
 							}else{
 								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_9['keyer_score'] = '1';
+							}else{
+								$keyer_9['keyer_score'] = '0';
 							}
 							
 							$keyer_9['activity'] = @$_POST['activity_9'][$i];
@@ -402,6 +428,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
 							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_6']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
 
 							$keyer_12['activity'] = @$_POST['activity_6'][$i];
 							$keyer_12['round_month'] = '12';
@@ -439,6 +472,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
 							}
 
 							$keyer_12['activity'] = @$_POST['activity_9'][$i];
@@ -478,7 +518,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
 							}
-
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_12']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
+							
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
@@ -516,6 +563,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
 							}else{
 								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_9['keyer_score'] = '1';
+							}else{
+								$keyer_9['keyer_score'] = '0';
 							}
 
 							$keyer_9['activity'] = @$_POST['activity_9'][$i];
@@ -556,6 +610,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
 							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
 
 							$keyer_12['activity'] = @$_POST['activity_9'][$i];
 							$keyer_12['round_month'] = '12';
@@ -594,6 +655,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
 							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_12']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
 
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];
 							$keyer_12['round_month'] = '12';
@@ -631,6 +699,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_12'][$i]);
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_12']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
 							}
 
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];

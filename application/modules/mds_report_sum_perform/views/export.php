@@ -52,7 +52,7 @@
   </th> 
 </tr>
  	<? 		
-			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0');
+			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0',@$_GET['sch_round_month']);
 			$ass_id = '';
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
 				if($ass_id != @$sub_1['mds_set_assessment_id']){
@@ -91,7 +91,7 @@
   		</tr>
   			<? 		
 				
-					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id']);
+					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id'],@$_GET['sch_round_month']);
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
 						
 			?>
@@ -121,7 +121,7 @@
 		  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 		  		</tr>
 		  			<? 		
-							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id']);
+							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id'],@$_GET['sch_round_month']);
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
 									
 					?>
@@ -151,7 +151,7 @@
 				  			<td style="text-align: right"><?=number_format(@$score,2);?></td>
 				  		</tr>
 				  			<? 		
-								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id']);
+								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id'],@$_GET['sch_round_month']);
 								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
 									
 							?>

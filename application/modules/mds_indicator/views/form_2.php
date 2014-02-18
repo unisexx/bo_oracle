@@ -157,8 +157,8 @@ $(function(){
 	<? } ?>
 	<input type="hidden" name="mds_set_indicator_id" id="mds_set_indicator_id" value="<?=@$rs_indicator['id']?>" />
 	<input type="hidden" name="keyer_users_id" id="keyer_users_id" value="<?=@$rs['keyer_users_id']?>" />
+	<input type="hidden" name="keyer_score" id="keyer_score" value="<?=@$keyer_activity['keyer_score']?>" />
 	<input type="hidden" name="id" id="id" value="<?=@$rs['id']?>" />
-	
 	<input type="hidden" name="is_save" id="is_save" value="" />
 <div align="center">
 <div style="border: 2px solid;border-color: #999999;width: 80%;margin-top: 10px;text-align: center">
@@ -234,14 +234,14 @@ $(function(){
 										 	$readonly = 'readonly="readonly"';
 										 }
 										?>
-                                        <input type="text" name="metrics_weight" style="width: 60px" size="7" value="<?=@$metrics_weight?>"  id="metrics_weight" readonly="readonly" style="color:#999999">
+                                        <input type="text"  name="metrics_weight" style="width: 60px" size="7" value="<?=@$metrics_weight?>"  id="metrics_weight" disabled='disabled' readonly="readonly" style="color:#999999">
                                         <input type="hidden" name="weight_perc_tot" id="weight_perc_tot" value="<?=@$weight_perc_tot?>">
                                     </center></td>
                                     <td><center>
                                     	<input type="text" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($rs['result_metrics']))?'N/A':$rs['result_metrics'];?>" <?=$readonly?> >
                                     </center></td>
                                     <td id="ac"><center> 
-                                    <input type="text" name="score_metrics" style="width: 60px" id="score_metrics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" <?=$readonly?>>
+                                    <input type="text" name="score_metrics" style="width: 60px" id="score_metrics" size="7" value="<?=@$score['score_metrics']?>"  maxlength="6" class="numDecimal2" <?=$readonly?> <? if(@$keyer_activity['keyer_score'] == '0'){echo 'disabled="disacbled"';} ?>>
                                     </center></td>
                                     <td id="score_weight"><center>
                                       <input type="text" name="score_weight" style="width: 60px" size="7" value="" class="numDecimal2" readonly="readonly">

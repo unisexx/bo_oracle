@@ -30,7 +30,7 @@ function metrics_dtl_indicator($indicator_id = null,$parent_id = null,$round_mon
 			$CI =& get_instance();
 			$condition = '';
 			if($round_month != ''){
-				$condition = "and metrics.metrics_start = '".$round_month."' ";
+				$condition = "and metrics.metrics_start <= '".$round_month."' ";
 			}
 			$sql = "select metrics.*,assessment.ass_name
 						  from mds_set_metrics metrics
@@ -189,38 +189,58 @@ function indicator_weight($id = null , $round_month = null){ // หาค่า�
 				$result_indicator_weight = $CI->db->getarray($sel_indicator_weight);
 				dbConvert($result_indicator_weight);
 				foreach ($result_indicator_weight as $key => $indicator_weight) {
-					$chk_result = "SELECT * FROM MDS_METRICS_RESULT
-								   WHERE MDS_SET_METRICS_ID = '".$indicator_weight['id']."' 
-								   AND ROUND_MONTH = '".$round_month."' AND IS_SAVE = '2' 
-								   AND CONTROL_STATUS = '1' AND KPR_STATUS = '1' ";
+					$chk_result = "SELECT RESULT.* 
+									 FROM MDS_METRICS_RESULT RESULT
+									 JOIN MDS_SET_METRICS_KEYER KEYER ON RESULT.MDS_SET_METRICS_ID = KEYER.MDS_SET_METRICS_ID 
+												AND RESULT.ROUND_MONTH = KEYER.ROUND_MONTH AND RESULT.KEYER_USERS_ID = KEYER.KEYER_USERS_ID
+								   WHERE RESULT.MDS_SET_METRICS_ID = '".$indicator_weight['id']."' 
+								   AND RESULT.ROUND_MONTH = '".$round_month."' AND RESULT.IS_SAVE = '2' 
+								   AND RESULT.CONTROL_STATUS = '1' AND RESULT.KPR_STATUS = '1' AND KEYER.KEYER_SCORE = '1'";
 					$result_chk_result = $CI->db->getarray($chk_result);
 					dbConvert($result_chk_result);
+					$result_chk_result = @$result_chk_result['0'];
 					
-					if($round_month == '6' && $indicator_weight['metrics_weight_6'] != '' && $indicator_weight['metrics_start'] == '6' && count($result_chk_result) > '0'){
+					$result_all = 'ok';
+					// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
+					$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS
+										 FROM  MDS_SET_METRICS_KEYER KEYER
+										 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
+													AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
+									   	 WHERE KEYER.MDS_SET_METRICS_ID = '".$indicator_weight['id']."' AND KEYER.ROUND_MONTH = '".$round_month."' ";
+					$result_keyer_result = $CI->db->getarray($chk_keyer_result);
+					dbConvert($result_keyer_result);
+					
+					foreach ($result_keyer_result as $key => $keyer_result) {
+						if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
+							$result_all = "no";
+						}
+					}
+					
+					if($round_month == '6' && $indicator_weight['metrics_weight_6'] != '' && $indicator_weight['metrics_start'] == '6' && count($result_chk_result) > '0' && $result_all == 'ok'){
 						if($indicator_weight['metrics_cancel'] == ''){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_6'];
-								$data['sum_result'] += $indicator_weight['metrics_weight_6']*@$result_chk_result['0']['score_metrics'];
+								$data['sum_result'] += @$result_chk_result['score_metrics'];
 						}else{
 							if($indicator_weight['metrics_cancel'] > '6'){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_6'];
-								$data['sum_result'] += $indicator_weight['metrics_weight_6']*@$result_chk_result['0']['score_metrics'];
+								$data['sum_result'] += @$result_chk_result['score_metrics'];
 							}
 						}			
-					}else if($round_month == '9' && $indicator_weight['metrics_weight_9'] != '' && $indicator_weight['metrics_start'] < '12' && count($result_chk_result) > '0'){
+					}else if($round_month == '9' && $indicator_weight['metrics_weight_9'] != '' && $indicator_weight['metrics_start'] < '12' && count($result_chk_result) > '0' && $result_all == 'ok'){
 						if($indicator_weight['metrics_cancel'] == ''){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_9'];
-								$data['sum_result'] += $indicator_weight['metrics_weight_9']*@$result_chk_result['0']['score_metrics'];
+								$data['sum_result'] += @$result_chk_result['score_metrics'];
 						}else{
 							if($indicator_weight['metrics_cancel'] > '9'){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_9'];
-								$data['sum_result'] += $indicator_weight['metrics_weight_69']*@$result_chk_result['0']['score_metrics'];
+								$data['sum_result'] += @$result_chk_result['score_metrics'];
 							}
 						}	
 						
-					}else if($round_month == '12' && $indicator_weight['metrics_weight_12'] != '' && count($result_chk_result) > '0'){
+					}else if($round_month == '12' && $indicator_weight['metrics_weight_12'] != '' && count($result_chk_result) > '0' && $result_all == 'ok'){
 						if($indicator_weight['metrics_cancel'] == ''){
 							 	$data['weight_perc_tot'] += $indicator_weight['metrics_weight_12'];
-								$data['sum_result'] += $indicator_weight['metrics_weight_12']*@$result_chk_result['0']['score_metrics'];
+								$data['sum_result'] += @$result_chk_result['score_metrics'];
 						}else{
 							if($indicator_weight['metrics_cancel'] > '12'){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_12'];
@@ -228,14 +248,14 @@ function indicator_weight($id = null , $round_month = null){ // หาค่า�
 							}
 						}
 					}else{
-						if($indicator_weight['metrics_start'] <= $round_month && count($result_chk_result) > '0'){
+						if($indicator_weight['metrics_start'] <= $round_month && count($result_chk_result) > '0' && $result_all == 'ok'){
 							if($indicator_weight['metrics_cancel'] == ''){
 								 	$data['weight_perc_tot'] += $indicator_weight['metrics_weight'];
-									$data['sum_result'] += $indicator_weight['metrics_weight']*@$result_chk_result['0']['score_metrics'];
+									$data['sum_result'] += @$result_chk_result['score_metrics'];
 							}else{
 								if($indicator_weight['metrics_cancel'] > $round_month){
 									$data['weight_perc_tot'] += $indicator_weight['metrics_weight'];
-									$data['sum_result'] += $indicator_weight['metrics_weight']*@$result_chk_result['0']['score_metrics'];
+									$data['sum_result'] += @$result_chk_result['score_metrics'];
 								}
 							}
 						}
@@ -354,24 +374,50 @@ function indicator_all_weight($budget_year = null , $round_month = null , $resul
 function metrics_weight($metrics_id = null , $round_month = null,$budget_year = null,$link = true){
 	$CI =& get_instance();
 	if($metrics_id != '' && $round_month != '' && $budget_year != ''){
-					$chk_result = "SELECT * FROM MDS_METRICS_RESULT
-								   WHERE MDS_SET_METRICS_ID = '".$metrics_id."' 
-								   AND ROUND_MONTH = '".$round_month."' AND IS_SAVE = '2' 
-								   AND CONTROL_STATUS = '1' AND KPR_STATUS = '1' ";
+					$chk_result = "SELECT RESULT.* 
+									 FROM MDS_METRICS_RESULT RESULT
+									 JOIN MDS_SET_METRICS_KEYER KEYER ON RESULT.MDS_SET_METRICS_ID = KEYER.MDS_SET_METRICS_ID 
+												AND RESULT.ROUND_MONTH = KEYER.ROUND_MONTH AND RESULT.KEYER_USERS_ID = KEYER.KEYER_USERS_ID
+								   WHERE RESULT.MDS_SET_METRICS_ID = '".$metrics_id."' 
+								   AND RESULT.ROUND_MONTH = '".$round_month."' AND RESULT.IS_SAVE = '2' 
+								   AND RESULT.CONTROL_STATUS = '1' AND RESULT.KPR_STATUS = '1' AND KEYER.KEYER_SCORE = '1'";
 					$result_chk_result = $CI->db->getarray($chk_result);
 					dbConvert($result_chk_result);
 					
-					if(is_numeric(@$result_chk_result[0]['result_metrics'])){
-						$data['result_metrics'] = @$result_chk_result[0]['result_metrics'];
+					$result_all = 'ok';
+					$data['result_metrics'] = '0';
+					// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
+					$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
+										 FROM  MDS_SET_METRICS_KEYER KEYER
+										 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
+													AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
+									   	 WHERE KEYER.MDS_SET_METRICS_ID = '".$metrics_id."' AND KEYER.ROUND_MONTH = '".$round_month."' ";
+					$result_keyer_result = $CI->db->getarray($chk_keyer_result);
+					dbConvert($result_keyer_result);
+					
+					foreach ($result_keyer_result as $key => $keyer_result) {
+						if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
+							$result_all = "no";
+						}
+						if(is_numeric(@$keyer_result['result_metrics'])){
+							$data['result_metrics'] += @$keyer_result['result_metrics'];
+						}else{
+							$data['result_metrics'] += '0';
+						}
+					}
+					
+					if($result_all == 'ok'){
+						$data['score_metrics'] = @$result_chk_result[0]['score_metrics'];
 					}else{
+						$data['score_metrics'] = '0';
 						$data['result_metrics'] = '0';
 					}
-					$data['score_metrics'] = @$result_chk_result[0]['score_metrics'];
+					
 					// รูปเปรียบเทียบค่า คะแนน
 					$sql_img = "select * from mds_set_score where budget_year = '".$budget_year."' and val_start <= '".@$data['score_metrics']."' and val_end >= '".$data['score_metrics']."' ";
 				   	$result_imp = $CI->db->getarray($sql_img);
 					dbConvert($result_imp);
-					if(@$result_imp['0']['score_id'] != ''){
+					if(@$result_imp['0']['score_id'] != '' && $result_all == 'ok'){
 						if($link == true){
 							$url = "window.open('mds_indicator/form_2/".$metrics_id."/".@$result_chk_result['0']['id']."')";
 							$data['img'] = '<a class="link_img" href="#" onclick="'.$url.'" ><img src="'.base_url().'themes/mdevsys/images/circle_'.@$result_imp['0']['score_id'].'.png" title="'.@$data['score_metrics'].'" width="16" height="16" ></a>';
@@ -391,7 +437,7 @@ function metrics_weight($metrics_id = null , $round_month = null,$budget_year = 
 								   WHERE ID = '".$metrics_id."' ";
 						$result_chk_metrics = $CI->db->getarray($chk_metrics);
 						dbConvert($result_chk_metrics);
-						if(count($result_chk_metrics) > 0){
+						if(count($result_chk_metrics) > 0 && $result_all == 'ok'){
 							if($round_month == 6 && @$result_chk_metrics['0']['metrics_weight_6'] != ''){
 								$data['weight'] = @$result_chk_metrics['0']['metrics_weight_6'];
 							}else if($round_month == 9 && @$result_chk_metrics['0']['metrics_weight_9'] != ''){
@@ -406,13 +452,13 @@ function metrics_weight($metrics_id = null , $round_month = null,$budget_year = 
 					if(count($result_chk_result) == 0){
 						$data['weight'] = '0';
 					}
-					if($round_month < @$result_chk_metrics[0]['metrics_start']){
+					if($round_month < @$result_chk_metrics[0]['metrics_start'] && $result_all == 'ok'){
 							$data['img'] = '<img src="'.base_url().'themes/mdevsys/images/pass.gif" width="16" height="16">';
 							$data['result_metrics'] = '0';	
 							$data['score_metrics'] = '0';
 							$data['dtl_img'] = 'เริ่มรอบถัดไป';
 					}
-					if(@$result_chk_metrics[0]['metrics_cancel'] != ''){
+					if(@$result_chk_metrics[0]['metrics_cancel'] != '' && $result_all == 'ok'){
 						if($round_month >= @$result_chk_metrics[0]['metrics_cancel']){
 							$data['img'] = '<img src="'.base_url().'themes/mdevsys/images/cancel.gif" width="16" height="16">';
 							$data['result_metrics'] = '0';

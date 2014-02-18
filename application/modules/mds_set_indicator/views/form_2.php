@@ -199,7 +199,20 @@ $(function(){
 	        			  },
 	        		control_12:{ required : function(element) {
 	        						       return $("[name=sem_12]:checked").val() == '12';}
-	        				  }
+	        				 },
+	        		'keyer_score_6[]':{
+	        			required : function(element) {
+	        						       return $("#metrics_start").val() == '6';}
+	        				 },
+	        		'keyer_score_9[]':{
+	        			required : function(element) {
+	        						       return $("#metrics_start").val() == '9'|| $("[name=sem_9]:checked").val() == '9';}
+	        				 },
+	        		'keyer_score_12[]':{
+	        			required : function(element) {
+	        						       return $("#metrics_start").val() == '12' || $("[name=sem_12]:checked").val() == '12';}
+	        				 },
+	        		
 	        						   
 				},
 				messages:{
@@ -216,7 +229,10 @@ $(function(){
 					kpr_9:"กรุณาเลือก กพร. ",
 					control_9:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด",
 					kpr_12:"กรุณาเลือก กพร. ",
-					control_12:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด"
+					control_12:"กรุณาเลือก ผู้กำกับดูแลตัวชี้วัด",
+					'keyer_score_6[]':"กรุณาระบุ ผู้บันทึกคะแนน",
+					'keyer_score_9[]':"กรุณาระบุ ผู้บันทึกคะแนน",
+					'keyer_score_12[]':"กรุณาระบุ ผู้บันทึกคะแนน"
 					
 				},
 				errorPlacement: function(error, element) 
@@ -225,6 +241,12 @@ $(function(){
 				          $('#error_responsible').html(error);
 				        else if (element.attr("name") == "metrics_weight" )
 		         		  $('#error_metrics_weight').html(error);
+		         		else if (element.attr("name") == 'keyer_score_6[]' )
+		         		  $('#error_keyer_score_6').html(error);
+		         		else if (element.attr("name") == 'keyer_score_9[]' )
+		         		  $('#error_keyer_score_9').html(error);
+		         		else if (element.attr("name") == 'keyer_score_12[]' )
+		         		  $('#error_keyer_score_12').html(error);
 				        else
 				          error.insertAfter(element);
 			     }
@@ -445,6 +467,7 @@ for ($i=1; $i <= 3; $i++) {
 <tr class="metrics_dtl_<?=$month?>">
   <th>ผู้จัดเก็บข้อมูล<span class="Txt_red_12"> * </span></th>
   <td>
+  	<div id="error_keyer_score_<?=$month?>"></div>
   	<div style="width: 780px;text-align: right;"><input type="button" class="bt_add_keyer" style="width: 150px" ref_m="<?=$month?>" value=" เพิ่มผู้จัดเก็บข้อมูล " /></div>
   	<? 
   		@$num_keyer = 1;
@@ -459,6 +482,7 @@ for ($i=1; $i <= 3; $i++) {
 	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
 	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
+	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" <? if($keyer['keyer_score'] == '1'){echo 'checked="checked"';} ?> /> ผู้บันทึกคะแนน 
 	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
 	 	<samp id="error_keyer"></samp>
 	 	</div>
@@ -473,6 +497,7 @@ for ($i=1; $i <= 3; $i++) {
 			    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
 			    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 			    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
+			 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
 			 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
 			 	<samp id="error_keyer"></samp>
 			 	</div>
@@ -484,6 +509,7 @@ for ($i=1; $i <= 3; $i++) {
 	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
 	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
+	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
 	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
 	 	<samp id="error_keyer"></samp>
 	 	</div>
@@ -546,11 +572,19 @@ for ($i=1; $i <= 3; $i++) {
 		echo "<div><div style='display: inline-block;width: 300px;'>";
 		echo  get_one("name","mds_set_permission_dtl","mds_set_permission_id",@$keyer['keyer_permission_id'])."</div>";
 		echo  " กิจกรรม ".(empty($keyer['activity'])?" - ":$keyer['activity']);
+		if($keyer['keyer_score'] == '1'){
+			echo " (ผู้บันทึกคะแนน) ";
+		}
 		echo "</div>";
 		?>
 		<input type="hidden" name="keyer_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_users_id']?>" />
 		<input type="hidden" name="keyer_permission_id_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_permission_id']?>" />
 		<input type="hidden" name="activity_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['activity']?>" />
+		<? 
+			if($keyer['keyer_score'] == '1'){
+		?>
+			<input type="hidden" name="keyer_score_<?=$month?>[]" value="<?=@$num_keyer?>" />
+		<? } ?>
 	   <?} ?>
 	   <input type="hidden" name="keyer_num_<?=$month?>" id="keyer_num_<?=@$month?>" value="<?=@$num_keyer?>" />
 	   </td>
