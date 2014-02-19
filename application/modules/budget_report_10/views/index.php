@@ -57,7 +57,8 @@
 		$condition = (!empty($productivity)) ? "  AND PRODUCTIVITYID=".$productivity : "";
 		$condition = (!empty($mainactivity)) ? " AND MAINACTID=".$mainactivity : $condition;
 		$condition = (!empty($missionType)) ? " AND MISSIONTYPE = '".trim($missionType)."' " : $condition;
-	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy','MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
+		//echo $sql = "select * from cnf_strategy where MAINACTID > 0 AND SYEAR=".$year.$condition;
+	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',' MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
       </div>
      </td>
 </tr>
@@ -102,10 +103,10 @@
 
 
 <? if($step!=''&& $subactivity != ''){
-	$subactivityData  = $this->cnf_strategy->get_row($subactivity);
-	var_dump($subactivityData);
-	$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
-	$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
+	$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
+	$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[1]['mainactid']);
+	$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id=".$subactivityData[1]['productivityid']);
+
 
 ?>
 <div id="main">
@@ -114,20 +115,20 @@
     <table >
     	<tr>
         	<td align="center" valign="middle">
-
-            <img title="Export to Excel" class="highlightit" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer" onclick="frmDelete.location='export/report_10.php'" /></td></tr>
+			<a href="budget_report_10/index/export"
+            <img title="Export to Excel" class="highlightit" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer" /></a></td></tr>
     </table>
 </fieldset>
 
 <?
-$subActivityRow 	 = $this->cnf_strategy->get_row($subactivity);
-$missionType 		 = $subActivityRow['missiontype'];
-$mainActivityRow 	 = $this->cnf_strategy->get_row($subActivityRow['mainactid']);
-$planRow 			 = $this->cnf_strategy->get_row($mainActivityRow["planid"]);
-$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow["ministrytargetid"]);
-$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow['ministrystrategyid']);
-$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow['sectiontargetid']);
-$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivityid']);
+$subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
+$missionType 		 = $subActivityRow[1]['missiontype'];
+$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[1]['mainactid']);
+$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[1]["planid"]);
+$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]["ministrytargetid"]);
+$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[1]['ministrystrategyid']);
+$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['sectiontargetid']);
+$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productivityid']);
 
 ?>
 <br />
@@ -137,9 +138,9 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[1]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[1]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[1]['title'];?></td>
 </tr>
 <tr>
   <td align="left" style="padding-bottom:10px;">ภาค :

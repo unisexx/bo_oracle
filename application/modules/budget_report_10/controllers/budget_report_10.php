@@ -13,7 +13,7 @@ class budget_report_10 extends Budget_Controller
 		$this->load->model('budget_plan/budget_plan_detail_model','budget_plan_detail');
 		$this->load->model('cnf_strategy_model','cnf_strategy');
 	}
-	public function index()
+	public function index($export=FALSE)
 	{
 		//$this->db->debug = true;
 		if(!is_login())redirect("home");
@@ -41,7 +41,14 @@ class budget_report_10 extends Budget_Controller
 		$data['thyear'] = $data['year'] + 543;
 		$data['missionType'] = (!empty($_GET['missiontype'])) ? $_GET['missiontype']:'';
 		//$data['user_divisionid'] = login_data("DIVISIONID");
-		$this->template->build('index',$data);
+		if($export){
+			header("Content-Type: application/vnd.ms-excel");
+			header('Content-Disposition: attachment; filename="รายงานการประมาณการรายจ่ายล่วงหน้าระยะปานกลาง ปีงบประมาณ'.($_GET['year']+543).'.xls"');
+			$this->template->build('export',$data);
+		}else{
+			$this->template->build('index',$data);
+		}
+
 	}
 
 

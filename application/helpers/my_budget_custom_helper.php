@@ -372,6 +372,7 @@ function GetBudgetSummaryCurrentYear($pYear,$pSubactivity,$pStep,$pMissionType,$
 	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
 	WHERE SUBACTIVITYID=".$pSubactivity." AND BUDGETYEAR=".$pYear.$condition.
 	")";
+
 	$result = $CI->db->GetArray($sql);
 	//$CI->db->debug=true;
 	$total="";

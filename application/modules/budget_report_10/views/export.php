@@ -1,39 +1,13 @@
-<? if($step!=''&& $subactivity != ''){
-	//$subactivityData = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivity);
-	$subactivityData = $this->cnf_strategy->get_row($subactivity);
-	//$mainactivityData = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivityData['MAINACTID']);
-	$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
-	//$productivityData = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivityData['PRODUCTIVITYID']);
-	$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
-?>
-<div id="main">
-
-<fieldset>
-	<legend>ส่งออก</legend>
-    <table >
-    	<tr>
-        	<td align="center" valign="middle">
-
-            <img title="Export to Excel" class="highlightit" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer" onclick="frmDelete.location='export/report_10.php'" /></td></tr>
-    </table>
-</fieldset>
-
 <?
-//$subActivityRow = SelectData("CNF_STRATEGY"," WHERE ID=".$subactivity);
-$subActivityRow = $this->cnf_strategy->get_row($subactivity);
-$missionType = $subActivityRow['missiontype'];
-//$mainActivityRow = SelectData("CNF_STRATEGY"," WHERE ID=".$subActivityRow['MAINACTID']);
-$mainActivityRow = $this->cnf_strategy->get_row($subActivityRow['mainactid']);
-//$planRow = SelectData("CNF_STRATEGY","WHERE ID=".$mainActivityRow["PLANID"]);
-$planRow = $this->cnf_strategy->get_row($mainActivityRow["planid"]);
-//$ministryTargetRow = SelectData("CNF_STRATEGY"," WHERE ID=".$mainactivityRow["MINISTRYTARGETID"]);
-$ministryTargetRow = $this->cnf_strategy->get_row($mainActivityRow["ministrytargetid"]);
-//$ministryStrategyRow = SelectData("CNF_STRATEGY"," WHERE ID=".$mainActivityRow['MINISTRYSTRATEGYID']);
-$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow['ministrystrategyid']);
-//$sectionTargetRow = SelectData("CNF_STRATEGY", " WHERE ID=".$mainactivityRow['SECTIONTARGETID']);
-$sectionTargetRow = $this->cnf_strategy->get_row($mainActivityRow['sectiontargetid']);
-//$productivityRow = SelectData("CNF_STRATEGY"," WHERE ID=".$mainActivityRow['PRODUCTIVITYID']);
-$productivityRow = $this->cnf_strategy->get_row($mainActivityRow['productivityid']);
+$subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
+$missionType 		 = $subActivityRow[1]['missiontype'];
+$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[1]['mainactid']);
+$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[1]["planid"]);
+$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]["ministrytargetid"]);
+$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[1]['ministrystrategyid']);
+$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['sectiontargetid']);
+$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productivityid']);
+
 ?>
 <br />
 &nbsp;
@@ -42,9 +16,9 @@ $productivityRow = $this->cnf_strategy->get_row($mainActivityRow['productivityid
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[1]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[1]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[1]['title'];?></td>
 </tr>
 <tr>
   <td align="left" style="padding-bottom:10px;">ภาค :
@@ -109,11 +83,11 @@ $productivityRow = $this->cnf_strategy->get_row($mainActivityRow['productivityid
     &nbsp;</td>
 </tr>
 </table>
-<div style="display:block; padding-top:10px; padding-bottom:10px;" align="center"><?php echo "missionType = ".$missionType; ?>
+<div style="display:block; padding-top:10px; padding-bottom:10px;" align="center">
 <input type="checkbox" id="chkMisstype" disabled="disabled" value="ภารกิจพื้นฐาน" <? if($missionType=='ภารกิจพื้นฐาน')echo "checked";?>  /> ภารกิจพื้นฐาน
 <input type="checkbox" id="chkMisstype" disabled="disabled" value="ภารกิจพื้นฐาน" <? if($missionType=='ภารกิจยุทธศาสตร์')echo "checked";?>  /> ภารกิจยุทธศาสตร์
-<input type="checkbox" id="chkPolicy" disabled="disabled" value="นโยบายต่อเนื่อง" <? if($missionType=='นโยบายต่อเนื่อง')echo "checked";?>  /> นโยบายต่อเนื่อง
-<input type="checkbox" id="chkPolicy" disabled="disabled" value="นโยบายใหม่" <? if($missionType=='นโยบายใหม่')echo "checked";?>  /> นโยบายใหม่
+<input type="checkbox" id="chkPolicy"   disabled="disabled" value="นโยบายต่อเนื่อง" <? if($missionType=='นโยบายต่อเนื่อง')echo "checked";?>  /> นโยบายต่อเนื่อง
+<input type="checkbox" id="chkPolicy"   disabled="disabled" value="นโยบายใหม่" <? if($missionType=='นโยบายใหม่')echo "checked";?>  /> นโยบายใหม่
 </div>
 <table class="tbToDoList">
 <tr bgcolor="#EFF7E8">
@@ -166,7 +140,7 @@ $productivityRow = $this->cnf_strategy->get_row($mainActivityRow['productivityid
 			$i++;
 	?>
     <tr bgcolor="#ECFCFF">
-      <td><h4><?php echo$i;?>.&nbsp;<?php echo $mainTypeRow['title'];?></h4></td>
+      <td><?php echo$i;?>.&nbsp;<?php echo $mainTypeRow['title'];?></td>
       <td align="right">&nbsp;</td>
       <td align="right"><?
 			$total = GetBudgetSummaryCurrentYearType(($year),$subactivity,$step,$missionType,$userSection,$userWorkgroup,1,$mainTypeRow['id'],$zone,$group,$province);
@@ -193,7 +167,7 @@ $productivityRow = $this->cnf_strategy->get_row($mainActivityRow['productivityid
 				{
 			?>
 			<tr bgcolor="#FCF0FF">
-			  <td><h5>- <?php echo $secondTypeRow['title'];?></h5></td>
+			  <td>- <?php echo $secondTypeRow['title'];?></td>
 			  <td align="right">&nbsp;</td>
 			  <td align="right"><?
 			$total = GetBudgetSummaryCurrentYearType(($year),$subactivity,$step,$missionType,$userSection,$userWorkgroup,2,$secondTypeRow['id'],$zone,$group,$province);
@@ -245,7 +219,3 @@ $productivityRow = $this->cnf_strategy->get_row($mainActivityRow['productivityid
    <? } ?>
 </table>
 </div>
-<?php }else{ ?>
-	<div style="width:80%; margin-left:auto; margin-right:auto; height:250px; vertical-align:middle; text-align:center; background-color:#F5F5F5; border:1 #999 solid" align="center">
-    <br /><br /><br /><br /><br /><br />กรุณาเลือกกิจกรรมย่อย</div>
-<?php } ?>
