@@ -60,7 +60,7 @@
   </th> 
 </tr>
  	<? 		
-			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0');
+			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0',@$_GET['sch_round_month']);
 			$ass_id = '';
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
 				if($ass_id != @$sub_1['mds_set_assessment_id']){
@@ -77,7 +77,7 @@
   			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_1['mds_set_measure_id'])?></td>
   			<td style="text-align: right"><?=@$sub_1['metrics_target']?></td>
   			<? 
-				$metrics_dtl = metrics_weight(@$sub_1['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
+				$metrics_dtl = metrics_weight(@$sub_1['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year'],@$_GET['sch_round_month']);
 				if($indicator_all_weight != '0'){
 					$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 					@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
@@ -99,7 +99,7 @@
   		</tr>
   			<? 		
 				
-					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id']);
+					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id'],@$_GET['sch_round_month']);
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
 						
 			?>
@@ -129,7 +129,7 @@
 		  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 		  		</tr>
 		  			<? 		
-							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id']);
+							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id'],@$_GET['sch_round_month']);
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
 									
 					?>
@@ -159,7 +159,7 @@
 				  			<td style="text-align: right"><?=number_format(@$score,2);?></td>
 				  		</tr>
 				  			<? 		
-								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id']);
+								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id'],@$_GET['sch_round_month']);
 								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
 									
 							?>

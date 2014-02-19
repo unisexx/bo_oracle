@@ -40,7 +40,7 @@ $(function(){
 </div>
 </div>
 </form> 
-<? if(@$_GET['sch_budget_year'] != ''){ ?>
+<? if(@$_GET['sch_budget_year'] != '' && @$_GET['sch_round_month'] != ''){ ?>
 <div style="padding:10px; text-align:right;">
 <a href="<?=$urlpage?>/index/export/<?=GetCurrentUrlGetParameter();?>"><img src="images/btn_excel.png" width="32" height="32" style="margin-bottom:-6px" class="vtip" title="ส่งออกข้อมูล"></a>
 <a href="<?=$urlpage?>/index/print/<?=GetCurrentUrlGetParameter();?>" target="_blank"><img src="images/btn_printer.png" width="32" height="32" style="margin:0 20px -5px 10px;" class="vtip" title="พิมพ์ข้อมูล"></a>
@@ -85,7 +85,7 @@ $(function(){
   </th> 
 </tr>
  	<? 		
-			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0');
+			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0',@$_GET['sch_round_month']);
 			$ass_id = '';
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
 				if($ass_id != @$sub_1['mds_set_assessment_id']){
@@ -124,7 +124,7 @@ $(function(){
   		</tr>
   			<? 		
 				
-					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id']);
+					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id'],@$_GET['sch_round_month']);
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
 						
 			?>
@@ -154,7 +154,7 @@ $(function(){
 		  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 		  		</tr>
 		  			<? 		
-							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id']);
+							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id'],@$_GET['sch_round_month']);
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
 									
 					?>
@@ -184,7 +184,7 @@ $(function(){
 				  			<td style="text-align: right"><?=number_format(@$score,2);?></td>
 				  		</tr>
 				  			<? 		
-								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id']);
+								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id'],@$_GET['sch_round_month']);
 								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
 									
 							?>

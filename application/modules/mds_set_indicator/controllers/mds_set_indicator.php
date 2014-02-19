@@ -41,6 +41,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($id != ''){
 			$data['rs'] = $this->indicator->get_row($id);
+			new_save_logfile("VIEW",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
 		}else{
 			$data['rs']['budget_year'] = $budget_year;
 		}
@@ -79,8 +80,10 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');	
 				redirect($data['urlpage']);
 			}
-	
+			
 			$data['rs'] = $this->metrics->get_row($id);
+			// log
+			new_save_logfile("VIEW",$this->modules_title_2,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
 			
 			if($data['rs']['parent_id'] ==  0){
 				$sql_max_metrics_on = "select max(mds_set_metrics.metrics_on) as max_metrics_on 
@@ -202,6 +205,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 	}
 	function save_2(){
 		$urlpage = $this->urlpage;
+		/*
+		echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+		 * 
+		 */
 		//return false;
 		//$this->db->debug = true;
 		if(!is_login())redirect("home");
@@ -287,6 +296,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						}else{
 							$keyer_6['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
 						}
+						// ผู้บันทึกคะแนน
+						if(@$_POST['keyer_score_6']['0'] == $i){
+							$keyer_6['keyer_score'] = '1';
+						}else{
+							$keyer_6['keyer_score'] = '0';
+						}
 						
 						$keyer_6['activity'] = @$_POST['activity_6'][$i];
 						$keyer_6['round_month'] = '6';
@@ -325,6 +340,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
 							}
 							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_6']['0'] == $i){
+								$keyer_9['keyer_score'] = '1';
+							}else{
+								$keyer_9['keyer_score'] = '0';
+							}
+							
 							$keyer_9['activity'] = @$_POST['activity_6'][$i];
 							$keyer_9['round_month'] = '9';
 							$keyer_9['mds_set_metrics_id'] = $id;
@@ -359,6 +381,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
 							}else{
 								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_9['keyer_score'] = '1';
+							}else{
+								$keyer_9['keyer_score'] = '0';
 							}
 							
 							$keyer_9['activity'] = @$_POST['activity_9'][$i];
@@ -399,6 +428,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
 							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_6']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
 
 							$keyer_12['activity'] = @$_POST['activity_6'][$i];
 							$keyer_12['round_month'] = '12';
@@ -436,6 +472,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
 							}
 
 							$keyer_12['activity'] = @$_POST['activity_9'][$i];
@@ -475,7 +518,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
 							}
-
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_12']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
+							
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
@@ -513,6 +563,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
 							}else{
 								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_9['keyer_score'] = '1';
+							}else{
+								$keyer_9['keyer_score'] = '0';
 							}
 
 							$keyer_9['activity'] = @$_POST['activity_9'][$i];
@@ -553,6 +610,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
 							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_9']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
 
 							$keyer_12['activity'] = @$_POST['activity_9'][$i];
 							$keyer_12['round_month'] = '12';
@@ -591,6 +655,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
 							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_12']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
+							}
 
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];
 							$keyer_12['round_month'] = '12';
@@ -628,6 +699,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_12'][$i]);
 							}else{
 								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
+							}
+							
+							// ผู้บันทึกคะแนน
+							if(@$_POST['keyer_score_12']['0'] == $i){
+								$keyer_12['keyer_score'] = '1';
+							}else{
+								$keyer_12['keyer_score'] = '0';
 							}
 
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];

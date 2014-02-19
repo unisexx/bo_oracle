@@ -160,8 +160,8 @@ $(function(){
                                       <input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($rs['result_metrics']))?'N/A':$rs['result_metrics'];?>" >
                                     </center><?=@$rs['result_metrics']?></td>
                                     <td id="ac"><center> 
-                                    <input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$rs['score_metrics']?>"  maxlength="6" class="numDecimal2" >
-                                    </center><?=@$rs['score_metrics']?></td>
+                                    <input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$score['score_metrics']?>"  maxlength="6" class="numDecimal2" >
+                                    </center><?=@$score['score_metrics']?></td>
                                     <td id="score_weight"><center>
                                       <span name="score_weight"></span>
                                     </center> 

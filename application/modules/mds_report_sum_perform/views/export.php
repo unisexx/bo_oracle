@@ -3,10 +3,6 @@
 <style>
 
 	.tblist3 th{
-		border-top: 1px solid #000000;
-		border-bottom: 2px solid #000000;
-		border-left: 1px solid #000000;
-		border-right: 1px solid #000000;
 		color: #000000;
 		font-weight: bold;
 		font-size: 12px;
@@ -14,16 +10,12 @@
 
 	}
 	.tblist3 td{
-		border-top: 1px solid #000000;
-		border-bottom: 2px solid #000000;
-		border-left: 1px solid #000000;
-		border-right: 1px solid #000000;
 		font-size: 12px;
 		height: 25px;
 
 	}
 </style>
-<table class="tblist3" cellspacing="0" cellpadding="0">
+<table class="tblist3" cellspacing="0" cellpadding="0" border="1">
 <tr style="background-color: #D6DFF7;">
   <th rowspan="2" align="center" style="width: 30%">ตัวชี้วัด<br/>การปฏิบัติราชการ</th>
   <th rowspan="2" align="center" style="width: 5%">หน่วย</th>
@@ -60,7 +52,7 @@
   </th> 
 </tr>
  	<? 		
-			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0');
+			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0',@$_GET['sch_round_month']);
 			$ass_id = '';
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
 				if($ass_id != @$sub_1['mds_set_assessment_id']){
@@ -99,7 +91,7 @@
   		</tr>
   			<? 		
 				
-					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id']);
+					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id'],@$_GET['sch_round_month']);
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
 						
 			?>
@@ -129,7 +121,7 @@
 		  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 		  		</tr>
 		  			<? 		
-							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id']);
+							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id'],@$_GET['sch_round_month']);
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
 									
 					?>
@@ -159,7 +151,7 @@
 				  			<td style="text-align: right"><?=number_format(@$score,2);?></td>
 				  		</tr>
 				  			<? 		
-								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id']);
+								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id'],@$_GET['sch_round_month']);
 								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
 									
 							?>

@@ -67,7 +67,8 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			if($premit == ''){
 				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
 								from mds_metrics_result result 
-								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id and result.round_month = mds_set_metrics_keyer.round_month
+								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id 
+										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id
 								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 								where result.mds_set_metrics_id = '".$id."' and result.keyer_users_id = '".login_data('id')."' order by result.round_month asc ";
 									
@@ -75,7 +76,8 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			}else{
 				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
 								from mds_metrics_result result 
-								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id and result.round_month = mds_set_metrics_keyer.round_month
+								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id
+										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id
 								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 								where result.mds_set_metrics_id = '".$id."' order by result.round_month asc ";
 									
@@ -210,6 +212,15 @@ Class Mds_indicator extends  Mdevsys_Controller{
 								where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."'";
 				$data['keyer'] = $this->keyer->get($chk_keyer);
 				
+				// หาคะแนนขอผู้บันทึกคะแนน
+				$chk_keyer_score = "select mds_set_metrics_keyer.*,mds_metrics_result.score_metrics
+									from mds_set_metrics_keyer 
+									join mds_metrics_result on mds_set_metrics_keyer.mds_set_metrics_id = mds_metrics_result.mds_set_metrics_id 
+																					and mds_metrics_result.round_month = mds_set_metrics_keyer.round_month
+									where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_score = '1'";
+				$data['score'] = $this->keyer->get($chk_keyer_score);
+				$data['score'] = @$data['score']['0'];
+				
 				$chk_keyer_activity = "select mds_set_metrics_keyer.*,
 										mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
 										from mds_set_metrics_keyer 
@@ -220,7 +231,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$data['keyer_activity'] = @$result_keyer_activity['0'];
 				
 				$data['rs']['keyer_users_id'] = login_data('id');
-		
+			
 		}else if($result_id != '' && $metrics_id != ''){
 				$data['rs_metrics'] = $this->metrics->get_row($metrics_id);
 				if($premit == ''){
@@ -235,6 +246,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
 						redirect($data['urlpage'].'/form/'.@$metrics_id);
 					} 
+				save_logfile("VIEW","ดูรายละเอียด  ".$this->modules_title." ID : ".$result_id." รอบ ".$data['rs']['round_month']." ผู้บันทึก ".get_one('name', 'users','id',$data['rs']['keyer_users_id']),$this->modules_name);
 				$data['parent_on'] = '';
 				$parent_on_id = $data['rs_metrics']['id'];
 				if(@$data['rs_metrics']['parent_id'] != '0'){
@@ -288,6 +300,15 @@ Class Mds_indicator extends  Mdevsys_Controller{
 								where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."'";
 				$data['keyer'] = $this->keyer->get($chk_keyer);
 				
+				// หาคะแนนขอผู้บันทึกคะแนน
+				$chk_keyer_score = "select mds_set_metrics_keyer.*,mds_metrics_result.score_metrics
+									from mds_set_metrics_keyer 
+									join mds_metrics_result on mds_set_metrics_keyer.mds_set_metrics_id = mds_metrics_result.mds_set_metrics_id 
+																					and mds_metrics_result.round_month = mds_set_metrics_keyer.round_month
+									where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_score = '1'";
+				$data['score'] = $this->keyer->get($chk_keyer_score);
+				$data['score'] = @$data['score']['0'];
+				
 				$chk_keyer_activity = "select mds_set_metrics_keyer.*,
 										mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
 										from mds_set_metrics_keyer 
@@ -328,6 +349,12 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$_POST['CREATE_DATE'] = date("Y-m-d");
 				$_POST['CREATE_BY'] = login_data('name');
 			}
+			
+			// ถ้าไม่ใช่ผู้บันทึกคะแนนให้ คะแนน เป็น ค่าว่าง
+			if(@$_POST['keyer_score'] == '0'){
+				$_POST['score_metrics'] = '';
+			}
+			
 			$id = $this->metrics_result->save($_POST);
 			
 				if(@$_FILES['document_plan']['name'] != ''){
