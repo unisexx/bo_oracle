@@ -31,7 +31,7 @@ class budget_report_10 extends Budget_Controller
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
 
-		$data['userSection'] = (!empty($_GET['section'])) ? $_GET['section']:'';
+		$data['userSection'] = (!empty($_GET['division'])) ? $_GET['division']:'';
 		$data['userWorkgroup'] = (!empty($_GET['workgroup'])) ? $_GET['workgroup']:'' ;
 		$data['pzone'] = (!empty($_GET['pzone'])) ? $_GET['pzone']:'';
 		$data['pgroup'] = (!empty($_GET['pgroup'])) ? $_GET['pgroup']:'';
@@ -41,15 +41,28 @@ class budget_report_10 extends Budget_Controller
 		$data['thyear'] = $data['year'] + 543;
 		$data['missionType'] = (!empty($_GET['missiontype'])) ? $_GET['missiontype']:'';
 		//$data['user_divisionid'] = login_data("DIVISIONID");
+		//var_dump($_GET,$data);
 		if($export){
-			header("Content-Type: application/vnd.ms-excel");
-			header('Content-Disposition: attachment; filename="รายงานการประมาณการรายจ่ายล่วงหน้าระยะปานกลาง ปีงบประมาณ'.($_GET['year']+543).'.xls"');
+			$this->template->set_layout('export');
 			$this->template->build('export',$data);
+			header("Content-Type: application/vnd.ms-excel");
+			header('Content-Disposition: attachment; filename="รายงานการประมาณการรายจ่ายล่วงหน้าระยะปานกลาง ปีงบประมาณ'.$data['thyear'].'.xls"');
 		}else{
 			$this->template->build('index',$data);
 		}
-
 	}
+	function test(){
+		$this->db->debug = true;
+		$result = $this->cnf_strategy->get_row(227);
+		var_dump($result);
+		$rs = $this->cnf_strategy->where("id =227")->get();
+		var_dump($rs);
+		$res = $this->division->get();
+		var_dump($res);
+		$test = $this->cnf_strategy->get();
+		var_dump($test);
+	}
+
 
 
 

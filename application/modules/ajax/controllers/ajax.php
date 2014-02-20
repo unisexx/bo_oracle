@@ -83,19 +83,21 @@ class ajax extends Monitor_Controller
 		$result = $CI->cnf_strategy->get($sql);
 		echo '<select name="'.$name.'" id="'.$name.'">';
 		echo '<option value="0">'.$text.'</optionv>';
-		foreach($result as $item){
+		foreach($result as $key =>$item){
 			echo '<option value="'.$item['id'].'">'.$item['title'].'</option>';
 		}
 		echo '</select>';
 	}
 	function ajax_province_list(){
-		$condition = " 1=1 ";
-		$condition .= $_GET['zone']!= '' ? " AND ZONE='".$_GET['zone']."' " : "";
+		$condition = "WHERE 1=1 ";
+		//$condition .= $_GET['zone']!= '' ? " AND ZONE='".$_GET['zone']."' " : "";
 		$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
-		$sql = "SELECT * FROM CNF_PROVINCE_CODE $condition ORDER BY TITLE ";
-		echo form_dropdown('province',get_option('id','title','cnf_province','','title'),$province,'id="province"','เลือกจังหวัด');
+		$sql = "SELECT * FROM CNF_PROVINCE  $condition ORDER BY TITLE ";
+		echo form_dropdown('province',get_option('id','title','cnf_province',$condition,'title'),'','id="province"','เลือกจังหวัด');
 	}
 	function ajax_workgroup_list(){
+		$CI =& get_instance();
+		$CI->load->model('cnf_strategy_model','cnf_strategy');
 		$condition = " WHERE 1=1 ";
 		$condition .= $_GET['zone']!= '' ? " AND ZONE='".$_GET['zone']."' " : "";
 		$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
@@ -105,9 +107,9 @@ class ajax extends Monitor_Controller
 
 			echo '<select id="workgroup" name="workgroup">';
         	echo '<option value="0">เลือกกลุ่มงาน</option>';
-			$result = $this->db->getArray($sql);
+			$result = $CI->cnf_strategy->getArray($sql);
 			foreach($result as $srow){
-            	echo '<option value="'.$srow["ID"].'">'.$srow['TITLE'].'</option>';
+            	echo '<option value="'.$srow["id"].'">'.$srow['title'].'</option>';
 			}
 	        echo '</select>';
 	}

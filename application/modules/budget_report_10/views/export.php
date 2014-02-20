@@ -1,4 +1,8 @@
-<?
+<? //$this->db->debug=true;
+$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
+$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[1]['mainactid']);
+$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id=".$subactivityData[1]['productivityid']);
+
 $subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
 $missionType 		 = $subActivityRow[1]['missiontype'];
 $mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[1]['mainactid']);

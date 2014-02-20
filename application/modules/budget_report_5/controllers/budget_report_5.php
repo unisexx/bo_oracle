@@ -1,5 +1,5 @@
 <?php
-class budget_report_9 extends Budget_Controller
+class budget_report_6 extends Budget_Controller
 {
 	public function __construct()
 	{
@@ -9,12 +9,8 @@ class budget_report_9 extends Budget_Controller
 		$this->load->model('c_province/province_model','province');
 		$this->load->model('c_province_zone/province_zone_model','pzone');
 		$this->load->model('budget_type/budget_type_model','budget_type');
-		$this->load->model('budget_plan/budget_plan_model','budget_plan');
-		$this->load->model('budget_time/budget_time_model','budget_time');
-		$this->load->model('budget_plan/budget_plan_detail_model','budget_plan_detail');
-		$this->load->model('budget_master_model','budget_master');
 		$this->load->model('cnf_strategy_model','cnf_strategy');
-		$this->load->model('cnf_strategy_detail_model','cnf_strategy_detail');
+		$this->load->model('budget_request/budget_operation_area_model','budget_operation_area');
 	}
 	public function index($export=FALSE)
 	{
