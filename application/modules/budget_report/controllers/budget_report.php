@@ -1,5 +1,5 @@
 <?php
-class budget_report_6 extends Budget_Controller
+class budget_report extends Budget_Controller
 {
 	public function __construct()
 	{
@@ -9,10 +9,14 @@ class budget_report_6 extends Budget_Controller
 		$this->load->model('c_province/province_model','province');
 		$this->load->model('c_province_zone/province_zone_model','pzone');
 		$this->load->model('budget_type/budget_type_model','budget_type');
+		$this->load->model('budget_plan/budget_plan_model','budget_plan');
+		$this->load->model('budget_time/budget_time_model','budget_time');
+		$this->load->model('budget_plan/budget_plan_detail_model','budget_plan_detail');
+		$this->load->model('budget_master_model','budget_master');
 		$this->load->model('cnf_strategy_model','cnf_strategy');
-		$this->load->model('budget_request/budget_operation_area_model','budget_operation_area');
+		$this->load->model('cnf_strategy_detail_model','cnf_strategy_detail');
 	}
-	public function index($export=FALSE)
+	public function index($index=FALSE,$export=FALSE)
 	{
 		//$this->db->debug = true;
 		if(!is_login())redirect("home");
@@ -66,11 +70,32 @@ class budget_report_6 extends Budget_Controller
 
 		if($export){
 			$this->template->set_layout('export');
-			$this->template->build('export',$data);
+			$this->template->build('report_'.$index.'/export',$data);
 			header("Content-Type: application/vnd.ms-excel");
-			header('Content-Disposition: attachment; filename="รายงานแผนงบประมาณรายจ่าย ประจำปีงบประมาณ'.$data['thyear'].'.xls"');
+			switch($index){
+				case "3":
+					header('Content-Disposition: attachment; filename="รายงานแผนการใช้จ่ายงบประมาณจำแนกตามรายจ่ายประจำปีงบประมาณ'.$data['thyear'].'.xls"');
+					break;
+				case "5":
+					header('Content-Disposition: attachment; filename="รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี'.$data['thyear'].'.xls"');
+					break;
+				case "6":
+					header('Content-Disposition: attachment; filename="รายงานตารางแสดงคำของบประมาณระดับโครงการ ปี '.$data['thyear'].'.xls"');
+					break;
+				case "8":
+					header('Content-Disposition: attachment; filename="รายงานตารางแสดงคำของบประมาณระดับโครงการ ปี '.$data['thyear'].'.xls"');
+					break;
+				case "9":
+					header('Content-Disposition: attachment; filename="รายงานแผนงบประมาณรายจ่าย ประจำปีงบประมาณ'.$data['thyear'].'.xls"');
+					break;
+				case "10":
+					header('Content-Disposition: attachment; filename="รายงานการประมาณการรายจ่ายล่วงหน้าระยะปานกลาง ปีงบประมาณ'.$data['thyear'].'.xls"');
+					break;
+			}
+
+
 		}else{
-			$this->template->build('index',$data);
+			$this->template->build('report_'.$index.'/index',$data);
 		}
 	}
 	function test(){

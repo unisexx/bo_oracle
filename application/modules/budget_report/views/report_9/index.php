@@ -99,7 +99,7 @@
     <table >
     	<tr>
         	<td align="center" valign="middle">
-        	<a href="budget_report_9/export<?php echo GetCurrentUrlGetParameter(); ?>">
+        	<a href="budget_report/index/9/export<?php echo GetCurrentUrlGetParameter(); ?>">
             <img title="Export to Excel" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer" /></a></tr>
     </table>
 </fieldset>
