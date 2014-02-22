@@ -9,12 +9,14 @@ class budget_report extends Budget_Controller
 		$this->load->model('c_province/province_model','province');
 		$this->load->model('c_province_zone/province_zone_model','pzone');
 		$this->load->model('budget_type/budget_type_model','budget_type');
-		$this->load->model('budget_plan/budget_plan_model','budget_plan');
-		$this->load->model('budget_time/budget_time_model','budget_time');
-		$this->load->model('budget_plan/budget_plan_detail_model','budget_plan_detail');
-		$this->load->model('budget_master_model','budget_master');
+		$this->load->model('budget_request/budget_type_detail_model','budget_type_detail');
+		$this->load->model('budget_request/budget_master_model','budget_master');
+		$this->load->model('budget_request/budget_operation_area_model','budget_operation_area');
+		$this->load->model('budget_request/budget_master_model','budget_master');
+		$this->load->model('budget_productivity_key_model','budget_product');
 		$this->load->model('cnf_strategy_model','cnf_strategy');
 		$this->load->model('cnf_strategy_detail_model','cnf_strategy_detail');
+		$this->load->model('cnf_budget_type_model','cnf_budget_type');
 	}
 	public function index($index=FALSE,$export=FALSE)
 	{
@@ -24,7 +26,7 @@ class budget_report extends Budget_Controller
 		$data['budgetyear'] = @$_GET['budgetyear'];
 		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y')-1;
 		$data['thyear'] = $data['year'] + 543;
-		$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'';
+		$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'1';
 		$data['productivity'] = (!empty($_GET['productivity'])) ? $_GET['productivity']:'';
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
@@ -68,7 +70,8 @@ class budget_report extends Budget_Controller
 		}
 
 
-		if($export){
+		if($export)
+		{
 			$this->template->set_layout('export');
 			$this->template->build('report_'.$index.'/export',$data);
 			header("Content-Type: application/vnd.ms-excel");
@@ -100,7 +103,10 @@ class budget_report extends Budget_Controller
 	}
 	function test(){
 		$this->db->debug = true;
-		$where = " PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=2013";
+		$result = $this->budget_type->select("count(*) as cnt,*")->where("PID=0")->get()->order_by('',"orderno");
+		//select("mainactid,productivityid,trim(TRAILING ' ' from title) as title")->get_row(232);
+		var_dump($subactivityData);
+		/*$where = " PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=2013";
 		$text = "เลือกผลผลิต";
 		$name= 'productivity';
 		$extra = 'id ="'.$name.'"';
@@ -113,7 +119,7 @@ class budget_report extends Budget_Controller
 			echo '<option value="'.$item['id'].'">'.$item['title'].'</option>';
 		}
 		echo '</select>';
-		/*$result = $this->cnf_strategy->get_row(231);
+		$result = $this->cnf_strategy->get_row(231);
 		var_dump($result);
 		$rs = $this->cnf_strategy->where("id =231")->get();
 		var_dump($rs);

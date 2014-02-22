@@ -1,6 +1,7 @@
-<h3 id="topic">รายงานตารางแสดงคำของบประมาณระดับโครงการ/งบรายจ่าย ประจำปี <?php echo $thyear;?></h3>
+<?php budget_type_config();  ?>
+<h3>รายงานตารางแสดงคำของบประมาณระดับโครงการ/งบรายจ่าย ประจำปี <?php echo $thyear;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="budget_report_6/index" method="get">
+<form name="frmAsset" enctype="multipart/form-data" action="budget_report/index/6" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">
@@ -45,13 +46,12 @@
     </td>
 </tr>
 <tr>
-  <th>กิจกรรมย่อย <span class="red">(กรุณาเลือก)</span></th>
+  <th>กิจกรรมย่อย </th>
   <td>
     <div id="dvSubActivity">
         <?
 		$condition = (!empty($productivity)) ? "  and productivityid =".$productivity : "";
 		$condition = (!empty($mainactivity)) ? " and  mainactid =".$mainactivity : $condition;
-		echo $sql = "select * from cnf_strategy where MAINACTID > 0 AND SYEAR=".$year.$condition;
 	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',' MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
       </div>
      </td>
@@ -103,49 +103,54 @@
 </fieldset>
 </form>
 </div>
-<?
-if($subactivity != '')
-{
-$subactivityData  = $this->cnf_strategy->get_row($subactivity);
-$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
-$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
-}
-$productivityTitle = $subactivity == '' ? " ทั้งหมด  ": $productivityData['title'];
-$mainactivityTitle = $subactivity == '' ? " ทั้งหมด  ": $mainactivityData['title'];
-$subactivityTitle = $subactivity == '' ? " ทั้งหมด  ": $subactivityData['title'];
-//$sql = " SELECT ID FROM CNF_BUDGET_TYPE WHERE PID=0 ORDER BY ORDERNO ";
-//$result = db_query($sql);
-//$nBudgetType = db_num_rows($result);
-$nBudgetType  = $this->budget_type->get_one("count(ID) as cnt","PID",0);
-$i = 0;
-//$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=0 ORDER BY ORDERNO ";
-//$result = db_query($sql);
-//while($row = db_fetch_array($result,0))
-$result = $this->budget_type->select("count(*) as cnt,*")->where("PID=0")->get()->order_by('',"orderno");
-foreach($result as $item)
-{
-	$budgetTypeID[$i] = $row['id'];
-	$budgetTypeTitle[$i] = $row['title'];
-	$i++;
-}
-$nColumn = 2 + $nBudgetType;
+<div id="main">
+	<fieldset>
+	<legend>ส่งออก</legend>
+    <table >
+    	<tr>
+        	<td align="center" valign="middle">
+			<a href="budget_report/index/6/export<?php echo GetCurrentUrlGetParameter(); ?>">
+      		<img title="Export to Excel" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer"  class="highlightit" /></a></td></tr>
+    </table>
+</fieldset>
+<?php //$this->db->debug=true;
+	if($subactivity != '')
+	{
+		$subactivityData  = $this->cnf_strategy->get_row($subactivity);
+		$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+		$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
+	}
+	$productivityTitle = $subactivity == '' ? " ทั้งหมด  ": $productivityData['title'];
+	$mainactivityTitle = $subactivity == '' ? " ทั้งหมด  ": $mainactivityData['title'];
+	$subactivityTitle = $subactivity == '' ? " ทั้งหมด  ": $subactivityData['title'];
 
-	$condition = $_GET['pzone']!='' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$_GET['pzone']."' " : "";
-	//$condition .= $_GET['pgroup']!= '' ? " AND CNF_PROVINCE_CODE.PGROUP=".$_GET['pgroup']." " : "";
-	$condition .= $_GET['province']!='' ? " AND CNF_PROVINCE_CODE.ID=".$_GET['province']." " : "";
-	$condition .= $_GET['section']!='' ? " AND CNF_SECTION_CODE.ID=".$_GET['section']." " : "";
-	$condition .= $_GET['workgroup']!='' ? " AND USER.WORKGROUPID=".$_GET['workgroup']." " : "";
-	$condition .= $subactivity!='' ? " AND SUBACTIVITYID = ".$subactivity." " : "";
+	$nBudgetType  = $this->db->GetOne("select count(ID) as cnt from cnf_budget_type where pid=0");
+	$i = 0;
+	$result = $this->cnf_budget_type->get("select * from cnf_budget_type where PID=0 order by orderno");
+	foreach($result as $row)
+	{
+		$budgetTypeID[$i] = $row['id'];
+		$budgetTypeTitle[$i] = $row['title'];
+		$i++;
+	}
+	$nColumn = 2 + $nBudgetType;
+
+	$condition = !empty($pzone) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pzone."' " : "";
+	//$condition .= $_GET['pgroup']!= '' ? " AND CNF_PROVINCE.PGROUP=".$_GET['pgroup']." " : "";
+	$condition .= !empty($province) ? " AND CNF_PROVINCE.ID=".$province." " : "";
+	$condition .= !empty($division) ? " AND CNF_DIVISION.ID=".$division." " : "";
+	$condition .= !empty($workgroup) ? " AND USERS.WORKGROUPID=".$workgroup." " : "";
+	$condition .= !empty($subactivity) ? " AND SUBACTIVITYID = ".$subactivity." " : "";
 	$subactivityID = '';
-	 $sql = "SELECT BUDGET_MASTER.* FROM BUDGET_MASTER
-	LEFT JOIN USER ON BUDGET_MASTER.CREATEBY = USER.ID
-	LEFT JOIN CNF_DIVISION ON USER.DIVISIONID = CNF_DIVISION.ID
-	LEFT JOIN CNF_WORKGROUP ON USER.WORKGROUPID = CNF_WORKGROUP.ID
+	$sql = "SELECT BUDGET_MASTER.* FROM BUDGET_MASTER
+	LEFT JOIN USERS ON BUDGET_MASTER.CREATEBY = USERS.ID
+	LEFT JOIN CNF_DIVISION ON USERS.DIVISIONID = CNF_DIVISION.ID
+	LEFT JOIN CNF_WORKGROUP ON USERS.WORKGROUPID = CNF_WORKGROUP.ID
 	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
 	LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE_DETAIL_ZONE.PROVINCEID = CNF_PROVINCE.ID
 	WHERE  BUDGETYEAR=".$year." AND STEP=".$step.$condition." ORDER BY SUBACTIVITYID ";
-	$result = $this->budet_master->get($sql);
-	//$result = db_query($sql);
+	$result = $this->budget_master->get($sql);
+
 ?>
 <br />
 &nbsp;
@@ -169,11 +174,11 @@ $nColumn = 2 + $nBudgetType;
 	 <td align="left">จำนวนโครงการทั้งหมด : <?php echo $this->budget_type->get_one("count(*) as cnt","pid",0);?> โครงการ</td>
 </tr>
 <tr>
-  <td colspan="3" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?></td>
+  <td colspan="3" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo (!empty($_GET['step'])) ? $stepName[$_GET['step']]:'';?></td>
 </tr>
 </table>
 <table class="tbToDoList">
-<tr bgcolor="#EFF7E8">
+	<tr bgcolor="#EFF7E8">
     	<td>ลำดับ&nbsp;</td>
         <td>งาน/โครงการ/รายการ</td>
         <td>งบประมาณปี <?php echo $thyear-2;?></td>
@@ -203,9 +208,9 @@ $nColumn = 2 + $nBudgetType;
 		if($subactivityID != $budgetMaster['subactivityid'])
 		{
 				$subactivityID = $budgetMaster['subactivityid'];
-				$subactivityData = $this->cnf_strategy->get_row($subactivityID);
+				$subactivityData  = $this->cnf_strategy->get_row($subactivityID);
 				$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
-				$productivityData = $this->cnf_stratey->get_row($subactivityData['productivityid']);
+				$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
 				$productivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $productivityData['title'];
 				$mainactivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $mainactivityData['title'];
 				$subactivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $subactivityData['title'];
@@ -281,16 +286,16 @@ $nColumn = 2 + $nBudgetType;
 	  <td valign="top">
       <?
 	  			$sql = " SELECT * FROM BUDGET_TYPE_DETAIL WHERE BUDGETID=".$budgetMaster['id'];
-				$rresult = db_query($sql);
-				while($rrow = db_fetch_array($rresult,0))
+				$rresult = $this->budget_type_detail->get($sql);
+				foreach($rresult as $rrow)
 				{
-						if($rrow['REMARK'] != '') echo $rrow['REMARK']."<br/>";
-						if($rrow['ALLOWANCEREMARK'] != '') echo $rrow['ALLOWANCEREMARK']."<br/>";
-						if($rrow['ACCOMODATIONREMARK'] != '') echo $rrow['ACCOMODATIONREMARK']."<br/>";
-						if($rrow['VEHICLEREMARK'] != '') echo $rrow['VEHICLEREMARK']."<br/>";
-						if($rrow['DOCUMENTREMARK'] != '') echo $rrow['DOCUMENTREMARK']."<br/>";
-						if($rrow['HUMANREMARK'] != '') echo $rrow['HUMANREMARK']."<br/>";
-						if($rrow['SERVICEREMARK'] != '') echo $rrow['SERVICEREMARK']."<br/>";
+						if($rrow['remark'] != '') echo $rrow['remark']."<br/>";
+						if($rrow['allowanceremark'] != '') echo $rrow['allowanceremark']."<br/>";
+						if($rrow['accomodationremark'] != '') echo $rrow['accomodationremark']."<br/>";
+						if($rrow['vehicleremark'] != '') echo $rrow['vehicleremark']."<br/>";
+						if($rrow['documentremark'] != '') echo $rrow['documentremark']."<br/>";
+						if($rrow['humanremark'] != '') echo $rrow['humanremark']."<br/>";
+						if($rrow['serviceremark'] != '') echo $rrow['serviceremark']."<br/>";
 				}
 	  ?>
       &nbsp;</td>
@@ -299,10 +304,10 @@ $nColumn = 2 + $nBudgetType;
 	$sql = " SELECT CNF_BUDGET_TYPE.*,(BUDGET_M1 + BUDGET_M2 + BUDGET_M3 + BUDGET_M4 + BUDGET_M5 + BUDGET_M6 + BUDGET_M7 + BUDGET_M8 + BUDGET_M9 + BUDGET_M10 + BUDGET_M11 + BUDGET_M12)AS BUDGETTOTAL
 			 FROM BUDGET_TYPE_DETAIL LEFT JOIN CNF_BUDGET_TYPE ON BUDGET_TYPE_DETAIL.BUDGETTYPEID = CNF_BUDGET_TYPE.ID
 			 WHERE BUDGETID=".$budgetMaster['id'];
-    $itemResult = db_query($sql);
-    while($itemRow = db_fetch_array($itemResult,0))
+	$itemResult = $this->budget_type_detail->get($sql);
+    foreach($itemResult as $itemRow)
     {
-		if($itemRow['BUDGETTOTAL'] > 0 ){
+		if($itemRow['budgettotal'] > 0 ){
 	?>
     <tr>
     	<td valign="top">&nbsp;</td>
@@ -313,9 +318,9 @@ $nColumn = 2 + $nBudgetType;
 		<?  for($b=0;$b<count($budgetTypeID);$b++){?>
           <td valign="top">
           <?
-		  if($itemRow['BUDGETTYPEID']==$budgetTypeID[$b])
+		  if($itemRow['budgettypeid']==$budgetTypeID[$b])
 		  {
-		    echo number_format($itemRow['BUDGETTOTAL'],2);
+		    echo number_format($itemRow['budgettotal'],2);
 		  //if($total > 0 )echo number_format($total,2);
           //$gtotal += $total ;
 		  }
@@ -337,30 +342,12 @@ $nColumn = 2 + $nBudgetType;
 </div>
 </body>
 </html>
-<?
-function GetSummaryBudgetTypeExpense($pBudgetTypeID,$pProjectID,$pYear,$pProductivity,$pMainactivity,$pSubactivity)
-{
-			$sql = "
-			SELECT SUM(BUDGET_M1 + BUDGET_M2 + BUDGET_M3 + BUDGET_M4 + BUDGET_M5 + BUDGET_M6 + BUDGET_M7 + BUDGET_M8 + BUDGET_M9 + BUDGET_M10 + BUDGET_M11 + BUDGET_M12) TOTAL
-			FROM BUDGET_TYPE_DETAIL
-			WHERE BUDGETID=".$pProjectID." AND BUDGETTYPEID IN (
-				SELECT ID FROM CNF_BUDGET_TYPE WHERE BUDGETTYPEID=".$pBudgetTypeID." AND
-				(
-					EXPENSETYPEID > 0 OR ASSETTYPEID > 0
-				)
-			)
-			";
-			$result = db_query(ConvertCommand($sql));
-			$row = db_fetch_array($result,0);
-			return $row['TOTAL'];
-}
-?>
+
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
 	var pgroup,yy;
 	yy = $('#year option:selected').val();
-	alert(yy);
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
 		LoadMainActivity(yy,$('#year option:selected').val(),'dvMainActivity');
