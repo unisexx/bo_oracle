@@ -113,7 +113,7 @@
       		<img title="Export to Excel" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer"  class="highlightit" /></a></td></tr>
     </table>
 </fieldset>
-<?php //$this->db->debug=true;
+<?php
 	if($subactivity != '')
 	{
 		$subactivityData  = $this->cnf_strategy->get_row($subactivity);

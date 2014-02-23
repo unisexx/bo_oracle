@@ -26,23 +26,31 @@ class budget_report extends Budget_Controller
 		$data['budgetyear'] = @$_GET['budgetyear'];
 		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y')-1;
 		$data['thyear'] = $data['year'] + 543;
-		$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'1';
+		if($index=="6"){
+			$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'1';
+		}else{
+			$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'';
+		}
+
 		$data['productivity'] = (!empty($_GET['productivity'])) ? $_GET['productivity']:'';
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
 
 		if(!empty($_GET['division'])){
 			$data['division'] = $_GET['division'];
+			$data['userSection'] = $_GET['division'];
 			$data['division_name'] = $this->division->get_one('title','id',$_GET['division']);
 		}else{
 			$data['division'] = "";
+			$data['userSection'] = "";
 			$data['division_name'] = "ทั้งหมด";
 		}
 		if(!empty($_GET['workgroup'])){
 			$data['workgroup'] = $_GET['workgroup'];
+			$data['userWorkgroup'] =  $_GET['workgroup'] ;
 			$data['workgroup_name'] = $this->workgroup->get_one('title','id',$_GET['workgroup']);
 		}else{
-			$data['workgroup'] = '';
+			$data['workgroup'] = '';$data['userWorkgroup'] ="";
 			$data['workgroup_name'] = 'ทั้งหมด';
 		}
 
@@ -69,7 +77,6 @@ class budget_report extends Budget_Controller
 			$data['provinceGroup'] = "ทั้งหมด";
 		}
 
-
 		if($export)
 		{
 			$this->template->set_layout('export');
@@ -77,25 +84,19 @@ class budget_report extends Budget_Controller
 			header("Content-Type: application/vnd.ms-excel");
 			switch($index){
 				case "3":
-					header('Content-Disposition: attachment; filename="รายงานแผนการใช้จ่ายงบประมาณจำแนกตามรายจ่ายประจำปีงบประมาณ'.$data['thyear'].'.xls"');
-					break;
+					$filename = "รายงานแผนการใช้จ่ายงบประมาณจำแนกตามรายจ่ายประจำปีงบประมาณ".$data['thyear'].".xls";break;
 				case "5":
-					header('Content-Disposition: attachment; filename="รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี'.$data['thyear'].'.xls"');
-					break;
+					$filename = "รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี".$data['thyear'].".xls";break;
 				case "6":
-					header('Content-Disposition: attachment; filename="รายงานตารางแสดงคำของบประมาณระดับโครงการ ปี '.$data['thyear'].'.xls"');
-					break;
+					$filename = "รายงานตารางแสดงคำของบประมาณระดับโครงการ ปี ".$data['thyear'].".xls";break;
 				case "8":
-					header('Content-Disposition: attachment; filename="รายงานตารางแสดงคำของบประมาณระดับโครงการ ปี '.$data['thyear'].'.xls"');
-					break;
+					$filename = "รายงานตารางแสดงคำของบประมาณระดับโครงการ ปี".$data['thyear'].".xls";break;
 				case "9":
-					header('Content-Disposition: attachment; filename="รายงานแผนงบประมาณรายจ่าย ประจำปีงบประมาณ'.$data['thyear'].'.xls"');
-					break;
+					$filename = "รายงานแผนงบประมาณรายจ่าย ประจำปีงบประมาณ".$data['thyear'].".xls";break;
 				case "10":
-					header('Content-Disposition: attachment; filename="รายงานการประมาณการรายจ่ายล่วงหน้าระยะปานกลาง ปีงบประมาณ'.$data['thyear'].'.xls"');
-					break;
+					$filename = "รายงานการประมาณการรายจ่ายล่วงหน้าระยะปานกลาง ปีงบประมาณ".$data['thyear'].".xls";break;
 			}
-
+			header('Content-Disposition: attachment; filename="'.$filename.'"');
 
 		}else{
 			$this->template->build('report_'.$index.'/index',$data);

@@ -55,7 +55,7 @@
 </div>
 <div id="main">
 <?
-$this->db->debug = true;
+//$this->db->debug = true;
 if($subactivity!=''){
 		$subactivityData  = $this->cnf_strategy->get_row($subactivity);
 		$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
@@ -73,8 +73,7 @@ if($subactivity!=''){
 </fieldset>
     <table width="95%" align="center" >
       <tr style="padding-bottom:10px;">
-        <td style="padding-bottom:10px;" colspan="3" align="center"><br />
-          <br />
+        <td style="padding-bottom:10px;" colspan="3" align="center">
           <h3 id="topic2">รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี<?php echo $thyear;?>&nbsp;</h3></td>
       </tr>
 	<tr>
@@ -245,7 +244,7 @@ if($subactivity!=''){
   <?
 	  $sql = "SELECT ID,TITLE FROM CNF_STRATEGY WHERE ID IN
 				(
-				select productivityid from cnf_strategy as productivity_tbl
+				select productivityid from cnf_strategy
 				WHERE
 				id in
 				(
@@ -280,7 +279,7 @@ if($subactivity!=''){
   	  <?
 	  $sql = "SELECT ID,TITLE FROM CNF_STRATEGY WHERE ID IN
 				(
-				select mainactid from cnf_strategy as productivity_tbl
+				select mainactid from cnf_strategy
 				WHERE
 				id in
 				(
