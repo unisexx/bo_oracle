@@ -37,6 +37,8 @@ ini_set("max_execution_time" , 300);
 $active_group = "default";
 $active_record = TRUE;
 
+
+/*
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "BOFFICE";
 $db['default']['password'] = "1234";
@@ -49,7 +51,7 @@ $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
-
+*/
 $db['fd']['hostname'] = "27.254.33.52";
 $db['fd']['username'] = "BOFFICE";
 $db['fd']['password'] = "1234";

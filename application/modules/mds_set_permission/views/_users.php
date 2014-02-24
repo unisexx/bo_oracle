@@ -16,7 +16,11 @@
 				<td style="width: 400px"><? echo @$tmp['username']; ?></td>
 				<td style="width: 400px"><? echo @$tmp['name']; ?></td>
 				<td style="width: 50px">
-					<input type="button" value="เลือก" class="btn_users_slc" users_id="<?php echo $tmp['id'];?>" users_name="<?php echo $tmp['name']; ?>" users_tel="<?php echo $tmp['tel']; ?>" users_email="<?php echo $tmp['email']; ?>" style="width: 50px" />
+					<input type="button" value="เลือก" class="btn_users_slc" users_id="<?php echo $tmp['id'];?>" usersname="<?php echo $tmp['username']; ?>" 
+					name="<?php echo $tmp['name']; ?>" firstname="<?php echo $tmp['firstname']; ?>" lastname="<?php echo $tmp['lastname']; ?>" 
+					departmentid="<?php echo $tmp['departmentid']; ?>" divisionid="<?php echo $tmp['divisionid']; ?>"
+					division_name="<?php echo $tmp['division_name']; ?>" department_name="<?php echo $tmp['department_name']; ?>"
+					users_tel="<?php echo $tmp['tel']; ?>" users_email="<?php echo $tmp['email']; ?>" style="width: 50px" />
 				</td>
 			</tr>
 		<? $i++;} 

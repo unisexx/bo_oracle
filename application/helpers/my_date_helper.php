@@ -1,4 +1,4 @@
-<?php 
+<?php
 if ( ! function_exists('db_to_th'))
 {
 function db_to_th($datetime = '', $time = TRUE ,$format = 'F')
@@ -11,9 +11,9 @@ function db_to_th($datetime = '', $time = TRUE ,$format = 'F')
 		{
 			$month_th = array( 1 =>'ม.ค.',2 => 'ก.พ.',3=>'มี.ค.',4=>'เม.ย',5=>'พ.ค.',6=>'มิ.ย',7=>'ก.ค.',8=>'ส.ค.',9=>'ก.ย.',10=>'ต.ค.',11=>'พ.ย.',12=>'ธ.ค.');
 		}
-		
+
 		$datetime = human_to_unix($datetime);
-		
+
 		if($format=='F')
 			$r = date('d', $datetime).' '.$month_th[date('n', $datetime)].' '.(date('Y', $datetime) + 543);
 		else
@@ -23,7 +23,7 @@ function db_to_th($datetime = '', $time = TRUE ,$format = 'F')
 		{
 				$r .= ' - '.date('H', $datetime).':'.date('i', $datetime);
 		}
-	
+
 		return $r;
 	}
 }
@@ -104,7 +104,7 @@ function en_to_stamp($date,$includeTime=FALSE)
 }
 if(!function_exists('th_to_stamp'))
 {
-	function th_to_stamp($thaidate,$includeTime = FALSE) 
+	function th_to_stamp($thaidate,$includeTime = FALSE)
 	{
 		if($thaidate=="")
 		{
@@ -115,12 +115,12 @@ if(!function_exists('th_to_stamp'))
 			if($includeTime!= TRUE)
 			{
 				list($d, $m, $y) = explode("-", $thaidate);
-				$y = ($y + 543) > 3000 ? $y - 543 : $y;		
+				$y = ($y + 543) > 3000 ? $y - 543 : $y;
 				$timestamp = strtotime($d . "-" . $m . "-" . $y);
-			}else{						
+			}else{
 				$date = explode(" ",$thaidate);
 				list($d, $m, $y) = explode("-", $date[0]);
-				$y = ($y + 543) > 3000 ? $y - 543 : $y;				 				
+				$y = ($y + 543) > 3000 ? $y - 543 : $y;
 				$timestamp = strtotime($d . "-" . $m . "-" . $y." ".$date[1]);
 			}
 		}
@@ -148,4 +148,44 @@ if(!function_exists('stamp_to_th_abbrfulldate'))
 		return $th_date;
 	}
 }
+function GetMonthName($type,$no)
+{
+	if($type=='full')
+	{
+		$monthName = array('ตุลาคม','พฤศจิกายน','ธันวาคม','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน');
+	}
+	else
+	{
+		$monthName = array('ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.');
+	}
+	return $monthName[$no];
+}
+	function GetThaiDate($pDate,$havetime,$showtime)
+	{
+		 $date = "";
+		 if($pDate>0)
+		 {
+			 $tmpDate = $pDate;
+			if($havetime == 1)
+			{
+				$pDate = explode(" ",$pDate);
+				$tmpDate = $pDate[0];
+				$tmpTime = $pDate[1];
+			}
+
+			if (strpos($tmpDate,"/"))
+			{
+				 $tmpDate = explode("/", $tmpDate);
+			}
+			else
+			{
+				$tmpDate = explode("-",$tmpDate);
+			}
+
+			$year = (int)$tmpDate[0]+543;
+			$date  =  $tmpDate[2]."/".$tmpDate[1]."/".$year;
+			if($showtime == 1)$date .= " ".$tmpTime;
+		}
+		return $date;
+	}
 ?>
