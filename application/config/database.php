@@ -34,7 +34,7 @@
 | the active record class
 */
 ini_set("max_execution_time" , 300);
-$active_group = "fd";
+$active_group = "default";
 $active_record = TRUE;
 
 $db['default']['hostname'] = "localhost";
