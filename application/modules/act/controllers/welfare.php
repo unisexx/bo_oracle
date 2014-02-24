@@ -93,5 +93,11 @@ Class Welfare extends  Act_Controller{
         if($type == 'report' and !empty($_GET['q'])) array_unshift($result, array('tumbon_code' => '', 'text' => $text));
 		echo $result ? json_encode($result) : '[{"id":"","text":"'.$text.'"}]';
 	}
+	
+	function organ_select(){
+		$data['orgmains'] = $this->orgmain->order_by('organ_id','desc')->get(FALSE,FALSE);
+		$data['pagination'] = $this->orgmain->pagination();
+		$this->load->view('welfare/organ_select',$data);
+	}
 }
 ?>

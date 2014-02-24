@@ -328,11 +328,11 @@ $(document).ready(function(){
     <th>สถานะขั้นตอน</th>
     <td><select name="status">
     <option>-- สถานะ --</option>
-    <option>รับเรื่อง</option>
-    <option>อนุรับรอง</option>
-    <option>ส่งใบสำคัญ</option>
-    <option>ประกาศกิจจานุเบกษา</option>
-    <option>ไม่รับรอง</option>
+    <option value="1">รับเรื่อง</option>
+    <option value="2">อนุรับรอง</option>
+    <option value="3">ส่งใบสำคัญ</option>
+    <option value="4">ประกาศกิจจานุเบกษา</option>
+    <option value="5">ไม่รับรอง</option>
   </select></td>
   </tr>
 </table> 

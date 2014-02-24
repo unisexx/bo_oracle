@@ -1,7 +1,7 @@
 <?php
-class social_welfare_model extends MY_Model{
+class committee_sub_model extends MY_Model{
 	
-	public $table = 'act_social_welfare';
+	public $table = 'act_committee_sub';
 	
     function __construct()
     {

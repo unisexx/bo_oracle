@@ -4,12 +4,13 @@
 <table class="tbadd">
 <tr>
   <th>ชื่อความสอดคล้องกับนโยบายแผน <span class="Txt_red_12"> *</span></th>
-  <td><input name="consistent_plan_name" type="text" class="form-control" style="width:500px;" value="<?php echo $consistent['consistent_plan_name']?>" /></td>
+  <td><input name="policy_name" type="text" class="form-control" style="width:500px;" value="<?php echo $consistent['policy_name']?>" /></td>
 </tr>
 </table>
 
 
 <div id="btnBoxAdd">
+	<input type="hidden" name="created" value="<?php echo $consistent['created']?>">
 	<input type="hidden" name="id" value="<?php echo $consistent['id']?>">
   <input type="submit" title="บันทึก" value=" " class="btn_save"/>
   <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>

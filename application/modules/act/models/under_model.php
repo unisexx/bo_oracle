@@ -1,7 +1,7 @@
 <?php
-class branch_service_model extends MY_Model{
+class under_model extends MY_Model{
 	
-	public $table = 'act_branch_service';
+	public $table = 'act_under';
 	
     function __construct()
     {
