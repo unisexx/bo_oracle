@@ -1,86 +1,38 @@
-<? //$this->db->debug=true;
-$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[1]['mainactid']);
-$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id=".$subactivityData[1]['productivityid']);
+<? if($step!=''&& $subactivity != ''){
+	$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
+	$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['mainactid']);
+	$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['productivityid']);
 
-$subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-$missionType 		 = $subActivityRow[1]['missiontype'];
-$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[1]['mainactid']);
-$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[1]["planid"]);
-$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]["ministrytargetid"]);
-$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[1]['ministrystrategyid']);
-$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['sectiontargetid']);
-$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productivityid']);
+	$subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
+	$missionType 		 = $subActivityRow[0]['missiontype'];
+	$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[0]['mainactid']);
+	$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[0]["planid"]);
+	$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]["ministrytargetid"]);
+	$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[0]['ministrystrategyid']);
+	$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['sectiontargetid']);
+	$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['productivityid']);
 
 ?>
-<br />
-&nbsp;
+
 <table width="95%" align="center" >
   <tr style="padding-bottom:10px;">
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[1]['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[1]['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[1]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[0]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[0]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[0]['title'];?></td>
 </tr>
 <tr>
-  <td align="left" style="padding-bottom:10px;">ภาค :
-    <?
-	  			if($pzone == '' )
-					echo "ทั้งหมด";
-				else
-				{
-					$provinceZone = $this->pzone->get_one("title",'id',$pzone);
-					echo $provinceZone['title'];
-				}
-  ?></td>
-  <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :
-    <?
-	  			if($pgroup == '' )
-					echo "ทั้งหมด";
-				else
-				{
-				//$provinceGroup = SelectData("CNF_PROVINCE_GROUP"," WHERE ID=".$pgroup." ");
-				//echo $provinceGroup['DESCRIPTION'];
-				}
-		  ?></td>
-  <td align="left">จังหวัด : <span style="padding-bottom:10px;">
-    <?
-	  			if($province == '' )
-					echo "ทั้งหมด";
-				else
-				{
-					$province = $this->privince->get_one('title','id',$province);
-					echo $province['title'];
-				}
-		  ?>
-  </span></td>
+    <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
+    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
+    <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+
 </tr>
 <tr>
-  <td align="left" style="padding-bottom:10px;">หน่วยงาน :
-    <?
-  		if($userSection == '' )
-			echo "ทั้งหมด";
-		else
-		{
-			$section = $this->division->get_one('title','id',$userSection);
-			echo $section['title'];
-		}
-  ?></td>
-  <td align="left" style="padding-bottom:10px;">กลุ่มงาน :
-    <?
-		if($userWorkgroup=='')
-		{
-			echo "ทุกกลุ่มงาน";
-		}
-		else
-		{
-			$workgroup = $this->workgroup->get_one('title','id',$userWorkgroup);
-			echo $workgroup['title'];
-		}
-  ?></td>
-  <td align="left">&nbsp;</td>
+	 <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
+	 <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+  	 <td align="left">&nbsp;</td>
 </tr>
 <tr>
   <td colspan="3" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?>
@@ -138,7 +90,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
     <?
 		$i=0;
 		$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=0 ORDER BY ORDERNO ";
-		$mainTypeResult = $this->budget_type->get($sql);
+		$mainTypeResult = $this->cnf_budget_type->get($sql);
 		foreach($mainTypeResult  as $mainTypeRow)
 		{
 			$i++;
@@ -166,7 +118,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
     </tr>
     	    <?
 				$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=".$mainTypeRow['id']." ORDER BY ORDERNO ";
-				$secondTypeResult = $this->budget_type->get($sql);
+				$secondTypeResult = $this->cnf_budget_type->get($sql);
 				foreach($secondTypeResult as $secondTypeRow)
 				{
 			?>
@@ -193,7 +145,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
 	</tr>
 					<?
                         $sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=".$secondTypeRow['id']." ORDER BY ORDERNO ";
-						$thirdTypeResult = $this->budget_type->get($sql);
+						$thirdTypeResult = $this->cnf_budget_type->get($sql);
 						foreach($thirdTypeResult as $thirdTypeRow )
                         {
                     ?>
@@ -222,4 +174,4 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
 		   <? } ?>
    <? } ?>
 </table>
-</div>
+ <? } ?>

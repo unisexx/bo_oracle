@@ -57,7 +57,6 @@
 		$condition = (!empty($productivity)) ? "  and productivityid =".$productivity : "";
 		$condition = (!empty($mainactivity)) ? " and  mainactid =".$mainactivity : $condition;
 		$condition = (!empty($missionType)) ? " and missiontype = '".trim($missionType)."' " : $condition;
-		echo $sql = "select * from cnf_strategy where MAINACTID > 0 AND SYEAR=".$year.$condition;
 	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',' MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
       </div>
      </td>
@@ -79,7 +78,7 @@
 <tr>
   <th>หน่วยงาน</th>
   <td><div id="dvSectionList">
-    <?php echo form_dropdown('division',get_option('id','title','cnf_division','','title'),$divisionid,'id="division"','เลือกหน่วยงาน'); ?>
+    <?php echo form_dropdown('division',get_option('id','title','cnf_division','','title'),$division,'id="division"','เลือกหน่วยงาน'); ?>
   </div></td>
 </tr>
 <tr>
@@ -87,7 +86,7 @@
   <td><div id="dvWorkgroupList">
     <?php
      $condition = (!empty($_GET['division'])) ? " divisionid=".$_GET['division']: "";
-     echo form_dropdown('workgroup',get_option('id','title','cnf_workgroup',$condition),$workgroupid,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
+     echo form_dropdown('workgroup',get_option('id','title','cnf_workgroup',$condition),$workgroup,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
   </div></td>
 </tr>
 <tr>
@@ -104,9 +103,8 @@
 
 <? if($step!=''&& $subactivity != ''){
 	$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-	$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[1]['mainactid']);
-	$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id=".$subactivityData[1]['productivityid']);
-
+	$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['mainactid']);
+	$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['productivityid']);
 
 ?>
 <div id="main">
@@ -122,13 +120,13 @@
 
 <?
 $subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-$missionType 		 = $subActivityRow[1]['missiontype'];
-$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[1]['mainactid']);
-$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[1]["planid"]);
-$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]["ministrytargetid"]);
-$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[1]['ministrystrategyid']);
-$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['sectiontargetid']);
-$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productivityid']);
+$missionType 		 = $subActivityRow[0]['missiontype'];
+$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[0]['mainactid']);
+$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[0]["planid"]);
+$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]["ministrytargetid"]);
+$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[0]['ministrystrategyid']);
+$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['sectiontargetid']);
+$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['productivityid']);
 
 ?>
 <br />
@@ -138,9 +136,9 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[0]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[0]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[0]['title'];?></td>
 </tr>
 <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
@@ -209,7 +207,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
     <?
 		$i=0;
 		$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=0 ORDER BY ORDERNO ";
-		$mainTypeResult = $this->budget_type->get($sql);
+		$mainTypeResult = $this->cnf_budget_type->get($sql);
 		foreach($mainTypeResult  as $mainTypeRow)
 		{
 			$i++;
@@ -237,7 +235,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
     </tr>
     	    <?
 				$sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=".$mainTypeRow['id']." ORDER BY ORDERNO ";
-				$secondTypeResult = $this->budget_type->get($sql);
+				$secondTypeResult = $this->cnf_budget_type->get($sql);
 				foreach($secondTypeResult as $secondTypeRow)
 				{
 			?>
@@ -264,7 +262,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
 	</tr>
 					<?
                         $sql = " SELECT * FROM CNF_BUDGET_TYPE WHERE PID=".$secondTypeRow['id']." ORDER BY ORDERNO ";
-						$thirdTypeResult = $this->budget_type->get($sql);
+						$thirdTypeResult = $this->cnf_budget_type->get($sql);
 						foreach($thirdTypeResult as $thirdTypeRow )
                         {
                     ?>
@@ -300,229 +298,39 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[1]['productiv
 <?php } ?>
 
 
-<?php
-function GetSummarySubActivity($pSubActID,$pQuarter,$pYear, $pZone, $pGroup, $pProvince, $pSection,$pWorkgroup,$step)
-{
-		$url_parameter = GetCurrentUrlGetParameter();
-		$CI=& get_instance();
-		if($pQuarter != '')
-		{
-			switch($pQuarter)
-			{
-				case 1:
-					$summary = " SUM(BUDGET_M1 + BUDGET_M2 + BUDGET_M3) AS TOTAL ";
-				break;
-				case 2:
-					$summary = " SUM(BUDGET_M4 + BUDGET_M5 + BUDGET_M6) AS TOTAL ";
-				break;
-				case 3:
-					$summary = " SUM(BUDGET_M7 + BUDGET_M8 + BUDGET_M9) AS TOTAL ";
-				break;
-				case 4:
-					$summary = " SUM(BUDGET_M10 + BUDGET_M11 + BUDGET_M12) AS TOTAL ";
-				break;
-			}
-		}
-		$condition  = "";
-		$condition .= $pZone != '' ? " AND CNF_PROVINCE.ZONE='".$pZone."' ": "";
-		$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
-		$condition .= $pProvince != '' ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
-		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
-		$condition .= $pWorkgroup != '' && $pWorkgroup != 'ALL' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
-		$condition .= (!empty($pPolicyType))  ? " AND CNMAIN.PolicyType='".$pPolicyType."' " : "";
 
-			$sql = "
-			SELECT ".$summary."	FROM BUDGET_TYPE_DETAIL
-			LEFT JOIN BUDGET_MASTER ON BUDGET_TYPE_DETAIL.BUDGETID = BUDGET_MASTER.ID
-			LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
-			LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-			LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
-			WHERE  SUBACTIVITYID =".$pSubActID."
-			AND BUDGET_MASTER.STEP = ".$step." AND BUDGET_MASTER.BUDGETYEAR=".$pYear.$condition."
-			";
-			//$result = db_query(ConvertCommand($sql));
-			//$row = db_fetch_array($result,0);
-			//return $row['TOTAL'];
-			$row = $CI->db->GetOne($sql);
-			return $row['TOTAL'];
-}
-function GetBudgetSummaryNextYear($pYear,$pIndex,$pSubactivity,$pStep,$pMissionType,$pSection,$pWorkgroup,$pZone,$pGroup,$pProvince)
-{  $CI=& get_instance();
-		$condition = $pZone != '' ? " AND CNF_PROVINCE.ZONE='".$pZone."' ": "";
-		$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
-		$condition .= $pProvince != '' ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
-		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
-		$condition .= $pWorkgroup != '' && $pWorkgroup != 'ALL' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
-	$summaryYear = "BUDGET_NY".$pIndex;
-	$sql = "
-	SELECT SUM(".$summaryYear.")TOTAL FROM BUDGET_TYPE_DETAIL
-	WHERE BUDGETID IN (
-	SELECT BUDGET_MASTER.ID FROM BUDGET_MASTER
-	LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
-	WHERE SUBACTIVITYID=".$pSubactivity." AND BUDGETYEAR=".$pYear.$condition.
-	")";
-	$total="";
-	$result = $CI->db->GetArray($sql);
-	foreach($result as $row)
-	{
-		$total += $row['TOTAL'];
-	}
-	return $total;
-}
-function GetBudgetSummaryLastYear($pYear,$pSubactivity,$pStep,$pMissionType)
-{   $CI=& get_instance();
-	$sql = " SELECT * FROM BUDGET_MASTER WHERE SUBACTIVITYID=".$pSubactivity." AND BUDGETYEAR=".$pYear;
-	$result = $CI->db->GetArray($sql);
-	$total="";
-	foreach($result as $row)
-	{
-			$total += $row['LASTESTIMATEBUDGET_Y'.$pIndex];
-	}
-	return $total;
-
-}
-function GetBudgetSummaryCurrentYear($pYear,$pSubactivity,$pStep,$pMissionType,$pSection,$pWorkgroup,$pZone,$pGroup,$pProvince)
-{	$CI=& get_instance();
-	       $summaryMonth='';
-		$condition = $pZone != '' ? " AND CNF_PROVINCE.ZONE='".$pZone."' ": "";
-		$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
-		$condition .= $pProvince != '' ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
-		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
-		$condition .= $pWorkgroup != '' && $pWorkgroup != 'ALL' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
-	for($i=1;$i<=12;$i++)
-	{
-		$summaryMonth .= $summaryMonth != '' ? " + " : "";
-		$summaryMonth .=" BUDGET_M".$i;
-	}
-	$sql = "
-	SELECT SUM(".$summaryMonth.")TOTAL FROM BUDGET_TYPE_DETAIL
-	WHERE BUDGETID IN (
-	SELECT BUDGET_MASTER.ID FROM BUDGET_MASTER
-	LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
-	WHERE SUBACTIVITYID=".$pSubactivity." AND BUDGETYEAR=".$pYear.$condition.
-	")";
-
-	$result = $CI->db->GetArray($sql);
-	//$CI->db->debug=true;
-	$total="";
-	foreach($result as $row)
-	{
-		$total += $row['TOTAL'];
-	}
-	return $total;
-
-}
-function GetBudgetSummaryCurrentYearType($pYear,$pSubactivity,$pStep,$pMissionType,$pSection,$pWorkgroup,$pLV,$pTypeID,$pZone,$pGroup,$pProvince)
-{
-
-	$CI=& get_instance();
-	$conditionType = "";
-	$conditionType .= $pLV == '1' ? " AND BUDGETTYPEID=".$pTypeID : "";
-	$conditionType .= $pLV == '2' ? " AND EXPENSETYPEID=".$pTypeID : "";
-	$conditionType .= $pLV == '3' ? " AND ID=".$pTypeID : "";
-
-		$condition = $pZone != '' ? " AND CNF_PROVINCE.ZONE='".$pZone."' ": "";
-		$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
-		$condition .= $pProvince != '' ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
-		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
-		$condition .= $pWorkgroup != '' && $pWorkgroup != 'ALL' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
-	$summaryMonth="";
-	for($i=1;$i<=12;$i++)
-	{
-		$summaryMonth .= $summaryMonth != '' ? " + " : "";
-		$summaryMonth .=" BUDGET_M".$i;
-	}
-	$sql = "
-	SELECT SUM(".$summaryMonth.")TOTAL FROM BUDGET_TYPE_DETAIL
-	WHERE BUDGETID IN (
-	SELECT BUDGET_MASTER.ID FROM BUDGET_MASTER
-	LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
-	WHERE SUBACTIVITYID=".$pSubactivity." AND BUDGETYEAR=".$pYear.$condition.
-	")
-	AND BUDGETTYPEID IN (SELECT ID FROM CNF_BUDGET_TYPE WHERE 1=1 ".$conditionType
-	.")";
-	$result = $CI->db->GetArray($sql);
-	$total = "";
-	foreach($result as $row)
-	{
-		$total += $row['TOTAL'];
-	}
-	return $total;
-
-}
-
-function GetBudgetSummaryNextYearType($pYear,$pIndex,$pSubactivity,$pStep,$pMissionType,$pSection,$pWorkgroup,$pLV,$pTypeID,$pZone,$pGroup,$pProvince)
-{
-	$CI=& get_instance();
-	$conditionType = "";
-	$conditionType .= $pLV == '1' ? " AND BUDGETTYPEID=".$pTypeID : "";
-	$conditionType .= $pLV == '2' ? " AND EXPENSETYPEID=".$pTypeID : "";
-	$conditionType .= $pLV == '3' ? " AND ID=".$pTypeID : "";
-
-		$condition = $pZone != '' ? " AND CNF_PROVINCE.ZONE='".$pZone."' ": "";
-		$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
-		$condition .= $pProvince != '' ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
-		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
-		$condition .= $pWorkgroup != '' && $pWorkgroup != 'ALL' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
-	$summaryYear = "BUDGET_NY".$pIndex;
-	$sql = "
-	SELECT SUM(".$summaryYear.")TOTAL FROM BUDGET_TYPE_DETAIL
-	WHERE BUDGETID IN (
-	SELECT BUDGET_MASTER.ID FROM BUDGET_MASTER
-	LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
-	WHERE SUBACTIVITYID=".$pSubactivity." AND BUDGETYEAR=".$pYear.$condition.
-	")
-	AND BUDGETTYPEID IN (SELECT ID FROM CNF_BUDGET_TYPE WHERE 1=1 ".$conditionType
-	.")";
-	$result = $CI->db->GetArray($sql);
-	$total="";
-	foreach($result as $row)
-	{
-		$total += $row['TOTAL'];
-	}
-	return $total;
-}
-?>
 
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
 	var pProductivity,pMainActivity;
+	var yy = $('#year option:selected').val();
 	$('#year').change(function(){
-		LoadMainActivity(<?=$year;?>,$('#year option:selected').val(),'dvMainActivity');
-		LoadSubActivity(<?=$year;?>,$('#year option:selected').val(),'','dvSubActivity');
+		yy = $('#year option:selected').val();
+		LoadProductivity(yy,'dvProductivity');
+		LoadMainActivity(yy,'','dvMainActivity');
+		LoadSubActivity(yy,'','','dvSubActivity');
 	})
 	$('#productivity').live('change',function(){
 		pProductivity = $('#productivity option:selected').val();
-		LoadMainActivity(<?=$year;?>,pProductivity,'dvMainActivity');
-		LoadSubActivity(<?=$year;?>,pProductivity,'','dvSubActivity');
+		LoadMainActivity(yy,pProductivity,'dvMainActivity');
+		LoadSubActivity(yy,pProductivity,'','dvSubActivity');
 	});
-	$('#mainactivity').live('change',function(){
-		pMainActivity = $('#mainactivity option:selected').val();
-		LoadSubActivity(<?=$year;?>,pProductivity,pMainActivity,'dvSubActivity');
-	});
+
 	$('#province').live('change',function(){
 		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		};
+		LoadSection(pProvince);
 	});
 	$('#division').live('change',function(){
 		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		};
+		LoadWorkgroup(pSection);
 	});
 	$('#missiontype').change(function(){
-		LoadSubActivity(<?=$year;?>,'','','dvSubActivity');
+		LoadSubActivity(yy,'','','dvSubActivity');
+	});
+	$('#pgroup').change(function(){
+		pGroup = $('#pgroup option:selected').val();
+		LoadProvinceGroup(pGroup);
 	});
 
 });

@@ -24,7 +24,7 @@ class budget_report extends Budget_Controller
 		if(!is_login())redirect("home");
 		$data['url_parameter'] = GetCurrentUrlGetParameter();
 		$data['budgetyear'] = @$_GET['budgetyear'];
-		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y')-1;
+		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y');
 		$data['thyear'] = $data['year'] + 543;
 		if($index=="6"){
 			$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'1';

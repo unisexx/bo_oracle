@@ -1,6 +1,6 @@
 <h3 id="topic">รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี <?php echo $thyear;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="budget_report/index/5" method="get">
+<form name="frmAsset"  action="budget_report/index/5" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">
@@ -87,10 +87,10 @@ if($subactivity!=''){
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
   </tr>
   <tr>
-        <td colspan="2" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?></td>
-        <td align="right">หน่วย : บาท</td>
-      </tr>
-    </table>
+    <td colspan="2" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?></td>
+    <td align="right">หน่วย : บาท</td>
+  </tr>
+</table>
 <?
 	$i = 0;
 	$ColID = array(-1);
@@ -107,7 +107,7 @@ if($subactivity!=''){
 	$sql = "SELECT CNF_BUDGET_TYPE.* FROM CNF_BUDGET_TYPE
 			LEFT JOIN BUDGET_EXPENSE_TYPE ON CNF_BUDGET_TYPE.ID = BUDGET_EXPENSE_TYPE.EXPENSETYPEID
 			WHERE CNF_BUDGET_TYPE.ID IN (".$condition.") ORDER BY ORDERNO ";
-	//$result = db_query($sql);
+
 	$result = $this->cnf_budget_type->get($sql);
 	foreach($result as $BudgetType_1)
 	{
@@ -356,7 +356,6 @@ $(document).ready(function(){
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-
 		LoadSubActivity(yy,'','','dvSubActivity');
 	})
 	$('#pgroup').change(function(){

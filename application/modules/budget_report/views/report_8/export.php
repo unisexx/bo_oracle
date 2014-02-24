@@ -1,4 +1,4 @@
-<h3><br />แผนการปฏิบัติงานและแผนการใช้จ่ายงบประมาณรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
+<h3>แผนการปฏิบัติงานและแผนการใช้จ่ายงบประมาณรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
 <div id="main">
 <table border="1" bordercolor="#CCCCCC" cellpadding="0" cellspacing="0" >
 	<tr>

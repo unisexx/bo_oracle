@@ -456,37 +456,35 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pgroup,yy;
-	yy = $('#year option:selected').val();
+	var pProductivity,pMainActivity;
+	var yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-		LoadMainActivity(yy,$('#year option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#year option:selected').val(),'','dvSubActivity');
+		LoadProductivity(yy,'dvProductivity');
+		LoadMainActivity(yy,'','dvMainActivity');
+		LoadSubActivity(yy,'','','dvSubActivity');
 	})
 	$('#productivity').live('change',function(){
-		pProductivity = $(this).val();
-		//alert(pProductivity);
-		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#productivity option:selected').val(),'','dvSubActivity');
+		pProductivity = $('#productivity option:selected').val();
+		LoadMainActivity(yy,pProductivity,'dvMainActivity');
+		LoadSubActivity(yy,pProductivity,'','dvSubActivity');
 	});
+
 	$('#province').live('change',function(){
 		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		}
+		LoadSection(pProvince);
 	});
 	$('#division').live('change',function(){
 		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		}
+		LoadWorkgroup(pSection);
+	});
+	$('#missiontype').change(function(){
+		LoadSubActivity(yy,'','','dvSubActivity');
 	});
 	$('#pgroup').change(function(){
-		pgroup = $('#pgroup option:selected').val();
-		//alert(pgroup);
-		if(pgroup.length>0){
-			LoadProvinceGroup(pGroup);
-		}
-	})
+		pGroup = $('#pgroup option:selected').val();
+		LoadProvinceGroup(pGroup);
+	});
+
 });
 </script>

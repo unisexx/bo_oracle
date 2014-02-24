@@ -132,72 +132,46 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 
 ?>
 <table width="100%" cellpadding="5" cellspacing="2">
-<tr>
-	<td>
-		แผนงาน : <?php echo $planRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	เป้าหมายการให้บริการกระทรวง : <?php echo $ministryTargetRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	ยุทธศาสตร์กระทรวง : <?php echo $ministryStrategyRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	เป้าหมายการให้บริษัทหน่วยงาน : <?php echo $sectionTargetRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	ผลผลิต : <?php echo $productivityRow['title'];?>
-    </td>
-</tr>
-<?
-$sql = "SELECT * FROM CNF_STRATEGY_DETAIL WHERE PID=".$productivityRow['id'];
-$productivityKeyResult = $this->cnf_strategy_detail->get($sql);
-foreach($productivityKeyResult as $productivityKeyRow){
-?>
-<tr>
-	<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตัวชี้วัดผลผลิต : <?php echo $productivityKeyRow['title'];?></td>
-</tr>
-<? } ?>
-<tr>
-	<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กิจกรรมหลัก : <?php echo $mainActivityRow['title'];?></td>
-</tr>
-<tr>
-  <td align="right">หน่วย:ล้านบาท&nbsp;</td>
-</tr>
+	<tr><td>แผนงาน : <?php echo $planRow['title'];?></td></tr>
+	<tr><td>เป้าหมายการให้บริการกระทรวง : <?php echo $ministryTargetRow['title'];?></td></tr>
+	<tr><td>ยุทธศาสตร์กระทรวง : <?php echo $ministryStrategyRow['title'];?></td></tr>
+	<tr><td>เป้าหมายการให้บริษัทหน่วยงาน : <?php echo $sectionTargetRow['title'];?></td></tr>
+	<tr><td>ผลผลิต : <?php echo $productivityRow['title'];?></td></tr>
+	<?
+	$sql = "SELECT * FROM CNF_STRATEGY_DETAIL WHERE PID=".$productivityRow['id'];
+	$productivityKeyResult = $this->cnf_strategy_detail->get($sql);
+	foreach($productivityKeyResult as $productivityKeyRow){
+	?>
+	<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตัวชี้วัดผลผลิต : <?php echo $productivityKeyRow['title'];?></td></tr>
+	<? } ?>
+	<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กิจกรรมหลัก : <?php echo $mainActivityRow['title'];?></td></tr>
+	<tr><td align="right">หน่วย:ล้านบาท&nbsp;</td></tr>
 </table>
 <table class="tbToDoList">
   <tr bgcolor="#EFF7E8">
-		<td valign="top">กิจกรรมหลัก/กิจกรรมย่อย/โครงการ</td>
-      <td valign="top">เป้าหมาย</td>
+	<td valign="top">กิจกรรมหลัก/กิจกรรมย่อย/โครงการ</td>
+    <td valign="top">เป้าหมาย</td>
     <td colspan="2" valign="top">งบประมาณ<br />(ล้านบาท)</td>
-      <td colspan="2" valign="top">ไตรมาส 1 (ต.ค.-ธ.ค.)</td>
-      <td colspan="2" valign="top">ไตรมาส 2 (ม.ค.-มี.ค.)</td>
-      <td colspan="2" valign="top">ไตรมาส 3 (เม.ย.-มิ.ย.)</td>
-      <td colspan="2" valign="top">ไตรมาส 4 (ก.ค.-ก.ย.)</td>
-        <td rowspan="2" valign="top">พื้นที่ดำเนินการ</td>
-    </tr>
-    <tr bgcolor="#EFF7E8">
-   	  <td valign="top">&nbsp;</td>
-        <td align="center" valign="top">&nbsp;</td>
-    <td align="center" valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-        <td valign="top">งบประมาณ</td>
-    </tr>
+  	<td colspan="2" valign="top">ไตรมาส 1 (ต.ค.-ธ.ค.)</td>
+  	<td colspan="2" valign="top">ไตรมาส 2 (ม.ค.-มี.ค.)</td>
+  	<td colspan="2" valign="top">ไตรมาส 3 (เม.ย.-มิ.ย.)</td>
+  	<td colspan="2" valign="top">ไตรมาส 4 (ก.ค.-ก.ย.)</td>
+  	<td rowspan="2" valign="top">พื้นที่ดำเนินการ</td>
+  </tr>
+  <tr bgcolor="#EFF7E8">
+	  <td valign="top">&nbsp;</td>
+	  <td align="center" valign="top">&nbsp;</td>
+	  <td align="center" valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+  </tr>
     <?
 			//$section = $userSection;
 			//$workgroup = $userWorkgroup;
@@ -205,7 +179,7 @@ foreach($productivityKeyResult as $productivityKeyRow){
 			$group = $pgroup;
 			$province = $_GET['province'];
 			$subactivityCondition = $subactivity != '' ? " AND ID=".$subactivity : "";
-			$sql = "SELECT * FROM CNF_STRATEGY WHERE SYEAR=".$year." AND MAINACTID =".$mainActivityRow[0]['id'].$subactivityCondition;
+			$sql = "SELECT * FROM CNF_STRATEGY WHERE SYEAR=".$year." AND MAINACTID =".$mainActivityRow['id'].$subactivityCondition;
 			$result = $this->cnf_strategy->get($sql);
 
 			foreach($result as $subActivityRow){
@@ -300,11 +274,6 @@ foreach($productivityKeyResult as $productivityKeyRow){
 <? } ?>
 </body>
 </html>
-<?
-
-
-?>
-
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
@@ -312,34 +281,30 @@ $(document).ready(function(){
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-		LoadMainActivity(yy,$('#year option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#year option:selected').val(),'','dvSubActivity');
+		LoadProductivity(yy,'dvProductivity');
+		LoadMainActivity(yy,'','dvMainActivity');
+		LoadSubActivity(yy,'','','dvSubActivity');
 	})
 	$('#productivity').live('change',function(){
 		pProductivity = $(this).val();
-		//alert(pProductivity);
 		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
 		LoadSubActivity(yy,$('#productivity option:selected').val(),'','dvSubActivity');
 	});
+
+	$('#pgroup').change(function(){
+		pGroup = $('#pgroup option:selected').val();
+		LoadProvinceGroup(pGroup);
+
+	});
 	$('#province').live('change',function(){
 		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		}
+		LoadSection(pProvince);
 	});
 	$('#division').live('change',function(){
 		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		}
+		LoadWorkgroup(pSection);
 	});
-	$('#pgroup').change(function(){
-		pgroup = $('#pgroup option:selected').val();
-		//alert(pgroup);
-		if(pgroup.length>0){
-			LoadProvinceGroup(pGroup);
-		}
-	})
+
 });
 </script>
 

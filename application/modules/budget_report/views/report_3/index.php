@@ -56,7 +56,7 @@
     <select name="province" id="province">
     <option value="0">เลือกจังหวัด</option>
 	<?php foreach($result as $item){ ?>
-   	<option value="<?php echo $item['id'] ?>"><?php echo $item['title'] ?></option>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
   	<?php } ?>
   	</select>
   </div></td>
@@ -404,30 +404,20 @@ $(document).ready(function(){
 		LoadMainActivity(yy,'','dvMainActivity');
 		LoadSubActivity(yy,'','','dvSubActivity');
 	})
-	$('#productivity').live('change',function(){
-		pProductivity = $(this).val();
-		//alert(pProductivity);
-		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#productivity option:selected').val(),'','dvSubActivity');
+
+	$('#pgroup').change(function(){
+		pGroup = $('#pgroup option:selected').val();
+		LoadProvinceGroup(pGroup);
+
 	});
 	$('#province').live('change',function(){
 		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		}
+		LoadSection(pProvince);
 	});
 	$('#division').live('change',function(){
 		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		}
+		LoadWorkgroup(pSection);
 	});
-	$('#pgroup').change(function(){
-		pgroup = $('#pgroup option:selected').val();
-		//alert(pgroup);
-		if(pgroup.length>0){
-			LoadProvinceGroup(pGroup);
-		}
-	})
+
 });
 </script>

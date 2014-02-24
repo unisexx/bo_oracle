@@ -50,9 +50,12 @@
   <td>
     <div id="dvSubActivity">
         <?
-		$condition = (!empty($productivity)) ? "  and productivityid =".$productivity : "";
-		$condition = (!empty($mainactivity)) ? " and  mainactid =".$mainactivity : $condition;
-	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',' MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
+		//$condition = (!empty($productivity)) ? "  and productivityid =".$productivity : "";
+		//$condition = (!empty($mainactivity)) ? " and  mainactid =".$mainactivity : $condition;
+		$condition = (!empty($productivity)) ? " AND  productivityid=".$productivity:'';
+		$condition.= (!empty($mainactivity)) ? " AND mainactid=".$mainactivity:'';
+	    //echo  "SELECT * FROM CNF_STRATEGY WHERE MAINACTID > 0 AND SYEAR=".$year.$condition;
+	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',' MAINACTID > 0 AND SYEAR='.$year.$condition,'title'),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
       </div>
      </td>
 </tr>
@@ -92,7 +95,7 @@
   <td><div id="dvWorkgroupList">
     <?php
      $condition = (!empty($_GET['division'])) ? " divisionid=".$_GET['division']: "";
-     echo form_dropdown('workgroup',get_option('id','title','cnf_workgroup',$condition),$workgroup,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
+     echo form_dropdown('workgroup',get_option('id','title','cnf_workgroup',$condition,'title'),$workgroup,'id="workgroup"','เลือกทุกกลุ่ม','0'); ?>
   </div></td>
 </tr>
 <tr>
@@ -350,14 +353,15 @@ $(document).ready(function(){
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-		LoadMainActivity(yy,$('#year option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#year option:selected').val(),'','dvSubActivity');
+		if(yy==''){yy="<?php echo $year; ?>";}
+		LoadProductivity(yy,'dvProductivity','productivity1');
 	})
 	$('#productivity').live('change',function(){
-		pProductivity = $(this).val();
-		//alert(pProductivity);
-		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#productivity option:selected').val(),'','dvSubActivity');
+		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity','main1');
+
+	});
+	$('#mainactivity').live('change',function(){
+		LoadSubActivity(yy,$('#productivity option:selected').val(),$('#mainactivity option:selected').val(),'dvSubActivity','sub1');
 	});
 	$('#province').live('change',function(){
 		var pProvince = $('#province option:selected').val();
