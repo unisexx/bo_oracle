@@ -1040,4 +1040,13 @@ function GetSummarySubActivity2($pSubActID,$pQuarter, $pMonth,$pYear,$pSection,$
 			$result = $CI->db->getone($sql);
 			return $result;
 }
+	function getUser($userID)
+	{
+		$sql  = "SELECT * From USERS INNER JOIN USER_TYPE_TITLE  ON USERS.UserType = USER_TYPE_TITLE.ID WHERE users.ID=".$userID;
+		$CI=& get_instance();
+		$result = $CI->db->GetRow($sql);
+		array_walk($result,'dbConvert');
+		return  array_change_key_case($result);
+
+	}
 ?>
