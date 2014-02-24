@@ -1,7 +1,7 @@
 <?php
-class project_model extends MY_Model{
+class officer2_model extends MY_Model{
 	
-	public $table = 'act_project';
+	public $table = 'act_officer2';
 	
     function __construct()
     {

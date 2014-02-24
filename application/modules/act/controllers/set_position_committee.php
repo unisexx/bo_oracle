@@ -2,11 +2,11 @@
 Class Set_position_committee extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("position_committee_model","pc");
+		$this->load->model("subcommittee_position_model","pc");
 	}
 	
 	function index(){
-		$condition = @$_GET['search']!='' ? " position_committee_name like '%".$_GET['search']."%'" : "";
+		$condition = @$_GET['search']!='' ? " position_name like '%".$_GET['search']."%'" : "";
 		$data['pcs'] = $this->pc->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->pc->pagination();
 		$this->template->build('set_position_committee/index',$data);
@@ -19,6 +19,9 @@ Class Set_position_committee extends  Act_Controller{
 	
 	function save(){
 		if($_POST){
+			$_POST['staff_id'] = login_data("id");
+			$_POST['created'] =  $_POST['created']=='' ? th_to_stamp(date("d-m-Y H:i:s"),TRUE) : $_POST['created'];
+		    $_POST['updated'] = th_to_stamp(date("d-m-Y H:i:s"),TRUE);
 			$this->pc->save($_POST);
 			set_notify('success', lang('save_data_complete'));
 		}

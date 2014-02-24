@@ -1,7 +1,7 @@
 <?php
-class consistent_plan_model extends MY_Model{
+class plan_sub_model extends MY_Model{
 	
-	public $table = 'act_consistent_plan';
+	public $table = 'act_plan_sub';
 	
     function __construct()
     {

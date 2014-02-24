@@ -2,11 +2,11 @@
 Class Set_committee_type extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("committee_type_model","committee_type");
+		$this->load->model("subcommittee_type_model","committee_type");
 	}
 	
 	function index(){
-		$condition = @$_GET['search']!='' ? " committee_type_name like '%".$_GET['search']."%'" : "";
+		$condition = @$_GET['search']!='' ? " sub_type_name like '%".$_GET['search']."%'" : "";
 		$data['committee_types'] = $this->committee_type->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->committee_type->pagination();
 		$this->template->build('set_committee_type/index',$data);

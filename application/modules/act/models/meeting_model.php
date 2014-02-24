@@ -1,7 +1,7 @@
 <?php
-class committee_type_model extends MY_Model{
+class meeting_model extends MY_Model{
 	
-	public $table = 'act_committee_type';
+	public $table = 'act_meeting';
 	
     function __construct()
     {

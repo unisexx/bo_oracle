@@ -4,7 +4,7 @@
 <table class="tbadd">
 <tr>
   <th>ชื่อลักษณะโครงการ<span class="Txt_red_12"> *</span></th>
-  <td><input name="project_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $project['project_name']?>" /></td>
+  <td><input name="ps_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $project['ps_name']?>" /></td>
 </tr>
 </table>
 

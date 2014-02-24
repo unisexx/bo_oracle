@@ -1,7 +1,7 @@
 <?php
-class operation_type_model extends MY_Model{
+class customer_main_model extends MY_Model{
 	
-	public $table = 'act_operation_type';
+	public $table = 'act_customer_main';
 	
     function __construct()
     {

@@ -1,12 +1,11 @@
 <?php
-class practice_type_model extends MY_Model{
+class specific_model extends MY_Model{
 	
-	public $table = 'act_practice_type';
+	public $table = 'act_specific';
 	
     function __construct()
     {
         parent::__construct();
     }
-	
 }
 ?>

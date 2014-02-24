@@ -1,7 +1,7 @@
 <?php
-class subplan_model extends MY_Model{
+class committee_main_model extends MY_Model{
 	
-	public $table = 'act_subplan';
+	public $table = 'act_committee_main';
 	
     function __construct()
     {

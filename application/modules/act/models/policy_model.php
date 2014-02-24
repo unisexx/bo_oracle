@@ -1,7 +1,7 @@
 <?php
-class affiliate_model extends MY_Model{
+class policy_model extends MY_Model{
 	
-	public $table = 'act_affiliate';
+	public $table = 'act_policy';
 	
     function __construct()
     {

@@ -10,6 +10,7 @@
 
 
 <div id="btnBoxAdd">
+	<input type="hidden" name="created" value="<?php echo $plan['created']?>">
 	<input type="hidden" name="id" value="<?php echo $plan['id']?>">
   <input type="submit" title="บันทึก" value=" " class="btn_save"/>
   <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>

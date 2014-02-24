@@ -7,7 +7,7 @@ Class Set_volunteer_type extends  Act_Controller{
 	
 	function index(){
 		$condition = @$_GET['search']!='' ? " volunteer_type_name like '%".$_GET['search']."%'" : "";
-		$data['volunteer_types'] = $this->volunteer_type->where($condition)->order_by('id','desc')->get(false,true);
+		$data['volunteer_types'] = $this->volunteer_type->where($condition)->order_by('id','desc')->get(false,false);
 		$data['pagination'] = $this->volunteer_type->pagination();
 		$this->template->build('set_volunteer_type/index',$data);
 	}

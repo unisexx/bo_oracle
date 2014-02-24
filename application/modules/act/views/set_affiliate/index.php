@@ -22,8 +22,8 @@
   <?php foreach($affiliates as $row):?>
   <tr class="cursor" onclick="window.location='act/set_affiliate/form/<?php echo $row['id']?>'">
 	  <td><?php echo $i?></td>
-	  <td nowrap="nowrap"><?php echo $row['affiliate_name']?></td>
-	  <td><a href="act/set_affiliate/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td></a>
+	  <td nowrap="nowrap"><?php echo $row['under_name']?></td>
+	  <td><a href="act/set_affiliate/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
   </tr>
   <?$i++;?> 
   <?php endforeach;?>
