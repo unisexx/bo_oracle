@@ -1,16 +1,16 @@
 <? if($step!=''&& $subactivity != ''){
-	$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-	$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['mainactid']);
-	$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['productivityid']);
+	$subactivityData  = $this->cnf_strategy->get_row($subactivity);
+	$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+	$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
 
-	$subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-	$missionType 		 = $subActivityRow[0]['missiontype'];
-	$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[0]['mainactid']);
-	$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[0]["planid"]);
-	$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]["ministrytargetid"]);
-	$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[0]['ministrystrategyid']);
-	$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['sectiontargetid']);
-	$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['productivityid']);
+	$subActivityRow 	 = $this->cnf_strategy->get_row($subactivity);
+	$missionType 		 = $subActivityRow['missiontype'];
+	$mainActivityRow 	 = $this->cnf_strategy->get_row($subActivityRow['mainactid']);
+	$planRow 			 = $this->cnf_strategy->get_row($mainActivityRow["planid"]);
+	$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow["ministrytargetid"]);
+	$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow['ministrystrategyid']);
+	$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow['sectiontargetid']);
+	$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivityid']);
 
 ?>
 
@@ -19,19 +19,19 @@
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[0]['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[0]['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[0]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
 </tr>
 <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 
 </tr>
 <tr>
-	 <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 	 <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+  	 <td align="left">&nbsp;</td>
   	 <td align="left">&nbsp;</td>
 </tr>
 <tr>

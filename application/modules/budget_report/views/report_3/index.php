@@ -391,26 +391,27 @@ foreach($productivityResult as $productivityRow)
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pZone,yy;
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
 		LoadProductivity(yy,'dvProductivity');
 		LoadMainActivity(yy,'','dvMainActivity');
 		LoadSubActivity(yy,'','','dvSubActivity');
-	})
-
+	});
 	$('#pzone').change(function(){
 		pZone = $('#pzone option:selected').val();
 		LoadProvinceZone(pZone);
 	});
 	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		LoadSection(pProvince);
+		pProvince = $('#province option:selected').val();
+		//LoadSection(pProvince);
+		LoadWorkgroup('',pZone,pProvince);
 	});
 	$('#division').live('change',function(){
-		var pSection = $('#division option:selected').val();
-		LoadWorkgroup(pSection);
+		pSection = $('#division option:selected').val();
+		//LoadWorkgroup(pSection);
+		LoadWorkgroup(pSection,pZone,pProvince);
 	});
 
 });

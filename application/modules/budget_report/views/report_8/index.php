@@ -73,7 +73,7 @@
     <select name="province" id="province">
     <option value="0">เลือกจังหวัด</option>
 	<?php foreach($result as $item){ ?>
-   	<option value="<?php echo $item['id'] ?>"><?php echo $item['title'] ?></option>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
   	<?php } ?>
   	</select>
   </div></td>
@@ -452,7 +452,7 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pProductivity,pMainActivity;
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
 	var yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
@@ -460,26 +460,28 @@ $(document).ready(function(){
 		LoadMainActivity(yy,'','dvMainActivity');
 		LoadSubActivity(yy,'','','dvSubActivity');
 	})
+	$('#missiontype').change(function(){
+		LoadSubActivity(yy,'','','dvSubActivity');
+	});
 	$('#productivity').live('change',function(){
 		pProductivity = $('#productivity option:selected').val();
 		LoadMainActivity(yy,pProductivity,'dvMainActivity');
 		LoadSubActivity(yy,pProductivity,'','dvSubActivity');
 	});
+	$('#pzone').change(function(){
+		pZone = $('#pzone option:selected').val();
+		LoadProvinceZone(pZone);
+	});
 
 	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		LoadSection(pProvince);
+		pProvince = $('#province option:selected').val();
+		//LoadSection(pProvince);
+		LoadWorkgroup('',pZone,pProvince);
 	});
 	$('#division').live('change',function(){
 		var pSection = $('#division option:selected').val();
-		LoadWorkgroup(pSection);
-	});
-	$('#missiontype').change(function(){
-		LoadSubActivity(yy,'','','dvSubActivity');
-	});
-	$('#pzone').change(function(){
-		var pZone = $('#pzone option:selected').val();
-		LoadProvinceZone(pZone);
+		//LoadWorkgroup(pSection);
+		LoadWorkgroup(pSection,pZone,pProvince);
 	});
 
 });

@@ -56,24 +56,24 @@ class ajax extends Monitor_Controller
 		}
 
 	function ajax_productivity_list()
-	{
+	{ $year = !empty($_GET['year']) ? $_GET['year']:0;
 		if($_GET['type']=="productivity"){
-			$where = " PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
+			$where = " PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$year;
 			$text = "เลือกผลผลิต";
 			$name= 'productivity';
 
 		}
 		else if($_GET['type']=="productivity1"){
-			$where = " PRODUCTIVITYID < 1 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$_GET['year'];
+			$where = " PRODUCTIVITYID < 1 AND SECTIONSTRATEGYID > 0 AND SYEAR=".$year;
 			$text = "เลือกผลผลิต";
 			$name= 'productivity';
 		}else if($_GET['type']=="main"){
 			$condition = (!empty($_GET['productivity'])) ? " AND BUDGETPOLICYID > 0 AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
-			$where = " MAINACTID = 0 $condition AND SYEAR=".$_GET['year'];
+			$where = " MAINACTID = 0 $condition AND SYEAR=".$year;
 			$text = "เลือกกิจกรรมหลัก";
 			$name= "mainactivity";
 		}else if($_GET['type']=="main1"){
-		   $where = " MAINACTID < 1 AND BUDGETPOLICYID > 0  AND SYEAR=".$_GET['year'];
+		   $where = " MAINACTID < 1 AND BUDGETPOLICYID > 0  AND SYEAR=".$year;
 		   $where .= (!empty($_GET['productivity'])  && $_GET['productivity'] >0) ? " AND PRODUCTIVITYID=".$_GET['productivity'] : "";
 		   $text = "เลือกกิจกรรมหลัก";
 		   $name= "mainactivity";
@@ -81,11 +81,11 @@ class ajax extends Monitor_Controller
 			$condition = (!empty($_GET['productivity'])) ? " AND PRODUCTIVITYID=".$_GET['productivity'] : " AND BUDGETPOLICYID > 0 ";
 			$condition .= (!empty($_GET['mainactivity'])) ? " AND MAINACTID=".$_GET['mainactivity'] : " AND MAINACTID > 0 ";
 			$condition .= (!empty($_GET['missiontype'])) ? " AND MISSIONTYPE='".trim($_GET['missiontype'])."' ": "";
-			$where = " syear=".$_GET['year'].$condition;
+			$where = " syear=".$year.$condition;
 			$text = "เลือกกิจกรรมย่อย";
 			$name = "subactivity";
 		}else if($_GET['type']=="sub1"){
-			$where  =" MAINACTID > 0 AND SYEAR=".$_GET['year'];
+			$where  =" MAINACTID > 0 AND SYEAR=".$year;
 			if(!empty($_GET['productivity'])) {$where .= " AND PRODUCTIVITYID=".$_GET['productivity'];}
 			if(!empty($_GET['mainactivity'])) {$where .= " AND MAINACTID=".$_GET['mainactivity'];}
 
@@ -93,11 +93,10 @@ class ajax extends Monitor_Controller
 			$name = "subactivity";
 		}
 		$extra = 'id ="'.$name.'"';
-		//$this->db->debug=true;
-		$sql = "select id,title from cnf_strategy where $where";
-		//echo $sql;
 		$CI =& get_instance();
 	 	$CI->load->model('cnf_strategy_model','cnf_strategy');
+		$sql = "select id,title from cnf_strategy where $where";
+		//echo $sql;
 		$result = $CI->cnf_strategy->get($sql);
 		echo '<select name="'.$name.'" id="'.$name.'">';
 		echo '<option value="0">'.$text.'</optionv>';
@@ -122,16 +121,17 @@ class ajax extends Monitor_Controller
 		echo '</select>';
 	}
 	function ajax_section_list()
-	{
+	{// หน่วยงาน
 		$CI =& get_instance();
 		$CI->load->model('c_division/division_model','division');
 		$condition = " WHERE 1=1 ";
-		$condition .= (!empty($_GET['zone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.PROVINCEID.ZONEID='".$_GET['zone']."' " : "";
+		$condition .= (!empty($_GET['zone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$_GET['zone']."' " : "";
 		$condition .= (!empty($_GET['province'])) ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
 		$sql = "SELECT DISTINCT CNF_DIVISION.*  FROM CNF_DIVISION
 				LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
 				LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE.ID  = CNF_PROVINCE_DETAIL_ZONE.PROVINCEID $condition ORDER BY CNF_DIVISION.TITLE ";
-		$result = $CI->division->get($sql);
+		echo $sql;
+		$result = $CI->division->get($sql,true);
 		echo '<select name="division" id="division">';
 		echo '<option value="">เลือกหน่วยงาน</option>';
 		foreach($result as $item){
@@ -140,19 +140,19 @@ class ajax extends Monitor_Controller
 		echo '</select>';
 	}
 	function ajax_workgroup_list()
-	{
+	{// กลุ่มงาน
 		$CI =& get_instance();
 		$CI->load->model('c_workgroup/workgroup_model','workgroup');
 		$condition = " WHERE 1=1 ";
-		$condition .= (!empty($_GET['zone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.PROVINCEID.ZONEID='".$_GET['zone']."' " : "";
-		$condition .= (!empty($_GET['province'])) ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
+		$condition .= (!empty($_GET['zone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$_GET['zone']."' " : "";
+		$condition .= (!empty($_GET['province'])) ? " AND CNF_WORKGROUP.WPROVINCEID=".$_GET['province']." " : "";
 		$condition .= (!empty($_GET['section'])) ? " AND CNF_WORKGROUP.DIVISIONID=".$_GET['section']." " : "";
 		$sql = "SELECT  DISTINCT CNF_WORKGROUP.* FROM CNF_WORKGROUP
-				LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-				LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+				LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID  =  CNF_DIVISION.ID
+				LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 				LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE.ID  = CNF_PROVINCE_DETAIL_ZONE.PROVINCEID $condition ORDER BY TITLE ";
 		//echo $sql;
-		$result = $CI->workgroup->get($sql);
+		$result = $CI->workgroup->get($sql,true);
 		echo '<select id="workgroup" name="workgroup">';
     	echo '<option value="0">เลือกกลุ่มงาน</option>';
 		foreach($result as $srow){

@@ -35,7 +35,7 @@ class budget_report extends Budget_Controller
 		$data['productivity'] = (!empty($_GET['productivity'])) ? $_GET['productivity']:'';
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
-
+		$data['missionType'] = (!empty($_GET['missiontype'])) ? $_GET['missiontype']:'';
 		if(!empty($_GET['division'])){
 			$data['division'] = $_GET['division'];
 			$data['userSection'] = $_GET['division'];

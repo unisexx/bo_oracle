@@ -75,7 +75,7 @@
     <select name="province" id="province">
     <option value="0">เลือกจังหวัด</option>
 	<?php foreach($result as $item){ ?>
-   	<option value="<?php echo $item['id'] ?>"><?php echo $item['title'] ?></option>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
   	<?php } ?>
   	</select>
   </div></td>
@@ -345,11 +345,10 @@
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pZone,yy;
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-		if(yy==''){yy="<?php echo $year; ?>";}
 		LoadProductivity(yy,'dvProductivity','productivity1');
 	})
 	$('#productivity').live('change',function(){
@@ -359,21 +358,22 @@ $(document).ready(function(){
 	$('#mainactivity').live('change',function(){
 		LoadSubActivity(yy,$('#productivity option:selected').val(),$('#mainactivity option:selected').val(),'dvSubActivity','sub1');
 	});
-	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		}
-	});
-	$('#division').live('change',function(){
-		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		}
-	});
 	$('#pzone').change(function(){
 		pZone = $('#pzone option:selected').val();
 		LoadProvinceZone(pZone);
 	});
+	$('#province').live('change',function(){
+		pProvince = $('#province option:selected').val();
+		//LoadSection(pProvince);
+		LoadWorkgroup('',pZone,pProvince);
+
+	});
+	$('#division').live('change',function(){
+		pSection = $('#division option:selected').val();
+		//LoadWorkgroup(pSection);
+		LoadWorkgroup(pSection,pZone,pProvince);
+
+	});
+
 });
 </script>

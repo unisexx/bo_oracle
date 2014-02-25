@@ -60,7 +60,7 @@
     <select name="province" id="province">
     <option value="0">เลือกจังหวัด</option>
 	<?php foreach($result as $item){ ?>
-   	<option value="<?php echo $item['id'] ?>"><?php echo $item['title'] ?></option>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
   	<?php } ?>
   	</select>
   </div></td>
@@ -190,7 +190,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
                   <td align="right" valign="top">&nbsp;</td>
                   <td align="right" valign="top"><? if($totalBudget > 0 ) echo number_format($totalBudget/1000000,4);?>&nbsp;&nbsp;</td>
                   <td align="right" valign="top">&nbsp;</td>
-                  <td align="right" valign="top"><? if($totalBudgetA > 0 ) echo number_format($totalBudgetA/1000000,4);?>&nbsp;</td>
+                  <td align="right" valign="top"><? //if($totalBudgetA > 0 ) echo number_format($totalBudgetA/1000000,4);?>&nbsp;</td>
                   <td align="right" valign="top">&nbsp;</td>
                   <td align="right" valign="top"><? if($totalBudgetB > 0 ) echo number_format($totalBudgetB/1000000,4);?>&nbsp;</td>
                   <td align="right" valign="top">&nbsp;</td>
@@ -202,6 +202,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 
                 	                <?
 			$sql = "SELECT * FROM BUDGET_MASTER WHERE BUDGETYEAR=".$year." AND SUBACTIVITYID=".$subActivityRow['id']." AND STEP=".$step;
+			echo $sql;
 			$projectResult = $this->budget_master->get($sql);
 			foreach($projectResult as $project){
 				$totalBudgetA = GetSummaryProject($project['id'],1,$year, $zone, $group, $province, $division,$workgroup,$step);
@@ -217,13 +218,16 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE UNITNAME
 				  		    FROM BUDGET_PRODUCTIVITY_KEY
 				  		    LEFT JOIN CNF_STRATEGY_DETAIL ON BUDGET_PRODUCTIVITY_KEY.PRODKEYID=CNF_STRATEGY_DETAIL.ID
-				  		    LEFT JOIN CNF_COUNT_UNIT ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID WHERE CHKWORKPLAN <> '' AND BUDGETID=".$project['id'];
-					$keyRow = $this->budget_product->get($sql);
-					echo $keyRow[0]['UNITNAME'];
-					$totalKeyA = GetSummaryKeyProject($keyRow[0]['id'],1);
-					$totalKeyB = GetSummaryKeyProject($keyRow[0]['id'],2);
-					$totalKeyC = GetSummaryKeyProject($keyRow[0]['id'],3);
-					$totalKeyD = GetSummaryKeyProject($keyRow[0]['id'],4);
+				  		    LEFT JOIN CNF_COUNT_UNIT ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID
+				  		    WHERE CHKWORKPLAN <> '' ";
+				  		    //AND BUDGETID=".$project['id'];
+					//echo $sql;
+					$keyRow = $this->budget_product->get_row("AND BUDGETID",$project['id'],$sql);
+					echo $keyRow['UNITNAME'];
+					$totalKeyA = GetSummaryKeyProject($keyRow['id'],1);
+					$totalKeyB = GetSummaryKeyProject($keyRow['id'],2);
+					$totalKeyC = GetSummaryKeyProject($keyRow['id'],3);
+					$totalKeyD = GetSummaryKeyProject($keyRow['id'],4);
 					$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
 				  ?>
                   &nbsp;
@@ -272,14 +276,14 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pZone,yy;
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
 		LoadProductivity(yy,'dvProductivity');
 		LoadMainActivity(yy,'','dvMainActivity');
 		LoadSubActivity(yy,'','','dvSubActivity');
-	})
+	});
 	$('#productivity').live('change',function(){
 		pProductivity = $(this).val();
 		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
@@ -291,12 +295,14 @@ $(document).ready(function(){
 		LoadProvinceZone(pZone);
 	});
 	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		LoadSection(pProvince);
+		pProvince = $('#province option:selected').val();
+		//LoadSection(pProvince);
+		LoadWorkgroup('',pZone,pProvince);
 	});
 	$('#division').live('change',function(){
-		var pSection = $('#division option:selected').val();
-		LoadWorkgroup(pSection);
+		pSection = $('#division option:selected').val();
+		//LoadWorkgroup(pSection);
+		LoadWorkgroup(pSection,pZone,pProvince);
 	});
 
 });

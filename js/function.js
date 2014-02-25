@@ -1,18 +1,18 @@
 function LoadProvinceZone(pZone)
 {
-	document.getElementById('pgroup').value = '';
+
 	$("#dvProvinceList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
 	$.get('ajax/ajax_province_list',{
 		zone:pZone
 	},function(data){
 		$("#dvProvinceList").html(data);
 	});
-	$("#dvSectionList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
-	$.get('ajax/ajax_division_list',{
+	/*$("#dvSectionList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
+	$.get('ajax/ajax_section_list',{
 		zone:pZone
 	},function(data){
 		$("#dvSectionList").html(data);
-	});
+	});*/
 	$("#dvWorkgroupList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
 	$.get('ajax/ajax_workgroup_list',{
 		zone:pZone
@@ -22,7 +22,7 @@ function LoadProvinceZone(pZone)
 }
 
 function LoadSection(pProvince)
-{
+{//หน่วยงาน
 	$("#dvSectionList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
 	$.get('ajax/ajax_section_list',{
 		province:pProvince
@@ -36,11 +36,13 @@ function LoadSection(pProvince)
 		$("#dvWorkgroupList").html(data);
 	});
 }
-function LoadWorkgroup(pSection)
+function LoadWorkgroup(pSection,pZone,pProvince)
 {
 	$("#dvWorkgroupList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
 	$.get('ajax/ajax_workgroup_list',{
-		section:pSection
+		section:pSection,
+		zone:pZone,
+		province:pProvince
 	},function(data){
 		$("#dvWorkgroupList").html(data);
 	});

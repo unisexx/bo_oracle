@@ -69,7 +69,17 @@
 <tr>
   <th>จังหวัด</th>
   <td><div id="dvProvinceList">
-     <?php echo form_dropdown('province',get_option('id','title','cnf_province','','title'),@$_GET['province'],'id="province"','เลือกจังหวัด'); ?>
+    <?php
+    $condition = (!empty($province)) ? " where  provinceid=".$province:'';
+	$sql = "select distinct cnf_province.id as id,cnf_province.title as title from cnf_province left join cnf_province_detail_zone ON cnf_province.id = provinceid $condition order by title";
+    $result = $this->province->get($sql,true);
+    ?>
+    <select name="province" id="province">
+    <option value="0">เลือกจังหวัด</option>
+	<?php foreach($result as $item){ ?>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
+  	<?php } ?>
+  	</select>
   </div></td>
 </tr>
 <tr>
@@ -99,9 +109,9 @@
 
 
 <? if($step!=''&& $subactivity != ''){
-	$subactivityData  = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-	$mainactivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['mainactid']);
-	$productivityData = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subactivityData[0]['productivityid']);
+	$subactivityData  = $this->cnf_strategy->get_row($subactivity);
+	$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+	$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
 
 ?>
 <div id="main">
@@ -116,14 +126,14 @@
 </fieldset>
 
 <?
-$subActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =$subactivity");
-$missionType 		 = $subActivityRow[0]['missiontype'];
-$mainActivityRow 	 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$subActivityRow[0]['mainactid']);
-$planRow 			 = $this->cnf_strategy->get("select * from cnf_strategy where id =".$mainActivityRow[0]["planid"]);
-$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]["ministrytargetid"]);
-$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow[0]['ministrystrategyid']);
-$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['sectiontargetid']);
-$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['productivityid']);
+$subActivityRow 	 = $this->cnf_strategy->get_row($subactivity);
+//$missionType 		 = $subActivityRow['missiontype'];
+$mainActivityRow 	 = $this->cnf_strategy->get_row($subActivityRow['mainactid']);
+$planRow 			 = $this->cnf_strategy->get_row($mainActivityRow["planid"]);
+$ministryTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow["ministrytargetid"]);
+$ministryStrategyRow = $this->cnf_strategy->get_row($mainActivityRow['ministrystrategyid']);
+$sectionTargetRow 	 = $this->cnf_strategy->get_row($mainActivityRow['sectiontargetid']);
+$productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivityid']);
 
 ?>
 <br />
@@ -133,19 +143,19 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['productiv
 	<td style="padding-bottom:10px;" colspan="3" align="center">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ ปี <?php echo $thyear;?></td>
 </tr>
 <tr>
-  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData[0]['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData[0]['title'];?></td>
-  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData[0]['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
+  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
 </tr>
 <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 
 </tr>
 <tr>
-	 <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 	 <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+  	 <td align="left">&nbsp;</td>
   	 <td align="left">&nbsp;</td>
 </tr>
 <tr>
@@ -295,39 +305,37 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow[0]['productiv
 <?php } ?>
 
 
-
-
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pProductivity,pMainActivity;
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
 	var yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
 		LoadProductivity(yy,'dvProductivity');
 		LoadMainActivity(yy,'','dvMainActivity');
 		LoadSubActivity(yy,'','','dvSubActivity');
-	})
+	});
+	$('#missiontype').change(function(){
+		LoadSubActivity(yy,'','','dvSubActivity');
+	});
 	$('#productivity').live('change',function(){
 		pProductivity = $('#productivity option:selected').val();
 		LoadMainActivity(yy,pProductivity,'dvMainActivity');
 		LoadSubActivity(yy,pProductivity,'','dvSubActivity');
 	});
-
-	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		LoadSection(pProvince);
-	});
-	$('#division').live('change',function(){
-		var pSection = $('#division option:selected').val();
-		LoadWorkgroup(pSection);
-	});
-	$('#missiontype').change(function(){
-		LoadSubActivity(yy,'','','dvSubActivity');
-	});
 	$('#pzone').change(function(){
-		var pZone = $('#pzone option:selected').val();
+		pZone = $('#pzone option:selected').val();
 		LoadProvinceZone(pZone);
+	});
+	$('#province').live('change',function(){
+		pProvince = $('#province option:selected').val();
+		LoadWorkgroup('',pZone,pProvince);
+	});
+
+	$('#division').live('change','select',function(){
+		pSection = $('#division option:selected').val();
+		LoadWorkgroup(pSection,pZone,pProvince);
 	});
 
 });
