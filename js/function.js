@@ -20,30 +20,7 @@ function LoadProvinceZone(pZone)
 		$("#dvWorkgroupList").html(data);
 	});
 }
-function LoadProvinceGroup(pGroup)
-{
-	document.getElementById('pzone').value = '';
-	$('#pzone option:selected').val('');
-	$("#dvProvinceList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
-	$.get('ajax/ajax_province_list',{
-		group:pGroup
-	},function(data){
-		$("#dvProvinceList").html(data);
-	});
 
-	$("#dvSectionList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
-	$.get('ajax/ajax_section_list',{
-		group:pGroup
-	},function(data){
-		$("#dvSectionList").html(data);
-	});
-	$("#dvWorkgroupList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');
-	$.get('ajax/ajax_workgroup_list',{
-		group:pGroup
-	},function(data){
-		$("#dvWorkgroupList").html(data);
-	});
-}
 function LoadSection(pProvince)
 {
 	$("#dvSectionList").html('<img src="themes/bo/images/loading.gif" width="16px" height="16px"/>');

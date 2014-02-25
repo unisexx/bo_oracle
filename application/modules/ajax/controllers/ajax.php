@@ -111,8 +111,7 @@ class ajax extends Monitor_Controller
 		$CI =& get_instance();
 		$CI->load->model('c_province/province_model','province');
 		$condition = "WHERE 1=1 ";
-		$condition .= !empty($_GET['pzone']) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$_GET['pzone']."' " : "";
-		//$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
+		$condition .= !empty($_GET['zone']) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$_GET['zone']."' " : "";
 		$sql = "SELECT DISTINCT CNF_PROVINCE.* FROM CNF_PROVINCE  LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE.ID  = CNF_PROVINCE_DETAIL_ZONE.PROVINCEID $condition ORDER BY TITLE ";
 		$result = $CI->province->get($sql,true);
 		echo '<select name="province" id="province">';
@@ -127,8 +126,7 @@ class ajax extends Monitor_Controller
 		$CI =& get_instance();
 		$CI->load->model('c_division/division_model','division');
 		$condition = " WHERE 1=1 ";
-		$condition .= (!empty($_GET['pzone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.PROVINCEID.ZONEID='".$_GET['pzone']."' " : "";
-		//$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
+		$condition .= (!empty($_GET['zone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.PROVINCEID.ZONEID='".$_GET['zone']."' " : "";
 		$condition .= (!empty($_GET['province'])) ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
 		$sql = "SELECT DISTINCT CNF_DIVISION.*  FROM CNF_DIVISION
 				LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
@@ -146,8 +144,7 @@ class ajax extends Monitor_Controller
 		$CI =& get_instance();
 		$CI->load->model('c_workgroup/workgroup_model','workgroup');
 		$condition = " WHERE 1=1 ";
-		$condition .= (!empty($_GET['pzone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.PROVINCEID.ZONEID='".$_GET['pzone']."' " : "";
-		//$condition .= $_GET['group']!='' ? " AND PGROUP=".$_GET['group']." " : "";
+		$condition .= (!empty($_GET['zone'])) ? " AND CNF_PROVINCE_DETAIL_ZONE.PROVINCEID.ZONEID='".$_GET['zone']."' " : "";
 		$condition .= (!empty($_GET['province'])) ? " AND CNF_DIVISION.PROVINCEID=".$_GET['province']." " : "";
 		$condition .= (!empty($_GET['section'])) ? " AND CNF_WORKGROUP.DIVISIONID=".$_GET['section']." " : "";
 		$sql = "SELECT  DISTINCT CNF_WORKGROUP.* FROM CNF_WORKGROUP

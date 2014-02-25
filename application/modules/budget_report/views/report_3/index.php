@@ -38,12 +38,7 @@
 </tr>
 <tr>
   <th>ภาค</th>
-  <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ทุกภาค') ?></td>
-</tr>
-<tr>
-  <th>กลุ่มจังหวัด</th>
-  <td>
-  	<?php echo form_dropdown('pgroup',get_option('id','title','cnf_province_zone',' zone_type_id =3','title'),$pgroup,'id="pgroup"','ทุกกลุ่มจังหวัด') ?></td>
+  <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ภาคทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>จังหวัด</th>
@@ -396,7 +391,7 @@ foreach($productivityResult as $productivityRow)
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pgroup,yy;
+	var pZone,yy;
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
@@ -405,10 +400,9 @@ $(document).ready(function(){
 		LoadSubActivity(yy,'','','dvSubActivity');
 	})
 
-	$('#pgroup').change(function(){
-		pGroup = $('#pgroup option:selected').val();
-		LoadProvinceGroup(pGroup);
-
+	$('#pzone').change(function(){
+		pZone = $('#pzone option:selected').val();
+		LoadProvinceZone(pZone);
 	});
 	$('#province').live('change',function(){
 		var pProvince = $('#province option:selected').val();

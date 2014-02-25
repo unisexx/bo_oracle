@@ -61,11 +61,7 @@
   <th>ภาค</th>
   <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ทุกภาค') ?></td>
 </tr>
-<tr>
-  <th>กลุ่มจังหวัด</th>
-  <td>
-  	<?php echo form_dropdown('pgroup',get_option('id','title','cnf_province_zone',' zone_type_id =3','title'),$pgroup,'id="pgroup"','ทุกกลุ่มจังหวัด') ?></td>
-</tr>
+
 <tr>
   <th>จังหวัด</th>
   <td><div id="dvProvinceList">
@@ -481,9 +477,9 @@ $(document).ready(function(){
 	$('#missiontype').change(function(){
 		LoadSubActivity(yy,'','','dvSubActivity');
 	});
-	$('#pgroup').change(function(){
-		pGroup = $('#pgroup option:selected').val();
-		LoadProvinceGroup(pGroup);
+	$('#pzone').change(function(){
+		var pZone = $('#pzone option:selected').val();
+		LoadProvinceZone(pZone);
 	});
 
 });
