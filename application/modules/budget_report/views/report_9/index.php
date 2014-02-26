@@ -105,12 +105,13 @@
   </tr>
   <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
   </tr>
   <tr>
-	 <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
+
 	 <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+	 <td width="33%" align="left">&nbsp;</td>
 	 <td width="33%" align="left">&nbsp;</td>
   </tr>
   <tr>
@@ -202,7 +203,6 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 
                 	                <?
 			$sql = "SELECT * FROM BUDGET_MASTER WHERE BUDGETYEAR=".$year." AND SUBACTIVITYID=".$subActivityRow['id']." AND STEP=".$step;
-			echo $sql;
 			$projectResult = $this->budget_master->get($sql);
 			foreach($projectResult as $project){
 				$totalBudgetA = GetSummaryProject($project['id'],1,$year, $zone, $group, $province, $division,$workgroup,$step);
@@ -215,20 +215,21 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
                   <td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-<?php echo $project['projecttitle'];?>&nbsp;</td>
                   <td align="center" valign="top">
                   <?
-				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE UNITNAME
+					$totalKeyA = 0;$totalKeyB = 0;$totalKeyC = 0;$totalKeyD = 0;$totalSummaryKey = 0;
+				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE  UNITNAME
 				  		    FROM BUDGET_PRODUCTIVITY_KEY
 				  		    LEFT JOIN CNF_STRATEGY_DETAIL ON BUDGET_PRODUCTIVITY_KEY.PRODKEYID=CNF_STRATEGY_DETAIL.ID
 				  		    LEFT JOIN CNF_COUNT_UNIT ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID
-				  		    WHERE CHKWORKPLAN <> '' ";
-				  		    //AND BUDGETID=".$project['id'];
-					//echo $sql;
-					$keyRow = $this->budget_product->get_row("AND BUDGETID",$project['id'],$sql);
-					echo $keyRow['UNITNAME'];
-					$totalKeyA = GetSummaryKeyProject($keyRow['id'],1);
-					$totalKeyB = GetSummaryKeyProject($keyRow['id'],2);
-					$totalKeyC = GetSummaryKeyProject($keyRow['id'],3);
-					$totalKeyD = GetSummaryKeyProject($keyRow['id'],4);
-					$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+				  		    ";
+					$keyRow = $this->budget_product->get_row("CHKWORKPLAN <> '' AND BUDGETID ",$project['id'],$sql);
+					if(!empty($keyRow)){
+						echo $keyRow['unitname'];
+						$totalKeyA = GetSummaryKeyProject($keyRow['id'],1);
+						$totalKeyB = GetSummaryKeyProject($keyRow['id'],2);
+						$totalKeyC = GetSummaryKeyProject($keyRow['id'],3);
+						$totalKeyD = GetSummaryKeyProject($keyRow['id'],4);
+						$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+					}
 				  ?>
                   &nbsp;
                   </td>
@@ -255,6 +256,7 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 				  	$sql = "SELECT * FROM BUDGET_OPERATION_AREA
 				  			LEFT JOIN CNF_PROVINCE ON BUDGET_OPERATION_AREA.PROVINCEID = CNF_PROVINCE.ID
 				  			WHERE BUDGETID=".$project['id']." ORDER BY CNF_PROVINCE.TITLE ";
+
 					$provinceResult = $this->province->get($sql);
 					foreach($provinceResult as $provinceRow)
 					{

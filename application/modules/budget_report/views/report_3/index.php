@@ -1,6 +1,6 @@
 <h3 id="topic">รายงานแผนการใช้จ่ายงบประมาณจำแนกตามรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="budget_report/index/3" method="get">
+<form name="frmAsset"  action="budget_report/index/3" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">
@@ -108,7 +108,7 @@
 	LEFT JOIN USERS ON BUDGET_MASTER.CREATEBY = USERS.ID
 	LEFT JOIN CNF_DIVISION ON USERS.DIVISIONID = CNF_DIVISION.ID
 	LEFT JOIN CNF_WORKGROUP ON USERS.WORKGROUPID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+	LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 	LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE.ID = CNF_PROVINCE_DETAIL_ZONE.PROVINCEID
 	WHERE BUDGET_MASTER.BUDGETYEAR=".$year.$productivityCondition.$mainactCondition.$subactivityCondition.$acondition;
 
@@ -166,12 +166,12 @@
       </tr>
       <tr>
 		<td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    	<td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     	<td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    	<td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
       </tr>
       <tr>
-		  <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 		  <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+	      <td align="left">&nbsp;</td>
 	      <td align="left">&nbsp;</td>
 	   </tr>
       <tr>

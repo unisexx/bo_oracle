@@ -1,6 +1,6 @@
 <h3 id="topic">การประมาณการรายจ่ายล่วงหน้าระยะปานกลางประจำปีงบประมาณ <?=$year+543;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="budget_report/index/10" method="get">
+<form name="frmAsset"  action="budget_report/index/10" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">

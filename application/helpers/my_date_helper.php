@@ -160,32 +160,5 @@ function GetMonthName($type,$no)
 	}
 	return $monthName[$no];
 }
-	function GetThaiDate($pDate,$havetime,$showtime)
-	{
-		 $date = "";
-		 if($pDate>0)
-		 {
-			 $tmpDate = $pDate;
-			if($havetime == 1)
-			{
-				$pDate = explode(" ",$pDate);
-				$tmpDate = $pDate[0];
-				$tmpTime = $pDate[1];
-			}
 
-			if (strpos($tmpDate,"/"))
-			{
-				 $tmpDate = explode("/", $tmpDate);
-			}
-			else
-			{
-				$tmpDate = explode("-",$tmpDate);
-			}
-
-			$year = (int)$tmpDate[0]+543;
-			$date  =  $tmpDate[2]."/".$tmpDate[1]."/".$year;
-			if($showtime == 1)$date .= " ".$tmpTime;
-		}
-		return $date;
-	}
 ?>

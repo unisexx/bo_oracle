@@ -30,9 +30,9 @@
         </select>
 
     	วันที่ :
-        <input type="text" class="datepicker" name="startdate" id="startdate" value="<?php echo @$_GET['startdate'];?>" />
+        <input type="text" class="datepicker" name="start_date" id="start_date" value="<?php echo @$_GET['start_date'];?>" />
         -
-        <input type="text" class="datepicker" name="enddate" id="enddate" value="<?php echo @$_GET['enddate'];?>" />
+        <input type="text" class="datepicker" name="end_date" id="end_date" value="<?php echo @$_GET['end_date'];?>" />
 		<input type="submit" name="button9" id="button9" value="ค้นหา" class="btn_search" />
 </form>
 </div>
@@ -48,13 +48,13 @@
 <th align="center">ชื่อผู้ใช้</th>
 <th width="14%" align="left" >วันที่&nbsp;</th>
 </tr>
-<?php $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 10)-10)+1:1;?>
+<?php $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;?>
 <?php foreach($result as $row){ ?>
 <tr>
   <td><?php echo $i;?></td>
   <td><?php echo $row['action'];?></td>
-  <td><?php $tuser = GetUser($row['userid']);echo (!empty($tuser))? $tuser['name']:'';?></td>
-  <td><?php //echo GetThaiDate($row['process_date'],'','');?>&nbsp;<?php //echo $row['process_date'];?></td>
+  <td><?php echo $row['name'];?></td>
+  <td><?php echo stamp_to_th($row['process_date'],true);?></td>
   </tr>
   <? $i++;} ?>
 </table>

@@ -1,16 +1,17 @@
-<?php budget_type_config(); ?>
+<? if($step!=''&& $mainactivity != ''){ ?>
 <table width="95%" align="center" >
   <tr style="padding-bottom:10px;">
-	<td style="padding-bottom:10px;" colspan="3" align="center">รายงานแผนงบประมาณรายจ่าย ประจำปีงบประมาณ<?php echo $thyear;?></td>
+	<td style="padding-bottom:10px;" colspan="3" align="center">รายงานแผนงบประมาณรายจ่าย ประจำปีงบประมาณ	  <?php echo $thyear;?></td>
   </tr>
   <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
   </tr>
   <tr>
-	 <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
+
 	 <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+	 <td width="33%" align="left">&nbsp;</td>
 	 <td width="33%" align="left">&nbsp;</td>
   </tr>
   <tr>
@@ -27,72 +28,46 @@ $productivityRow 	 = $this->cnf_strategy->get_row($mainActivityRow['productivity
 
 ?>
 <table width="100%" cellpadding="5" cellspacing="2">
-<tr>
-	<td>
-		แผนงาน : <?php echo $planRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	เป้าหมายการให้บริการกระทรวง : <?php echo $ministryTargetRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	ยุทธศาสตร์กระทรวง : <?php echo $ministryStrategyRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	เป้าหมายการให้บริษัทหน่วยงาน : <?php echo $sectionTargetRow['title'];?>
-    </td>
-</tr>
-<tr>
-	<td>
-    	ผลผลิต : <?php echo $productivityRow['title'];?>
-    </td>
-</tr>
-<?
-$sql = "SELECT * FROM CNF_STRATEGY_DETAIL WHERE PID=".$productivityRow['id'];
-$productivityKeyResult = $this->cnf_strategy_detail->get($sql);
-foreach($productivityKeyResult as $productivityKeyRow){
-?>
-<tr>
-	<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตัวชี้วัดผลผลิต : <?php echo $productivityKeyRow['title'];?></td>
-</tr>
-<? } ?>
-<tr>
-	<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กิจกรรมหลัก : <?php echo $mainActivityRow['title'];?></td>
-</tr>
-<tr>
-  <td align="right">หน่วย:ล้านบาท&nbsp;</td>
-</tr>
+	<tr><td>แผนงาน : <?php echo $planRow['title'];?></td></tr>
+	<tr><td>เป้าหมายการให้บริการกระทรวง : <?php echo $ministryTargetRow['title'];?></td></tr>
+	<tr><td>ยุทธศาสตร์กระทรวง : <?php echo $ministryStrategyRow['title'];?></td></tr>
+	<tr><td>เป้าหมายการให้บริษัทหน่วยงาน : <?php echo $sectionTargetRow['title'];?></td></tr>
+	<tr><td>ผลผลิต : <?php echo $productivityRow['title'];?></td></tr>
+	<?
+	$sql = "SELECT * FROM CNF_STRATEGY_DETAIL WHERE PID=".$productivityRow['id'];
+	$productivityKeyResult = $this->cnf_strategy_detail->get($sql);
+	foreach($productivityKeyResult as $productivityKeyRow){
+	?>
+	<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตัวชี้วัดผลผลิต : <?php echo $productivityKeyRow['title'];?></td></tr>
+	<? } ?>
+	<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กิจกรรมหลัก : <?php echo $mainActivityRow['title'];?></td></tr>
+	<tr><td align="right">หน่วย:ล้านบาท&nbsp;</td></tr>
 </table>
 <table class="tbToDoList">
   <tr bgcolor="#EFF7E8">
-		<td valign="top">กิจกรรมหลัก/กิจกรรมย่อย/โครงการ</td>
-      <td valign="top">เป้าหมาย</td>
+	<td valign="top">กิจกรรมหลัก/กิจกรรมย่อย/โครงการ</td>
+    <td valign="top">เป้าหมาย</td>
     <td colspan="2" valign="top">งบประมาณ<br />(ล้านบาท)</td>
-      <td colspan="2" valign="top">ไตรมาส 1 (ต.ค.-ธ.ค.)</td>
-      <td colspan="2" valign="top">ไตรมาส 2 (ม.ค.-มี.ค.)</td>
-      <td colspan="2" valign="top">ไตรมาส 3 (เม.ย.-มิ.ย.)</td>
-      <td colspan="2" valign="top">ไตรมาส 4 (ก.ค.-ก.ย.)</td>
-        <td rowspan="2" valign="top">พื้นที่ดำเนินการ</td>
-    </tr>
-    <tr bgcolor="#EFF7E8">
-   	  <td valign="top">&nbsp;</td>
-        <td align="center" valign="top">&nbsp;</td>
-    <td align="center" valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-      <td valign="top">งบประมาณ</td>
-      <td valign="top">เป้าหมาย</td>
-        <td valign="top">งบประมาณ</td>
-    </tr>
+  	<td colspan="2" valign="top">ไตรมาส 1 (ต.ค.-ธ.ค.)</td>
+  	<td colspan="2" valign="top">ไตรมาส 2 (ม.ค.-มี.ค.)</td>
+  	<td colspan="2" valign="top">ไตรมาส 3 (เม.ย.-มิ.ย.)</td>
+  	<td colspan="2" valign="top">ไตรมาส 4 (ก.ค.-ก.ย.)</td>
+  	<td rowspan="2" valign="top">พื้นที่ดำเนินการ</td>
+  </tr>
+  <tr bgcolor="#EFF7E8">
+	  <td valign="top">&nbsp;</td>
+	  <td align="center" valign="top">&nbsp;</td>
+	  <td align="center" valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+	  <td valign="top">เป้าหมาย</td>
+	  <td valign="top">งบประมาณ</td>
+  </tr>
     <?
 			//$section = $userSection;
 			//$workgroup = $userWorkgroup;
@@ -116,7 +91,7 @@ foreach($productivityKeyResult as $productivityKeyRow){
                   <td align="right" valign="top">&nbsp;</td>
                   <td align="right" valign="top"><? if($totalBudget > 0 ) echo number_format($totalBudget/1000000,4);?>&nbsp;&nbsp;</td>
                   <td align="right" valign="top">&nbsp;</td>
-                  <td align="right" valign="top"><? if($totalBudgetA > 0 ) echo number_format($totalBudgetA/1000000,4);?>&nbsp;</td>
+                  <td align="right" valign="top"><? //if($totalBudgetA > 0 ) echo number_format($totalBudgetA/1000000,4);?>&nbsp;</td>
                   <td align="right" valign="top">&nbsp;</td>
                   <td align="right" valign="top"><? if($totalBudgetB > 0 ) echo number_format($totalBudgetB/1000000,4);?>&nbsp;</td>
                   <td align="right" valign="top">&nbsp;</td>
@@ -140,17 +115,28 @@ foreach($productivityKeyResult as $productivityKeyRow){
                   <td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-<?php echo $project['projecttitle'];?>&nbsp;</td>
                   <td align="center" valign="top">
                   <?
-				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE UNITNAME
+				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE  UNITNAME
 				  		    FROM BUDGET_PRODUCTIVITY_KEY
 				  		    LEFT JOIN CNF_STRATEGY_DETAIL ON BUDGET_PRODUCTIVITY_KEY.PRODKEYID=CNF_STRATEGY_DETAIL.ID
-				  		    LEFT JOIN CNF_COUNT_UNIT ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID WHERE CHKWORKPLAN <> '' AND BUDGETID=".$project['id'];
-					$keyRow = $this->budget_product->get($sql);
-					echo $keyRow[0]['UNITNAME'];
-					$totalKeyA = GetSummaryKeyProject($keyRow[0]['id'],1);
-					$totalKeyB = GetSummaryKeyProject($keyRow[0]['id'],2);
-					$totalKeyC = GetSummaryKeyProject($keyRow[0]['id'],3);
-					$totalKeyD = GetSummaryKeyProject($keyRow[0]['id'],4);
-					$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+				  		    LEFT JOIN CNF_COUNT_UNIT ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID
+				  		    ";
+					$keyRow = $this->budget_product->get_row("CHKWORKPLAN <> '' AND BUDGETID ",$project['id'],$sql);
+
+					if(!empty($keyRow)){
+						echo $keyRow['unitname'];
+						$totalKeyA = GetSummaryKeyProject($keyRow['id'],1);
+						$totalKeyB = GetSummaryKeyProject($keyRow['id'],2);
+						$totalKeyC = GetSummaryKeyProject($keyRow['id'],3);
+						$totalKeyD = GetSummaryKeyProject($keyRow['id'],4);
+						$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+					}else{
+						$totalKeyA = 0;
+						$totalKeyB = 0;
+						$totalKeyC = 0;
+						$totalKeyD = 0;
+						$totalSummaryKey = 0;
+					}
+
 				  ?>
                   &nbsp;
                   </td>
@@ -177,6 +163,7 @@ foreach($productivityKeyResult as $productivityKeyRow){
 				  	$sql = "SELECT * FROM BUDGET_OPERATION_AREA
 				  			LEFT JOIN CNF_PROVINCE ON BUDGET_OPERATION_AREA.PROVINCEID = CNF_PROVINCE.ID
 				  			WHERE BUDGETID=".$project['id']." ORDER BY CNF_PROVINCE.TITLE ";
+
 					$provinceResult = $this->province->get($sql);
 					foreach($provinceResult as $provinceRow)
 					{
@@ -191,3 +178,4 @@ foreach($productivityKeyResult as $productivityKeyRow){
                 <? } ?>
             <? } ?>
 </table>
+<? } ?>

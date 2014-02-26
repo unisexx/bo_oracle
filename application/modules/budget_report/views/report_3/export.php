@@ -27,7 +27,7 @@
 	LEFT JOIN USERS ON BUDGET_MASTER.CREATEBY = USERS.ID
 	LEFT JOIN CNF_DIVISION ON USERS.DIVISIONID = CNF_DIVISION.ID
 	LEFT JOIN CNF_WORKGROUP ON USERS.WORKGROUPID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+	LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 	LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE.ID = CNF_PROVINCE_DETAIL_ZONE.PROVINCEID
 	WHERE BUDGET_MASTER.BUDGETYEAR=".$year.$productivityCondition.$mainactCondition.$subactivityCondition.$acondition;
 
@@ -64,6 +64,16 @@
 					}
 	}
 ?>
+<fieldset>
+	<legend>ส่งออก</legend>
+    <table >
+    	<tr>
+        	<td align="center" valign="middle">
+			<a href="budget_report/index/3/export<?php echo GetCurrentUrlGetParameter(); ?>">
+            <img title="Export to Excel" class="highlightit" src="images/excel-button.jpg" alt="Export to Excel" width="80" height="44" align="absmiddle" style="cursor:pointer"/></a></tr>
+    </table>
+
+</fieldset>
 <table width="95%" align="center" >
       <tr style="padding-bottom:10px;">
         <td style="padding-bottom:10px;" colspan="3" align="center">แผนการใช้จ่ายงบประมาณจำแนกตามรายข่ายประจำปีงบประมาณ <?=$thyear;?></td>
@@ -75,12 +85,12 @@
       </tr>
       <tr>
 		<td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    	<td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     	<td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    	<td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
       </tr>
       <tr>
-		  <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 		  <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+	      <td align="left">&nbsp;</td>
 	      <td align="left">&nbsp;</td>
 	   </tr>
       <tr>

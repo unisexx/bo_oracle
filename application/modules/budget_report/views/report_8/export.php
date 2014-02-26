@@ -1,7 +1,7 @@
 <h3>แผนการปฏิบัติงานและแผนการใช้จ่ายงบประมาณรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
 <div id="main">
-<table border="1" bordercolor="#CCCCCC" cellpadding="0" cellspacing="0" >
-	<tr>
+<table class="tbToDoList">
+	<tr bgcolor="#EFF7E8">
 		<td>แผนงาน/ผลผลิต/ตัวชี้วัด/กิจกรรมหลัก/กิจกรรมย่อย/โครงการ</td>
         <td>หน่วยนับ</td>
         <td colspan="2">รวมทั้งสิ้น</td>
@@ -12,7 +12,7 @@
         <td rowspan="2">พื้นที่ดำเนินการ</td>
         <td rowspan="2">หน่วยงานรับผิดชอบ</td>
     </tr>
-    <tr>
+    <tr bgcolor="#EFF7E8">
    	  <td>&nbsp;</td>
         <td align="center">&nbsp;</td>
         <td align="center">เป้าหมาย</td>
@@ -25,7 +25,8 @@
         <td>งบประมาณ</td>
         <td>เป้าหมาย</td>
         <td>งบประมาณ</td>
-    </tr>    <?
+    </tr>
+    <?
 			$zone = $pzone;
 			$group = $pgroup;
 			//$province = $_GET['province'];
@@ -120,7 +121,7 @@
 			?>
       		<tr>
                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$productivityKey['title'];?>&nbsp;</td>
-                  <td align="center"><?php echo $this->db->GetOne("select title from CNF_COUNT_UNIT where id = ".$productivityKey['unittypeid']); ?></td>
+				  <td align="center"><?php echo $this->cnf_count_unit->get_one("title","id",$productivityKey['unittypeid']);?></td>
 			      <td align="right"><? if($totalSummaryKey > 0 )echo number_format($totalSummaryKey,0);?>&nbsp;</td>
 			      <td align="right">&nbsp;</td>
                   <td align="right"><? if($summaryKeyA > 0 )echo number_format($summaryKeyA,0);?>&nbsp;</td>
@@ -142,8 +143,8 @@
 			?>
               	<tr>
                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$productivityKey['title'];?>&nbsp;</td>
-                  <td align="center"><?php echo $this->db->GetOne("select title from CNF_COUNT_UNIT where id = ".$productivityKey['unittypeid']); ?></td>
-                  <td align="right"><?=$productivityKey['qty'];?>&nbsp;</td>
+                  <td align="center"><?php echo $this->cnf_count_unit->get_one("title","id",$productivityKey['unittypeid']);?></td>
+                  <td align="right"><?php echo $productivityKey['qty'];?>&nbsp;</td>
                   <td align="right">&nbsp;</td>
                   <td align="right">&nbsp;</td>
                   <td align="right">&nbsp;</td>
@@ -218,13 +219,13 @@
 	<?
 			$condition = !empty($zone) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$zone."' ": "";
 			//$condition .= $group != '' ? " AND CNF_PROVINCE.PGROUP=".$group." " : "";
-			$condition .= !empty($province) ? " AND CNF_DIVISION.PROVINCEID=".$province." " : "";
+			$condition .= !empty($province) ? " AND CNF_WORKGROUP.WPROVINCEID =".$province." " : "";
 			$condition .= !empty($section) ? " AND CNF_DIVISION.ID=".$section." " : "";
 			$condition .= !empty($workgroup) ?  " AND CNF_WORKGROUP.ID=".$workgroup." " : "";
 			$sql = "SELECT * FROM BUDGET_MASTER
 			LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
 			LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-			LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+			LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 			LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE_DETAIL_ZONE.PROVINCEID = CNF_PROVINCE.ID
 			WHERE BUDGETYEAR=".$year." AND SUBACTIVITYID=".$subActivityRow['id']." AND STEP=".$step.$condition;
 			$projectResult = $this->budget_master->get($sql);
@@ -239,19 +240,22 @@
                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-<?=$project['projecttitle'];?>&nbsp;</td>
                   <td align="center">
                   <?
+					$totalKeyA = 0;$totalKeyB = 0;$totalKeyC = 0;$totalKeyD = 0;$totalSummaryKey = 0;
 				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE UNITNAME
 				  			FROM BUDGET_PRODUCTIVITY_KEY
 				  			LEFT JOIN CNF_STRATEGY_DETAIL 	ON BUDGET_PRODUCTIVITY_KEY.PRODKEYID=CNF_STRATEGY_DETAIL.ID
 				  			LEFT JOIN CNF_COUNT_UNIT 		ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID
-				  	 		WHERE CHKWORKPLAN <> '' AND BUDGETID=".$project['id'];
-					$keyRow = $this->budget_product->get($sql);
+				  	 		";
 
-					echo $keyRow[0]['UNITNAME'];
-					$totalKeyA = GetSummaryKeyProject($keyRow[0]['id'],1);
-					$totalKeyB = GetSummaryKeyProject($keyRow[0]['id'],2);
-					$totalKeyC = GetSummaryKeyProject($keyRow[0]['id'],3);
-					$totalKeyD = GetSummaryKeyProject($keyRow[0]['id'],4);
-					$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+					$keyRow = $this->budget_product->get_row("CHKWORKPLAN <> '' AND BUDGETID ",$project['id'],$sql);
+					if(!empty($keyRow)){
+						echo $keyRow['unitname'];
+						$totalKeyA = GetSummaryKeyProject($keyRow['id'],1);
+						$totalKeyB = GetSummaryKeyProject($keyRow['id'],2);
+						$totalKeyC = GetSummaryKeyProject($keyRow['id'],3);
+						$totalKeyD = GetSummaryKeyProject($keyRow['id'],4);
+						$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+					}
 				  ?>
                   &nbsp;
                   </td>
@@ -287,11 +291,10 @@
                   &nbsp;</td>
                   <td>
                   <?
-					//$projectWorkgroup = SelectData("CNF_WORKGROUP","WHERE ID=".$project['WORKGROUP_ID']);
-					$projectWorkgroup = $this->workgroup->get_one($project['workgroup_id']);
-					$projectSection = $this->division->get_one($projectWorkgroup['divisionid']);
+					$projectWorkgroup = $this->workgroup->get_row($project['workgroup_id']);
+					$projectSection = $this->division->get_one("title","id",$projectWorkgroup['divisionid']);
 					echo "หน่วยงาน : ".$projectSection."<br/>";
-					echo "กลุ่มงาน : ".$projectWorkgroup;
+					echo "กลุ่มงาน : ".$projectWorkgroup['title'];
 				  ?>
                   &nbsp;
                   </td>

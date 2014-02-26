@@ -14,9 +14,9 @@ function GetSummaryBudgetType($budgetID,$budgetTypeID)
 }
 function GetBudgetType($id){
 	$CI=& get_instance();
+	$CI->load->model('cnf_budget_type_model','cnf_budget_type');
 	$sql = "SELECT * FROM CNF_BUDGET_TYPE WHERE ID=".$id;
-	$bType = $CI->db->getrow($sql);
-	dbConvert($bType);
+	$bType = $CI->cnf_budget_type->get_row("id",$id);
 	return $bType;
 }
 function GetBudgetSummary($year,$subActivityID, $budgetID,$step,$workgroup=FALSE,$sectionID)
@@ -485,6 +485,7 @@ function GetSummaryProject($pProjectID,$pQuarter,$pYear, $pZone, $pGroup, $pProv
 			WHERE  BUDGET_MASTER.ID =".$pProjectID."
 			AND BUDGET_MASTER.STEP = ".$step." AND BUDGET_MASTER.BUDGETYEAR=".$pYear.$condition."
 			";
+			//echo $sql."<br/>";
 			$CI=& get_instance();
 			$result = $CI->db->getone($sql);
 			return $result;
@@ -591,7 +592,7 @@ function GetSummaryBudgetKey($pKey,$pQuarter,$year, $pZone, $group, $pProvince, 
 function budget_type_config()
 {
 	$CI=& get_instance();
-	$CI->load->model('budget_type/budget_type_model','budget_type');
+	$CI->load->model('cnf_budget_type_model','cnf_budget_type');
 	$haveQTY = array(3,11,17,80,4);//มีจำนวนอัตรา
 	$isFoodOverTime = array(26);//ค่าอาหารนอกเวลาราชการ
 
@@ -602,13 +603,14 @@ function budget_type_config()
 	$haveHumanRemark = array(46);//คำชี้แจ้งค่าเช่าเหมาบุคคล
 	$haveServiceRemark = array(46);// คำชี้แจงบริการอื่น ๆ
 	$haveRemark = array();
-	$result = $CI->budget_type->get("SELECT ID FROM CNF_BUDGET_TYPE WHERE LV=3 ");
+	$result = $CI->cnf_budget_type->where("LV=3")->get();
 	foreach($result as $row)
 	{
 		array_push($haveRemark, $row['id']);
 	}
 	$haveRemark = array_diff($haveRemark,$haveAllowanceRemark);
 	$haveRemark = array_diff($haveRemark,$haveDocumentRemark);
+
 }
 function GetSummaryBudgetTypeExpense($pBudgetTypeID,$pProjectID,$pYear,$pProductivity,$pMainactivity,$pSubactivity)
 {
@@ -622,14 +624,14 @@ function GetSummaryBudgetTypeExpense($pBudgetTypeID,$pProjectID,$pYear,$pProduct
 				)
 			)
 			";
-
+			//echo $sql;
 			$CI=& get_instance();
 			$result = $CI->db->getone($sql);
 			return $result;
 }
 function CalculateBySummaryProductivity($pBudgetTypeID, $pYear, $pZone, $pGroup, $pProvince, $pSection,$pWorkgroup)
 {
-	$condition .= $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pZone."' ": "";
+	$condition = $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pZone."' ": "";
 	$condition .= $pProvince != '' ? " AND CNF_WORKGROUP.WPROVINCEID=".$pProvince." " : "";
 //	$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
 //	$condition .= $pWorkgroup != '' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
@@ -657,7 +659,7 @@ function CalculateBySummaryProductivity($pBudgetTypeID, $pYear, $pZone, $pGroup,
 
 function CalculateByProductivity($pProductivityID, $pBudgetTypeID, $pYear, $pZone, $pGroup, $pProvince, $pSection,$pWorkgroup)
 {
-	$condition .= $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pZone."' ": "";
+	$condition = $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pZone."' ": "";
 	$condition .= $pProvince != '' ? " AND CNF_WORKGROUP.WPROVINCEID=".$pProvince." " : "";
 //	$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
 //	$condition .= $pWorkgroup != '' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
@@ -685,7 +687,7 @@ function CalculateByProductivity($pProductivityID, $pBudgetTypeID, $pYear, $pZon
 
 function CalculateByMainActivity($pProductivityID,$pMainActivityID, $pBudgetTypeID, $pYear, $pZone, $pGroup, $pProvince, $pSection,$pWorkgroup)
 {
-	$condition .= $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pZone."' ": "";
+	$condition = $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$pZone."' ": "";
 //	$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
 	$condition .= $pProvince != '' ? " AND CNF_WORKGROUP.WPROVINCEID=".$pProvince." " : "";
 //	$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
@@ -715,8 +717,7 @@ function CalculateByMainActivity($pProductivityID,$pMainActivityID, $pBudgetType
 
 function CalculateByProvince($pProductivityID,$pMainActivityID,$pBudgetTypeID, $pYear, $pZone, $pGroup, $pProvince, $pSection,$pWorkgroup)
 {
-	$condition .= $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID ='".$pZone."' ": "";
-	//$condition .= $pGroup != '' ? " AND CNF_PROVINCE.PGROUP=".$pGroup." " : "";
+	$condition = $pZone != '' ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID ='".$pZone."' ": "";
 	$condition .= $pProvince != '' ? " AND CNF_PROVINCE.ID=".$pProvince." " : "";
 	//$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
 	//$condition .= $pWorkgroup != '' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
@@ -737,6 +738,7 @@ function CalculateByProvince($pProductivityID,$pMainActivityID,$pBudgetTypeID, $
 				AND BUDGETYEAR = ".$pYear." AND STEP=".$_GET['step'].$condition."
 			)
 			AND BUDGETTYPEID=".$pBudgetTypeID;
+			//echo $sql;
 			$CI=& get_instance();
 			$result = $CI->db->getone($sql);
 			return $result;
@@ -749,9 +751,9 @@ function GetSummaryMainBudgetTypeByMonth($pBudgetTypeID,$pMonth,$pQuarter,$pYear
 		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
 		$condition .= $pWorkgroup != '' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
 
-		if($quarter != '')
+		if($pQuarter != '')
 		{
-			switch($quarter)
+			switch($pQuarter)
 			{
 				case 1:
 					$summary = " SUM(BUDGET_M1 + BUDGET_M2 + BUDGET_M3) AS TOTAL ";
@@ -800,9 +802,9 @@ function GetSummaryExpenseTypeByMonth($pBudgetTypeID,$pMonth,$pQuarter,$pYear,$p
 		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
 		$condition .= $pWorkgroup != '' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
 
-		if($quarter != '')
+		if($pQuarter != '')
 		{
-			switch($quarter)
+			switch($pQuarter)
 			{
 				case 1:
 					$summary = " SUM(BUDGET_M1 + BUDGET_M2 + BUDGET_M3) AS TOTAL ";
@@ -853,9 +855,9 @@ function GetSummaryBudgetTypeByMonth($pBudgetTypeID,$pMonth,$pQuarter,$pYear, $p
 		$condition .= $pSection != '' ? " AND CNF_DIVISION.ID=".$pSection." " : "";
 		$condition .= $pWorkgroup != '' ?  " AND CNF_WORKGROUP.ID=".$pWorkgroup." " : "";
 
-		if($quarter != '')
+		if($pQuarter != '')
 		{
-			switch($quarter)
+			switch($pQuarter)
 			{
 				case 1:
 					$summary = " SUM(BUDGET_M1 + BUDGET_M2 + BUDGET_M3) AS TOTAL ";
@@ -1193,5 +1195,20 @@ function GetBudgetSummaryNextYearType($pYear,$pIndex,$pSubactivity,$pStep,$pMiss
 		$total += $row['TOTAL'];
 	}
 	return $total;
+}
+function CountProject($pSubactivityID,$pStep,$pYear)
+{
+
+	$sql = "SELECT count(*) total FROM BUDGET_MASTER
+	LEFT JOIN USERS ON BUDGET_MASTER.CREATEBY = USERS.ID
+	LEFT JOIN CNF_DIVISION ON USERS.DIVISIONID = CNF_DIVISION.ID
+	LEFT JOIN CNF_WORKGROUP ON USERS.WORKGROUPID = CNF_WORKGROUP.ID
+	LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
+	LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE_DETAIL_ZONE.PROVINCEID = CNF_PROVINCE.ID
+	WHERE  BUDGETYEAR=".$pYear." AND STEP=".$pStep." AND SUBACTIVITYID=".$pSubactivityID." ORDER BY SUBACTIVITYID ";
+
+	$CI=& get_instance();
+	$result = $CI->db->getone($sql);
+	return $result;
 }
 ?>

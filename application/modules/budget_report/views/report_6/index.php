@@ -145,7 +145,7 @@
 	LEFT JOIN USERS ON BUDGET_MASTER.CREATEBY = USERS.ID
 	LEFT JOIN CNF_DIVISION ON USERS.DIVISIONID = CNF_DIVISION.ID
 	LEFT JOIN CNF_WORKGROUP ON USERS.WORKGROUPID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+	LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 	LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE_DETAIL_ZONE.PROVINCEID = CNF_PROVINCE.ID
 	WHERE  BUDGETYEAR=".$year." AND STEP=".$step.$condition." ORDER BY SUBACTIVITYID ";
 	$result = $this->budget_master->get($sql);
@@ -164,13 +164,13 @@
 </tr>
   <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
   </tr>
   <tr>
-	 <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 	 <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
-	 <td align="left">จำนวนโครงการทั้งหมด : <?php echo $this->budget_type->get_one("count(*) as cnt","pid",0);?> โครงการ</td>
+	 <td align="left">จำนวนโครงการทั้งหมด : <?php echo count($result);  ?> โครงการ</td>
+	 <td></td>
 </tr>
 <tr>
   <td colspan="3" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo (!empty($_GET['step'])) ? $stepName[$_GET['step']]:'';?></td>
@@ -202,39 +202,49 @@
     <?
 	$i=0;
 	$p=0;
+	//$subactivityData  = "";
+	//$mainactivityData = "";
+	//$productivityData = "";
+	//$productivityTitle ="";
+	//$mainactivityTitle = "";
+	//$subactivityTitle = "";
 	foreach($result as $budgetMaster)
 	{
 		if($subactivityID != $budgetMaster['subactivityid'])
 		{
 				$subactivityID = $budgetMaster['subactivityid'];
-				$subactivityData  = $this->cnf_strategy->get_row($subactivityID);
-				$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
-				$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
-				$productivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $productivityData['title'];
-				$mainactivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $mainactivityData['title'];
-				$subactivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $subactivityData['title'];
+				if(!empty($subactivityID)){
+					$subactivityData  = $this->cnf_strategy->get_row($subactivityID);
+					if(!empty($subactivityData)){
+						$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+						$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
+						$productivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $productivityData['title'];
+						$mainactivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $mainactivityData['title'];
+						$subactivityTitle = $subactivityID == '' ? " ทั้งหมด  ": $subactivityData['title'];
+					}
+				}
+
 				$p++;
 				$i=0;
 		?>
 				 <tr style="background-color:#D7EEFF">
                   <td valign="top"><?php echo $p;?>&nbsp;</td>
                   <td valign="top">
-                  กิจกรรมย่อย : <?php echo $subactivityTitle;?>&nbsp;[ <?php echo CountProject($subactivityID,$step,$year);?> โครงการ]
-                  </td>
+                  	<?php if(!empty($subactivityTitle)){ ?>
+                  	กิจกรรมย่อย : <?php echo $subactivityTitle;?>&nbsp;[ <?php echo CountProject($subactivityID,$step,$year);?> โครงการ]
+                  	<?php } ?>
+                  	</td>
                   <td valign="top">&nbsp;</td>
                   <td valign="top">&nbsp;</td>
                   <td valign="top">&nbsp;</td>
                   <?
                   $gtotal = 0;
                   for($b=0;$b<count($budgetTypeID);$b++){?>
-                  <td valign="top">&nbsp;
-                  </td>
+                  <td valign="top">&nbsp;</td>
                   <? } ?>
                   <td valign="top">&nbsp;</td>
-                  <td valign="top">&nbsp;
-                  </td>
-                  <td valign="top">&nbsp;
-                  </td>
+                  <td valign="top">&nbsp;</td>
+                  <td valign="top">&nbsp;</td>
                 </tr>
         <?
 		}
@@ -269,12 +279,10 @@
 		elseif($budgetMaster["chkoperationregion"]!='')
 			$operationArea .=" <br/>"."ส่วนภูมิภาค ";
 
-		/*$sql = "SELECT * FROM BUDGET_OPERATION_AREA
+		$sql = "SELECT * FROM BUDGET_OPERATION_AREA
 				LEFT JOIN CNF_PROVINCE ON BUDGET_OPERATION_AREA.PROVINCEID = CNF_PROVINCE.ID
 		 		WHERE BUDGETID=".$budgetMaster['id']." ORDER BY CNF_PROVINCE.TITLE ";
-		 */
-		$provinceResult = $this->budget_operation_area->join("LEFT JOIN CNF_PROVINCE ON BUDGET_OPERATION_AREA.PROVINCEID = CNF_PROVINCE.ID")
-					      ->where("BUDGETID=".$budgetMaster['id'])->order_by('',"CNF_PROVINCE.TITLE");
+		$provinceResult = $this->budget_operation_area->get($sql);
 		foreach($provinceResult as $provinceRow)
 		{
 			$operationArea .="<br/>&nbsp;&nbsp;-&nbsp;".$provinceRow['title'];
