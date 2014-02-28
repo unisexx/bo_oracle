@@ -72,16 +72,18 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 
 	}
 	function save(){
+		
 		$urlpage = $this->urlpage;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
 		   
-		   if($_POST['id']>0){
+		   if($_POST['id'] > '0'){
 		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
 		   		$_POST['UPDATE_BY'] = login_data('name');
 				$id = $this->permission->save($_POST);
 		   }else{
+		   	
 		   		$_POST['CREATE_DATE'] = date("Y-m-d");
 		   		$_POST['CREATE_BY'] = login_data('name');
 		   		$_POST['id'] = ($this->db->getone("SELECT MAX(NUM_ID) FROM MDS_PERMISSION_ID"))+1;
@@ -89,7 +91,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		   		$update_id['num_id'] = $_POST['id'];
 		   		$this->permission_id->save($update_id);
 		   		
-		   		$id = $this->permission->save($_POST);
+		   		$id = $this->permission->save($_POST,true);
 		   }
 		 
 		   
