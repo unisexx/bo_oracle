@@ -22,7 +22,7 @@
   <?php foreach($operation_types as $row):?>
   <tr class="cursor" onclick="window.location='act/set_operation_type/form/<?php echo $row['id']?>'">
 	  <td><?php echo $i?></td>
-	  <td nowrap="nowrap"><?php echo $row['operation_type_name']?></td>
+	  <td nowrap="nowrap"><?php echo $row['pcommunity_name']?></td>
 	  <td><a href="act/set_operation_type/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td></a>
   </tr>
   <?$i++;?> 

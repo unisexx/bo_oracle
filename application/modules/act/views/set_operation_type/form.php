@@ -4,7 +4,7 @@
 <table class="tbadd">
 <tr>
   <th>ชื่อลักษณะการดำเนินงาน<span class="Txt_red_12"> *</span></th>
-  <td><input name="operation_type_name" type="text" class="form-control" style="width:500px;" value="<?php echo $operation_type['operation_type_name']?>" /></td>
+  <td><input name="pcommunity_name" type="text" class="form-control" style="width:500px;" value="<?php echo $operation_type['pcommunity_name']?>" /></td>
 </tr>
 </table>
 

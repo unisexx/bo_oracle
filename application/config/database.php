@@ -36,7 +36,8 @@
 ini_set("max_execution_time" , 300);
 $active_group = "fd";
 $active_record = TRUE;
-//$active_group = "default";
+
+
 /*
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "BOFFICE";

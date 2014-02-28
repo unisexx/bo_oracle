@@ -4,7 +4,7 @@
 <table class="tbadd">
 <tr>
   <th>ชื่อส่วนงานสวัสดิการสังคม<span class="Txt_red_12"> *</span></th>
-  <td><input name="social_welfare_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $social_welfare['social_welfare_name']?>" /></td>
+  <td><input name="pssub_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $social_welfare['pssub_name']?>" /></td>
 </tr>
 </table>
 

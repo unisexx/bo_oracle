@@ -21,7 +21,7 @@
   <?php foreach($pds as $row):?>
   	<tr class="cursor" onclick="window.location='act/set_position_director/form/<?php echo $row['id']?>'">
 	  <td><?php echo $i?></td>
-	  <td nowrap="nowrap"><?php echo $row['position_director_name']?></td>
+	  <td nowrap="nowrap"><?php echo $row['position_name']?></td>
 	  <td><a href="act/set_position_director/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="button" name="button" id="button" value="x" class="btn_delete" /></td></a>
   </tr>
   <?$i++;?> 
