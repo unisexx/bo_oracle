@@ -44,7 +44,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 				left join mds_set_permission_dtl on permission.id = mds_set_permission_dtl.mds_set_permission_id
 				left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id
 				left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
-				where $condition order by permission.id asc ";
+				where $condition order by permission.id desc ";
 		
 		$data['rs'] = $this->permission->get($sql);
 		$data['pagination']=$this->permission->pagination();
@@ -63,7 +63,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 				from mds_set_permission permission
 				left join mds_set_permission_dtl on permission.id = mds_set_permission_dtl.mds_set_permission_id
 				left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id
-				where permission.id = '".$id."' order by permission.id asc ";
+				where permission.id = '".$id."' order by permission.id desc ";
 			
 			$data['rs'] = $this->permission->get($sql);
 			$data['rs'] = @$data['rs']['0'];
