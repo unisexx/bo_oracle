@@ -1,0 +1,12 @@
+<?php
+class project_structuresub_model extends MY_Model{
+	
+	public $table = 'act_project_structuresub';
+	
+    function __construct()
+    {
+        parent::__construct();
+    }
+	
+}
+?>

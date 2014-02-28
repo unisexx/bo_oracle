@@ -2,11 +2,11 @@
 Class Set_project extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("project_model","project");
+		$this->load->model("project_structure_model","project");
 	}
 	
 	function index(){
-		$condition = @$_GET['search']!='' ? " project_name like '%".$_GET['search']."%'" : "";
+		$condition = @$_GET['search']!='' ? " ps_name like '%".$_GET['search']."%'" : "";
 		$data['projects'] = $this->project->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->project->pagination();
 		$this->template->build('set_project/index',$data);

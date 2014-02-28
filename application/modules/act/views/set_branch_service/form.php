@@ -4,7 +4,7 @@
 <table class="tbadd">
 <tr>
   <th>ชื่อสาขาการให้บริการ<span class="Txt_red_12"> *</span></th>
-  <td><input name="branch_service_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $branch_service['branch_service_name']?>" /></td>
+  <td><input name="scommunity_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $branch_service['scommunity_name']?>" /></td>
 </tr>
 </table>
 

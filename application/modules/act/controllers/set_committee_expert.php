@@ -2,11 +2,11 @@
 Class Set_committee_expert extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("committee_expert_model","com_ex");
+		$this->load->model("committee_ability_model","com_ex");
 	}
 	
 	function index(){
-		$condition = @$_GET['search']!='' ? " committee_expert_name like '%".$_GET['search']."%'" : "";
+		$condition = @$_GET['search']!='' ? " ability_name like '%".$_GET['search']."%'" : "";
 		$data['committee_experts'] = $this->com_ex->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->com_ex->pagination();
 		$this->template->build('set_committee_expert/index',$data);

@@ -2,11 +2,11 @@
 Class Set_social_welfare extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("social_welfare_model","social_welfare");
+		$this->load->model("project_structuresub_model","social_welfare");
 	}
 	
 	function index(){
-		$condition = @$_GET['search']!='' ? " social_welfare_name like '%".$_GET['search']."%'" : "";
+		$condition = @$_GET['search']!='' ? " pssub_name like '%".$_GET['search']."%'" : "";
 		$data['social_welfares'] = $this->social_welfare->where($condition)->order_by('id','desc')->get(false,true);
 		$data['pagination'] = $this->social_welfare->pagination();
 		$this->template->build('set_social_welfare/index',$data);

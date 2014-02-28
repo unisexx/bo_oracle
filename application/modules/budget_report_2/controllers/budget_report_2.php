@@ -22,7 +22,12 @@ class budget_report_2 extends Budget_Controller
 		$data['division'] = $this->division->get_row($data['divisionid']);
 		$data['workgroupid'] = @$_GET['workgroupid'];
 		$data['workgroup'] = $this->workgroup->get_row($data['workgroupid']);
-		$data['step'] = @$_GET['step'];											
+		$data['step'] = @$_GET['step'];				
+		$data['pzone'] = @$_GET['pzone'];
+		$data['pgroup'] = @$_GET['pgroup'];
+		$data['provinceid'] = @$_GET['province'];
+		$data['divisionid'] = @$_GET['divisionid'];
+		$data['workgroupid'] = @$_GET['workgroupid'];								
 		$this->template->build('index',$data);
 	}			
 }

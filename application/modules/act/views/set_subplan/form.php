@@ -10,12 +10,13 @@
 </tr>
 <tr>
   <th>ชื่อแผนย่อย<span class="Txt_red_12"> *</span></th>
-  <td><input name="subplan_name" type="text" class="form-control" style="width:500px;"   value="<?php echo $subplan['subplan_name']?>"/></td>
+  <td><input name="plansub_name" type="text" class="form-control" style="width:500px;"   value="<?php echo $subplan['plansub_name']?>"/></td>
 </tr>
 </table>
 
 
 <div id="btnBoxAdd">
+	<input type="hidden" name="created" value="<?php echo $subplan['created']?>">
   <input type="hidden" name="id" value="<?php echo $subplan['id']?>">
   <input type="submit" title="บันทึก" value=" " class="btn_save"/>
   <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>

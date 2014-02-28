@@ -24,7 +24,7 @@
   <tr class="cursor" onclick="window.location='act/set_subplan/form/<?php echo $row['id']?>'">
 	  <td><?php echo $i?></td>
 	  <td nowrap="nowrap"><?php echo $row['plan_name']?></td>
-	  <td nowrap="nowrap"><?php echo $row['subplan_name']?></td>
+	  <td nowrap="nowrap"><?php echo $row['plansub_name']?></td>
 	  <td><a href="act/set_subplan/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td></a>
   </tr>
   <?$i++;?> 

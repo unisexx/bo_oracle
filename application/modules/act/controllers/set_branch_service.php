@@ -2,24 +2,24 @@
 Class Set_branch_service extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("branch_service_model","branch_service");
+		$this->load->model("service_community_model","scommunity");
 	}
 	
 	function index(){
-		$condition = @$_GET['search']!='' ? " branch_service_name like '%".$_GET['search']."%'" : "";
-		$data['branch_services'] = $this->branch_service->where($condition)->order_by('id','desc')->get(false,true);
-		$data['pagination'] = $this->branch_service->pagination();
+		$condition = @$_GET['search']!='' ? " scommunity_name like '%".$_GET['search']."%'" : "";
+		$data['branch_services'] = $this->scommunity->where($condition)->order_by('id','desc')->get(false,true);
+		$data['pagination'] = $this->scommunity->pagination();
 		$this->template->build('set_branch_service/index',$data);
 	}
 	
 	function form($id=false){
-		$data['branch_service'] = $this->branch_service->get_row($id);
+		$data['branch_service'] = $this->scommunity->get_row($id);
 		$this->template->build('set_branch_service/form',$data);
 	}
 	
 	function save(){
 		if($_POST){
-			$this->branch_service->save($_POST);
+			$this->scommunity->save($_POST);
 			set_notify('success', lang('save_data_complete'));
 		}
 		redirect('act/set_branch_service');
@@ -27,7 +27,7 @@ Class Set_branch_service extends  Act_Controller{
 	
 	function delete($id){
 		if($id){
-			$this->branch_service->delete($id);
+			$this->scommunity->delete($id);
 			set_notify('success', lang('delete_data_complete'));
 		}
 		redirect($_SERVER["HTTP_REFERER"]);
