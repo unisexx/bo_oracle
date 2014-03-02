@@ -3,6 +3,7 @@ Class welfare_service extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("customer_main_model","cmain");
+		$this->load->model("customer_sub_model","csub");
 		$this->load->model("target_group_model","target_group");
 	}
 	
@@ -21,20 +22,33 @@ Class welfare_service extends  Act_Controller{
 	function save(){
 		if($_POST){
 			// customer_main save
+			if(isset($_FILES["UploadFile"]))
+			{
+			   fix_file($_FILES["UploadFile"]);		    
+			   $_POST['file_data'] = isset($_FILES["UploadFile"])!='' ? $this->cmain->upload($_FILES["UploadFile"],"uploads/welfare_service") : $_POST['file_data'];
+			}
+			
 			$id = $this->cmain->save($_POST);
-			foreach($_POST['answer_id'] as $key=>$item){
-				if($item){
-					$this->level->save(array(
-						'id'=>@$_POST['id'][$key],
-						'budgetyear'=>$_POST['budgetyear'],
-						'color'=>$_POST['color'][$key],
-						'color_detail'=>$_POST['color_detail'][$key],
-						'orderlist'=>$key,
-						'range_start'=>$_POST['range_start'][$key],
-						'range_end'=>$_POST['range_end'][$key]
-					));
+			
+			$this->csub->where("id_card = ".$_POST['id_card']." and question_name = 'target'")->delete();
+			
+			// remove empty value and reindex of array
+			$_POST['other'] = array_values(array_filter($_POST['other']));
+			
+			$this->db->debug = true;
+			if(isset($_POST['answer_id'])){
+				foreach($_POST['answer_id'] as $key=>$item){
+					if($_POST['answer_id'][$key]){
+						$this->csub->save(array(
+							'id_card'=>$_POST['id_card'],
+							'question_name'=>'target',
+							'answer_id'=>$item,
+							'other'=>$_POST['other'][$key]
+						));
+					}
 				}
 			}
+			
 			set_notify('success', lang('save_data_complete'));
 		}
 		redirect('act/welfare_service');

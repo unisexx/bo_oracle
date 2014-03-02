@@ -6,6 +6,9 @@
 		<title><?php echo $template['title']; ?></title>
 		<?php require_once('themes/bo/_meta.php')?>
 		<?php echo $template['metadata']; ?>
+		<style>
+			body .tbadd td span{float:none;}
+		</style>
 		<script type="text/javascript">
 			$(document).ready(function(){
 			    $(".tblist tr:odd").addClass("odd");

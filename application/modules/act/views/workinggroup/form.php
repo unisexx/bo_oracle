@@ -55,7 +55,7 @@ $(document).ready(function(){
 <tr>
   <th><label for="fid-full_name4">ชื่อหน่วยงานที่สังกัด</label>    </th>
   <td>
-  	<?php echo form_dropdown('under_id', get_option('under_id', 'under_name', 'act_under', '1=1 order by under_name asc'), @$officer['under_id'], null, '-- เลือกหน่วยงานที่สังกัด --'); ?> 
+  	<?php echo form_dropdown('under_id', get_option('id', 'under_name', 'act_under', '1=1 order by under_name asc'), @$officer['under_id'], null, '-- เลือกหน่วยงานที่สังกัด --'); ?> 
   	
     <input name="under_position" type="text" value="<?php echo $officer['under_position']?>" style="width:300px;" placeholder="ยศ/ตำแหน่ง"/></td>
 </tr>

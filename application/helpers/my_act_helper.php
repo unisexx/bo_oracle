@@ -66,6 +66,17 @@ if(!function_exists('act_get_organ_name'))
 	}
 }
 
+if(!function_exists('act_get_project_name'))
+{
+	function act_get_project_name($project_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select project_name from act_fund_project where project_id = ?',$project_id);
+		dbConvert($result);
+		return $result;
+	}
+}
+
 if(!function_exists('act_get_subcommittee_type'))
 {
 	function act_get_subcommittee_type($sub_type_id)

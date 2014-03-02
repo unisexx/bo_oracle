@@ -36,7 +36,12 @@ $(document).ready(function(){
   </tr>
   <tr>
     <th>รูปภาพ</th>
-    <td><input type="file" name="fileField" id="fileField" /></td>
+    <td>
+    	<input type="file" name="UploadFile" />
+	  	<?php if($cmain['file_data']):?>
+	  	<a href="uploads/welfare_service/<?php echo $cmain['file_data']?>"><?php echo $cmain['file_data']?></a>
+	  	<?php endif;?>
+    </td>
   </tr>
   <tr>
     <th>เพศ <span class="Txt_red_12"> *</span></th>
@@ -107,8 +112,13 @@ $(document).ready(function(){
     <th>ประเภทของผู้รับบริการ</th>
     <td>
     	<?php foreach($target_groups as $row):?>
+    		<?php
+    			$sub = $this->csub->where("id_card = ".$cmain['id_card']." and question_name = 'target' and answer_id = ".$row['target_id'])->get_row();
+				// print_r($sub);
+    		?>
     		<span>
-    			<input name="answer_id[]" type="checkbox" value="<?php echo $row['target_id']?>" /> <?php echo $row['target_name']?> <input name="other[]" type="text" style="width:100px;" />   			
+    			<input name="answer_id[]" type="checkbox" value="<?php echo $row['target_id']?>" <?php echo ($row['target_id'] == @$sub['answer_id'])?'checked':'';?>/> <?php echo $row['target_name']?> 
+    			<input name="other[]" type="text" value="<?php echo @$sub['other']?>" style="width:100px;" />
     		</span>
     	<?php endforeach;?>
     </td>
