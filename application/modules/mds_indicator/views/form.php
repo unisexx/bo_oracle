@@ -19,7 +19,7 @@ $(function(){
 			var id = $(this).attr('ref_id');
 			var metrics_id = $(this).attr('ref_metrics');
 			if(confirm('ท่านลบผลปฎิบัติราชการ ใช่ หรือ ไม่')) {
-				document.location = 'mds_indicator/delete/?id='+id+'&metrics_id='+metrics_id;
+				document.location = '<?php echo base_url();?>mds_indicator/delete/?id='+id+'&metrics_id='+metrics_id;
 			}
 		});
 	
@@ -49,7 +49,7 @@ $(function(){
 			if($chk_keyer_indicator == 'Y'){
 					
 ?>
-<div id="btnBox"><input type="button" title="เพิ่มผลปฎิบัติราชการ" value=" " onclick="document.location='<?=$urlpage?>/form_2/<?=$rs_metrics['id']?>'" class="btn_add_indicator vtip"/></div>
+<div id="btnBox"><input type="button" title="เพิ่มผลปฎิบัติราชการ" value=" " onclick="document.location='<?=base_url().$urlpage?>/form_2/<?=$rs_metrics['id']?>'" class="btn_add_indicator vtip"/></div>
 <? } }?>
 <table class="tblist2">
 <tr>
