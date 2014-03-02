@@ -452,13 +452,13 @@ function metrics_weight($metrics_id = null , $round_month = null,$budget_year = 
 					if(count($result_chk_result) == 0){
 						$data['weight'] = '0';
 					}
-					if($round_month < @$result_chk_metrics[0]['metrics_start'] && $result_all == 'ok'){
+					if($round_month < @$result_chk_metrics[0]['metrics_start'] ){
 							$data['img'] = '<img src="'.base_url().'themes/mdevsys/images/pass.gif" width="16" height="16">';
 							$data['result_metrics'] = '0';	
 							$data['score_metrics'] = '0';
 							$data['dtl_img'] = 'เริ่มรอบถัดไป';
 					}
-					if(@$result_chk_metrics[0]['metrics_cancel'] != '' && $result_all == 'ok'){
+					if(@$result_chk_metrics[0]['metrics_cancel'] != '' ){
 						if($round_month >= @$result_chk_metrics[0]['metrics_cancel']){
 							$data['img'] = '<img src="'.base_url().'themes/mdevsys/images/cancel.gif" width="16" height="16">';
 							$data['result_metrics'] = '0';
