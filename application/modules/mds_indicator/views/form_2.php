@@ -63,7 +63,7 @@ $(function(){
 		$("#div_document_ref_"+i).remove();
 	});
 	
-	$('.dt_delete_document').live('click', function(){
+	$('#dt_delete_document').live('click', function(){
 		var id = $(this).attr('ref_id');
 		var result_id = $(this).attr('ref_result_id');
 		var metrics_id = $('#mds_set_metrics_id').val();
