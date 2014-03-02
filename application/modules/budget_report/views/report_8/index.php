@@ -52,7 +52,6 @@
 		$condition = (!empty($productivity)) ? "  and productivityid =".$productivity : "";
 		$condition = (!empty($mainactivity)) ? " and  mainactid =".$mainactivity : $condition;
 		$condition = (!empty($missionType)) ? " and missiontype = '".trim($missionType)."' " : $condition;
-		//echo $sql = "select * from cnf_strategy where MAINACTID > 0 AND SYEAR=".$year.$condition;
 	    echo form_dropdown('subactivity',get_option('id','title','cnf_strategy',' MAINACTID > 0 AND SYEAR='.$year.$condition),$subactivity,'id="subactivity"','เลือกกิจกรรมย่อย','0');  ?>
       </div>
      </td>
@@ -61,11 +60,7 @@
   <th>ภาค</th>
   <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ทุกภาค') ?></td>
 </tr>
-<tr>
-  <th>กลุ่มจังหวัด</th>
-  <td>
-  	<?php echo form_dropdown('pgroup',get_option('id','title','cnf_province_zone',' zone_type_id =3','title'),$pgroup,'id="pgroup"','ทุกกลุ่มจังหวัด') ?></td>
-</tr>
+
 <tr>
   <th>จังหวัด</th>
   <td><div id="dvProvinceList">
@@ -77,7 +72,7 @@
     <select name="province" id="province">
     <option value="0">เลือกจังหวัด</option>
 	<?php foreach($result as $item){ ?>
-   	<option value="<?php echo $item['id'] ?>"><?php echo $item['title'] ?></option>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
   	<?php } ?>
   	</select>
   </div></td>
@@ -106,8 +101,8 @@
 </div>
 <? if($step!=''){
 $subactivityData  = $this->cnf_strategy->get_row($subactivity);
-$mainactivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) as title",'id',$subactivityData['mainactid']);
-$productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) as title",'id',$subactivityData['productivityid']);
+$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
  ?>
 <div id="main">
 
@@ -125,18 +120,18 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
         <td style="padding-bottom:10px;" colspan="3" align="center">แผนการปฏิบัติงานและแผนการใช้จ่ายงบประมาณรายจ่ายประจำปีงบประมาณ          <?php echo $thyear;?></td>
       </tr>
       <tr>
-		  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo @$productivityData['title'];?></td>
-		  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo @$mainactivityData['title'];?></td>
-		  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo @$subactivityData['title'];?></td>
+		  <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
+		  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
+		  <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
       </tr>
       <tr>
 	      <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-	      <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
 	      <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+	      <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
       </tr>
       <tr>
-	 	  <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 	 	  <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+          <td align="left">&nbsp;</td>
           <td align="left">&nbsp;</td>
       </tr>
       <tr>
@@ -266,7 +261,7 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
 			?>
       		<tr>
                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$productivityKey['title'];?>&nbsp;</td>
-                  <td align="center"><?php echo $this->db->GetOne("select title from CNF_COUNT_UNIT where id = ".$productivityKey['unittypeid']); ?></td>
+				  <td align="center"><?php echo $this->cnf_count_unit->get_one("title","id",$productivityKey['unittypeid']);?></td>
 			      <td align="right"><? if($totalSummaryKey > 0 )echo number_format($totalSummaryKey,0);?>&nbsp;</td>
 			      <td align="right">&nbsp;</td>
                   <td align="right"><? if($summaryKeyA > 0 )echo number_format($summaryKeyA,0);?>&nbsp;</td>
@@ -288,8 +283,8 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
 			?>
               	<tr>
                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$productivityKey['title'];?>&nbsp;</td>
-                  <td align="center"><?php echo $this->db->GetOne("select title from CNF_COUNT_UNIT where id = ".$productivityKey['unittypeid']); ?></td>
-                  <td align="right"><?=$productivityKey['qty'];?>&nbsp;</td>
+                  <td align="center"><?php echo $this->cnf_count_unit->get_one("title","id",$productivityKey['unittypeid']);?></td>
+                  <td align="right"><?php echo $productivityKey['qty'];?>&nbsp;</td>
                   <td align="right">&nbsp;</td>
                   <td align="right">&nbsp;</td>
                   <td align="right">&nbsp;</td>
@@ -364,13 +359,13 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
 	<?
 			$condition = !empty($zone) ? " AND CNF_PROVINCE_DETAIL_ZONE.ZONEID='".$zone."' ": "";
 			//$condition .= $group != '' ? " AND CNF_PROVINCE.PGROUP=".$group." " : "";
-			$condition .= !empty($province) ? " AND CNF_DIVISION.PROVINCEID=".$province." " : "";
+			$condition .= !empty($province) ? " AND CNF_WORKGROUP.WPROVINCEID =".$province." " : "";
 			$condition .= !empty($section) ? " AND CNF_DIVISION.ID=".$section." " : "";
 			$condition .= !empty($workgroup) ?  " AND CNF_WORKGROUP.ID=".$workgroup." " : "";
 			$sql = "SELECT * FROM BUDGET_MASTER
 			LEFT JOIN CNF_WORKGROUP ON BUDGET_MASTER.WORKGROUP_ID = CNF_WORKGROUP.ID
 			LEFT JOIN CNF_DIVISION ON CNF_WORKGROUP.DIVISIONID = CNF_DIVISION.ID
-			LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+			LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 			LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE_DETAIL_ZONE.PROVINCEID = CNF_PROVINCE.ID
 			WHERE BUDGETYEAR=".$year." AND SUBACTIVITYID=".$subActivityRow['id']." AND STEP=".$step.$condition;
 			$projectResult = $this->budget_master->get($sql);
@@ -385,19 +380,22 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
                   <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-<?=$project['projecttitle'];?>&nbsp;</td>
                   <td align="center">
                   <?
+					$totalKeyA = 0;$totalKeyB = 0;$totalKeyC = 0;$totalKeyD = 0;$totalSummaryKey = 0;
 				  	$sql = "SELECT BUDGET_PRODUCTIVITY_KEY.*,CNF_COUNT_UNIT.TITLE UNITNAME
 				  			FROM BUDGET_PRODUCTIVITY_KEY
 				  			LEFT JOIN CNF_STRATEGY_DETAIL 	ON BUDGET_PRODUCTIVITY_KEY.PRODKEYID=CNF_STRATEGY_DETAIL.ID
 				  			LEFT JOIN CNF_COUNT_UNIT 		ON CNF_STRATEGY_DETAIL.UNITTYPEID=CNF_COUNT_UNIT.ID
-				  	 		WHERE CHKWORKPLAN <> '' AND BUDGETID=".$project['id'];
-					$keyRow = $this->budget_product->get($sql);
+				  	 		";
 
-					echo $keyRow[0]['UNITNAME'];
-					$totalKeyA = GetSummaryKeyProject($keyRow[0]['id'],1);
-					$totalKeyB = GetSummaryKeyProject($keyRow[0]['id'],2);
-					$totalKeyC = GetSummaryKeyProject($keyRow[0]['id'],3);
-					$totalKeyD = GetSummaryKeyProject($keyRow[0]['id'],4);
-					$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+					$keyRow = $this->budget_product->get_row("CHKWORKPLAN <> '' AND BUDGETID ",$project['id'],$sql);
+					if(!empty($keyRow)){
+						echo $keyRow['unitname'];
+						$totalKeyA = GetSummaryKeyProject($keyRow['id'],1);
+						$totalKeyB = GetSummaryKeyProject($keyRow['id'],2);
+						$totalKeyC = GetSummaryKeyProject($keyRow['id'],3);
+						$totalKeyD = GetSummaryKeyProject($keyRow['id'],4);
+						$totalSummaryKey = $totalKeyA + $totalKeyB + $totalKeyC + $totalKeyD;
+					}
 				  ?>
                   &nbsp;
                   </td>
@@ -433,11 +431,10 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
                   &nbsp;</td>
                   <td>
                   <?
-					//$projectWorkgroup = SelectData("CNF_WORKGROUP","WHERE ID=".$project['WORKGROUP_ID']);
-					$projectWorkgroup = $this->workgroup->get_one($project['workgroup_id']);
-					$projectSection = $this->division->get_one($projectWorkgroup['divisionid']);
+					$projectWorkgroup = $this->workgroup->get_row($project['workgroup_id']);
+					$projectSection = $this->division->get_one("title","id",$projectWorkgroup['divisionid']);
 					echo "หน่วยงาน : ".$projectSection."<br/>";
-					echo "กลุ่มงาน : ".$projectWorkgroup;
+					echo "กลุ่มงาน : ".$projectWorkgroup['title'];
 				  ?>
                   &nbsp;
                   </td>
@@ -456,37 +453,37 @@ $productivityData = $this->cnf_strategy->get_one("trim(TRAILING '' from title) a
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pgroup,yy;
-	yy = $('#year option:selected').val();
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
+	var yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-		LoadMainActivity(yy,$('#year option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#year option:selected').val(),'','dvSubActivity');
+		LoadProductivity(yy,'dvProductivity');
+		LoadMainActivity(yy,'','dvMainActivity');
+		LoadSubActivity(yy,'','','dvSubActivity');
 	})
-	$('#productivity').live('change',function(){
-		pProductivity = $(this).val();
-		//alert(pProductivity);
-		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#productivity option:selected').val(),'','dvSubActivity');
+	$('#missiontype').change(function(){
+		LoadSubActivity(yy,'','','dvSubActivity');
 	});
+	$('#productivity').live('change',function(){
+		pProductivity = $('#productivity option:selected').val();
+		LoadMainActivity(yy,pProductivity,'dvMainActivity');
+		LoadSubActivity(yy,pProductivity,'','dvSubActivity');
+	});
+	$('#pzone').change(function(){
+		pZone = $('#pzone option:selected').val();
+		LoadProvinceZone(pZone);
+	});
+
 	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		}
+		pProvince = $('#province option:selected').val();
+		//LoadSection(pProvince);
+		LoadWorkgroup('',pZone,pProvince);
 	});
 	$('#division').live('change',function(){
 		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		}
+		//LoadWorkgroup(pSection);
+		LoadWorkgroup(pSection,pZone,pProvince);
 	});
-	$('#pgroup').change(function(){
-		pgroup = $('#pgroup option:selected').val();
-		//alert(pgroup);
-		if(pgroup.length>0){
-			LoadProvinceGroup(pGroup);
-		}
-	})
+
 });
 </script>

@@ -1,6 +1,6 @@
 <h3 id="topic">รายงานแผนการใช้จ่ายงบประมาณจำแนกตามรายจ่ายประจำปีงบประมาณ <?php echo $thyear;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="budget_report/index/3" method="get">
+<form name="frmAsset"  action="budget_report/index/3" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">
@@ -38,12 +38,7 @@
 </tr>
 <tr>
   <th>ภาค</th>
-  <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ทุกภาค') ?></td>
-</tr>
-<tr>
-  <th>กลุ่มจังหวัด</th>
-  <td>
-  	<?php echo form_dropdown('pgroup',get_option('id','title','cnf_province_zone',' zone_type_id =3','title'),$pgroup,'id="pgroup"','ทุกกลุ่มจังหวัด') ?></td>
+  <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ภาคทั้งหมด') ?></td>
 </tr>
 <tr>
   <th>จังหวัด</th>
@@ -56,7 +51,7 @@
     <select name="province" id="province">
     <option value="0">เลือกจังหวัด</option>
 	<?php foreach($result as $item){ ?>
-   	<option value="<?php echo $item['id'] ?>"><?php echo $item['title'] ?></option>
+   	<option value="<?php echo $item['id'] ?>" <?php if($item['id']==$province){echo 'selected="selected"';}?>><?php echo $item['title'] ?></option>
   	<?php } ?>
   	</select>
   </div></td>
@@ -113,7 +108,7 @@
 	LEFT JOIN USERS ON BUDGET_MASTER.CREATEBY = USERS.ID
 	LEFT JOIN CNF_DIVISION ON USERS.DIVISIONID = CNF_DIVISION.ID
 	LEFT JOIN CNF_WORKGROUP ON USERS.WORKGROUPID = CNF_WORKGROUP.ID
-	LEFT JOIN CNF_PROVINCE ON CNF_DIVISION.PROVINCEID = CNF_PROVINCE.ID
+	LEFT JOIN CNF_PROVINCE ON CNF_WORKGROUP.WPROVINCEID = CNF_PROVINCE.ID
 	LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON CNF_PROVINCE.ID = CNF_PROVINCE_DETAIL_ZONE.PROVINCEID
 	WHERE BUDGET_MASTER.BUDGETYEAR=".$year.$productivityCondition.$mainactCondition.$subactivityCondition.$acondition;
 
@@ -171,12 +166,12 @@
       </tr>
       <tr>
 		<td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    	<td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     	<td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    	<td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
       </tr>
       <tr>
-		  <td width="33%" align="left" style="padding-bottom:10px;">หน่วยงาน :<?php echo $division_name?></td>
 		  <td width="33%" align="left" style="padding-bottom:10px;">กลุ่มงาน :<?php echo $workgroup_name;?></td>
+	      <td align="left">&nbsp;</td>
 	      <td align="left">&nbsp;</td>
 	   </tr>
       <tr>
@@ -396,38 +391,28 @@ foreach($productivityResult as $productivityRow)
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pgroup,yy;
+	var pProductivity,pMainActivity,pProvince,pZone,pSection;
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
 		LoadProductivity(yy,'dvProductivity');
 		LoadMainActivity(yy,'','dvMainActivity');
 		LoadSubActivity(yy,'','','dvSubActivity');
-	})
-	$('#productivity').live('change',function(){
-		pProductivity = $(this).val();
-		//alert(pProductivity);
-		LoadMainActivity(yy,$('#productivity option:selected').val(),'dvMainActivity');
-		LoadSubActivity(yy,$('#productivity option:selected').val(),'','dvSubActivity');
+	});
+	$('#pzone').change(function(){
+		pZone = $('#pzone option:selected').val();
+		LoadProvinceZone(pZone);
 	});
 	$('#province').live('change',function(){
-		var pProvince = $('#province option:selected').val();
-		if(pProvince.length>0){
-			LoadSection(pProvince);
-		}
+		pProvince = $('#province option:selected').val();
+		//LoadSection(pProvince);
+		LoadWorkgroup('',pZone,pProvince);
 	});
 	$('#division').live('change',function(){
-		var pSection = $('#division option:selected').val();
-		if(pSection.length>0){
-			LoadWorkgroup(pSection);
-		}
+		pSection = $('#division option:selected').val();
+		//LoadWorkgroup(pSection);
+		LoadWorkgroup(pSection,pZone,pProvince);
 	});
-	$('#pgroup').change(function(){
-		pgroup = $('#pgroup option:selected').val();
-		//alert(pgroup);
-		if(pgroup.length>0){
-			LoadProvinceGroup(pGroup);
-		}
-	})
+
 });
 </script>

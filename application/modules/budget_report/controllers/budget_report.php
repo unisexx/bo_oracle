@@ -17,6 +17,7 @@ class budget_report extends Budget_Controller
 		$this->load->model('cnf_strategy_model','cnf_strategy');
 		$this->load->model('cnf_strategy_detail_model','cnf_strategy_detail');
 		$this->load->model('cnf_budget_type_model','cnf_budget_type');
+		$this->load->model('cnf_count_unit_model','cnf_count_unit');
 	}
 	public function index($index=FALSE,$export=FALSE)
 	{
@@ -24,7 +25,7 @@ class budget_report extends Budget_Controller
 		if(!is_login())redirect("home");
 		$data['url_parameter'] = GetCurrentUrlGetParameter();
 		$data['budgetyear'] = @$_GET['budgetyear'];
-		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y')-1;
+		$data['year'] = (!empty($_GET['year'])) ? $_GET['year'] : date('Y');
 		$data['thyear'] = $data['year'] + 543;
 		if($index=="6"){
 			$data['step'] = (!empty($_GET['step'])) ? $_GET['step']:'1';
@@ -35,7 +36,7 @@ class budget_report extends Budget_Controller
 		$data['productivity'] = (!empty($_GET['productivity'])) ? $_GET['productivity']:'';
 		$data['mainactivity'] = (!empty($_GET['mainactivity'])) ? $_GET['mainactivity']:'';
 		$data['subactivity']  = (!empty($_GET['subactivity']))  ? $_GET['subactivity'] :'';
-
+		$data['missionType'] = (!empty($_GET['missiontype'])) ? $_GET['missiontype']:'';
 		if(!empty($_GET['division'])){
 			$data['division'] = $_GET['division'];
 			$data['userSection'] = $_GET['division'];
@@ -104,9 +105,9 @@ class budget_report extends Budget_Controller
 	}
 	function test(){
 		$this->db->debug = true;
-		$result = $this->budget_type->select("count(*) as cnt,*")->where("PID=0")->get()->order_by('',"orderno");
-		//select("mainactid,productivityid,trim(TRAILING ' ' from title) as title")->get_row(232);
-		var_dump($subactivityData);
+      	echo $sql ="select title from CNF_COUNT_UNIT where id = 7";
+	   	$result = $this->db->GetOne($sql);
+		echo $this->cnf_count_unit->get_one("title","id",7);
 		/*$where = " PRODUCTIVITYID = 0 AND SECTIONSTRATEGYID > 0 AND SYEAR=2013";
 		$text = "เลือกผลผลิต";
 		$name= 'productivity';

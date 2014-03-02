@@ -123,7 +123,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 			$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 		}else{
 			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
-			redirect($urlpage.'/index/');
+			redirect($data['urlpage'].'/index/');
 		}
 			
 		$this->template->build('form',@$data);

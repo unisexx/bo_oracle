@@ -1,25 +1,26 @@
-<?
-	$subactivityData  = $this->cnf_strategy->get_row($subactivity);
-	$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
-	$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
+<?if($subactivity!=''){
+		$subactivityData  = $this->cnf_strategy->get_row($subactivity);
+		$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
+		$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
 ?>
-<table width="95%" align="center" >
-  <tr style="padding-bottom:10px;">
-    <td style="padding-bottom:10px;" colspan="3" align="center">
-      <h3 id="topic2">รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี<?php echo $thyear;?>&nbsp;</h3></td>
-  </tr>
-<tr>
+    <table width="95%" align="center" >
+      <tr style="padding-bottom:10px;">
+        <td style="padding-bottom:10px;" colspan="3" align="center">
+          <h3 id="topic2">รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี<?php echo $thyear;?>&nbsp;</h3></td>
+      </tr>
+	<tr>
   <td style="padding-bottom:10px;" align="left" width="33%">ผลผลิต : <?php echo $productivityData['title'];?></td>
   <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมหลัก : <?php echo $mainactivityData['title'];?></td>
   <td style="padding-bottom:10px;" align="left" width="33%">กิจกรรมย่อย : <?php echo $subactivityData['title'];?></td>
-</tr>
+	</tr>
   <tr>
-<td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-<td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
-<td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
+    <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td></td>
   </tr>
   <tr>
     <td colspan="2" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?></td>
+    <td></td>
     <td align="right">หน่วย : บาท</td>
   </tr>
 </table>
@@ -39,7 +40,7 @@
 	$sql = "SELECT CNF_BUDGET_TYPE.* FROM CNF_BUDGET_TYPE
 			LEFT JOIN BUDGET_EXPENSE_TYPE ON CNF_BUDGET_TYPE.ID = BUDGET_EXPENSE_TYPE.EXPENSETYPEID
 			WHERE CNF_BUDGET_TYPE.ID IN (".$condition.") ORDER BY ORDERNO ";
-	//$result = db_query($sql);
+	//echo $sql;
 	$result = $this->cnf_budget_type->get($sql);
 	foreach($result as $BudgetType_1)
 	{
@@ -82,7 +83,7 @@
       ปี
 <?php echo ($thyear);?>  <br />
 (เสนอตั้ง)</td>
-  <?
+  <?$totalColumn=0;
   for($i=0;$i<count($ColID);$i++)
   {
       if($ColParent[$i]==0)
@@ -248,10 +249,10 @@
 			$pcondition = " WHERE 1 = 1 ";
 			$pcondition .= $pzone != '' ?  " AND ZONEID='".$pzone."' " : "";
 			//$pcondition .= $pgroup != '' ?  " AND PGROUP=".$pgroup." " : "";
-			$sql = "SELECT * FROM CNF_PROVINCE
+			$sql = "SELECT CNF_PROVINCE.* FROM CNF_PROVINCE
 			LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON PROVINCEID = CNF_PROVINCE.ID ".$pcondition."  ORDER BY ZONEID ";
 			$saresult = $this->province->get($sql);
-			foreach($saresult as$provinceRow)
+			foreach($saresult as $provinceRow)
 			{
 		?>
              <tr>
@@ -275,4 +276,6 @@
           <? }//ENDSubActivity ?>
      <? }//EndMainActivity ?>
   <? } ?>
+
 </table>
+<? } ?>

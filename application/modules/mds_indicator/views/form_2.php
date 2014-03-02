@@ -63,7 +63,7 @@ $(function(){
 		$("#div_document_ref_"+i).remove();
 	});
 	
-	$('.dt_delete_document').live('click', function(){
+	$('#dt_delete_document').live('click', function(){
 		var id = $(this).attr('ref_id');
 		var result_id = $(this).attr('ref_result_id');
 		var metrics_id = $('#mds_set_metrics_id').val();
@@ -71,7 +71,7 @@ $(function(){
 		var round_month = $('#round_month').val();
 		var type_doc =  $(this).attr('type_doc');
 		if(confirm('ท่านต้องการลบเอกสารแนบ ใช่ หรือ ไม่')) {
-			document.location = 'mds_indicator/delete_doc/?id='+id+'&result_id='+result_id+'&metrics_id='+metrics_id+'&keyer_users_id='+keyer_users_id+'&round_month='+round_month+'&type_doc='+type_doc;
+			document.location = '<?php echo base_url(); ?>mds_indicator/delete_doc/?id='+id+'&result_id='+result_id+'&metrics_id='+metrics_id+'&keyer_users_id='+keyer_users_id+'&round_month='+round_month+'&type_doc='+type_doc;
 		}
 	});
 	

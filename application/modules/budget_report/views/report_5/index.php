@@ -1,6 +1,6 @@
 <h3 id="topic">รายงานแผนการจัดสรรงบประมาณไปจังหวัดประจำปี <?php echo $thyear;?></h3>
 <div id="search">
-<form name="frmAsset" enctype="multipart/form-data" action="budget_report/index/5" method="get">
+<form name="frmAsset"  action="budget_report/index/5" method="get">
 <fieldset>
     <legend> ค้นหา </legend>
 <table id="tbsearch">
@@ -41,11 +41,6 @@
   <td><?php echo form_dropdown('pzone',get_option('id','title ','cnf_province_zone','zone_type_id=2','id'),$pzone,'id="pzone"','ทุกภาค') ?></td>
 </tr>
 <tr>
-  <th>กลุ่มจังหวัด</th>
-  <td>
-  	<?php echo form_dropdown('pgroup',get_option('id','title','cnf_province_zone',' zone_type_id =3','title'),$pgroup,'id="pgroup"','ทุกกลุ่มจังหวัด') ?></td>
-</tr>
-<tr>
   <th></th>
   <td><input type="submit" id="btnSubmit" name="btnSubmit" value="ค้นหา" class="btn_search" /></td>
 </tr>
@@ -54,9 +49,7 @@
 </form>
 </div>
 <div id="main">
-<?
-//$this->db->debug = true;
-if($subactivity!=''){
+<?if($subactivity!=''){
 		$subactivityData  = $this->cnf_strategy->get_row($subactivity);
 		$mainactivityData = $this->cnf_strategy->get_row($subactivityData['mainactid']);
 		$productivityData = $this->cnf_strategy->get_row($subactivityData['productivityid']);
@@ -83,14 +76,15 @@ if($subactivity!=''){
 	</tr>
   <tr>
     <td align="left" style="padding-bottom:10px;">ภาค :<? echo $provinceZone;?></td>
-    <td align="left" style="padding-bottom:10px;">กลุ่มจังหวัด :<?php echo $provinceGroup ?></td>
     <td align="left">จังหวัด : <span style="padding-bottom:10px;"><?php echo $provinceName; ?></span></td>
+    <td></td>
   </tr>
   <tr>
-        <td colspan="2" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?></td>
-        <td align="right">หน่วย : บาท</td>
-      </tr>
-    </table>
+    <td colspan="2" align="left" style="padding-bottom:10px;"><? $stepName = GetStepName(); echo $stepName[$_GET['step']];?></td>
+    <td></td>
+    <td align="right">หน่วย : บาท</td>
+  </tr>
+</table>
 <?
 	$i = 0;
 	$ColID = array(-1);
@@ -107,7 +101,7 @@ if($subactivity!=''){
 	$sql = "SELECT CNF_BUDGET_TYPE.* FROM CNF_BUDGET_TYPE
 			LEFT JOIN BUDGET_EXPENSE_TYPE ON CNF_BUDGET_TYPE.ID = BUDGET_EXPENSE_TYPE.EXPENSETYPEID
 			WHERE CNF_BUDGET_TYPE.ID IN (".$condition.") ORDER BY ORDERNO ";
-	//$result = db_query($sql);
+	//echo $sql;
 	$result = $this->cnf_budget_type->get($sql);
 	foreach($result as $BudgetType_1)
 	{
@@ -150,7 +144,7 @@ if($subactivity!=''){
       ปี
 <?php echo ($thyear);?>  <br />
 (เสนอตั้ง)</td>
-  <?
+  <?$totalColumn=0;
   for($i=0;$i<count($ColID);$i++)
   {
       if($ColParent[$i]==0)
@@ -271,7 +265,7 @@ if($subactivity!=''){
                   $bType = GetBudgetType($ColID[$i]);
 
           ?>
-        <td align="center"><? $total = CalculateByProductivity($productivity['id'],$ColID[$i],$year,$pzone,$pgroup,$province,$userSection,$userWorkgroup); if($total > 0 ) echo number_format($total,2);?></td>
+        <td align="center"><? $total = CalculateByProductivity($productivity['id'],$ColID[$i],$year,$pzone,$pgroup,$province,$userSection,$userWorkgroup); //if($total > 0 ) echo number_format($total,2);?></td>
               <? }
               }
               ?>
@@ -316,10 +310,10 @@ if($subactivity!=''){
 			$pcondition = " WHERE 1 = 1 ";
 			$pcondition .= $pzone != '' ?  " AND ZONEID='".$pzone."' " : "";
 			//$pcondition .= $pgroup != '' ?  " AND PGROUP=".$pgroup." " : "";
-			$sql = "SELECT * FROM CNF_PROVINCE
+			$sql = "SELECT CNF_PROVINCE.* FROM CNF_PROVINCE
 			LEFT JOIN CNF_PROVINCE_DETAIL_ZONE ON PROVINCEID = CNF_PROVINCE.ID ".$pcondition."  ORDER BY ZONEID ";
 			$saresult = $this->province->get($sql);
-			foreach($saresult as$provinceRow)
+			foreach($saresult as $provinceRow)
 			{
 		?>
              <tr>
@@ -334,8 +328,10 @@ if($subactivity!=''){
                           $ncolumn =0;
                           $bType = GetBudgetType($ColID[$i]);
 
+
                   ?>
                 <td align="center"><? $total = CalculateByProvince($productivity['id'],$activity['id'],$ColID[$i],$year,$pzone,$pgroup,$provinceRow['id'],$userSection,$userWorkgroup); if($total > 0 ) echo number_format($total,2);?></td>
+
                   <? }
                   }
                   ?>
@@ -352,19 +348,15 @@ if($subactivity!=''){
 <script type="text/javascript">
 <?php include('js/function.js'); ?>
 $(document).ready(function(){
-	var pgroup,yy;
+	var pZone,yy;
 	yy = $('#year option:selected').val();
 	$('#year').change(function(){
 		yy = $('#year option:selected').val();
-
 		LoadSubActivity(yy,'','','dvSubActivity');
-	})
-	$('#pgroup').change(function(){
-		pgroup = $('#pgroup option:selected').val();
-		//alert(pgroup);
-		if(pgroup.length>0){
-			LoadProvinceGroup(pGroup);
-		}
-	})
+	});
+	$('#pzone').change(function(){
+		pZone = $('#pzone option:selected').val();
+		LoadProvinceZone(pZone);
+	});
 });
 </script>
