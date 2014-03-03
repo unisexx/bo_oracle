@@ -65,7 +65,7 @@ $(document).ready(function(){
 
 		$("form").validate({
 			rules: {
-				'mds_set_permit_type_id[]':{required:true},
+				mds_set_permit_type_id:{required:true},
 				name:{ required:true,
 					   remote:{
 							 url:'<? echo $urlpage; ?>/check_users',
@@ -78,13 +78,13 @@ $(document).ready(function(){
 	        						   		   return $(".permit_type:checked").val() == '2';}},
 			},
 			messages:{
-				'mds_set_permit_type_id[]':{required:"กรุณาระบุประเภทสิทธิ์"},
+				mds_set_permit_type_id:{required:"กรุณาระบุประเภทสิทธิ์"},
 				name:{required:"กรุณาระบุชื่อผู้ใช้",remote:"มีผู้ใช้งานนนี้ในระบบแล้ว"},
 				mds_set_position_id:{required:"กรุณาระบุ"}
 			},
 			errorPlacement: function(error, element) 
 	   		{
-				if (element.attr("name") == "mds_set_permit_type_id[]" )
+				if (element.attr("name") == "mds_set_permit_type_id" )
 					$('#error_permit').html(error);
 				else if (element.attr("name") == "name" )
 					$('#error_name').html(error);
@@ -138,9 +138,9 @@ $(document).ready(function(){
 	 }
 	?>
 	
-  	<span style="width: 150px"><input type="checkbox" name="mds_set_permit_type_id[]" class="permit_type" value="1" <?=@$permit_1?> /> กพร.</span>
-  	<span><input type="checkbox" name="mds_set_permit_type_id[]" class="permit_type" value="2" <?=@$permit_2?> /> ผู้กำกับดูแลตัวชี้วัด</span>
-  	<span><input type="checkbox" name="mds_set_permit_type_id[]" class="permit_type" value="3" <?=@$permit_3?> /> ผู้จัดเก็บข้อมูล</span>
+  	<span style="width: 150px"><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="1" <?=@$permit_1?> /> กพร.</span>
+  	<span><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="2" <?=@$permit_2?> /> ผู้กำกับดูแลตัวชี้วัด</span>
+  	<span><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="3" <?=@$permit_3?> /> ผู้จัดเก็บข้อมูล</span>
   	<div id="error_permit"></div>
   </td>
 </tr>

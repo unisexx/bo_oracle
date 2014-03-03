@@ -112,13 +112,13 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		   $this->permission_dtl->save($permit_dtl);
 		   
 		   $this->permission_type->where("mds_set_permission_id = '".$id."'")->delete();
-		   for ($i=0; $i <= count(@$_POST['mds_set_permit_type_id']); $i++) { 
-			   if(@$_POST['mds_set_permit_type_id'][$i] != ''){
+		   //for ($i=0; $i <= count(@$_POST['mds_set_permit_type_id']); $i++) { 
+			   if(@$_POST['mds_set_permit_type_id'] != ''){
 			   		$permit['MDS_SET_PERMISSION_ID'] = $id;
-			   		$permit['MDS_SET_PERMIT_TYPE_ID'] = $_POST['mds_set_permit_type_id'][$i];
+			   		$permit['MDS_SET_PERMIT_TYPE_ID'] = $_POST['mds_set_permit_type_id'];
 			   		$this->permission_type->save($permit);
 			   }
-		   }
+		  // }
 		   
 		   set_notify('success', lang('save_data_complete'));		   
 		   if($_POST['id']>0){
