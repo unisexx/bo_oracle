@@ -154,6 +154,6 @@ $(function(){
 </div>
 </div>
 <? }else{
-	echo "<div align='center'>กรุณณาเลือกปีงบประมาณ</div>";
+	echo "<div align='center'>กรุณาเลือกปีงบประมาณ</div>";
 	} ?>
  

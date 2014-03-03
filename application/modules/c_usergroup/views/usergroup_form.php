@@ -59,6 +59,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
       <li><a href="#tabs-4">ระบบติดตามและประเมินผล</a></li>
       <li><a href="#tabs-5">ระบบงานตรวจราชการ</a></li>
       <li><a href="#tabs-6">ระบบบริหารกองทุน</a></li>
+      <li><a href="#tabs-7">งานพัฒนาระบบบริหาร</a></li>
     </ul>
     <div id="tabs-1">
       <table class="tbadd">
@@ -1057,8 +1058,17 @@ function CheckAll(pSystemID, pMenuID,pValue)
         
       </table>
     </div>
-    
-    
+    <div id="tabs-7">
+      <table class="tbadd">
+      <? $menu_id=1; $system_id=7;?>     
+        <tr>
+          <th><?=$menu_id;?> เมนูงานพัฒนา ระบบบริหาร </th>
+          <td><input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
+            View
+          </td>
+        </tr>
+     </table>
+    </div>
   </div></th>
   </tr>
 </table>

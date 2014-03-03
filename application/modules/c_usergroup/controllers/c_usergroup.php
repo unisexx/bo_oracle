@@ -70,6 +70,9 @@ class c_usergroup extends Admin_Controller
 		$system_menu[6]['menu_title'] = array('','fund_contract','fund_attorney','fund_organize','fund_log');
 		$system_menu[6]['nmenu'] = count($system_menu[6]['menu_title'])-1;
 		
+		$system_menu[7]['menu_title'] = array('','mds');
+		$system_menu[7]['nmenu'] = count($system_menu[7]['menu_title'])-1;
+		
 		if($_POST){
 		   $_POST['is_inspector'] = @$_POST['is_inspector']!='' ? 'on' : 'off';
 		   $_POST['insp_access_all']  = @$_POST['insp_access_all']!='' ? 'on' : 'off';
@@ -80,8 +83,8 @@ class c_usergroup extends Admin_Controller
 		   $_POST['fund_access_all']  = @$_POST['fund_access_all']!='' ? 'on' : 'off';
 		   $id = $this->usertype_title->save($_POST);
 			$this->usertype->delete('USERTYPETITLEID', $id);		
-			$system = array('','bo','budget','finance','monitor','inspect','fund');
-			for($systemID=1;$systemID<=6;$systemID++)
+			$system = array('','bo','budget','finance','monitor','inspect','fund','mds');
+			for($systemID=1;$systemID<=7;$systemID++)
 			{
 			  	for($m=1;$m<=$system_menu[$systemID]['nmenu'];$m++)
 				{
