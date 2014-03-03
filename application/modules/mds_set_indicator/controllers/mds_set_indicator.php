@@ -756,10 +756,10 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
-		$chk_metrics = $this->metrics->get("select * from mds_set_metrics where parent_id = '".$id."' ");
+		$chk_metrics = $this->metrics->get("select * from mds_set_metrics where parent_id = '".$ID."' ");
 		$num_chk = count($chk_metrics);
 		if($num_chk == 0){
-			$chk_metrics_result = $this->metrics_result->get("select * from mds_set_metrics_result where mds_set_metrics_id = '".$id."' ");
+			$chk_metrics_result = $this->metrics_result->get("select * from mds_set_metrics_result where mds_set_metrics_id = '".$ID."' ");
 			$num_chk_result = count($chk_metrics_result);
 			if($num_chk_result == 0){
 				new_save_logfile("DELETE",$this->modules_title_2,$this->metrics->table,"ID",$ID,"ass_name",$this->modules_name);					

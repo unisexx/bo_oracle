@@ -51,7 +51,7 @@ $(function(){
 			if($chk_control_indicator == 'Y' || $chk_kpr_indicator == 'Y'){
 					
 	?>
-	<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=$urlpage?>/form_2/<?=@$result_id?>/<?=@$rs_metrics['id']?>'" class="btn_confirm_indicator vtip"></div>
+	<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=base_url().$urlpage?>/form_2/<?=@$result_id?>/<?=@$rs_metrics['id']?>'" class="btn_confirm_indicator vtip"></div>
 	<? }  ?>
 <?=@$pagination;?> 
 <table class="tblist2">

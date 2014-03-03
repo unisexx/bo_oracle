@@ -1,4 +1,4 @@
-<h3>ตั้งค่า ตำแหน่งสายบริหาร</h3>
+<h3>ตั้งค่า สิทธิ์การใช้ระบบ SAR CARD </h3>
 <form method="GET">
 <div id="search">
 <div id="searchBox">ชื่อ-สกุล / Username

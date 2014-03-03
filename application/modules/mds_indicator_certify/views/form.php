@@ -128,7 +128,7 @@ foreach ($rs as $key => $item_result) { ?>
 			if($chk_control_indicator == 'Y' || $chk_kpr_indicator == 'Y' || is_permit(login_data('id'),'1') != ''){
 					
 	?>
-	<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=$urlpage?>/form_list/<?=@$item_result['id']?>'" class="btn_confirm_indicator vtip"></div>
+	<div id="btnBox"><input type="button" title="ตรวจรับรองผลตัวชี้วัด" value=" " onclick="document.location='<?=base_url().$urlpage?>/form_list/<?=@$item_result['id']?>'" class="btn_confirm_indicator vtip"></div>
 	<?  } ?>
   </td>
 </tr>
