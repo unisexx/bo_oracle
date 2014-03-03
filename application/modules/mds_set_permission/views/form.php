@@ -1,7 +1,5 @@
-<script type="text/javascript">
-
+<script type="text/javascript">	
 $(document).ready(function(){
-	
 			
 		//=====Colorbox=====//
 			var url = '<? echo $urlpage; ?>/cbox_users';
@@ -75,11 +73,14 @@ $(document).ready(function(){
 							    	 id:function(){ return $('[name=id]').val(); }
 							    	}
 						}
-					 }
+					},
+				mds_set_position_id:{ required: function(element) {
+	        						   		   return $(".permit_type:checked").val() == '2';}},
 			},
 			messages:{
 				'mds_set_permit_type_id[]':{required:"กรุณาระบุประเภทสิทธิ์"},
-				name:{required:"กรุณาระบุชื่อผู้ใช้",remote:"มีผู้ใช้งานนนี้ในระบบแล้ว"}
+				name:{required:"กรุณาระบุชื่อผู้ใช้",remote:"มีผู้ใช้งานนนี้ในระบบแล้ว"},
+				mds_set_position_id:{required:"กรุณาระบุ"}
 			},
 			errorPlacement: function(error, element) 
 	   		{
@@ -90,7 +91,26 @@ $(document).ready(function(){
 				else
 				   error.insertAfter(element);
 			}
-		});
+		});	
+		
+			function show_position(){
+				var permit = $(".permit_type:checked").val();
+				if(permit == 2){
+					$('.tr_position').show()
+				}else{
+					$('.tr_position').hide()
+				}
+			}
+			
+			$('.permit_type').live('change',function(){
+				if ($(this).is(':checked')){
+					$(".permit_type").removeAttr('checked');
+					$(this).attr('checked','checked');			
+					show_position()
+				}
+			});
+			show_position();
+
 });
 </script>
 <h3>ตั้งค่า สิทธิ์การใช้ระบบ SAR CARD (บันทึก / แก้ไข)</h3>
@@ -118,9 +138,9 @@ $(document).ready(function(){
 	 }
 	?>
 	
-  	<span style="width: 150px"><input type="checkbox" name="mds_set_permit_type_id[]" value="1" <?=@$permit_1?> /> กพร.</span>
-  	<span><input type="checkbox" name="mds_set_permit_type_id[]" value="2" <?=@$permit_2?> /> ผู้กำกับดูแลตัวชี้วัด</span>
-  	<span><input type="checkbox" name="mds_set_permit_type_id[]" value="3" <?=@$permit_3?> /> ผู้จัดเก็บข้อมูล</span>
+  	<span style="width: 150px"><input type="checkbox" name="mds_set_permit_type_id[]" class="permit_type" value="1" <?=@$permit_1?> /> กพร.</span>
+  	<span><input type="checkbox" name="mds_set_permit_type_id[]" class="permit_type" value="2" <?=@$permit_2?> /> ผู้กำกับดูแลตัวชี้วัด</span>
+  	<span><input type="checkbox" name="mds_set_permit_type_id[]" class="permit_type" value="3" <?=@$permit_3?> /> ผู้จัดเก็บข้อมูล</span>
   	<div id="error_permit"></div>
   </td>
 </tr>
@@ -153,7 +173,7 @@ $(document).ready(function(){
   <th>เบอร์โทร</th>
   <td><input name="tel" type="text" class="form-control" id="tel" style="width:200px;" value="<?=@$rs['tel']?>"  /></td>
 </tr>
-<tr>
+<tr class="tr_position">
   <th>ตำแหน่งสายบริหาร</th>
   <td><?php echo form_dropdown("mds_set_position_id",get_option("id","pos_name","mds_set_position order by id asc"),@$rs['mds_set_position_id'],'','-- เลือกตำแหน่งสายบริหาร --') ?></td>
 </tr>
