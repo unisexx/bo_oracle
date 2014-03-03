@@ -34,7 +34,7 @@
 					 <li style="width:450px;"><a href="#" style="color:#000;">&gt; ชุดตารางแสดงรายละเอียดจำแนกรายไตรมาส</a></li>
 					 <li style="width:450px;"><a href="budget_report/index/3" class="a_report_link">แผนการใช้จ่ายงบประมาณจำแนกตามรายจ่ายประจำปีงบประมาณ</a></li>
                      <li style="width:450px;"><a href="budget_report/index/8" class="a_report_link">แผนการปฏิบัติงานและแผนการใช้จ่ายงบประมาณรายจ่ายประจำปีงบประมาณ</a></li>
-                	 <?php if(permission('logfile', 'canview')): ?><li style="width:450px;"><a href="budget_log" target="_blank">Log File</a></li><?php endif;?>
+                	 <?php if(permission('logfile', 'canview')): ?><li style="width:450px;"><a href="log" target="_blank">Log File</a></li><?php endif;?>
             </ul>
         </li>
         <?php endif;?>
