@@ -253,6 +253,24 @@ $(function(){
 		});
 	}
 	validate_form();
+	
+	$('.chk_keyer').live('change',function(){
+		var month = $(this).attr('month');
+		$('.chk_keyer').attr('disabled', 'disabled');
+		var num = $('#keyer_num_'+month).val();
+		var i = 0;
+		var keyer_id = $(this).val();
+		var ref_id = $(this).attr('ref_id');
+		for(i;i<=num;i++){
+			var chk_keyer = $("[name='keyer_"+month+"["+i+"]']").val();
+			if(keyer_id == chk_keyer && i != ref_id){
+				alert("ผู้จัดเก็บข้อมูล นี้แล้ว");
+				$(this).val('');
+			}
+		}
+		$('.chk_keyer').removeAttr('disabled');
+	});
+	
 });
 </script>
 <h3>ตั้งค่า  มิติและตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
@@ -480,7 +498,7 @@ for ($i=1; $i <= 3; $i++) {
 	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
 	    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
 	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" <? if($keyer['keyer_score'] == '1'){echo 'checked="checked"';} ?> /> ผู้บันทึกคะแนน 
 	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
@@ -495,7 +513,7 @@ for ($i=1; $i <= 3; $i++) {
 			    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
 			    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
 			    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-			    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+			    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 			    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 			 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
 			 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
@@ -507,7 +525,7 @@ for ($i=1; $i <= 3; $i++) {
 	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
 	    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
 	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
 	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />

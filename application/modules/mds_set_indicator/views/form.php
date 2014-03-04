@@ -9,7 +9,9 @@ $(document).ready(function(){
 							    					budget_year:function(){ return $('[name=budget_year]').val(); },
 							    					id:function(){ return $('[name=id]').val(); } 
 							    				  }
-							    			}
+							    			},
+							    			min: 1,
+							    			max: <?=@$max_indicator_on?>
 				    			},
 				indicator_name:{required:true, 
 							    		remote:{
@@ -22,10 +24,12 @@ $(document).ready(function(){
 				    				  }
 			},
 			messages:{
-				indicator_on:{required:"กรุณาระบุมิติที่", remote:"มีลำดับมิตินี้แล้ว"},
+				indicator_on:{required:"กรุณาระบุมิติที่", remote:"มีลำดับมิตินี้แล้ว",min:"ลำดับน้อยสุดคือ 1",max:"ลำดับมากสุดคือ <?=@$max_indicator_on?>"},
 				indicator_name:{required:"กรุณาระบุชื่อมิติ", remote:"มีชื่อมิตินี้แล้ว"}
 			}
 		});
+		
+		
 });
 </script>
 <h3>ตั้งค่า  มิติและตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
@@ -39,7 +43,7 @@ $(document).ready(function(){
   </tr>
   <tr>
     <th>มิติที่<span class="Txt_red_12"> *</span></th>
-    <td><input type="text" name="indicator_on" id="indicator_on"style="width:50px;" maxlength="5" value="<?=@$rs['indicator_on']?>" class="numOnly" /></td>
+    <td><input type="text" name="indicator_on" id="indicator_on"style="width:50px;" maxlength="5" value="<?=@$rs['indicator_on']?>" <?php echo empty($rs['id'])?'':'readonly="readonly"' ?> class="numOnly" /></td>
   </tr>
   <tr>
     <th>ชื่อมิติ<span class="Txt_red_12"> *</span></th>

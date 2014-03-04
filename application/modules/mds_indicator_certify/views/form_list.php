@@ -42,7 +42,7 @@ $(function(){
   </tr>
   <tr>
     <th>ชื่อตัวชี้วัด</th>
-    <td><input name="textfield2" type="text" id="textfield2" style="width:600px;" value="<?=@$parent_on?> : <?=@$rs_metrics['metrics_name']?>" readonly="readonly"/></td>
+    <td><a href="<?=@$urlpage?>/form/<?=@$rs_metrics['id']?>"><input name="textfield2" type="text" id="textfield2" style="width:600px;" value="<?=@$parent_on?> : <?=@$rs_metrics['metrics_name']?>" readonly="readonly"/></a></td>
   </tr>
 </table>
 	<?

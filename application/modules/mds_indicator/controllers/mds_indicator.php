@@ -65,7 +65,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		if($id != ''){
 			if($premit == ''){
-				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+				$sql_result = "select distinct result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
 								from mds_metrics_result result 
 								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id 
 										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id
@@ -74,7 +74,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
 			}else{
-				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+				$sql_result = "select distinct result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
 								from mds_metrics_result result 
 								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id
 										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id

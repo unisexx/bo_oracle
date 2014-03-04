@@ -62,7 +62,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		$premit = is_permit(login_data('id'),'1');
 		if($id != ''){
 			if($premit == ''){
-				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+				$sql_result = "select distinct result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
 								from mds_metrics_result result
 								join mds_set_metrics_kpr on result.mds_set_metrics_id = mds_set_metrics_kpr.mds_set_metrics_id and result.round_month = mds_set_metrics_kpr.round_month
 								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id 
@@ -74,7 +74,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				$data['rs'] = $this->metrics_result->get($sql_result);
 				$data['pagination'] = $this->metrics_result->pagination();
 			}else{
-				$sql_result = "select result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+				$sql_result = "select distinct result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
 								from mds_metrics_result result 
 								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id 
 										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id

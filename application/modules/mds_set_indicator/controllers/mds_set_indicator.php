@@ -30,7 +30,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(@$_GET['sch_indicatorn'] != ''){
 			$condition .=" and id = '".@$_GET['sch_indicatorn']."' ";
 		}
-		$data['rs'] = $this->indicator->where($condition)->get('',true);
+		$data['rs'] = $this->indicator->where($condition)->order_by('indicator_on','asc')->get('',true);
 		
 		$this->template->build('index',@$data);
 
@@ -42,8 +42,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if($id != ''){
 			$data['rs'] = $this->indicator->get_row($id);
 			new_save_logfile("VIEW",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
+			
 		}else{
 			$data['rs']['budget_year'] = $budget_year;
+			$sql_max_indicator_on = "select max(mds_set_indicator.indicator_on) as max_indicator_on 
+									from mds_set_indicator
+								   where mds_set_indicator.budget_year = '".@$budget_year."'  "; 
+			$result_max = $this->indicator->get($sql_max_indicator_on);
+			$data['max_indicator_on'] = @$result_max['0']['max_indicator_on']+1;
 		}
 		$this->template->build('form',@$data);
 

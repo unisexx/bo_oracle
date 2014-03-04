@@ -63,7 +63,7 @@ $(function(){
 		$("#div_document_ref_"+i).remove();
 	});
 	
-	$('#dt_delete_document').live('click', function(){
+	$('.dt_delete_document').live('click', function(){
 		var id = $(this).attr('ref_id');
 		var result_id = $(this).attr('ref_result_id');
 		var metrics_id = $('#mds_set_metrics_id').val();
@@ -272,7 +272,7 @@ $(function(){
 									if(login_data('id') == @$rs['keyer_users_id']){
 										if(@$rs['is_save'] != '2'){ 
 								?>
-								<input type="button" value="ลบ" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" id="dt_delete_document" />
+								<input type="button" value="ลบ" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" class="dt_delete_document" />
 								<? 
 										} 
 									}
