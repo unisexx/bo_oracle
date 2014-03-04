@@ -3,15 +3,16 @@ $(document).ready(function(){
 		$("form").validate({
 			rules: {
 				indicator_on:{required:true, 
+										min: 1,
+							    		max: <?=@$max_indicator_on?>,
 							    		remote:{
 							    			url:'<? echo $urlpage; ?>/check_indicator_on',
 							    			data: { indicator_on:function(){ return $('[name=indicator_on]').val(); }, 
 							    					budget_year:function(){ return $('[name=budget_year]').val(); },
 							    					id:function(){ return $('[name=id]').val(); } 
 							    				  }
-							    			},
-							    			min: 1,
-							    			max: <?=@$max_indicator_on?>
+							    			}
+							    			
 				    			},
 				indicator_name:{required:true, 
 							    		remote:{

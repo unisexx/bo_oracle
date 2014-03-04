@@ -1,4 +1,4 @@
-<h3>Sar Card หน่วยงาน</h3>
+<h3>การเปรียบเทียบปีการประเมินผลจากตัวชี้วัด</h3>
 <!--<div class="allstrategy"><img src="../images/tree/department.png" /> กรม | <img src="../images/tree/down.png" />  เป้าหมายการให้บริการกระทรวง | <img src="../images/tree/cube.png"/> ยุทธศาสตร์กระทรวง  | <img src="../images/tree/pro.png" /> เป้าหมายการให้บริการหน่วยงาน | <img src="../images/tree/chart_bar.png" /> กลยุทธ์หน่วยงาน   | <img src="../images/tree/asterisk.png" /> ผลผลิต  |  <img src="../images/tree/layout_sidebar.png" /> กิจกรรมหลัก(กรม)  | <img src="../images/tree/file.gif" /> กิจกรรมย่อย | <img src="../images/tree/project_ico.png" /> โครงการ | <img src="../images/tree/subproject_ico.png" /> โครงการย่อย </div>-->
 <style>
 
@@ -394,7 +394,7 @@ $(function(){
 		$result_set_score = $this->score->get($sql_set_score);
 		foreach ($result_set_score as $key => $score) {
 			
-			echo " ".'<img src="themes/mdevsys/images/circle_'.$score['id'].'.png" width="16" height="16">'." = ".$score['val_start'].'-'.$score['val_end'];
+			echo " ".'<img src="themes/mdevsys/images/circle_'.$score['score_id'].'.png" width="16" height="16">'." = ".$score['val_start'].'-'.$score['val_end'];
 		}
 		if(count($result_set_score) > 0){
 	?>
