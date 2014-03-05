@@ -4,6 +4,7 @@ Class welfare_service extends  Act_Controller{
 		parent::__construct();
 		$this->load->model("customer_main_model","cmain");
 		$this->load->model("customer_sub_model","csub");
+		$this->load->model("customer_sub2_model","csub2");
 		$this->load->model("target_group_model","target_group");
 	}
 	
@@ -16,17 +17,15 @@ Class welfare_service extends  Act_Controller{
 	function form($id=false){
 		$data['cmain'] = $this->cmain->get_row($id);
 		$data['target_groups'] = $this->target_group->order_by('seq','asc')->get();
+		if($id){$data['csubs'] = $this->csub2->where('id_card = '.$data['cmain']['id_card'])->order_by('sub2_date','desc')->get(FALSE,TRUE);}
 		$this->template->build('welfare_service/form',$data);
 	}
 	
 	function save(){
 		if($_POST){
 			// customer_main save
-			if(isset($_FILES["UploadFile"]))
-			{
-			   fix_file($_FILES["UploadFile"]);		    
-			   $_POST['file_data'] = isset($_FILES["UploadFile"])!='' ? $this->cmain->upload($_FILES["UploadFile"],"uploads/welfare_service") : $_POST['file_data'];
-			}
+			fix_file($_FILES["UploadFile"]);		    
+			$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->cmain->upload($_FILES["UploadFile"],"uploads/act_welfare_service") : $_POST['hdfilename'];
 			
 			$id = $this->cmain->save($_POST);
 			
@@ -35,7 +34,7 @@ Class welfare_service extends  Act_Controller{
 			// remove empty value and reindex of array
 			$_POST['other'] = array_values(array_filter($_POST['other']));
 			
-			$this->db->debug = true;
+			// $this->db->debug = true;
 			if(isset($_POST['answer_id'])){
 				foreach($_POST['answer_id'] as $key=>$item){
 					if($_POST['answer_id'][$key]){
@@ -57,6 +56,27 @@ Class welfare_service extends  Act_Controller{
 	function delete($id){
 		if($id){
 			$this->cmain->where('id_card = '.$id)->delete();
+			set_notify('success', lang('delete_data_complete'));
+		}
+		redirect($_SERVER["HTTP_REFERER"]);
+	}
+	
+	function ajax_customer_sub2_form(){
+		$data['csub2'] = $this->csub2->get_row(@$_GET['id']);
+		$this->load->view('welfare_service/ajax_customer_sub2_form',$data);
+	}
+	
+	function customer_sub2_save($id=false){
+		if($_POST){
+			$this->csub2->save($_POST);
+			set_notify('success', lang('save_data_complete'));
+		}
+		redirect($_SERVER["HTTP_REFERER"]);
+	}
+	
+	function customer_sub2_delete($id){
+		if($id){
+			$this->csub2->delete($id);
 			set_notify('success', lang('delete_data_complete'));
 		}
 		redirect($_SERVER["HTTP_REFERER"]);

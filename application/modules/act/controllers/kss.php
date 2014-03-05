@@ -46,11 +46,10 @@ Class kss extends  Act_Controller{
 			$_POST['cb_tools'] .=  @$_POST['cb_tools_2']!='' ? $_POST['cb_tools_2']."|" : "";
 			$_POST['cb_tools'] .=  @$_POST['cb_tools_3']!='' ? $_POST['cb_tools_3']."|" : "";
 			$_POST['cb_tools'] .=  @$_POST['cb_tools_4']!='' ? $_POST['cb_tools_4']."|" : "";
-			if(isset($_FILES["UploadFile"]))
-			{
-			   fix_file($_FILES["UploadFile"]);		    
-			   $_POST['file_data'] = isset($_FILES["UploadFile"])!='' ? $this->kss->upload($_FILES["UploadFile"],"uploads/kss") : $_POST['file_data'];
-			}
+			
+			fix_file($_FILES["UploadFile"]);		    
+			$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->kss->upload($_FILES["UploadFile"],"uploads/act_kss") : $_POST['hdfilename'];
+			
 			$this->kss->save($_POST);
 			set_notify('success', lang('save_data_complete'));
 		}
