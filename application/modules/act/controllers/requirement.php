@@ -19,7 +19,7 @@ Class requirement extends  Act_Controller{
 	}
 	
 	function save(){
-		$this->db->debug = true;
+		//$this->db->debug = true;
 		if($_POST){
 			fix_file($_FILES["UploadFile"]);		    
 			$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->rule->upload($_FILES["UploadFile"],"uploads/act/rule") : @$_POST['hdfilename'];
