@@ -4,14 +4,35 @@
 <ul id="navmenu-h">
         <li><a href="#">บันทึก +</a>
           <ul style="width:220px;">
-            <?php if(permission('fund_contract', 'canview')): ?><li><a href="fund_contract">สํญญารับเงินอุดหนุน</a></li><?php endif;?>
+            <?php /*if(permission('fund_contract', 'canview')): ?><li><a href="fund_contract">สํญญารับเงินอุดหนุน</a></li><?php endif; */ ?>
+            <li><a href="#">การขอรับเงินสนับสนุนโครงการ</a></li>
+            <li><a href="#">สัญญารับเงินอุดหนุน</a></li>
+            <li><a href="#">การติดตามและตรวจเยี่ยมโครงการ</a></li>
+            <li><a href="#">ผลการปฏิบัติงานและการใช้จ่ายเงินสนับสนุน</a></li>
+            <li><a href="#">ผลการปฏิบัติงานเปรียบเทียบกับวัตถุประสงค์</a></li>
+            <li><a href="#">การโอนเงินกองทุน</a></li>
+            <li><a href="#">แผนการเบิกจ่ายเงินสนับสนุนโครงการ</a></li>
+            <li><a href="#">ข้อมูลบุคคลขอรับเงินกองทุน</a></li>
+            <li><a href="#">การขอรับเงินสนับสนุนสำหรับบุคคล</a></li>
+
           </ul>
         </li>
         <li><a href="#">ตั้งค่า +</a>
           <ul style="width:260px;">
-            <?php if(permission('fund_attorney', 'canview')): ?><li><a href="fund_attorney">ผู้รับมอบอำนาจ</a></li><?php endif;?>
-            <?php if(permission('fund_organize', 'canview')): ?><li><a href="fund_organize">องค์กร/หน่วยงาน ผู้รับเงินอุดหนุน</a></li><?php endif;?>
-            <?php if(permission('fund_command', 'canview')): ?><li><a href="fund_command/form">คำสั่งที่</a></li><?php endif;?>
+           	<li><a href="fund/setting/fund_loan">ประเภทเงินทุนให้กู้</a></li>
+            <li><a href="#">กองทุน</a></li>
+            <li><a href="#">งบประมาณแต่ละจังหวัด</a></li>
+            <li><a href="#">ประเภทโครงการ</a></li>
+            <li><a href="#">ประเภทโครงการย่อย</a></li>
+            <li><a href="#">ประเภทเด็ก</a></li>
+            <li><a href="#">ประเภทสงเคราะห์เด็ก</a></li>
+            <li><a href="#">ความสอดคล้องกับหลักเกณฑ์ตามมาตรฐานต่างๆ</a></li>
+            <li><a href="#">ลักษณะโครงการ</a></li>
+            <li><a href="#">ส่วนงานสวัสดิการสังคม</a></li>
+            <li><a href="#">ผู้รับมอบอำนาจ</a></li>
+            <li><a href="#">องค์กร</a></li>
+            <li><a href="#">ทะเบียนบุคคลขอรับเงินกองทุน</a></li>
+            <li><a href="#">ทะเบียนข้อมูลเด็ก</a></li>
           </ul>
         </li>
         <li><a href="#">รายงาน +</a>

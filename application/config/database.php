@@ -34,7 +34,7 @@
 | the active record class
 */
 ini_set("max_execution_time" , 300);
-$active_group = "default";
+$active_group = "fd";
 $active_record = TRUE;
 
 
