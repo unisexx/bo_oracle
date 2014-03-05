@@ -22,6 +22,8 @@ class MY_Model extends Model{
 	public $current_page = '';
 	public $record_count = '';
 	public $handle;
+	public $create_at = '';
+	public $update_at = '';
 
 	function __construct()
 	{
@@ -231,7 +233,7 @@ class MY_Model extends Model{
 			foreach($data as $key => $item)
 			{
 				$column .= $comma.''.$key.'';
-				//echo $meta[$key]->type;
+				echo 'M:'.$meta[$key]->type;
 
 				if($meta[$key]->type=='N' || $meta[$key]->type=='I' )
 				{
@@ -241,6 +243,10 @@ class MY_Model extends Model{
 				{
 						$value .= $item == 'NULL' ? $comma."NULL" : $comma.'\''.$item.'\'';
 				}
+				else if($meta[$key]->type == 'DATE')
+				{
+					$column .= $item == 'NULL' ? $comma.'"'.$key.'"='."NULL" : $comma.'"'.$key.'"=to_date(\''.$item.'\', \'yyyy/mm/dd hh24:mi:ss\')';
+				}
 				else
 				{
 						$item = str_replace("'","\'",$item);
@@ -248,8 +254,10 @@ class MY_Model extends Model{
 						$value .=  $comma.'\''.$item.'\'';
 				}
 
+
 				$comma = ',';
 			}
+			
 			$sql = 'INSERT INTO '.$this->table.'('.$column.') VALUES ('.$value.')';
 			//echo $sql;
 
@@ -273,6 +281,10 @@ class MY_Model extends Model{
 				else if($meta[$key]->type=='D')
 				{
 						$value .= $item == 'NULL' ? $comma."NULL" : $comma.'\''.$item.'\'';
+				}
+				else if($meta[$key]->type == 'DATE')
+				{
+					$column .= $item == 'NULL' ? $comma.'"'.$key.'"='."NULL" : $comma.'"'.$key.'"=to_date(\''.$item.'\', \'yyyy/mm/dd hh24:mi:ss\')';
 				}
 				else
 				{
@@ -300,6 +312,10 @@ class MY_Model extends Model{
 				else if($meta[$key]->type=='D')
 				{
 						$column .= $item == 'NULL' ? $comma.'"'.$key.'"='."NULL" : $comma.'"'.$key.'"=\''.$item.'\'';
+				}
+				else if($meta[$key]->type == 'DATE')
+				{
+					$column .= $item == 'NULL' ? $comma.'"'.$key.'"='."NULL" : $comma.'"'.$key.'"=to_date(\''.$item.'\', \'yyyy/mm/dd hh24:mi:ss\')';
 				}
 				else
 				{
