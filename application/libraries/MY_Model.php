@@ -22,8 +22,8 @@ class MY_Model extends Model{
 	public $current_page = '';
 	public $record_count = '';
 	public $handle;
-	public $create_at = '';
-	public $update_at = '';
+	public $create_at = 'create_date';
+	public $update_at = 'last_update';
 
 	function __construct()
 	{
@@ -258,6 +258,13 @@ class MY_Model extends Model{
 				$comma = ',';
 			}
 			
+			// created
+            if(in_array(strtolower($this->create_at), $columns))
+            {
+                $column .= ',"'.strtoupper($this->create_at).'"';
+                $value .= ',to_date(\''.date('Y-m-d H:i:s').'\', \'yyyy/mm/dd hh24:mi:ss\')';
+            }
+			
 			$sql = 'INSERT INTO '.$this->table.'('.$column.') VALUES ('.$value.')';
 			//echo $sql;
 
@@ -293,6 +300,14 @@ class MY_Model extends Model{
 
 				$comma = ',';
 			}
+			
+			// created
+            if(in_array(strtolower($this->create_at), $columns))
+            {
+                $column .= ',"'.strtoupper($this->create_at).'"';
+                $value .= ',to_date(\''.date('Y-m-d H:i:s').'\', \'yyyy/mm/dd hh24:mi:ss\')';
+            }
+			
 			$sql = 'INSERT INTO '.$this->table.'('.$this->primary_key.','.$column.') VALUES ('.'(select COALESCE(max('.$this->primary_key.'),0)+1 from '.$this->table.'),'.$value.')';
 			//echo $sql;
 
@@ -323,6 +338,13 @@ class MY_Model extends Model{
 				}
 				$comma = ',';
 			}
+			
+			// updated
+            if(in_array(strtolower($this->update_at), $columns))
+            {
+                $column .= ',"'.strtoupper($this->update_at).'" = to_date(\''.date('Y-m-d H:i:s').'\', \'yyyy/mm/dd hh24:mi:ss\')';
+            }
+			
 			$this->db->Execute('UPDATE '.$this->table.' SET '.$column.' WHERE '.$where);
 		}
 		return ($mode == 'UPDATE') ? $pk : $this->db->getOne('select MAX('.$this->primary_key.') from '.$this->table);
