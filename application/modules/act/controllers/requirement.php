@@ -19,7 +19,6 @@ Class requirement extends  Act_Controller{
 	}
 	
 	function save(){
-		$this->db->debug = true;
 		if($_POST){
 			fix_file($_FILES["UploadFile"]);		    
 			$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->rule->upload($_FILES["UploadFile"],"uploads/act/rule") : @$_POST['hdfilename'];
@@ -31,8 +30,6 @@ Class requirement extends  Act_Controller{
 			$_POST['file_data3'] = !empty($_FILES['UploadFile3']['name']) ? $this->rule->upload($_FILES["UploadFile3"],"uploads/act/rule") : @$_POST['hdfilename3'];
 			
 			$_POST['staff_id'] = login_data("id");
-			// $_POST['create_date'] =  $_POST['create_date']=='' ? date("Y-m-d H:i:s") : $_POST['create_date'];
-		    // $_POST['last_update'] = date("Y-m-d H:i:s");
 			$this->rule->save($_POST);
 			set_notify('success', lang('save_data_complete'));
 		}
