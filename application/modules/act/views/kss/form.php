@@ -216,7 +216,7 @@ function organ_view_sub() {
     <td>
     	<input type="file" name="UploadFile" />
 	  	<?php if($kss['file_data']):?>
-	  		<a href="uploads/kss/<?php echo $kss['file_data']?>"><?php echo $kss['file_data']?></a>
+	  		<a href="uploads/act/kss/<?php echo $kss['file_data']?>"><?php echo $kss['file_data']?></a>
 	  		<input type="hidden" name="hdfilename" value="<?php echo $kss['file_data']?>">
 	  	<?php endif;?>
     </td>

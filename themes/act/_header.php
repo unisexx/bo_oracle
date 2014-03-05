@@ -7,15 +7,15 @@
             <li><a href="#">องค์การสวัสดิการสังคม</a></li>
             <li><a href="#">นักสังคมสงเคราะห์</a></li>
             <li><a href="#">อาสาสมัคร</a></li>
-            <li><a href="#">ผู้รับบริการสวัสดิการสังคม</a></li>
+            <li><a href="act/welfare_service">ผู้รับบริการสวัสดิการสังคม</a></li>
             <li><a href="act/director">คณะกรรมการ</a></li>
             <li><a href="act/committee">คณะอนุกรรมการ</a></li>
             <li><a href="act/competent">รายชื่อพนักงานเจ้าหน้าที่</a></li>
             <li><a href="act/workinggroup">รายชื่อคณะทำงาน</a></li>
             <li><a href="act/meet_report">รายงานการประชุม</a></li>
-            <li><a href="#">ข้อกำหนด/ระเบียบ/ประกาศ</a></li>
+            <li><a href="act/requirement">ข้อกำหนด/ระเบียบ/ประกาศ</a></li>
             <li><a href="#">กองทุนส่งเสริมการจัดสวัสดิการสังคม</a></li>
-            <li><a href="#">แบบฟอร์มผลการปฏิบัติงานกองทุนส่งเสริม (แบบกสส.๐๓)</a></li>
+            <li><a href="act/kss">แบบฟอร์มผลการปฏิบัติงานกองทุนส่งเสริม (แบบกสส.๐๓)</a></li>
           </ul>
         </li>
         <li><a href="#">ตั้งค่า +</a>

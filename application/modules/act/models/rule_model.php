@@ -1,0 +1,11 @@
+<?php
+class rule_model extends MY_Model{
+	
+	public $table = 'act_rule';
+	
+    function __construct()
+    {
+        parent::__construct();
+    }
+}
+?>

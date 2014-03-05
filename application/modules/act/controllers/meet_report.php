@@ -21,7 +21,7 @@ Class Meet_report extends  Act_Controller{
 	function save($id=false){
 		if($_POST){
 		   fix_file($_FILES["UploadFile"]);		    
-		   $_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->meeting->upload($_FILES["UploadFile"],"uploads/act_meet_report") : $_POST['hdfilename'];
+		   $_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->meeting->upload($_FILES["UploadFile"],"uploads/act/meet_report") : $_POST['hdfilename'];
 			   
 			$this->meeting->save($_POST);
 			set_notify('success', lang('save_data_complete'));

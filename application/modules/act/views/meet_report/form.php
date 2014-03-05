@@ -57,7 +57,7 @@
   <td>
   	<input type="file" name="UploadFile" />
   	<?php if($meeting['file_data']):?>
-  		<a href="uploads/act_meet_report/<?php echo $meeting['file_data']?>"><?php echo $meeting['file_data']?></a>
+  		<a href="uploads/act/meet_report/<?php echo $meeting['file_data']?>"><?php echo $meeting['file_data']?></a>
   		<input type="hidden" name="hdfilename" value="<?php echo $meeting['file_data']?>">
   	<?php endif;?>
   </td>

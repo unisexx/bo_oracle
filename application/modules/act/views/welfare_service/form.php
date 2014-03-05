@@ -56,7 +56,7 @@ $(document).ready(function(){
     <td>
     	<input type="file" name="UploadFile" />
 	  	<?php if($cmain['file_data']):?>
-	  	<a href="uploads/welfare_service/<?php echo $cmain['file_data']?>"><?php echo $cmain['file_data']?></a>
+	  	<a href="uploads/act/welfare_service/<?php echo $cmain['file_data']?>"><?php echo $cmain['file_data']?></a>
 	  	<input type="hidden" name="hdfilename" value="<?php echo $cmain['file_data']?>">
 	  	<?php endif;?>
     </td>

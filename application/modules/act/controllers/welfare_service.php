@@ -25,7 +25,7 @@ Class welfare_service extends  Act_Controller{
 		if($_POST){
 			// customer_main save
 			fix_file($_FILES["UploadFile"]);		    
-			$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->cmain->upload($_FILES["UploadFile"],"uploads/act_welfare_service") : $_POST['hdfilename'];
+			$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->cmain->upload($_FILES["UploadFile"],"uploads/act/welfare_service") : $_POST['hdfilename'];
 			
 			$id = $this->cmain->save($_POST);
 			
@@ -50,7 +50,7 @@ Class welfare_service extends  Act_Controller{
 			
 			set_notify('success', lang('save_data_complete'));
 		}
-		redirect('act/welfare_service');
+		redirect('act/welfare_service/form/'.$id);
 	}
 	
 	function delete($id){
