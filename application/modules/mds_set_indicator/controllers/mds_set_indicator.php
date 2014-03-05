@@ -30,7 +30,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if(@$_GET['sch_indicatorn'] != ''){
 			$condition .=" and id = '".@$_GET['sch_indicatorn']."' ";
 		}
-		$data['rs'] = $this->indicator->where($condition)->get('',true);
+		$data['rs'] = $this->indicator->where($condition)->order_by('indicator_on','asc')->get('',true);
 		
 		$this->template->build('index',@$data);
 
@@ -42,8 +42,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		if($id != ''){
 			$data['rs'] = $this->indicator->get_row($id);
 			new_save_logfile("VIEW",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
+			
 		}else{
 			$data['rs']['budget_year'] = $budget_year;
+			$sql_max_indicator_on = "select max(mds_set_indicator.indicator_on) as max_indicator_on 
+									from mds_set_indicator
+								   where mds_set_indicator.budget_year = '".@$budget_year."'  "; 
+			$result_max = $this->indicator->get($sql_max_indicator_on);
+			$data['max_indicator_on'] = @$result_max['0']['max_indicator_on']+1;
 		}
 		$this->template->build('form',@$data);
 
@@ -759,7 +765,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		$chk_metrics = $this->metrics->get("select * from mds_set_metrics where parent_id = '".$ID."' ");
 		$num_chk = count($chk_metrics);
 		if($num_chk == 0){
-			$chk_metrics_result = $this->metrics_result->get("select * from mds_set_metrics_result where mds_set_metrics_id = '".$ID."' ");
+			$chk_metrics_result = $this->metrics_result->get("select * from mds_metrics_result where mds_set_metrics_id = '".$ID."' ");
 			$num_chk_result = count($chk_metrics_result);
 			if($num_chk_result == 0){
 				new_save_logfile("DELETE",$this->modules_title_2,$this->metrics->table,"ID",$ID,"ass_name",$this->modules_name);					

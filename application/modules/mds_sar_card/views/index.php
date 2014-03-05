@@ -38,7 +38,7 @@ $(function(){
 </div>
 </form> 
 <? if(@$_GET['sch_budget_year'] != ''){ ?>
-<div style="padding:10px; text-align:right;">
+<div style="padding:10px; text-align:right;" align="center">
 <a href="<?=$urlpage?>/index/export/<?=GetCurrentUrlGetParameter();?>"><img src="images/btn_excel.png" width="32" height="32" style="margin-bottom:-6px" class="vtip" title="ส่งออกข้อมูล"></a>
 <a href="<?=$urlpage?>/index/print/<?=GetCurrentUrlGetParameter();?>" target="_blank"><img src="images/btn_printer.png" width="32" height="32" style="margin:0 20px -5px 10px;" class="vtip" title="พิมพ์ข้อมูล"></a></div>
 <table class="tblist3">
@@ -357,7 +357,7 @@ $(function(){
 		$result_set_score = $this->score->get($sql_set_score);
 		foreach ($result_set_score as $key => $score) {
 			
-			echo " ".'<img src="themes/mdevsys/images/circle_'.$score['id'].'.png" width="16" height="16">'." = ".$score['val_start'].'-'.$score['val_end'];
+			echo " ".'<img src="themes/mdevsys/images/circle_'.$score['score_id'].'.png" width="16" height="16">'." = ".$score['val_start'].'-'.$score['val_end'];
 		}
 		if(count($result_set_score) > 0){
 	?>

@@ -328,15 +328,31 @@ function indicator_all_weight($budget_year = null , $round_month = null , $resul
 						$result_chk_result = $CI->db->getarray($chk_result);
 						dbConvert($result_chk_result);
 						
-						if($round_month == '6' && $indicator_weight['metrics_weight_6'] != '' && $indicator_weight['metrics_start'] == '6' && count($result_chk_result) > '0'){
+						// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
+						$result_all = "ok";
+						$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS
+											 FROM  MDS_SET_METRICS_KEYER KEYER
+											 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
+														AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
+										   	 WHERE KEYER.MDS_SET_METRICS_ID = '".$indicator_weight['id']."' AND KEYER.ROUND_MONTH = '".$round_month."' ";
+						$result_keyer_result = $CI->db->getarray($chk_keyer_result);
+						dbConvert($result_keyer_result);
+						
+						foreach ($result_keyer_result as $key => $keyer_result) {
+							if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
+								$result_all = "no";
+							}
+						}
+						
+						if($round_month == '6' && $indicator_weight['metrics_weight_6'] != '' && $indicator_weight['metrics_start'] == '6' && count($result_chk_result) > '0' && $result_all == "ok"){ 
 							if($indicator_weight['metrics_cancel'] == ''){
 								$weight_perc_tot += $indicator_weight['metrics_weight_6'];
 							}else{
 								if($indicator_weight['metrics_cancel'] > '6'){
 									$weight_perc_tot += $indicator_weight['metrics_weight_6'];
 								}
-							}			
-						}else if($round_month == '9' && $indicator_weight['metrics_weight_9'] != '' && $indicator_weight['metrics_start'] < '12' && count($result_chk_result) > '0'){
+							}	
+						}else if($round_month == '9' && $indicator_weight['metrics_weight_9'] != '' && $indicator_weight['metrics_start'] < '12' && count($result_chk_result) > '0' && $result_all == "ok"){ 
 							
 							if($indicator_weight['metrics_cancel'] == ''){
 								$weight_perc_tot += $indicator_weight['metrics_weight_9'];
@@ -346,7 +362,7 @@ function indicator_all_weight($budget_year = null , $round_month = null , $resul
 								}
 							}	
 							
-						}else if($round_month == '12' && $indicator_weight['metrics_weight_12'] != '' && count($result_chk_result) > '0'){
+						}else if($round_month == '12' && $indicator_weight['metrics_weight_12'] != '' && count($result_chk_result) > '0' && $result_all == "ok"){
 							if($indicator_weight['metrics_cancel'] == ''){
 								 	$weight_perc_tot += $indicator_weight['metrics_weight_12'];
 							}else{
@@ -355,7 +371,7 @@ function indicator_all_weight($budget_year = null , $round_month = null , $resul
 								}
 							}
 						}else{
-							if($indicator_weight['metrics_start'] <= $round_month && count($result_chk_result) > '0'){
+							if($indicator_weight['metrics_start'] <= $round_month && count($result_chk_result) > '0' && $result_all == "ok"){
 								if($indicator_weight['metrics_cancel'] == ''){
 									 	$weight_perc_tot += $indicator_weight['metrics_weight'];
 								}else{

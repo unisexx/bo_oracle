@@ -1,4 +1,4 @@
-<div style="text-align: center"><h3>รายงานการประเมินผลจากตัวชี้วัด ประจำปี <?=@$_GET['sch_budget_year']?></h3></div>
+<div style="text-align: center"><h3>การเปรียบเทียบปีการประเมินผลจากตัวชี้วัด ประจำปี <?=@$_GET['sch_budget_year']?></h3></div>
 <!--<div class="allstrategy"><img src="../images/tree/department.png" /> กรม | <img src="../images/tree/down.png" />  เป้าหมายการให้บริการกระทรวง | <img src="../images/tree/cube.png"/> ยุทธศาสตร์กระทรวง  | <img src="../images/tree/pro.png" /> เป้าหมายการให้บริการหน่วยงาน | <img src="../images/tree/chart_bar.png" /> กลยุทธ์หน่วยงาน   | <img src="../images/tree/asterisk.png" /> ผลผลิต  |  <img src="../images/tree/layout_sidebar.png" /> กิจกรรมหลัก(กรม)  | <img src="../images/tree/file.gif" /> กิจกรรมย่อย | <img src="../images/tree/project_ico.png" /> โครงการ | <img src="../images/tree/subproject_ico.png" /> โครงการย่อย </div>-->
 <style>
 

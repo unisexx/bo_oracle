@@ -33,7 +33,15 @@ Class Mds_set_measure extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
 		if($id != ''){
-			$data['rs'] = $this->measure->get_row($id);
+			$chk_metrics = "select * from mds_set_metrics where mds_set_measure_id = '".$id."'";
+				$result_chk_metrics =  $this->metrics->get($chk_metrics);
+				$num_chk = count($result_chk_metrics);
+			if($num_chk == '0'){
+				$data['rs'] = $this->measure->get_row($id);
+			}else{
+				set_notify('error', "ไม่สามารถแก้ไขหน่วยวัดได้ เนื่องจากมีการใช้ชื่อหน่วยวัดนี้อยู่");
+				redirect($data['urlpage']);
+			}
 		}
 		$this->template->build('form',@$data);
 

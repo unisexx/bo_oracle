@@ -1,5 +1,5 @@
 <?php
-class mds_log extends Admin_Controller
+class mds_log extends Mdevsys_Controller
 {
 	public $modules_name = "c_log";
 	public $modules_title = "ประวัติการใช้งาน";
