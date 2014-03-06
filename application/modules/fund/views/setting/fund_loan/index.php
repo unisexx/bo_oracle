@@ -6,7 +6,7 @@
   <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
 
-<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='lender_type_set.php?act=form'" class="btn_add"/></div>
+<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='fund/setting/fund_loan/form'" class="btn_add"/></div>
 
 <?php echo $pagination; ?>
 
@@ -20,7 +20,7 @@
 	<tr class="odd cursor" onclick="window.location='fund/setting/fund_loan/form/<?php echo $item['id']; ?>'">
   		<td><?php echo $item['id'] ?></td>
   		<td nowrap="nowrap"><?php echo $item['fund_name'] ?></td>
-  		<td></td>
+  		<td><input type="button" value="x" class="btn_delete" onclick="del('<?php echo site_url('fund/setting/fund_loan/'.$item['id']); ?>')" /></td>
   	</tr>
   	<?php endforeach; ?>
 </table>

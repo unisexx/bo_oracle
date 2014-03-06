@@ -14,6 +14,6 @@ Class Fund extends Fund_Controller {
 	
 	public function main($fund_id)
 	{
-		$this->template->build('fund_index');
+		$this->template->build('main');
 	}
 }
