@@ -10,6 +10,10 @@ class Fund_loan extends Fund_Setting_Controller {
 	
 	public function index()
 	{
+		if(!empty($_GET['keyword']))
+		{
+			$this->fund_loan_mdl->where("fund_name like '%".$_GET['keyword']."%'");
+		}
 		$data['items'] = $this->fund_loan_mdl->get();
 		$data['pagination']	= $this->fund_loan_mdl->pagination();
 		$this->template->build('setting/fund_loan/index', $data);
@@ -35,7 +39,7 @@ class Fund_loan extends Fund_Setting_Controller {
 	{
 		if($id)
 		{
-			//$this->fund_loan->mdl->delete($id);
+			$this->fund_loan_mdl->delete($id);
 			set_notify('success', lang('delete_data_complete'));
 		}
 		redirect('fund/setting/fund_loan');

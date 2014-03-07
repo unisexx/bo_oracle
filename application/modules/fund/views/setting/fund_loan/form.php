@@ -9,7 +9,8 @@
 
 
 <div id="btnBoxAdd">
-  <input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
-  <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
+  <input type="submit" value="" class="btn_save"/>
+  <input type="button" onclick="history.back(-1)" class="btn_back"/>
 </div>
+<?php echo form_hidden('id', $rs['id']); ?>
 <?php echo form_close(); ?>
