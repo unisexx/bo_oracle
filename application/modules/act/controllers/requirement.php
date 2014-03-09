@@ -38,7 +38,7 @@ Class requirement extends  Act_Controller{
 	
 	function delete($id){
 		if($id){
-			$this->under->delete($id);
+			$this->rule->delete($id);
 			set_notify('success', lang('delete_data_complete'));
 		}
 		redirect($_SERVER["HTTP_REFERER"]);

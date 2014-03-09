@@ -35,9 +35,9 @@
 <tr class="cursor" onclick="window.location='act/requirement/form/<?=$row['id']?>'">
   <td><?=$i?></td>
   <td nowrap="nowrap"><?=$row['headline']?></td>
-  <td nowrap="nowrap"><a href="uploads/act/rule/<?=$row['file_data']?>"><img src="themes/act/images/downloadfile.png" width="22" height="22" /></a></td>
-  <td nowrap="nowrap"><a href="uploads/act/rule/<?=$row['file_data2']?>"><img src="themes/act/images/downloadfile.png" alt="" width="22" height="22" /></a></td>
-  <td nowrap="nowrap"><a href="uploads/act/rule/<?=$row['file_data3']?>"><img src="themes/act/images/downloadfile.png" alt="" width="22" height="22" /></a></td>
+  <td nowrap="nowrap"><?if(!empty($row['file_data'])):?><a href="uploads/act/rule/<?=$row['file_data']?>"><img src="themes/act/images/downloadfile.png" width="22" height="22" /></a><?endif;?></td>
+  <td nowrap="nowrap"><?if(!empty($row['file_data2'])):?><a href="uploads/act/rule/<?=$row['file_data2']?>"><img src="themes/act/images/downloadfile.png" alt="" width="22" height="22" /></a><?endif;?></td>
+  <td nowrap="nowrap"><?if(!empty($row['file_data3'])):?><a href="uploads/act/rule/<?=$row['file_data3']?>"><img src="themes/act/images/downloadfile.png" alt="" width="22" height="22" /></a><?endif;?></td>
   <td nowrap="nowrap"><?=$row['create_date']?></td>
   <td><a href="act/requirement/delete/<?=$row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
 </tr>

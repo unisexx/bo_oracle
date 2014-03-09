@@ -3,7 +3,7 @@
 <div class="lineico">
 <div class="ico"><a href="act/welfare"><img src="themes/act/images/icon/welfare.png" width="48" height="48" /><h4>องค์การ สวัสดิการสังคม</h4></a></div>
 <div class="ico"><a href="social_worker.php"><img src="themes/act/images/icon/social_worker.png" width="48" height="48" /><h4>นักสังคมสงเคราะห์</h4></a></div>
-<div class="ico"><a href="volunteer.php"><img src="themes/act/images/icon/volunteer.png" width="48" height="48" /><h4>อาสาสมัคร</h4></a></div>
+<div class="ico"><a href="act/volunteer"><img src="themes/act/images/icon/volunteer.png" width="48" height="48" /><h4>อาสาสมัคร</h4></a></div>
 <div class="ico"><a href="act/welfare_service"><img src="themes/act/images/icon/welfare_service.png" width="48" height="48" /><h4>ผู้รับบริการ สวัสดิการสังคม</h4></a></div>
 <div class="ico"><a href="act/director"><img src="themes/act/images/icon/director.png" width="48" height="48" /><h4>คณะกรรมการ</h4></a></div>
 <div class="ico"><a href="act/committee"><img src="themes/act/images/icon/committee.png" width="48" height="48" /><h4>คณะอนุกรรมการ</h4></a></div>
@@ -11,7 +11,7 @@
 <div class="ico"><a href="act/workinggroup"><img src="themes/act/images/icon/workinggroup.png" width="48" height="48" /><h4>รายชื่อ คณะทำงาน</h4></a></div>
 <div class="ico"><a href="act/meet_report"><img src="themes/act/images/icon/meet_report.png" width="48" height="48" /><h4>รายงานการประชุม</h4></a></div>
 <div class="ico"><a href="act/requirement"><img src="themes/act/images/icon/requirement.png" width="48" height="48" /><h4>ข้อกำหนด/ ระเบียบ/ประกาศ</h4></a></div>
-<div class="ico"><a href="fund_welfare.php"><img src="themes/act/images/icon/fund_welfare.png" width="48" height="48" /><h4>กองทุนส่งเสริม การจัดสวัสดิการสังคม</h4></a></div>
+<div class="ico"><a href="act/fund_welfare"><img src="themes/act/images/icon/fund_welfare.png" width="48" height="48" /><h4>กองทุนส่งเสริม การจัดสวัสดิการสังคม</h4></a></div>
 <div class="ico"><a href="act/kss"><img src="themes/act/images/icon/fund_form03.png" width="48" height="48" /><h4>แบบฟอร์ม ผลการปฏิบัติงาน กองทุนส่งเสริม (แบบกสส.๐๓)</h4></a></div>
 <div class="clear"></div>
 </div>
