@@ -20,8 +20,8 @@
         <li><a href="#">ตั้งค่า +</a>
           <ul style="width:260px;">
            	<li><a href="fund/setting/fund_loan">ประเภทเงินทุนให้กู้</a></li>
-            <li><a href="#">กองทุน</a></li>
-            <li><a href="#">งบประมาณแต่ละจังหวัด</a></li>
+            <li><a href="fund/setting/fund_name">กองทุน</a></li>
+            <li><a href="fund/setting/fund_transfer_province">งบประมาณแต่ละจังหวัด</a></li>
             <li><a href="#">ประเภทโครงการ</a></li>
             <li><a href="#">ประเภทโครงการย่อย</a></li>
             <li><a href="#">ประเภทเด็ก</a></li>

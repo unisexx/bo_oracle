@@ -53,8 +53,8 @@
 	<h3 class="clear">ตั้งค่า</h3>
 	<div class="lineico">
 		<div class="ico"><a href="fund/setting/fund_loan"><img src="themes/fund/images/icon/lender_type_set.png" width="48" height="48" /><h4>ประเภทเงินทุนให้กู้</h4></a></div>
-		<div class="ico"><a href="fund_set.php"><img src="themes/fund/images/icon/fund_set.png" width="48" height="48" /><h4>กองทุน</h4></a></div>
-		<div class="ico"><a href="each_budget_set.php"><img src="themes/fund/images/icon/each_budget_set.png" width="48" height="48" /><h4>งบประมาณ แต่ละจังหวัด</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_name"><img src="themes/fund/images/icon/fund_set.png" width="48" height="48" /><h4>กองทุน</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_transfer_province"><img src="themes/fund/images/icon/each_budget_set.png" width="48" height="48" /><h4>งบประมาณ แต่ละจังหวัด</h4></a></div>
 		<div class="ico"><a href="project_type_set.php"><img src="themes/fund/images/icon/project_type_set.png" width="48" height="48" /><h4>ประเภทโครงการ</h4></a></div>
 		<div class="ico"><a href="project_subtype_set.php"><img src="themes/fund/images/icon/project_list_set.png" width="48" height="48" /><h4>ประเภทโครงการย่อย</h4></a></div>
 		<div class="ico"><a href="child_type_set.php"><img src="themes/fund/images/icon/child_type_set.png" width="48" height="48" /><h4>ประเกทเด็ก</h4></a></div>
