@@ -43,7 +43,7 @@
   <td><?php echo $row['tel']?></td>
   <td><?php echo $row['fax']?></td>
   <td><?php echo $row['email']?></td>
-  <td><a href="act/welfare_service/delete/<?php echo $row['id_card']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
+  <td><a href="act/welfare_service/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
 </tr>
 <?$i++;?>
 <?php endforeach;?>

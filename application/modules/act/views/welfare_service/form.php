@@ -1,5 +1,22 @@
 <script>
 $(document).ready(function(){
+	$.get('act/welfare_service/ajax_customer_sub2_form',{
+		id_card : $("input[name=id_card]").val()
+	},function(data){
+		$("#csubs2_form").html(data);
+	});
+    
+	$(".example8").colorbox({width:"50%", inline:true, href:"#inline_example1"});
+    
+    $(".btn_add,.btn_edit").click(function(){
+    	$.get('act/welfare_service/ajax_customer_sub2_form',{
+    		id : $(this).prev('input[name=id]').val(),
+    		id_card : $("input[name=id_card]").val()
+    	},function(data){
+    		$("#csubs2_form").html(data);
+    	});
+    });
+	
 	$('[name=ampor_code]').chainedSelect({
     	parent: '#province',
     	url: 'act/welfare/ajax_ampor',
@@ -36,7 +53,13 @@ $(document).ready(function(){
   </tr>
   <tr>
     <th>รูปภาพ</th>
-    <td><input type="file" name="fileField" id="fileField" /></td>
+    <td>
+    	<input type="file" name="UploadFile" />
+	  	<?php if($cmain['file_data']):?>
+	  	<a href="uploads/act/welfare_service/<?php echo $cmain['file_data']?>"><?php echo $cmain['file_data']?></a>
+	  	<input type="hidden" name="hdfilename" value="<?php echo $cmain['file_data']?>">
+	  	<?php endif;?>
+    </td>
   </tr>
   <tr>
     <th>เพศ <span class="Txt_red_12"> *</span></th>
@@ -107,8 +130,13 @@ $(document).ready(function(){
     <th>ประเภทของผู้รับบริการ</th>
     <td>
     	<?php foreach($target_groups as $row):?>
+    		<?php
+    			$sub = $this->csub->where("id_card = ".$cmain['id_card']." and question_name = 'target' and answer_id = ".$row['target_id'])->get_row();
+				// print_r($sub);
+    		?>
     		<span>
-    			<input name="answer_id[]" type="checkbox" value="<?php echo $row['target_id']?>" /> <?php echo $row['target_name']?> <input name="other[]" type="text" style="width:100px;" />   			
+    			<input name="answer_id[]" type="checkbox" value="<?php echo $row['target_id']?>" <?php echo ($row['target_id'] == @$sub['answer_id'])?'checked':'';?>/> <?php echo $row['target_name']?> 
+    			<input name="other[]" type="text" value="<?php echo @$sub['other']?>" style="width:100px;" />
     		</span>
     	<?php endforeach;?>
     </td>
@@ -128,7 +156,7 @@ $(document).ready(function(){
 </div>
 </form>
 
-
+<?php if($this->uri->segment(4) != ""):?>
 <h3>หน่วยงานที่เข้ารับบริการ</h3>
 <div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " class="btn_add example8"/></div>
 <table class="tblist">
@@ -139,45 +167,27 @@ $(document).ready(function(){
 <th>บริการที่ได้รับ</th>
 <th>จัดการ</th>
 </tr>
+<?php foreach($csubs as $row):?>
 <tr>
-<td>ฟ</td>
-<td>ฟ</td>
-<td>ฟ</td>
-<td>ฟ</td>
-<td><input type="submit" name="button3" id="button3" title="แก้ไข" value=" " class="btn_edit vtip" />
-    <input type="submit" name="button" id="button" title="ลบ" value=" " class="btn_delete vtip" /></td>
+<td><?=$row['sub2_name']?></td>
+<td><?=$row['sub2_date']?></td>
+<td><?=$row['problem']?></td>
+<td><?=$row['detail']?></td>
+<td>
+	<input type="hidden" name="id" value="<?=$row['id']?>">
+	<input type="submit" name="button3" id="button3" title="แก้ไข" value=" " class="btn_edit vtip example8" />
+    <a href="act/welfare_service/customer_sub2_delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
+</td>
 </tr>
+<?php endforeach;?>
 </table>
-
-
+<?php endif;?>
 
 <!-- This contains the hidden content for inline calls -->
 <div style="display:none">
 <div id="inline_example1" style="padding:10px; background:#fff;">
-<h3>หน่วยงานที่เข้ารับบริการ</h3>
-<table class="tbadd">
-<tr>
-<th>ชื่อหน่วยงาน  <span class="Txt_red_12"> *</span></th>
-<td><input name="textfield6" type="text" id="textfield6" style="width:300px;"/></td>
-</tr>
-<tr>
-<th>วันที่เข้ารับบริการ  <span class="Txt_red_12"> *</span></th>
-<td><input name="textfield17" type="text" id="textfield17" style="width:80px;"/>
-  <img src="../images/calendar.png" width="16" height="16" /></td>
-</tr>
-<tr>
-<th>ปัญหา   <span class="Txt_red_12"> *</span></th>
-<td><input name="textfield15" type="text" id="textfield15" style="width:500px;"/></td>
-</tr>
-<tr>
-<th>บริการที่ได้รับ  <span class="Txt_red_12"> *</span></th>
-<td><input name="textfield16" type="text" id="textfield16" style="width:500px;"/></td>
-</tr>
-</table>
+<div id="csubs2_form">
 
-<div id="btnBoxAdd">
-  <input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
 </div>
-
 </div>
 </div>

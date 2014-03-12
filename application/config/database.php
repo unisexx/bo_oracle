@@ -38,8 +38,7 @@ $active_group = "fd";
 $active_record = TRUE;
 
 
-/*
-$db['default']['hostname'] = "localhost";
+$db['default']['hostname'] = "192.168.1.153";
 $db['default']['username'] = "BOFFICE";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "BOFFICE";
@@ -51,7 +50,8 @@ $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
-*/
+
+
 $db['fd']['hostname'] = "27.254.33.52";
 $db['fd']['username'] = "BOFFICE";
 $db['fd']['password'] = "1234";

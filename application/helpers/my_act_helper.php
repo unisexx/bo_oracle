@@ -66,6 +66,17 @@ if(!function_exists('act_get_organ_name'))
 	}
 }
 
+if(!function_exists('act_get_project_name'))
+{
+	function act_get_project_name($project_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select project_name from act_fund_project where project_id = ?',$project_id);
+		dbConvert($result);
+		return $result;
+	}
+}
+
 if(!function_exists('act_get_subcommittee_type'))
 {
 	function act_get_subcommittee_type($sub_type_id)
@@ -88,5 +99,31 @@ if(!function_exists('act_get_subposition'))
 	}
 }
 
+if(!function_exists('act_get_target_name'))
+{
+	function act_get_target_name($project_id)
+	{
+		$CI =& get_instance();
+		$sql = "SELECT
+				ACT_TARGET_GROUP.TARGET_NAME
+				FROM
+				ACT_TARGET_GROUP
+				INNER JOIN ACT_PROJECT_TARGET ON ACT_TARGET_GROUP.TARGET_ID = ACT_PROJECT_TARGET.FP_TARGET_ID
+				WHERE ACT_PROJECT_TARGET.PROJECT_ID = ".$project_id;
+		$result = $CI->db->getone($sql);
+		dbConvert($result);
+		return $result;
+	}
+}
 
+if(!function_exists('act_get_fund_name'))
+{
+	function act_get_fund_name($fund_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select fund_name from act_mst_fund_name where fund_id = ?',$fund_id);
+		dbConvert($result);
+		return $result;
+	}
+}
 ?>

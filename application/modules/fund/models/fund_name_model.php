@@ -1,0 +1,12 @@
+<?php 
+
+class Fund_name_model extends MY_Model {
+	
+	public $table = 'FUND_MST_FUND_NAME';
+	
+	public function __construct()
+	{
+		parent::__construct();
+	}
+	
+}

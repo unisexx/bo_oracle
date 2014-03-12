@@ -113,6 +113,16 @@
 		   }
 
 		});
+		
+		// confirm delete
+		function del(url)
+		{
+			if(confirm("ยืนยันการลบ"))
+			{
+				window.location = url;
+			}
+			return false;	
+		}
 
 		Cufon.replace('h1, h3, h4, h5, ul#navmenu-h');
 	</script>

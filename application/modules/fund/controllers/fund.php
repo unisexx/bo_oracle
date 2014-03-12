@@ -1,11 +1,19 @@
 <?php
-Class Fund extends  Fund_Controller{
-	public function __construct(){
+
+Class Fund extends Fund_Controller {
+		
+	public function __construct()
+	{
 		parent::__construct();
 	}
 	
-	function index(){
-		$this->template->build('fund_index');
+	public function index()
+	{
+		$this->template->build('index');
+	}
+	
+	public function main($fund_id)
+	{
+		$this->template->build('main');
 	}
 }
-?>
