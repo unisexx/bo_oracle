@@ -185,7 +185,7 @@
 									
 							?>
 								<tr>
-						  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?><?=@$sub_4['metrics_on']?></td>
+						  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?></td>
 						  			<td><?=@$sub_4['metrics_name']?></td>
 						  			<?
 						  				if($sub_4['metrics_weight_'.$_GET['sch_round_month']] != ''){
@@ -223,9 +223,101 @@
 										?>
 									</td>
 						  		</tr>
+						  		
+							  		<? 		
+										$result_sub_5 = metrics_dtl_indicator(@$indicator['id'],$sub_4['id'],@$_GET['sch_round_month']);
+										foreach ($result_sub_5 as $key_sub_5 => $sub_5) {
+											
+									?>
+										<tr>
+								  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$$sub_5['metrics_on']?></td>
+								  			<td><?=@$sub_5['metrics_name']?></td>
+								  			<?
+								  				if($sub_5['metrics_weight_'.$_GET['sch_round_month']] != ''){
+								  					$metrics_weight = $sub_5['metrics_weight_'.$_GET['sch_round_month']];
+								  				}else{
+								  					$metrics_weight = $sub_5['metrics_weight'];
+								  				}
+								  			?>
+								  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
+								  			<?
+								  				$sql_control = "select permission_dtl.*
+								  								from mds_set_permission_dtl permission_dtl
+								  								left join mds_set_metrics_kpr on permission_dtl.mds_set_permission_id = mds_set_metrics_kpr.control_permission_id
+								  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_5['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
+												$result_control = $this->kpr->get($sql_control);
+												$result_control = @$result_control['0'];
+								  			?>
+								  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
+											<td><?=@$result_control['name']?></td>
+											<?
+								  				$sql_keyer = "select permission_dtl.*
+								  								from mds_set_permission_dtl permission_dtl
+								  								left join mds_set_metrics_keyer on permission_dtl.mds_set_permission_id = mds_set_metrics_keyer.keyer_permission_id
+								  								where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_5['id']."' and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
+												$result_keyer = $this->keyer->get($sql_keyer);
+								  			?>
+											<td>
+												<?
+													foreach ($result_keyer as $key => $keyer) {
+														if($key != '0'){
+															echo ",";
+														}
+														echo @$keyer['name'];
+													} 
+												?>
+											</td>
+								  		</tr>
+									  		<? 		
+												$result_sub_6 = metrics_dtl_indicator(@$indicator['id'],$sub_5['id'],@$_GET['sch_round_month']);
+												foreach ($result_sub_6 as $key_sub_6 => $sub_6) {
+													
+											?>
+												<tr>
+										  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?></td>
+										  			<td><?=@$sub_6['metrics_name']?></td>
+										  			<?
+										  				if($sub_5['metrics_weight_'.$_GET['sch_round_month']] != ''){
+										  					$metrics_weight = $sub_6['metrics_weight_'.$_GET['sch_round_month']];
+										  				}else{
+										  					$metrics_weight = $sub_6['metrics_weight'];
+										  				}
+										  			?>
+										  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
+										  			<?
+										  				$sql_control = "select permission_dtl.*
+										  								from mds_set_permission_dtl permission_dtl
+										  								left join mds_set_metrics_kpr on permission_dtl.mds_set_permission_id = mds_set_metrics_kpr.control_permission_id
+										  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_6['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
+														$result_control = $this->kpr->get($sql_control);
+														$result_control = @$result_control['0'];
+										  			?>
+										  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
+													<td><?=@$result_control['name']?></td>
+													<?
+										  				$sql_keyer = "select permission_dtl.*
+										  								from mds_set_permission_dtl permission_dtl
+										  								left join mds_set_metrics_keyer on permission_dtl.mds_set_permission_id = mds_set_metrics_keyer.keyer_permission_id
+										  								where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_6['id']."' and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
+														$result_keyer = $this->keyer->get($sql_keyer);
+										  			?>
+													<td>
+														<?
+															foreach ($result_keyer as $key => $keyer) {
+																if($key != '0'){
+																	echo ",";
+																}
+																echo @$keyer['name'];
+															} 
+														?>
+													</td>
+										  		</tr>
+								  		<? }//sub6 ?>
+						  		<? }//sub5 ?>
 				  		<? }//sub4 ?>
 				  <? }//sub3 ?>
 		  <? }//sub2 ?>
   <? }//sub1 ?>
 <? } ?>
 </table>
+ 

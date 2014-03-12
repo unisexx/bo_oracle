@@ -29,20 +29,22 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		$condition = " 1=1 ";
 		if(@$_GET['sch_txt'] != ''){
-			$condition .= " and ( permission.name like '%".@$_GET['sch_txt']."%' 
-						    or permission.username like '%".@$_GET['sch_txt']."%' )";
+			$condition .= " and ( mds_set_permission_dtl.name like '%".@$_GET['sch_txt']."%' 
+						    or mds_set_permission_dtl.username like '%".@$_GET['sch_txt']."%' )";
 		}
-		if(@$_GET['permit_type'] != ''){
-			$condition .= " and permission.mds_set_permit_id = '".@$_GET['permit_type']."' ";
+		if(@$_GET['premit_type'] != ''){
+			$condition .= " and mds_set_permission_type.mds_set_permit_type_id = '".@$_GET['permit_type']."' ";
 		}
 		
 		//$this->db->debug = true;
 		$sql = "select permission.users_id,permission.id, 
 				mds_set_permission_dtl.name,mds_set_permission_dtl.username
-				,mds_set_position.pos_name , cnf_division.title 
+				,mds_set_position.pos_name , cnf_division.title ,mds_set_permit_type.permit_name
 				from mds_set_permission permission
 				left join mds_set_permission_dtl on permission.id = mds_set_permission_dtl.mds_set_permission_id
 				left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id
+				left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
+				left join mds_set_permit_type on mds_set_permission_type.mds_set_permit_type_id = mds_set_permit_type.id
 				left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
 				where $condition order by permission.id desc ";
 		

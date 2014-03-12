@@ -14,9 +14,12 @@ Class Mds_sar_card extends  Mdevsys_Controller{
 		$this->load->model('mds_indicator/Mds_metrics_result_status_model','result_status');
 		$this->load->model('mds_set_score/Mds_set_score_model','score');
 		
+		/*
 		if(is_permit(login_data('id'),'1') == ''){
 			 set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds"); // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		}
+		 * 
+		 */
 	}
 	
 	public $urlpage = "mds_sar_card";

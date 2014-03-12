@@ -17,18 +17,18 @@
 <? } ?>
 <div class="clear"></div>
 </div>
-<? if(is_permit(login_data('id'),'1') != ''){ ?>
 <h3 class="clear">รายงาน</h3>
 <div class="lineico">
 <div class="ico"><a href="mds_sar_card"><img src="themes/mdevsys/images/icon/report_esar.png" width="48" height="48" /><h4>Sar Card หน่วยงาน</h4></a></div>
 <div class="ico"><a href="mds_report_sum_metrics"><img src="themes/mdevsys/images/icon/report_sum_indicator.png" width="48" height="48" /><h4>สรุปรายละเอียด ตัวชี้วัด</h4></a></div>
 <div class="ico"><a href="mds_report_sum_perform"><img src="themes/mdevsys/images/icon/report_sum_perform.png" width="48" height="48" /><h4>ตารางสรุปผล การปฏิบัติราชการ</h4></a></div>
 <div class="ico"><a href="mds_report_compare"><img src="themes/mdevsys/images/icon/report_compare.png" width="48" height="48" /><h4>การเปรียบเทียบปี การประเมินผล จากตัวชี้วัด</h4></a></div>
+<? if(is_permit(login_data('id'),'1') != ''){ ?>
 <div class="ico"><a href="mds_log"><img src="themes/mdevsys/images/icon/logfile.png" width="48" height="48" /><h4>Log File</h4></a></div>
-
+<? } ?>
 <div class="clear"></div>
 </div>
-
+<? if(is_permit(login_data('id'),'1') != ''){ ?>
 <h3 class="clear">ตั้งค่า</h3>
 <div class="lineico">
 <div class="ico"><a href="mds_set_indicator"><img src="themes/mdevsys/images/icon/indicator_set.png" width="48" height="48" /><h4>มิติและตัวชี้วัด</h4></a></div>

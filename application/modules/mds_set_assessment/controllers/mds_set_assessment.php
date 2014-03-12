@@ -17,10 +17,17 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 		$data['urlpage'] = $this->urlpage;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
+		
+		$data['option_status'] = array('1'=>'เปิดใช้งาน','0'=>'ปิดใช้งาน','all'=>'แสดงทั้งหมด');
+		(@$_GET['sch_status_id'] == '')?$_GET['sch_status_id'] = 1:$_GET['sch_status_id'] = $_GET['sch_status_id'];
 		$condition = " 1=1 ";
 		if(@$_GET['sch_txt'] != ''){
 			$condition .= " and ass_name like '%".@$_GET['sch_txt']."%' ";
 		}
+		if(@$_GET['sch_status_id'] !='all'){
+			$condition .= " and status_id = '".@$_GET['sch_status_id']."' ";
+		}
+		
 		$data['rs'] = $this->assessment->where($condition)->get();
 		$data['pagination']=$this->assessment->pagination();
 		$this->template->build('index',@$data);
@@ -31,7 +38,16 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($id != ''){
-			$data['rs'] = $this->assessment->get_row($id);
+			$chk_metrics = "select * from mds_set_metrics where mds_set_assessment_id = '".$id."'";
+			$result_chk_metrics =  $this->metrics->get($chk_metrics);
+			$num_chk = count($result_chk_metrics);
+			if($num_chk == '0'){
+				$data['rs'] = $this->assessment->get_row($id);
+			}else{
+				set_notify('error', "ไม่สามารถแก้ไขหัวข้อประเด็นการประเมินผลได้ เนื่องจากมีการใช้หัวข้อประเด็นการประเมินผลนี้อยู่");
+				redirect($data['urlpage']);
+			}
+			
 		}
 		$this->template->build('form',@$data);
 
@@ -92,6 +108,26 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 			echo 'true';
 		}
 		
+	}
+	
+	public function change_status(){
+		$data = '';
+		if(@$_GET['ref_id'] != ''){
+			$update_status['id'] = $_GET['ref_id'];
+			$update_status['status_id'] = @$_GET['status_id'];
+			$id = $this->assessment->save($update_status);
+			new_save_logfile("EDIT สถานะการใช้งาน",$this->modules_title,$this->assessment->table,"ID",$id,"ass_name",$this->modules_name);
+			
+			$item = $this->assessment->get_row($id);
+			$id = $item['id'];
+			$check = '';
+			if($item['status_id'] == '1'){
+				$check = 'checked="checked"';
+			}
+			$data = '<input type="checkbox" name="status_id['.$id.']" value="1" class="change_status" ref_id="'.$id.'"'.$check.'data-on-label="เปิด" data-off-label="ปิด" />';
+		}	
+		//$this->load->view('mds_set_measure/_status',@$data);
+		echo $data;
 	}
 }
 ?>

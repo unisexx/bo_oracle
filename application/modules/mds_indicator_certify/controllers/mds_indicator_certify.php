@@ -129,69 +129,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		$this->template->build('form',@$data);
 
 	}
-	/*
-	function form_list($users_keyer=null,$id=null){
-		$data['urlpage'] = $this->urlpage;
-		$premit = is_permit(login_data('id'),'1');
-		$data['metrics_id'] = $id;
-		$data['users_keyer'] = $users_keyer;
-		if($users_keyer != '' && $id !=''){
-			
-				$sql_result_status = "select result_status.*,result.mds_set_metrics_id ,topic.status_dtl,topic.status_steps,result.round_month
-										from mds_metrics_result result 
-										join mds_metrics_result_status result_status on result.id = result_status.mds_metrics_result_id
-										join mds_status_topic topic on result_status.permit_type_id = topic.permit_type_id and result_status.result_status_id = topic.status_id
-										where result.keyer_users_id = '".$users_keyer."' and RESULT.MDS_SET_METRICS_ID = '".$id."' order by result_status.id asc ";
-														
-
-									
-				$data['rs'] = $this->metrics_result->get($sql_result_status);
-				$data['pagination'] = $this->metrics_result->pagination();
-				
-			$data['rs_metrics'] = $this->metrics->get_row(@$data['rs']['0']['mds_set_metrics_id']);
-				if($premit == "")
-				{
-				  $chk_control_indicator = chk_control_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id']);
-				  if($chk_control_indicator != 'Y'){
-				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); //redirect("mds");
-				  }	
-				}
-			
-			
-			$data['parent_on'] = '';
-			$parent_on_id = $data['rs_metrics']['id'];
-			if(@$data['rs_metrics']['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {
-					
-					$parent_on = '';
-					$parent_on = $this->metrics->get_row($parent_on_id);
-					$parent_on_id = $parent_on['parent_id'];
-					
-					
-					if($data['parent_on'] != ''){
-						$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
-					}else{
-						$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
-					}
-					if($parent_on['parent_id'] == '0'){
-						$i = 5;
-					}
-					
-				}
-			}else{
-				$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
-			}
-			
-			$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
-		}else{
-			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
-			redirect($data['urlpage'].'/index/');
-		}
-			
-		$this->template->build('form_list',@$data);
-
-	}
-	*/
+	
 	
 	function form_list($result_id=null){
 		$data['urlpage'] = $this->urlpage;
@@ -199,7 +137,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		$data['result_id'] = $result_id;
 		if($result_id !=''){
 			
-				$sql_result_status = "select result_status.*,result.mds_set_metrics_id ,topic.status_dtl,topic.status_steps,result.round_month
+				$sql_result_status = "select result_status.*,result.mds_set_metrics_id ,topic.status_dtl,topic.status_steps,topic.code_colors,result.round_month
 										from mds_metrics_result result 
 										join mds_metrics_result_status result_status on result.id = result_status.mds_metrics_result_id
 										join mds_status_topic topic on result_status.permit_type_id = topic.permit_type_id and result_status.result_status_id = topic.status_id
@@ -316,11 +254,13 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 					*/
 					
 					// หาคะแนนขอผู้บันทึกคะแนน
-					$chk_keyer_score = "select mds_set_metrics_keyer.*,mds_metrics_result.score_metrics
-										from mds_set_metrics_keyer 
-										join mds_metrics_result on mds_set_metrics_keyer.mds_set_metrics_id = mds_metrics_result.mds_set_metrics_id 
-																						and mds_metrics_result.round_month = mds_set_metrics_keyer.round_month
-										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_score = '1'";
+					$chk_keyer_score = "select mds_set_metrics_keyer.*,mds_metrics_result.score_metrics,mds_metrics_result.result_metrics
+									from mds_set_metrics_keyer 
+									join mds_metrics_result on mds_set_metrics_keyer.mds_set_metrics_id = mds_metrics_result.mds_set_metrics_id 
+																					and mds_metrics_result.round_month = mds_set_metrics_keyer.round_month
+																					and mds_metrics_result.keyer_users_id = mds_set_metrics_keyer.keyer_users_id
+									where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' 
+									      and mds_set_metrics_keyer.keyer_score = '1'";
 					$data['score'] = $this->keyer->get($chk_keyer_score);
 					$data['score'] = @$data['score']['0'];
 				

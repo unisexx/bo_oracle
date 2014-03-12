@@ -94,34 +94,34 @@ $(function(){
 			<td style="font-size: 16px;text-align: right;" colspan="4"><b>รอบ <?=@$round_month?> เดือน</b><span style="margin-left: 20px;">&nbsp;</span></td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>ชื่อตัวชี้วัด</b></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>ชื่อตัวชี้วัด</b></td>
 			<td style="text-align: left;padding-top: 10px" colspan="3">
 				<?=@$rs['mds_set_metrics_name']?>
 				<?=(empty($keyer_activity['activity']))?'':' ('.$keyer_activity['activity'].')'?>
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 20px;">&nbsp;</span></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<?=@$keyer_activity['name']; ?>
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 20px;">&nbsp;</span></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>โทรศัพท์ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<?=(empty($keyer_activity['tel']))?'-':$keyer_activity['tel']; ?>
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 20px;">&nbsp;</span><b>อีเมลล์ผู้กำกับดูแล</b></td>
+			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>อีเมลล์ผู้กำกับดูแล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['email']))?'-':$kpr['email'];?></td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 20px;">&nbsp;</span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>
+			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 10px;">&nbsp;</span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>
 		</tr>
 		<tr>
 			<td colspan="4">
@@ -157,8 +157,8 @@ $(function(){
                                         <?=@$metrics_weight?>
                                     </center></td>
                                     <td><center>
-                                      <input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($rs['result_metrics']))?'N/A':$rs['result_metrics'];?>" >
-                                    </center><?=@$rs['result_metrics']?></td>
+                                      <input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?>" >
+                                    </center><?=@$score['result_metrics']?></td>
                                     <td id="ac"><center> 
                                     <input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$score['score_metrics']?>"  maxlength="6" class="numDecimal2" >
                                     </center><?=@$score['score_metrics']?></td>
@@ -172,7 +172,7 @@ $(function(){
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 20px;">&nbsp;</span><b><u>แบบฟอร์มรายงาน</u></b></td>
+			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 10px;">&nbsp;</span><b><u>แบบฟอร์มรายงาน</u></b></td>
 		</tr>
 		<tr>
 			<td colspan="4" style="text-align: left;padding-top: 10px">
@@ -200,7 +200,7 @@ $(function(){
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4">
-				<span style="margin-right: 20px;">&nbsp;</span><b><u>หลักฐานอ้างอิง</u></b>
+				<span style="margin-right: 10px;">&nbsp;</span><b><u>หลักฐานอ้างอิง</u></b>
 			</td>
 		</tr>
 		<tr>
@@ -234,10 +234,10 @@ $(function(){
 	<table width="100%" border="0">
             <tbody>
             <tr>
-              <th style="padding-top: 20px"><span style="margin-right: 20px;">&nbsp;</span><strong>รับรองผลการดำเนินงานจากผู้กำกับดูแลตัวชี้วัด</strong></th>
+              <th style="padding-top: 20px"><span style="margin-right: 10px;">&nbsp;</span><strong>รับรองผลการดำเนินงานจากผู้กำกับดูแลตัวชี้วัด</strong></th>
             </tr>
             <tr>
-              <? 				$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+              <? 				$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS,TOPIC.CODE_COLORS
 												FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
 												LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
 												WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' AND RESULT_STATUS.PERMIT_TYPE_ID = '2' ORDER BY RESULT_STATUS.ID DESC";
@@ -258,7 +258,11 @@ $(function(){
 		 					if(@$rs['control_status'] != '' && @$rs['is_save'] == '2'){
 		 						
               ?>
-              				<td style="text-align: left;padding-top: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong> <?=@$result_status['status_dtl']?></td>
+              				<td style="text-align: left;padding-top: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong> 
+              					<span style="<?=(empty($result_status['code_colors'])?"":"color:".$result_status['code_colors'])?>">
+              					<?=@$result_status['status_dtl']?>
+              					</span>
+              				</td>
               <? 			}else{
               						
               				if(is_permit(login_data('id'),'2') != '' && $result_chk['permit_type_id'] != '1'){
@@ -288,33 +292,37 @@ $(function(){
               	 						<textarea cols="20" rows="5" name="result_comment" style="width:80%; height:100px"><?=@$result_status['result_comment']?> </textarea>
               	 					</div>
               	 				</td>
-              			<?	}
-						}else{?>
-						<td style="text-align: left;padding-top: 10px">
-							<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง : </strong><?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
-							<? if(@$result_status['result_status_id'] == '2'){ ?>
-								<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
-							<? } ?>
-						</td>	
-					  <?}
+	              			<?	}
+							}else{?>
+							<td style="text-align: left;padding-top: 10px">
+								<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง : </strong>
+								<?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
+								<? if(@$result_status['result_status_id'] == '2'){ ?>
+									<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
+								<? } ?>
+							</td>	
+						  <?}
 				} 
 			  ?>
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$kpr['name']?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$kpr['name']?></td> 
+            </tr>
+            <tr>
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],'1');?></td> 
             </tr>
           </tbody></table>
 </div>
 </div>
 
 <? 
-$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS,TOPIC.CODE_COLORS
 					FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
 					LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
 					WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' AND RESULT_STATUS.PERMIT_TYPE_ID = '1' ORDER BY RESULT_STATUS.ID DESC";
 		$result_status = $this->result_status->get($sql_chk_status);
 		$result_status = @$result_status['0'];
-$sql_chk = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+$sql_chk = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS,TOPIC.CODE_COLORS
 			FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
 			LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
 			WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$rs['id']."' ORDER BY RESULT_STATUS.ID DESC";
@@ -334,14 +342,18 @@ if((@$rs['control_status'] == '1' && @$rs['is_save'] == '2') || ($num_kpr > 0)){
 	<table width="100%" border="0">
             <tbody>
             <tr>
-              <th style="padding-top: 20px"><span style="margin-right: 20px;">&nbsp;</span><strong>รับรองผลการดำเนินงานจาก กพร.</strong></th>
+              <th style="padding-top: 20px"><span style="margin-right: 10px;">&nbsp;</span><strong>รับรองผลการดำเนินงานจาก กพร.</strong></th>
             </tr>
             <tr>
               <? 				
 		 			if(@$rs['control_status'] == '1' && @$rs['is_save'] == '2' && @$rs['kpr_status'] != ''){
 		 						
               ?>
-              <td style="text-align: left;padding-top: 10px"><span style="margin-right: 40px;"></span><strong>ผลการรับรอง :</strong> <?=@$result_status['status_dtl']?></td>
+	              <td style="text-align: left;padding-top: 10px"><span style="margin-right: 40px;"></span><strong>ผลการรับรอง :</strong> 
+	              	<span style="<?=(empty($result_status['code_colors'])?"":"color:".$result_status['code_colors'])?>">
+	              	<?=@$result_status['status_dtl']?>
+	              	</span>
+	              </td>
               <? 			}else{
 			              	if(is_permit(login_data('id'),'1') != ''){
 				              		$chk_kpr_indicator = chk_kpr_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
@@ -369,20 +381,24 @@ if((@$rs['control_status'] == '1' && @$rs['is_save'] == '2') || ($num_kpr > 0)){
               	 						<textarea cols="20" rows="5" name="result_comment" style="width:80%; height:100px"><?=@$result_status['result_comment']?></textarea>
               	 					</div>
               	 				</td>
-              			<?	}
-						}else{?>
-						<td style="text-align: left;padding-top: 10px">
-							<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง : </strong><?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
-							<? if(@$result_status['result_status_id'] == '2'){ ?>
-								<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
-							<? } ?>
-						</td>	
-					  <?}
-					}
+	              			<?	}
+							}else{?>
+							<td style="text-align: left;padding-top: 10px">
+								<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong>
+								<?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
+								<? if(@$result_status['result_status_id'] == '2'){ ?>
+									<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
+								<? } ?>
+							</td>	
+						  <?}
+						}
 			  ?>
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=get_one('name','users','id',@$kpr['kpr_users_id'])?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=get_one('name','users','id',@$kpr['kpr_users_id'])?></td> 
+            </tr>
+            <tr>
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],'1');?></td> 
             </tr>
           </tbody></table>
 </div>

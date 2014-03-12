@@ -175,7 +175,7 @@ $(document).ready(function(){
 </tr>
 <tr class="tr_position">
   <th>ตำแหน่งสายบริหาร <span class="Txt_red_12"> *</span></th>
-  <td><?php echo form_dropdown("mds_set_position_id",get_option("id","pos_name","mds_set_position order by id asc"),@$rs['mds_set_position_id'],'','-- เลือกตำแหน่งสายบริหาร --') ?></td>
+  <td><?php echo form_dropdown("mds_set_position_id",get_option("id","pos_name","mds_set_position where status_id = '1' or id = '".@$rs['mds_set_position_id']."' order by id asc"),@$rs['mds_set_position_id'],'','-- เลือกตำแหน่งสายบริหาร --') ?></td>
 </tr>
 </table>
 <div id="btnBoxAdd">

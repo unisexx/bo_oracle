@@ -99,7 +99,7 @@ foreach ($rs as $key => $item_result) { ?>
   	?>
   	<img src="images/date.png" alt="" width="24" height="24" class="vtip" title="บันทึก : <?=@$date?> &lt;br&gt; ขออนุมัติส่ง : <?=@$date_2?> &lt;br&gt; พิจารณาส่ง : <?=@$date_3?> &lt;br&gt; กพร.พิจารณาอนุมัติ : <?=@$date_4?> " /></td>
   <td><? 
-  	   	$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS
+  	   	$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS,TOPIC.CODE_COLORS
 							FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
 							LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
 							WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".$item_result['id']."' ORDER BY RESULT_STATUS.ID DESC";
@@ -116,7 +116,9 @@ foreach ($rs as $key => $item_result) { ?>
   		if($item_result['is_save'] == 1 && count($result_status) == '0'){
   			echo " - ";
   		}else{
+  			echo "<span style='color:".@$result_status['0']['code_colors']." '>";
   			echo @$result_status['0']['status_dtl'];
+			echo "</span>";
   		}
   	  ?>
   </td>

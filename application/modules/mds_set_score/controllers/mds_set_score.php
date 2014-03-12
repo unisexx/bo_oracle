@@ -18,7 +18,7 @@ Class Mds_set_score extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
-		$sql = "select distinct budget_year from mds_set_score order by budget_year";
+		$sql = "select distinct budget_year from mds_set_score order by budget_year desc";
 		$data['rs'] = $this->score->get($sql);
 		$data['pagination']=$this->score->pagination();
 		$this->template->build('index',@$data);
@@ -31,6 +31,9 @@ Class Mds_set_score extends  Mdevsys_Controller{
 		
 		if($year != ''){
 			$data['budget_year'] = $year;
+			$data['action_type'] = "edit";
+		}else{
+			$data['action_type'] = "add";
 		}
 		$this->template->build('form',@$data);
 
@@ -41,16 +44,24 @@ Class Mds_set_score extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
 		if($_POST){
-			
-		   for ($i=1; $i <= 5 ; $i++) {
-		   		$data_score['budget_year'] = $_POST['budget_year']; 
-				$data_score['id'] = @$_POST['id_'.$i];
-				$data_score['score_id'] = @$i;
-				$data_score['val_start'] = @$_POST['val_start_'.$i];
-				$data_score['val_end'] = @$_POST['val_end_'.$i];
-				//print_r($data_score);
-				$this->score->save($data_score);
-		   } 
+			$sql = "select * from mds_set_score where budget_year = '".@$_POST['budget_year']."' order by budget_year";
+			$result = $this->score->get($sql);
+			if(count($result) > 0 && ( @$_POST['action_type'] != 'edit' || @$_POST['same_budget_year'] != '') ){
+				set_notify('error', 'ไม่สามารถบันทึกข้อมูล คะแนน ของปีที่มีการบันทึกคะแนน แล้วได้');	
+				redirect($urlpage);
+			}
+			   for ($i=1; $i <= 5 ; $i++) {
+				   	if(@$_POST['same_budget_year'] != '' && @$_POST['action_type'] == 'add'){
+				   		@$_POST['id_'.$i] = '';
+				   	}
+			   		$data_score['budget_year'] = $_POST['budget_year']; 
+					$data_score['id'] = @$_POST['id_'.$i];
+					$data_score['score_id'] = @$i;
+					$data_score['val_start'] = @$_POST['val_start_'.$i];
+					$data_score['val_end'] = @$_POST['val_end_'.$i];
+					//print_r($data_score);
+					$this->score->save($data_score);
+			   } 
 		   //return FALSE;
 		   set_notify('success', lang('save_data_complete'));		   
 		   if($_POST['id_1'] != ''){
@@ -80,7 +91,24 @@ Class Mds_set_score extends  Mdevsys_Controller{
 	function chk_budget_year(){	
 			$data['budget_year'] = $_GET['budget_year'];
 		
-		$this->load->view('score_dtl',@$data);
+			$this->load->view('score_dtl',@$data);
+	}
+	function check_budget_year(){
+		if(@$_GET['budget_year'] != '' && @$_GET['action_type'] != ''){
+			$sql = "select * from mds_set_score where budget_year = '".@$_GET['budget_year']."' order by budget_year";
+			$result = $this->score->get($sql);
+			if(count($result) > 0){
+				if(@$_GET['action_type'] == 'edit'){
+					echo 'true';
+				}else{
+					echo 'false';
+				}
+			}else{
+				echo 'true';
+			}
+		}else{
+			echo 'true';
+		}
 	}
 }
 ?>

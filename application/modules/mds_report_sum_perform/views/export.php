@@ -74,18 +74,9 @@
 					$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 					@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 				}
-				/*
-				if($metrics_dtl['dtl_img'] == '1' || $metrics_dtl['dtl_img'] == '0'){
-					@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
-					$score = number_format(@$score,2);
-				}else{
-					@$score = @$metrics_dtl['dtl_img'];
-				}
-				 * *
-				 */
 			?>
   			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-			<td style="text-align: right"><?=number_format(@$metrics_dtl['result_metrics'],2)?></td>
+			<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
   			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
   			<td style="text-align: right"><?=number_format(@$score,4);?></td>
   		</tr>
@@ -105,18 +96,9 @@
 							$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 							@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 						}
-						/*
-						if($metrics_dtl['dtl_img'] == '1' || $metrics_dtl['dtl_img'] == '0'){
-							@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
-							$score = number_format(@$score,2);
-						}else{
-							@$score = @$metrics_dtl['dtl_img'];
-						}
-						 * *
-						 */
 					?>
 		  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-					<td style="text-align: right"><?=number_format(@$metrics_dtl['result_metrics'],2)?></td>
+					<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
 		  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 		  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 		  		</tr>
@@ -135,18 +117,9 @@
 									$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 									@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 								}
-								/*
-								if($metrics_dtl['dtl_img'] == '1' || $metrics_dtl['dtl_img'] == '0'){
-									@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
-									$score = number_format(@$score,2);
-								}else{
-									@$score = @$metrics_dtl['dtl_img'];
-								}
-								 * *
-								 */
 							?>
 				  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-							<td style="text-align: right"><?=number_format(@$metrics_dtl['result_metrics'],2)?></td>
+							<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
 				  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 				  			<td style="text-align: right"><?=number_format(@$score,2);?></td>
 				  		</tr>
@@ -165,25 +138,61 @@
 											$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 											@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
 										}
-										/*
-										if($metrics_dtl['dtl_img'] == '1' || $metrics_dtl['dtl_img'] == '0'){
-											@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
-											$score = number_format(@$score,2);
-										}else{
-											@$score = @$metrics_dtl['dtl_img'];
-										}
-										 * *
-										 */
 									?>
 						  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-									<td style="text-align: right"><?=number_format(@$metrics_dtl['result_metrics'],2)?></td>
+									<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
 						  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 						  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 						  		</tr>
-				  		<? $i++;}//sub4 ?>
-				  <? $i++;}//sub3 ?>
+							  		<? 		
+										$result_sub_5 = metrics_dtl_indicator(@$indicator['id'],$sub_4['id'],@$_GET['sch_round_month']);
+										foreach ($result_sub_5 as $key_sub_5 => $sub_5) {
+											
+									?>
+										<tr>
+								  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?> <?=@$sub_5['metrics_name']?></td>
+								  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_5['mds_set_measure_id'])?></td>
+								  			<td style="text-align: right"><?=@$sub_5['metrics_target']?></td>
+								  			<? 
+												$metrics_dtl = metrics_weight(@$sub_5['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
+												if($indicator_all_weight != '0'){
+													$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
+													@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
+												}
+											?>
+								  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
+											<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+								  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
+								  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
+								  		</tr>
+									  		<? 		
+												$result_sub_6 = metrics_dtl_indicator(@$indicator['id'],$sub_5['id'],@$_GET['sch_round_month']);
+												foreach ($result_sub_6 as $key_sub_6 => $sub_6) {
+													
+											?>
+												<tr>
+										  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_id']?> <?=@$sub_6['metrics_name']?></td>
+										  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_6['mds_set_measure_id'])?></td>
+										  			<td style="text-align: right"><?=@$sub_6['metrics_target']?></td>
+										  			<? 
+														$metrics_dtl = metrics_weight(@$sub_6['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
+														if($indicator_all_weight != '0'){
+															$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
+															@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
+														}
+													?>
+										  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
+													<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+										  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
+										  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
+										  		</tr>
+								  		<? }//sub6 ?>
+						  		<? }//sub5 ?>
+				  		<? }//sub4 ?>
+				  <? }//sub3 ?>
 		  <? }//sub2 ?>
   <? }//sub1 ?>
 <? } ?>
 
 </table>
+ 
