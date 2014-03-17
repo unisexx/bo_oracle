@@ -67,7 +67,7 @@
 		<tr>
   			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?> <?=@$sub_1['metrics_name']?></td>
   			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_1['mds_set_measure_id'])?></td>
-  			<td style="text-align: right"><?=@$sub_1['metrics_target']?></td>
+  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_1['metrics_target'])?></td>
   			<? 
 				$metrics_dtl = metrics_weight(@$sub_1['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
 				if($indicator_all_weight != '0'){
@@ -76,7 +76,7 @@
 				}
 			?>
   			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-			<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+			<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
   			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
   			<td style="text-align: right"><?=number_format(@$score,4);?></td>
   		</tr>
@@ -89,7 +89,7 @@
 				<tr>
 		  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?> <?=@$sub_2['metrics_name']?></td>
 		  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_2['mds_set_measure_id'])?></td>
-		  			<td style="text-align: right"><?=@$sub_2['metrics_target']?></td>
+		  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_2['metrics_target'])?></td>
 		  			<? 
 						$metrics_dtl = metrics_weight(@$sub_2['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
 						if($indicator_all_weight != '0'){
@@ -98,7 +98,7 @@
 						}
 					?>
 		  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-					<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+					<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
 		  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 		  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 		  		</tr>
@@ -110,7 +110,7 @@
 						<tr>
 				  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?> <?=@$sub_3['metrics_name']?></td>
 				  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_3['mds_set_measure_id'])?></td>
-				  			<td style="text-align: right"><?=@$sub_3['metrics_target']?></td>
+				  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_3['metrics_target'])?></td>
 				  			<? 
 								$metrics_dtl = metrics_weight(@$sub_3['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
 								if($indicator_all_weight != '0'){
@@ -119,7 +119,7 @@
 								}
 							?>
 				  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-							<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+							<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
 				  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 				  			<td style="text-align: right"><?=number_format(@$score,2);?></td>
 				  		</tr>
@@ -131,7 +131,7 @@
 								<tr>
 						  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?> <?=@$sub_4['metrics_name']?></td>
 						  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_4['mds_set_measure_id'])?></td>
-						  			<td style="text-align: right"><?=@$sub_4['metrics_target']?></td>
+						  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_4['metrics_target'])?></td>
 						  			<? 
 										$metrics_dtl = metrics_weight(@$sub_4['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
 										if($indicator_all_weight != '0'){
@@ -140,7 +140,7 @@
 										}
 									?>
 						  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-									<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+									<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
 						  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 						  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 						  		</tr>
@@ -152,7 +152,7 @@
 										<tr>
 								  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?> <?=@$sub_5['metrics_name']?></td>
 								  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_5['mds_set_measure_id'])?></td>
-								  			<td style="text-align: right"><?=@$sub_5['metrics_target']?></td>
+								  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_5['metrics_target'])?></td>
 								  			<? 
 												$metrics_dtl = metrics_weight(@$sub_5['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
 												if($indicator_all_weight != '0'){
@@ -161,7 +161,7 @@
 												}
 											?>
 								  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-											<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+											<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
 								  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 								  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 								  		</tr>
@@ -171,9 +171,9 @@
 													
 											?>
 												<tr>
-										  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_id']?> <?=@$sub_6['metrics_name']?></td>
+										  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?> <?=@$sub_6['metrics_name']?></td>
 										  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_6['mds_set_measure_id'])?></td>
-										  			<td style="text-align: right"><?=@$sub_6['metrics_target']?></td>
+										  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_6['metrics_target'])?></td>
 										  			<? 
 														$metrics_dtl = metrics_weight(@$sub_6['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
 														if($indicator_all_weight != '0'){
@@ -182,10 +182,32 @@
 														}
 													?>
 										  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
-													<td style="text-align: right"><?=htmlspecialchars_decode(@$metrics_dtl['result_metrics'])?></td>
+													<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
 										  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
 										  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
 										  		</tr>
+										  			<? 		
+														$result_sub_7 = metrics_dtl_indicator(@$indicator['id'],$sub_6['id'],@$_GET['sch_round_month']);
+														foreach ($result_sub_7 as $key_sub_7 => $sub_7) {
+															
+													?>
+														<tr>
+												  			<td>ตัวชีวัดที่ <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?>.<?=@$sub_7['metrics_on']?> <?=@$sub_7['metrics_name']?></td>
+												  			<td style="text-align: right"><?=get_one('measure_name','mds_set_measure','id',@$sub_6['mds_set_measure_id'])?></td>
+												  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_6['metrics_target'])?></td>
+												  			<? 
+																$metrics_dtl = metrics_weight(@$sub_7['id'],@$_GET['sch_round_month'],$_GET['sch_budget_year']);
+																if($indicator_all_weight != '0'){
+																	$sum_score += (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
+																	@$score = (@$metrics_dtl['weight']*@$metrics_dtl['score_metrics'])/@$indicator_all_weight;
+																}
+															?>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl['weight'],2)?></td>
+															<td style="text-align: right"><?=@$metrics_dtl['result_metrics']?></td>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl['score_metrics'],4)?></td>
+												  			<td style="text-align: right"><?=number_format(@$score,4);?></td>
+												  		</tr>
+										  		<? }//sub7 ?>
 								  		<? }//sub6 ?>
 						  		<? }//sub5 ?>
 				  		<? }//sub4 ?>

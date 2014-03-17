@@ -74,19 +74,17 @@ foreach ($rs as $key => $item_result) {
   <td>
   	<?
   			   $chk_kpr = "select mds_set_metrics_kpr.*,
-							mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username ,
 							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
 							from mds_set_metrics_kpr 
-							left join mds_set_permission_dtl on mds_set_metrics_kpr.control_permission_id = mds_set_permission_dtl.mds_set_permission_id
-							left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id 
-							left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
-							left join cnf_department on mds_set_permission_dtl.departmentid = cnf_department.id 
+							left join mds_set_position on mds_set_metrics_kpr.control_position_id = mds_set_position.id 
+							left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
+							left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
 							where mds_set_metrics_kpr.mds_set_metrics_id = '".$item_result['mds_set_metrics_id']."' and mds_set_metrics_kpr.round_month = '".@$item_result['round_month']."' ";
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$kpr = @$result_kpr['0'];
   	?>
-  	<?=@$kpr['name']?> <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : <?=(empty($kpr['tel']))?'-':$kpr['tel'];?>&lt;br&gt; อีเมล์ : <?=(empty($kpr['email']))?'-':$kpr['email'];?>" /></td>
-  <td><?=@$item_result['name']?> <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : <?=(empty($item_result['tel']))?'-':$item_result['tel'];?>&lt;br&gt; อีเมล์ : <?=(empty($item_result['email']))?'-':$item_result['email'];?>" /></td>
+  	<?=@$kpr['control_name']?> <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : <?=(empty($kpr['control_tel']))?'-':$kpr['control_tel'];?>&lt;br&gt; อีเมล์ : <?=(empty($kpr['control_email']))?'-':$kpr['control_email'];?>" /></td>
+  <td><?=@$item_result['keyer_name']?> <img src="images/contact.png" alt="" width="22" height="22" class="vtip" title="เบอร์ติดต่อ : <?=(empty($item_result['keyer_tel']))?'-':$item_result['keyer_tel'];?>&lt;br&gt; อีเมล์ : <?=(empty($item_result['keyer_email']))?'-':$item_result['keyer_email'];?>" /></td> 
   <td>
   	<? 
   		

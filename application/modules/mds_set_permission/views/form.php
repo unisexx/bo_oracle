@@ -120,25 +120,19 @@ $(document).ready(function(){
 <tr>
   <th>ประเภทสิทธิ์ <span class="Txt_red_12">*</span></th>
   <td>
-  	<?
-  	 if(@$rs['permission_id'] != ''){
-  		$sql_permission = "select mds_set_permission_type.*,mds_set_permit_type.permit_name from mds_set_permission_type 
-							left join mds_set_permit_type on mds_set_permission_type.mds_set_permit_type_id = mds_set_permit_type.id
-							where mds_set_permission_type.mds_set_permission_id = '".$rs['permission_id']."' ";
-		$result_permission = $this->permission_type->get($sql_permission);
-		foreach ($result_permission as $key => $permis) {
-			if($permis['mds_set_permit_type_id'] == '1'){
+  	<?php
+
+			if(@$rs['mds_set_permit_type_id'] == '1'){
 				$permit_1 = 'checked="checked"';
-			}else if($permis['mds_set_permit_type_id'] == '2'){
+			}else if(@$rs['mds_set_permit_type_id'] == '2'){
 				$permit_2 = 'checked="checked"';
-			}else if($permis['mds_set_permit_type_id'] == '3'){
+			}else if(@$rs['mds_set_permit_type_id'] == '3'){
 				$permit_3 = 'checked="checked"';
 			}	
-  	 	}
-	 }
+  	
 	?>
 	
-  	<span style="width: 150px"><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="1" <?=@$permit_1?> /> กพร.</span>
+  	<span><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="1" <?=@$permit_1?> /> กพร.</span>
   	<span><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="2" <?=@$permit_2?> /> ผู้กำกับดูแลตัวชี้วัด</span>
   	<span><input type="radio" name="mds_set_permit_type_id" class="permit_type" value="3" <?=@$permit_3?> /> ผู้จัดเก็บข้อมูล</span>
   	<div id="error_permit"></div>

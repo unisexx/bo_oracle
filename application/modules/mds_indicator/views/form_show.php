@@ -53,36 +53,36 @@ $(function(){
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['control_name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<? foreach ($keyer as $key => $temp_keyer) {
 					 if($key == '0'){
-					 	echo $temp_keyer['name'];
+					 	echo $temp_keyer['keyer_name'];
 					 }else{
-					 	echo ' , '.$temp_keyer['name'];
+					 	echo ' , '.$temp_keyer['keyer_name'];
 					 }
 				   } ?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['control_tle']))?'-':$kpr['control_tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>โทรศัพท์ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<? foreach ($keyer as $key => $temp_keyer) {
 					 if($key == '0'){
-					 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
+					 	echo (empty($temp_keyer['keyer_tel']))?'-':$temp_keyer['keyer_tel'];
 					 }else{
 					 	echo ' , ';
-					 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
+					 	echo (empty($temp_keyer['keyer_tel']))?'-':$temp_keyer['keyer_tel'];
 					 }
 				   } ?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>อีเมลล์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['email']))?'-':$kpr['email'];?></td>
+			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['control_email']))?'-':$kpr['control_email'];?></td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 10px;">&nbsp;</span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>

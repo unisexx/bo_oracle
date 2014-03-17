@@ -102,10 +102,15 @@ $(function(){
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['control_name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
-				<?=@$keyer_activity['name']; ?>
+				<?php 
+					echo @$keyer_activity['keyer_name']; 
+					if(@$keyer_activity['keyer_score'] == '1'){
+						echo " ( ผู้บันทึกคะแนน )";						
+					}
+				?>
 			</td>
 		</tr>
 		<tr>
@@ -158,7 +163,7 @@ $(function(){
                                     </center></td>
                                     <td><center>
                                       <input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?>" >
-                                    </center><?=@$score['result_metrics']?></td>
+                                    </center><?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?></td>
                                     <td id="ac"><center> 
                                     <input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$score['score_metrics']?>"  maxlength="6" class="numDecimal2" >
                                     </center><?=@$score['score_metrics']?></td>
@@ -185,7 +190,7 @@ $(function(){
 							<div>
 								<span style="margin-right: 40px;">&nbsp;</span>
 								<div style="width: 420px;display: inline-block">
-								<a target="_blank" href="uploads/mds/<?=@$doc['doc_name_upload']?>"><?=@$doc['doc_name']?></a>
+								<a target="_blank" href="uploads/mds/<?=@$doc['doc_name_upload']?>"><?=@$doc['doc_name_upload']?></a>
 								</div>
 							</div>
 						<?}
@@ -214,7 +219,7 @@ $(function(){
 							<div style="margin-top: 10px">
 								<span style="margin-right: 40px;">&nbsp;</span><?=$key+1?>. 
 								<div style="width: 405px;display: inline-block">
-									<a target="_blank" href="uploads/mds/<?=@$doc_ref['doc_name_upload']?>"><?=@$doc_ref['doc_name']?></a>
+									<a target="_blank" href="uploads/mds/<?=@$doc_ref['doc_name_upload']?>"><?=@$doc_ref['doc_name_upload']?></a>
 								</div>
 							</div>
 					<?		
@@ -265,7 +270,7 @@ $(function(){
               				</td>
               <? 			}else{
               						
-              				if(is_permit(login_data('id'),'2') != '' && $result_chk['permit_type_id'] != '1'){
+              				if(is_permit(login_data('id'),'2') != '' && $result_chk['permit_type_id'] != '1' && $result_chk['permit_type_id'] != '2'){
 		              			$chk_control_indicator = chk_control_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
 				 					if($chk_control_indicator == 'Y'){
 				 						
@@ -296,7 +301,7 @@ $(function(){
 							}else{?>
 							<td style="text-align: left;padding-top: 10px">
 								<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง : </strong>
-								<?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
+								<?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":'<span style="color:'.$result_status['code_colors'].'">'.$result_status['status_dtl'].'</span>')?><br />
 								<? if(@$result_status['result_status_id'] == '2'){ ?>
 									<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
 								<? } ?>
@@ -306,10 +311,10 @@ $(function(){
 			  ?>
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$kpr['name']?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$kpr['control_name']?></td> 
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],'1');?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],$result_status['result_status_id']);?></td> 
             </tr>
           </tbody></table>
 </div>
@@ -385,7 +390,7 @@ if((@$rs['control_status'] == '1' && @$rs['is_save'] == '2') || ($num_kpr > 0)){
 							}else{?>
 							<td style="text-align: left;padding-top: 10px">
 								<span style="margin-right: 40px;">&nbsp;</span><strong>ผลการรับรอง :</strong>
-								<?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":$result_status['status_dtl'])?><br />
+								<?=(empty($result_status['status_dtl'])?"รอผลการตรวจสอบ":'<span style="color:'.$result_status['code_colors'].'">'.$result_status['status_dtl'].'</span>')?><br />
 								<? if(@$result_status['result_status_id'] == '2'){ ?>
 									<span style="margin-right: 65px;">&nbsp;</span> หมายเหตุ : <?=@$result_status['result_comment']?>
 								<? } ?>
@@ -395,10 +400,10 @@ if((@$rs['control_status'] == '1' && @$rs['is_save'] == '2') || ($num_kpr > 0)){
 			  ?>
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=get_one('name','users','id',@$kpr['kpr_users_id'])?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=$kpr['kpr_name']?></td> 
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],'1');?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],$result_status['result_status_id']);?></td> 
             </tr>
           </tbody></table>
 </div>

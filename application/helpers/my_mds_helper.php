@@ -506,11 +506,11 @@ function chk_date_approve($result_id = null , $permit_type = null,$status_id = n
 						$date = "-";
 					}
 				}else if($permit_type == 2){
-					if($result['permit_type_id'] == '2' && $result['result_status_id'] == '2'){
+					if($result['permit_type_id'] == '2' && $result['result_status_id'] == '2' && $status_id != '2'){
 						$date = "-";
 					}
 				}else if($permit_type == 1){
-					if($result['permit_type_id'] == '1' && $result['result_status_id'] == '2'){
+					if($result['permit_type_id'] == '1' && $result['result_status_id'] == '2' && $status_id != '2'){
 						$date = "-";
 					}
 				}
@@ -527,7 +527,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 	$CI =& get_instance();
 	$data['round_month'] = '';
 	if($users_keyer != ''&& $metrics_id != '' && $metrics_start != ''){
-		$sql_result = "select result.* ,mds_set_metrics_keyer.change_keyer_users_id
+		 $sql_result = "select result.* ,mds_set_metrics_keyer.change_keyer_users_id
 						from mds_metrics_result result
 						left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id
 											and result.round_month = mds_set_metrics_keyer.round_month 
@@ -537,29 +537,50 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 									order by result.id desc ";
 		$result_chk = $CI->db->getarray($sql_result);
 		dbConvert($result_chk);
+		
 		if(count($result_chk) == '0'){
+				$sql_chk_users="SELECT MIN(KEYER.ROUND_MONTH) AS MIN_MONTH
+								FROM MDS_SET_METRICS_KEYER KEYER 
+								LEFT JOIN MDS_METRICS_RESULT RESULT ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
+								AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH 
+								AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID 
+								WHERE ( KEYER.KEYER_USERS_ID = '943' OR KEYER.CHANGE_KEYER_USERS_ID = '947') AND KEYER.MDS_SET_METRICS_ID = '2' ";
+				$result_chk_user = $CI->db->getarray($sql_chk_users);
+				dbConvert($result_chk_user);
+				$users_round_month = $result_chk_user['0']['min_month'];
+				$chk_metrics_start = $metrics_start;
 				for($i=1;$i<=3;$i++){
-					if($metrics_start <= '12'){
-						// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
-						$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
-											 FROM  MDS_SET_METRICS_KEYER KEYER
-											 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
-														AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
-										   	 WHERE KEYER.MDS_SET_METRICS_ID = '".$metrics_id."' AND KEYER.ROUND_MONTH = '".$metrics_start."' ";
-						$result_keyer_result = $CI->db->getarray($chk_keyer_result);
-						dbConvert($result_keyer_result);
-						
-						foreach ($result_keyer_result as $key => $keyer_result) {
-							if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
-								$result_all = "no";
-							}else{
-								$i = 5;
+						if($chk_metrics_start <= '12'){
+							// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
+							$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
+												 FROM  MDS_SET_METRICS_KEYER KEYER
+												 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
+															AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
+											   	 WHERE KEYER.MDS_SET_METRICS_ID = '".$metrics_id."' AND KEYER.ROUND_MONTH = '".$chk_metrics_start."' ";
+							
+							$result_keyer_result = $CI->db->getarray($chk_keyer_result);
+							dbConvert($result_keyer_result);
+							
+					
+							$result_all = "ok";
+							foreach ($result_keyer_result as $key => $keyer_result) {
+								if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
+									$result_all = "no";
+								}else{		
+									$i = '5';
+								}
+								if($users_round_month > $metrics_start && $result_all == "no"){
+									$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบเดือนก่อนหน้าที่ท่านรับผิดชอบยังไม่ผ่านการอนุมัติ";
+								}
 							}
+							$chk_metrics_start = $chk_metrics_start+3;
 						}
-					}
-					$metrics_start = $metrics_start+3;
+						
 				}
-			$data['round_month'] = $metrics_start;
+			if($chk_metrics_start == '15'){
+				$chk_metrics_start = $metrics_start;
+			}
+			$data['round_month'] = $chk_metrics_start;
 		}else{
 			foreach ($result_chk as $key => $chk) {
 				if($chk['control_status'] == '' && $chk['kpr_status'] == ''){
@@ -583,20 +604,28 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 	}
 	return $data;
 }
-function chk_permission_id($users_id = null){
+function chk_user_dtl($users_id = null){
 	$CI =& get_instance();
-	$permission_id = '';
+	$user_dtl = array();
 	if($users_id != ''){
-		$sql_chk = "SELECT MDS_SET_PERMISSION.ID
-					FROM MDS_SET_PERMISSION
-					WHERE MDS_SET_PERMISSION.USERS_ID = '".$users_id."'";
+		$sql_chk = "select permission.users_id as permission_users_id,permission.id as permission_id
+					,permission.mds_set_permit_type_id,permission.mds_set_position_id,users.*,mds_set_position.pos_name  
+					from mds_set_permission permission
+					left join users on permission.users_id = users.id
+					left join mds_set_position on permission.mds_set_position_id = mds_set_position.id
+					where permission.users_id = '".$users_id."' order by permission.id desc";
 		$result_chk = $CI->db->getarray($sql_chk);
 		dbConvert($result_chk);
 		if(count($result_chk) > '0'){
-			$permission_id = $result_chk['0']['id'];
+			$user_dtl['name'] = $result_chk['0']['name'];
+			$user_dtl['email'] = $result_chk['0']['email'];
+			$user_dtl['tel'] = $result_chk['0']['tel'];
+			$user_dtl['position_id'] = $result_chk['0']['mds_set_position_id'];
+			$user_dtl['division_id'] = $result_chk['0']['divisionid'];
+			$user_dtl['department_id'] = $result_chk['0']['departmentid'];
 		}
 	}
-	return $permission_id;
+	return $user_dtl;
 }
 function chk_reslut_keyer_scroe($metrics_id=null,$round_month=null){
 	$CI =& get_instance();
