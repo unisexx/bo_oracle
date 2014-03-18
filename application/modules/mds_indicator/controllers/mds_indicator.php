@@ -87,7 +87,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			$data['parent_on'] = '';
 			$parent_on_id = $data['rs_metrics']['id'];
 			if(@$data['rs_metrics']['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {
+				for ($i=1; $i <= 8 ; $i++) {
 					
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
@@ -100,7 +100,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
 					}
 					if($parent_on['parent_id'] == '0'){
-						$i = 5;
+						$i = 9;
 					}
 					
 				}
@@ -160,7 +160,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$data['parent_on'] = '';
 				$parent_on_id = $data['rs_metrics']['id'];
 				if(@$data['rs_metrics']['parent_id'] != '0'){
-					for ($i=1; $i <= 4 ; $i++) {
+					for ($i=1; $i <= 8 ; $i++) {
 						
 						$parent_on = '';
 						$parent_on = $this->metrics->get_row($parent_on_id);
@@ -173,7 +173,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 							$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
 						}
 						if($parent_on['parent_id'] == '0'){
-							$i = 5;
+							$i = 9;
 						}
 						
 					}
@@ -261,7 +261,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				
 				$parent_on_id = $data['rs_metrics']['id'];
 				if(@$data['rs_metrics']['parent_id'] != '0'){
-					for ($i=1; $i <= 4 ; $i++) {
+					for ($i=1; $i <= 8 ; $i++) {
 						
 						$parent_on = '';
 						$parent_on = $this->metrics->get_row($parent_on_id);
@@ -274,7 +274,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 							$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
 						}
 						if($parent_on['parent_id'] == '0'){
-							$i = 5;
+							$i = 9;
 						}
 						
 					}
@@ -360,7 +360,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				
 				$parent_on_id = $data['rs_metrics']['id'];
 				if(@$data['rs_metrics']['parent_id'] != '0'){
-					for ($i=1; $i <= 4 ; $i++) {
+					for ($i=1; $i <= 8 ; $i++) {
 						
 						$parent_on = '';
 						$parent_on = $this->metrics->get_row($parent_on_id);
@@ -373,7 +373,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 							$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
 						}
 						if($parent_on['parent_id'] == '0'){
-							$i = 5;
+							$i = 9;
 						}
 						
 					}

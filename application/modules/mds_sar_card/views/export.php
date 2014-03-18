@@ -528,6 +528,73 @@ $(function(){
 										  			<td style="text-align: right"><?=number_format(@$metrics_dtl_12['score_metrics'],4)?></td>
 										  			<td style="text-align: center"><?=@$metrics_dtl_12['img']?></td>
 										  		</tr>
+										  		<? 		
+													$result_sub_7 = metrics_dtl_indicator(@$indicator['id'],$sub_6['id']);
+													foreach ($result_sub_7 as $key_sub_7 => $sub_7) {
+														
+												?>
+														<tr>
+												  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=$sub_6['metrics_on']?>.<?=$sub_7['metrics_on']?></td>
+												  			<td><?=@$sub_7['metrics_name']?></td>
+												  			<td><?=@$sub_7['result_budget_year_2']?></td>
+										  					<td><?=@$sub_7['result_budget_year_1']?></td>
+												  			<td style="text-align: right"><?=htmlspecialchars_decode(@$sub_7['metrics_target'])?></td>
+															<? 
+																$metrics_dtl_6 = metrics_weight(@$sub_7['id'],6,$_GET['sch_budget_year'],FALSE);
+																if($indicator_all_weight_6 != '0'){
+																	$sum_score_6 += (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics'])/@$indicator_all_weight_6;
+																}
+																if($metrics_dtl_6['result_metrics'] == ''){
+																	$metrics_dtl_6['result_metrics'] = 0;
+																}
+																if($metrics_dtl_6['dtl_img'] == '1' || $metrics_dtl_6['dtl_img'] == '0'){
+																	@$metrics_dtl_6['img'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics']);
+																}else{
+																	@$metrics_dtl_6['img'] = @$metrics_dtl_6['dtl_img'];
+																}
+															?>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl_6['weight'],2)?></td>
+												  			<td style="text-align: right"><?=@$metrics_dtl_6['result_metrics']?></td>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl_6['score_metrics'],4)?></td>
+												  			<td style="text-align: center"><?=@$metrics_dtl_6['img']?></td>
+												  			<? 
+												  				$metrics_dtl_9 = metrics_weight(@$sub_7['id'],9,$_GET['sch_budget_year'],FALSE);
+																if($indicator_all_weight_9 != '0'){
+																	$sum_score_9 += (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics'])/@$indicator_all_weight_9;
+																}
+																if($metrics_dtl_9['result_metrics'] == ''){
+																	$metrics_dtl_9['result_metrics'] = 0;
+																}
+																if($metrics_dtl_9['dtl_img'] == '1' || $metrics_dtl_9['dtl_img'] == '0'){
+																	@$metrics_dtl_9['img'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics']);
+																}else{
+																	@$metrics_dtl_9['img'] = @$metrics_dtl_9['dtl_img'];
+																}
+												  			?>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl_9['weight'],2)?></td>
+												  			<td style="text-align: right"><?=@$metrics_dtl_9['result_metrics']?></td>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl_9['score_metrics'],4)?></td>
+												  			<td style="text-align: center"><?=@$metrics_dtl_9['img']?></td>
+												  			<? 
+												  				$metrics_dtl_12 = metrics_weight(@$sub_7['id'],12,$_GET['sch_budget_year'],FALSE);
+																if($indicator_all_weight_12 != '0'){
+																	$sum_score_12 += (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics'])/@$indicator_all_weight_12;
+																}
+																if($metrics_dtl_12['result_metrics'] == ''){
+																	$metrics_dtl_12['result_metrics'] = 0;
+																}
+																if($metrics_dtl_12['dtl_img'] == '1' || $metrics_dtl_12['dtl_img'] == '0'){
+																	@$metrics_dtl_12['img'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics']);
+																}else{
+																	@$metrics_dtl_12['img'] = @$metrics_dtl_12['dtl_img'];
+																}
+												  			?>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl_12['weight'],2)?></td>
+												  			<td style="text-align: right"><?=@$metrics_dtl_12['result_metrics']?></td>
+												  			<td style="text-align: right"><?=number_format(@$metrics_dtl_12['score_metrics'],4)?></td>
+												  			<td style="text-align: center"><?=@$metrics_dtl_12['img']?></td>
+												  		</tr>
+										  		<? }//sub7 ?>
 								  		<? }//sub6 ?>
 						  		<? }//sub5 ?>
 				  		<? }//sub4 ?>

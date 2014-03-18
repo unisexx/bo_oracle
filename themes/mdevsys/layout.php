@@ -5,6 +5,9 @@
 		<title><?php echo $template['title']; ?></title>
 		<?php require_once('themes/mdevsys/_script.php')?>
 		<?php echo $template['metadata']; ?>
+		<style>
+			.error { color: red; }
+		</style>
 	</head>
 	<body>
 		<div id="head"><?php require_once('_header.php')?></div>

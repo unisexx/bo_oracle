@@ -647,24 +647,4 @@ function chk_reslut_keyer_scroe($metrics_id=null,$round_month=null){
 	return $data;
 }
 
-function chk_premission_dtl($keyer_users_id = null,$metrics_id = null , $round_month = null){
-	$CI =& get_instance();
-	$data = '';
-	if($keyer_users_id != '' && $metrics_id != '' && $round_month != ''){
-		$chk_keyer = "select mds_set_metrics_keyer.*,
-									mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
-									from mds_set_metrics_keyer 
-									left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
-									where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
-										  and mds_set_metrics_keyer.round_month = '".$round_month."' and mds_set_metrics_keyer.keyer_users_id = '".$keyer_users_id."'";
-		$result = $CI->db->getarray($chk_keyer);
-		dbConvert($result);
-			if(count($result) > '0'){
-				$data = $result['0']['name'];
-			}else{
-				$data ='';
-			}
-	}
-	return $data;
-}
 ?>

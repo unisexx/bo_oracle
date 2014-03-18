@@ -143,7 +143,7 @@ $(function(){
 				<?
 					if(@$rs['id'] != ''){
 					
-						$sql_doc = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID
+						$sql_doc = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID,MDS_SET_METRICS_KEYER.KEYER_NAME
 									FROM MDS_METRICS_DOCUMENT DOC
 									LEFT JOIN MDS_METRICS_RESULT ON DOC.MDS_METRICS_RESULT_ID = MDS_METRICS_RESULT.ID
 									LEFT JOIN MDS_SET_METRICS ON MDS_METRICS_RESULT.MDS_SET_METRICS_ID = MDS_SET_METRICS.ID
@@ -158,7 +158,7 @@ $(function(){
 								<span style="margin-right: 40px;">&nbsp;</span>
 								<div style="width: 900px;display: inline-block">
 								<a target="_blank" href="uploads/mds/<?=@$doc['doc_name_upload']?>"><?=@$doc['doc_name_upload']?></a>
-								<span style="margin-left: 10px"><?php echo chk_premission_dtl($doc['keyer_users_id'],$rs_metrics['id'],$round_month); ?></span>
+								<span style="margin-left: 10px"><?php echo @$doc['keyer_name'];?></span>
 								</div>
 							</div>
 						<?}
@@ -181,7 +181,7 @@ $(function(){
 				<? 	$num_ref = 1;
 					if(@$rs['id'] != ''){
 					
-						$sql_doc_ref = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID
+						$sql_doc_ref = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID,MDS_SET_METRICS_KEYER.KEYER_NAME
 										FROM MDS_METRICS_DOCUMENT DOC
 										LEFT JOIN MDS_METRICS_RESULT ON DOC.MDS_METRICS_RESULT_ID = MDS_METRICS_RESULT.ID
 										LEFT JOIN MDS_SET_METRICS ON MDS_METRICS_RESULT.MDS_SET_METRICS_ID = MDS_SET_METRICS.ID
@@ -197,7 +197,7 @@ $(function(){
 								<div style="width: 900px;display: inline-block">
 									<a target="_blank" href="uploads/mds/<?=@$doc_ref['doc_name_upload']?>"><?=@$doc_ref['doc_name_upload']?></a>
 								</div>
-								<span style="margin-left: 10px"><?php echo chk_premission_dtl($doc_ref['keyer_users_id'],$rs_metrics['id'],$round_month); ?></span>
+								<span style="margin-left: 10px"><?php echo @$doc_ref['keyer_name']; ?></span>
 							</div>
 					<?		
 						}

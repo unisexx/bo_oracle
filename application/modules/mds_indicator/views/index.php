@@ -179,14 +179,32 @@ $(function(){
 						  			<td nowrap="nowrap"><?=@$item['metrics_on']?>.<?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?></td>
 						  			<td nowrap="nowrap"><?=@$sub_5['metrics_name']?></td>
 						  		<tr>
-						  <? $i++;}
-					  } //sub5 ?>
-				<?	} //sub4 ?>
-			<?	}//sub3 ?>
-		  <? }//sub2 ?>
-  <? }//sub1 ?>
+							  <? 		$i++;}
+										$result_sub_6 = metrics_dtl_indicator(@$item['mds_set_indicator_id'],$sub_5['id']);
+										foreach ($result_sub_6 as $key_sub_6 => $sub_6) {
+											if($premit == "")
+											{
+												 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_6['id']);	
+											}else{
+												 $chk_keyer_indicator = 'Y';
+											}
+											if($chk_keyer_indicator == 'Y'){	
+								?>
+									<tr class="odd cursor" onclick="window.location='<?php echo @$urlpage;?>/form/<?=$sub_6['id'];?>'">
+							  			<td><? echo $i;?></td>
+							  			<td><?=@$sub_6['ass_name']?></td>
+							  			<td nowrap="nowrap"><?=@$item['metrics_on']?>.<?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?></td>
+							  			<td nowrap="nowrap"><?=@$sub_6['metrics_name']?></td>
+							  		<tr>
+							  <?php	$i++;} ?>
+						<?php 	} //sub6 ?>
+					<?php 	} //sub5 ?>
+				<?php	} //sub4 ?>
+			<?php	}//sub3 ?>
+		  <?php  }//sub2 ?>
+  <?php }//sub1 ?>
 
-<? } ?>
+<?php } ?>
 </table>
 </div>
 </div>
