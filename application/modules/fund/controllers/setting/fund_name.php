@@ -45,4 +45,24 @@ class Fund_name extends Fund_Setting_Controller {
 		redirect('fund/setting/fund_name');
 	}
 	
+	public function chk_fund_name()
+	{
+		if(@$_GET['fund_name'])
+		{
+			$condition = '';
+			if(@$_GET['id']){
+				$condition = " and id != '".$_GET['id']."' ";
+			}
+			
+			$sql = "select * from fund_mst_fund_name where fund_name = '".$_GET['fund_name']."'".$condition."";
+			$result = $this->fund_name_mdl->get($sql);
+			if(count($result) > 0){
+				echo "false";
+			}else{
+				echo "true";
+			}
+		}else{
+			echo "true";
+		}
+	}
 }

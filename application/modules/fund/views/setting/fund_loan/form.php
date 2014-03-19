@@ -1,3 +1,25 @@
+<script type="text/javascript">
+$(document).ready(function(){
+		$("form").validate({
+			rules: {
+				fund_name:{required:true, 
+						  remote:{
+							 url:'fund/setting/fund_loan/chk_fund_name',
+							 data: { fund_name:function(){ return $('[name=fund_name]').val(); },	
+							    	 id:function(){ return $('[name=id]').val(); }
+							    	}
+							}
+				    }
+			},
+			messages:{
+				fund_name:{required:"กรุณาระบุชื่อกองทุน", remote:"มีชื่อกองทุนนี้แล้ว"}
+			}
+		});
+});
+</script>
+<style>
+	label.error { color: red; }
+</style>
 <h3>ตั้งค่า ประเภทเงินทุนให้กู้   (บันทึก / แก้ไข)</h3>
 <?php echo form_open('fund/setting/fund_loan/save'); ?>
 <table class="tbadd">

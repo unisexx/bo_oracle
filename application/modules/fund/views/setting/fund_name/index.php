@@ -5,7 +5,7 @@
 	</form>
 </div>
 
-<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='fund/setting/fund_loan/form'" class="btn_add"/></div>
+<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='fund/setting/fund_name/form'" class="btn_add"/></div>
 
 <?php echo $pagination; ?>
 
