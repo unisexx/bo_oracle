@@ -16,6 +16,7 @@ class Fund_loan extends Fund_Setting_Controller {
 		}
 		$data['items'] = $this->fund_loan_mdl->get();
 		$data['pagination']	= $this->fund_loan_mdl->pagination();
+		$_GET['page'] = (empty($_GET['page']))?1:$_GET['page'];
 		$this->template->build('setting/fund_loan/index', $data);
 	}
 	

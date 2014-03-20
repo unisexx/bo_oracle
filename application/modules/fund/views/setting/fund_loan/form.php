@@ -12,7 +12,7 @@ $(document).ready(function(){
 				    }
 			},
 			messages:{
-				fund_name:{required:"กรุณาระบุชื่อกองทุน", remote:"มีชื่อกองทุนนี้แล้ว"}
+				fund_name:{required:"กรุณาระบุชื่อประเภทเงินทุนให้กู้", remote:"มีชื่อประเภทเงินทุนให้กู้นี้แล้ว"}
 			}
 		});
 });

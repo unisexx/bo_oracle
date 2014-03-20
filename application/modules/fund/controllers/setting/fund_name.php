@@ -16,6 +16,7 @@ class Fund_name extends Fund_Setting_Controller {
 		}
 		$data['items'] = $this->fund_name_mdl->get();
 		$data['pagination']	= $this->fund_name_mdl->pagination();
+		$_GET['page'] = (empty($_GET['page']))?1:$_GET['page'];
 		$this->template->build('setting/fund_name/index', $data);
 	}
 	

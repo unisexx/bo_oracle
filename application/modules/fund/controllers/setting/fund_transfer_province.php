@@ -10,16 +10,24 @@ class Fund_transfer_province extends Fund_Setting_Controller {
 	
 	public function index()
 	{
-		if(!empty($_GET['keyword']))
+		$condition = "WHERE 1=1";
+		if(!empty($_GET['sch_province_id']))
 		{
-			//$this->fund_name_mdl->where("fund_name like '%".$_GET['keyword']."%'");
+			$condition .= " AND T.PROVINCE_ID = '".$_GET['sch_province_id']."' ";	
 		}
+		if(!empty($_GET['sch_fund_id'])){
+			$condition .= " AND T.FUND_ID = '".$_GET['sch_fund_id']."' ";
+		}
+		
 		$sql = "SELECT T.*, P.TITLE, F.FUND_NAME
 		FROM FUND_TRANSFER_PROVINCE T
 		JOIN CNF_PROVINCE P ON P.ID = T.PROVINCE_ID
-		LEFT JOIN FUND_MST_FUND_NAME F ON F.ID = T.FUND_ID";
+		LEFT JOIN FUND_MST_FUND_NAME F ON F.ID = T.FUND_ID
+		$condition 
+		ORDER BY T.ID DESC ";
 		$data['items'] = $this->fund_transfer_province_mdl->get($sql);
 		$data['pagination']	= $this->fund_transfer_province_mdl->pagination();
+		$_GET['page'] = (empty($_GET['page']))?1:$_GET['page'];
 		$this->template->build('setting/fund_transfer_province/index', $data);
 	}
 	
