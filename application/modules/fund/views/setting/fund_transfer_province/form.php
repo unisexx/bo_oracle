@@ -44,7 +44,7 @@ $(document).ready(function(){
 	</tr>
 	<tr>
 	  <th>งบประมาณ <span class="Txt_red_12">*</span></th>
-	  <td><?php echo form_input('transfer_amount', $rs['transfer_amount']); ?> บาท <span id="error_transfer_amount"></span></td>
+	  <td><?php echo form_input('transfer_amount', $rs['transfer_amount']); ?> บาท <div id="error_transfer_amount"></div></td>
 	</tr>
 </tbody>
 </table>
