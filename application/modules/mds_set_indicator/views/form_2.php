@@ -76,12 +76,6 @@ tinymce.init({
 	}
 $(function(){
 	
-	$('#metrics_on').live('keyup',function(){
-		var metrics_on =  $('#metrics_on').val();
-		if( metrics_on > '<?=@$max_mrtrics_on?>'){
-			$('#metrics_on').val('<?=@$max_mrtrics_on?>');
-		}
-	});
 	
 	$('#metrics_start').live('change', function(){
 		chang_strat()
@@ -535,7 +529,9 @@ for ($i=1; $i <= 3; $i++) {
   <th>ผู้จัดเก็บข้อมูล<span class="Txt_red_12"> * </span></th>
   <td>
   	<div id="error_keyer_score_<?=$month?>"></div>
-  	<div style="width: 780px;text-align: right;"><input type="button" class="bt_add_keyer" style="width: 150px" ref_m="<?=$month?>" value=" เพิ่มผู้จัดเก็บข้อมูล " /></div>
+  	<div style="width: 780px;text-align: right;" class="btn-group">
+  		<button type="button" class="btn btn-info bt_add_keyer" ref_m="<?=$month?>"> เพิ่มผู้จัดเก็บข้อมูล  </button>
+  	</div>
   	<? 
   		@$num_keyer = 1;
 		if(@$rs['id'] != ''){
@@ -549,7 +545,7 @@ for ($i=1; $i <= 3; $i++) {
 	    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" <? if($keyer['keyer_score'] == '1'){echo 'checked="checked"';} ?> /> ผู้บันทึกคะแนน 
-	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+	 	<button type="button" class="btn btn-danger bt_remove_keyer" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>"> ลบ </button>
 	 	<samp id="error_keyer"></samp>
 	 	</div>
 	 	 	
@@ -563,7 +559,7 @@ for ($i=1; $i <= 3; $i++) {
 			    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 			    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 			 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
-			 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+			 	<button type="button" class="btn btn-danger bt_remove_keyer" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>"> ลบ </button>
 			 	<samp id="error_keyer"></samp>
 			 	</div>
 		 <? }
@@ -571,10 +567,10 @@ for ($i=1; $i <= 3; $i++) {
   		<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
 	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','users.name','mds_set_permission permission 
 	    																													left join users on users.id = permission.users_id
-	    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
-	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+	 	<button type="button" class="btn btn-danger bt_remove_keyer" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>"> ลบ </button>
 	 	<samp id="error_keyer"></samp>
 	 	</div>
   	<? } ?>

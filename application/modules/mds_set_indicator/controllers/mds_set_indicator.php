@@ -88,7 +88,9 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				$result_min = $this->metrics->get($sql_min_metrics_on);
 				$data['min_mrtrics_on'] = @$result_min['0']['max_metrics_on']+1;
 			}
-			
+			if(@$result_max['0']['max_metrics_on'] == ''){
+				$data['max_mrtrics_on'] = @$result_min['0']['max_metrics_on']+1;
+			}
 			
 			$data['rs']['parent_id'] = '0';
 			

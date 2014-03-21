@@ -58,7 +58,7 @@ $(function(){
 			upload +=	'<span style="margin-right: 40px;">&nbsp;</span>';
 			upload +=	'<div style="width: 428px;display: inline-block"><input type="file" name="document_plan_ref['+i+']" id="document_plan_ref['+i+']">';
 			upload +=	'</div>';
-			upload +=	'<input type="button" value="ลบ" ref="'+i+'" style="width: 50px;" class="dt_delete_ref_uploads" />';
+			upload +=	'<button type="button" class="btn btn-danger dt_delete_ref_uploads" ref="'+i+'"> ลบ </button>';
 			upload += '</div>';
 		
 		$("#document_ref").before(upload);
@@ -325,7 +325,7 @@ $(function(){
 									if(login_data('id') == @$rs['keyer_users_id'] || login_data('id') == @$keyer_activity['change_keyer_users_id']){
 										if(@$rs['is_save'] != '2'){ 
 								?>
-									<input type="button" value="แก้ไขไฟล์ แบบฟอร์มรายงาน" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>" style="width: 200px;" class="edit_document_plan" />
+									<button type="button" class="btn btn-info edit_document_plan" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>"> แก้ไขไฟล์ แบบฟอร์มรายงาน </button>
 									<input type="hidden" name="show_value" id="show_value" value="0" />
 								<? 
 										} 
@@ -360,7 +360,8 @@ $(function(){
 					if(login_data('id') == @$rs['keyer_users_id'] || login_data('id') == @$keyer_activity['change_keyer_users_id']){
 						if(@$rs['is_save'] != '2'){ 
 				?>
-				<span style="margin-right: 10px;">&nbsp;</span><input type="button" class="bt_add_document_ref" style="width: 150px" value=" เพิ่มแถบอัพโหลด " />
+				<span style="margin-right: 10px;">&nbsp;</span>
+				<button type="button" class="btn btn-info bt_add_document_ref" ref_m="<?=$month?>"> เพิ่มแถบอัพโหลด </button>
 				<?
 						}
 					}
@@ -384,7 +385,7 @@ $(function(){
 									if(login_data('id') == @$rs['keyer_users_id'] || login_data('id') == @$keyer_activity['change_keyer_users_id']){
 										if(@$rs['is_save'] != '2'){ 
 								?>
-								<input type="button" value="ลบ" ref_id="<?=@$doc_ref['id']?>" type_doc='2' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" class="dt_delete_document" />
+								<button type="button" class="btn btn-danger dt_delete_document" ref_id="<?=@$doc_ref['id']?>" type_doc='2' ref_result_id="<?=@$rs['id']?>"> ลบ </button>
 								<? 
 										} 
 									}
@@ -402,7 +403,7 @@ $(function(){
 					<div style="width: 420px;display: inline-block">
 					<input type="file" name="document_plan_ref[<?=$num_ref?>]" >
 					</div>					
-					<input type="button" value="ลบ" ref="<?=$num_ref?>" style="width: 50px;" class="dt_delete_ref_uploads" />	
+					<button type="button" class="btn btn-danger dt_delete_ref_uploads" ref="<?=$num_ref?>"> ลบ </button>
 				</div>
 				<?
 							}
