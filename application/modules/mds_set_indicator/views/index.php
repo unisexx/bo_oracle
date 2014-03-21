@@ -103,146 +103,63 @@ $(function(){
 		<input type="button" class="btn_deleteico vtip" link="<?=$urlpage?>/delete/<?=@$_GET['sch_budget_year']?>/<?=@$indicator['id']?>" title="ลบมิตินี้" />
 		
 		<? 
+			//sub1
 			$sql_sub_1 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '0' order by metrics_on asc  ";
 			$result_sub_1 = $this->metrics->get($sql_sub_1);
 			$sub_1_all = count($result_sub_1);
-			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {	
-		?>
-			<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>. <?=@$sub_1['metrics_name']?>    
-			<? 
-				if(($key_sub_1+1) < $sub_1_all && $key_sub_1 == 0){ ?>
-				<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_1['id']?>" ref_parent = "0" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_1['metrics_on']?>"  style="margin-left:20px" />
-			<? }else if(($key_sub_1+1) < $sub_1_all && $key_sub_1 > 0){ ?>
-				<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น"  ref_id = "<?=@$sub_1['id']?>" ref_parent = "0" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_1['metrics_on']?>" />
-				<input type="button" class="btn_downico vtip" title="เลื่อนลง"  ref_id = "<?=@$sub_1['id']?>" ref_parent = "0" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_1['metrics_on']?>"  />
-			<? }else if(($key_sub_1+1) == $sub_1_all && $key_sub_1 > 0){ ?>
-				<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_1['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_1['metrics_on']?>" ref_parent = "0"/>
-			<? } ?>
-			<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_1['id']?>/add'" />
-			<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_1['id']?>'" />
-			<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_1['id']?>" />
-			
-				<? 
+			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
+				$all_metrics_on = @$sub_1['metrics_on'].'. '.@$sub_1['metrics_name'];
+				//echo @$key_sub_1;
+				echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_1['metrics_on'],@$sub_1['id'],'0',$key_sub_1,$sub_1_all,$urlpage,@$_GET['sch_budget_year']);
+					
+					//sub2 
 					$sql_sub_2 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '".@$sub_1['id']."' order by metrics_on asc  ";
 					$result_sub_2 = $this->metrics->get($sql_sub_2);
 					$sub_2_all = count($result_sub_2);
-					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {	
-				?>
-					<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?> <?=@$sub_2['metrics_name']?>    
-					<? 
-						if(($key_sub_2+1) < $sub_2_all && $key_sub_2 == 0){ ?>
-						<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_2['id']?>" ref_parent = "<?=@$sub_1['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_2['metrics_on']?>" style="margin-left:20px" />
-					<? }else if(($key_sub_2+1) < $sub_2_all && $key_sub_2 > 0){ ?>
-						<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_2['id']?>" ref_parent = "<?=@$sub_1['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_2['metrics_on']?>"/>
-						<input type="button" class="btn_downico vtip" title="เลื่อนลง"  ref_id = "<?=@$sub_2['id']?>" ref_parent = "<?=@$sub_1['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_2['metrics_on']?>" />
-					<? }else if(($key_sub_2+1) == $sub_2_all && $key_sub_2 > 0){ ?>
-						<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_2['id']?>" ref_parent = "<?=@$sub_1['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_2['metrics_on']?>" />
-					<? } ?>
-					<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_2['id']?>/add'" />
-					<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_2['id']?>'" />
-					<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_2['id']?>" />
-					
-					<? 
+					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
+						$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'. '.@$sub_2['metrics_name'];
+						echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_2['metrics_on'],@$sub_2['id'],$sub_1['id'],$key_sub_2,$sub_2_all,$urlpage,@$_GET['sch_budget_year']);	
+						
+						//sub3 
 						$sql_sub_3 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '".@$sub_2['id']."' order by metrics_on asc  ";
 						$result_sub_3 = $this->metrics->get($sql_sub_3);
 						$sub_3_all = count($result_sub_3);
-						foreach ($result_sub_3 as $key_sub_3 => $sub_3) {	
-					?>
-						<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?> <?=@$sub_3['metrics_name']?>    
-						<? 
-							if(($key_sub_3+1) < $sub_3_all && $key_sub_3 == 0){ ?>
-							<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_3['id']?>" ref_parent = "<?=@$sub_2['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_3['metrics_on']?>" style="margin-left:20px" />
-						<? }else if(($key_sub_3+1) < $sub_3_all && $key_sub_3 > 0){ ?>
-							<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_3['id']?>" ref_parent = "<?=@$sub_2['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_3['metrics_on']?>" />
-							<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_3['id']?>" ref_parent = "<?=@$sub_2['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_3['metrics_on']?>" />
-						<? }else if(($key_sub_3+1) == $sub_3_all && $key_sub_3 > 0){ ?>
-							<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_3['id']?>" ref_parent = "<?=@$sub_2['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_3['metrics_on']?>" />
-						<? } ?>
-						<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_3['id']?>/add'" />
-						<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_3['id']?>'" />
-						<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_3['id']?>" />
-						
-							<? 
+						foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
+							$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'.'.@$sub_3['metrics_on'].'. '.@$sub_3['metrics_name'];
+							echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_3['metrics_on'],@$sub_3['id'],$sub_2['id'],$key_sub_3,$sub_3_all,$urlpage,@$_GET['sch_budget_year']);		
+								
+								//sub4
 								$sql_sub_4 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '".@$sub_3['id']."' order by metrics_on asc  ";
 								$result_sub_4 = $this->metrics->get($sql_sub_4);
 								$sub_4_all = count($result_sub_4);
-								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {	
-							?>
-								<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?> <?=@$sub_4['metrics_name']?>    
-								<? 
-									if(($key_sub_4+1) < $sub_4_all && $key_sub_4 == 0){ ?>
-									<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_4['id']?>" ref_parent = "<?=@$sub_3['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_4['metrics_on']?>" style="margin-left:20px" />
-								<? }else if(($key_sub_4+1) < $sub_4_all && $key_sub_4 > 0){ ?>
-									<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_4['id']?>" ref_parent = "<?=@$sub_3['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_4['metrics_on']?>"/>
-									<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_4['id']?>" ref_parent = "<?=@$sub_3['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_4['metrics_on']?>" />
-								<? }else if(($key_sub_4+1) == $sub_4_all && $key_sub_4 > 0){ ?>
-									<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_4['id']?>" ref_parent = "<?=@$sub_3['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_4['metrics_on']?>" />
-								<? } ?>
-								<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_4['id']?>/add'" />
-								<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_4['id']?>'" />
-								<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_4['id']?>" />
-								
-									<? 
+								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
+									$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'.'.@$sub_3['metrics_on'].'.'.@$sub_4['metrics_on'].'. '.@$sub_4['metrics_name'];
+									echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_4['metrics_on'],@$sub_4['id'],$sub_3['id'],$key_sub_4,$sub_4_all,$urlpage,@$_GET['sch_budget_year']);			
+
+										//sub5
 										$sql_sub_5 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '".@$sub_4['id']."' order by metrics_on asc  ";
 										$result_sub_5 = $this->metrics->get($sql_sub_5);
 										$sub_5_all = count($result_sub_5);
-										foreach ($result_sub_5 as $key_sub_5 => $sub_5) {	
-									?>
-										<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?> <?=@$sub_5['metrics_name']?>    
-										<? 
-											if(($key_sub_5+1) < $sub_5_all && $key_sub_5 == 0){ ?>
-											<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_5['id']?>" ref_parent = "<?=@$sub_4['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_5['metrics_on']?>" style="margin-left:20px" />
-										<? }else if(($key_sub_5+1) < $sub_5_all && $key_sub_5 > 0){ ?>
-											<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_5['id']?>" ref_parent = "<?=@$sub_4['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_5['metrics_on']?>"/>
-											<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_5['id']?>" ref_parent = "<?=@$sub_4['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_5['metrics_on']?>" />
-										<? }else if(($key_sub_5+1) == $sub_5_all && $key_sub_5 > 0){ ?>
-											<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_5['id']?>" ref_parent = "<?=@$sub_4['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_5['metrics_on']?>" />
-										<? } ?>
-										<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_5['id']?>/add'" />
-										<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_5['id']?>'" />
-										<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_5['id']?>" />
-										
-											<? 
+										foreach ($result_sub_5 as $key_sub_5 => $sub_5) {
+											$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'.'.@$sub_3['metrics_on'].'.'.@$sub_4['metrics_on'].'.'.@$sub_5['metrics_on'].'. '.@$sub_5['metrics_name'];
+											echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_5['metrics_on'],@$sub_5['id'],$sub_4['id'],$key_sub_5,$sub_5_all,$urlpage,@$_GET['sch_budget_year']);				
+												
+												//sub6
 												$sql_sub_6 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '".@$sub_5['id']."' order by metrics_on asc  ";
 												$result_sub_6 = $this->metrics->get($sql_sub_6);
 												$sub_6_all = count($result_sub_6);
-												foreach ($result_sub_6 as $key_sub_6 => $sub_6) {	
-											?>
-												<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?> <?=@$sub_6['metrics_name']?>    
-												<? 
-													if(($key_sub_6+1) < $sub_6_all && $key_sub_6 == 0){ ?>
-													<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_6['id']?>" ref_parent = "<?=@$sub_5['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_6['metrics_on']?>" style="margin-left:20px" />
-												<? }else if(($key_sub_6+1) < $sub_6_all && $key_sub_6 > 0){ ?>
-													<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_6['id']?>" ref_parent = "<?=@$sub_5['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_6['metrics_on']?>"/>
-													<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_6['id']?>" ref_parent = "<?=@$sub_5['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_6['metrics_on']?>" />
-												<? }else if(($key_sub_6+1) == $sub_6_all && $key_sub_6 > 0){ ?>
-													<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_6['id']?>" ref_parent = "<?=@$sub_5['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_6['metrics_on']?>" />
-												<? } ?>
-												<input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_6['id']?>/add'" />
-												<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_6['id']?>'" />
-												<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_6['id']?>" />
-												
-													<? 
+												foreach ($result_sub_6 as $key_sub_6 => $sub_6) {
+													$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'.'.@$sub_3['metrics_on'].'.'.@$sub_4['metrics_on'].'.'.@$sub_5['metrics_on'].'.'.@$sub_6['metrics_on'].'. '.@$sub_6['metrics_name'];
+													echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_6['metrics_on'],@$sub_6['id'],$sub_5['id'],$key_sub_6,$sub_6_all,$urlpage,@$_GET['sch_budget_year']);	
+
+														//sub7
 														$sql_sub_7 = "select id,metrics_name,metrics_on,parent_id from mds_set_metrics where mds_set_indicator_id = '".@$indicator['id']."' and parent_id = '".@$sub_6['id']."' order by metrics_on asc  ";
 														$result_sub_7 = $this->metrics->get($sql_sub_7);
 														$sub_7_all = count($result_sub_7);
-														foreach ($result_sub_7 as $key_sub_7 => $sub_7) {	
-													?>
-														<ul><li><img src="images/tree/page.png" /> <?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?>.<?=@$sub_7['metrics_on']?> <?=@$sub_7['metrics_name']?>    
-														<? 
-															if(($key_sub_7+1) < $sub_7_all && $key_sub_7 == 0){ ?>
-															<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_7['id']?>" ref_parent = "<?=@$sub_6['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_7['metrics_on']?>" style="margin-left:20px" />
-														<? }else if(($key_sub_7+1) < $sub_7_all && $key_sub_7 > 0){ ?>
-															<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_7['id']?>" ref_parent = "<?=@$sub_6['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_7['metrics_on']?>"/>
-															<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "<?=@$sub_7['id']?>" ref_parent = "<?=@$sub_6['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_7['metrics_on']?>" />
-														<? }else if(($key_sub_7+1) == $sub_7_all && $key_sub_7 > 0){ ?>
-															<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "<?=@$sub_7['id']?>" ref_parent = "<?=@$sub_6['id']?>" indicator_id="<?=@$indicator['id']?>" metrics_on="<?=@$sub_7['metrics_on']?>" />
-														<? } ?>
-														
-														<input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" onclick="document.location='<?=$urlpage?>/form_2/<?=@$indicator['id']?>/<?=@$sub_7['id']?>'" />
-														<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="<?=$urlpage?>/delete_metrics/<?=@$_GET['sch_budget_year']?>/<?=@$sub_7['id']?>" />
-														</li></ul>
-													<? } ?>
+														foreach ($result_sub_7 as $key_sub_7 => $sub_7) {
+															$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'.'.@$sub_3['metrics_on'].'.'.@$sub_4['metrics_on'].'.'.@$sub_5['metrics_on'].'.'.@$sub_6['metrics_on'].'.'.@$sub_7['metrics_on'].'. '.@$sub_7['metrics_name'];
+															echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_7['metrics_on'],@$sub_7['id'],$sub_7['id'],$key_sub_7,$sub_7_all,$urlpage,@$_GET['sch_budget_year'],TRUE);		
+													 } ?>
 													
 												</li></ul>
 											<? } ?>

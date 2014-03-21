@@ -647,4 +647,27 @@ function chk_reslut_keyer_scroe($metrics_id=null,$round_month=null){
 	return $data;
 }
 
+function set_metrics_dtl($indicator_id=null,$all_metrics_on=null,$metrics_on=null,$ref_id=null,$ref_parent=null,$key_sub=null,$sub_all=null,$urlpage=null,$sch_budget_year=null,$metrics_end=FALSE){
+	$dtl = '';
+	if($indicator_id != '' && $all_metrics_on != '' && $metrics_on != '' && $ref_id != '' && $ref_parent != '' && $sub_all != '' && $urlpage != '' && $sch_budget_year != ''){
+			$dtl = '<ul><li><img src="images/tree/page.png" />'.$all_metrics_on;
+			
+				if(($key_sub+1) < $sub_all && $key_sub == 0){
+					$dtl .= '<input type="button" class="btn_downico vtip" title="เลื่อนลง" ref_id = "'.$ref_id.'" ref_parent = "'.$ref_parent.'" indicator_id="'.$indicator_id.'" metrics_on="'.$metrics_on.'"  style="margin-left:20px" />';
+			 	}else if(($key_sub+1) < $sub_all && $key_sub > 0){
+					$dtl .= '<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น"  ref_id = "'.$ref_id.'" ref_parent = "'.$ref_parent.'" indicator_id="'.$indicator_id.'" metrics_on="'.$metrics_on.'" />';
+					$dtl .= '<input type="button" class="btn_downico vtip" title="เลื่อนลง"  ref_id = "'.$ref_id.'" ref_parent = "'.$ref_parent.'" indicator_id="'.$indicator_id.'" metrics_on="'.$metrics_on.'"  />';
+				}else if(($key_sub+1) == $sub_all && $key_sub > 0){
+					$dtl .= '<input type="button" class="btn_upico vtip" title="เลื่อนขึ้น" ref_id = "'.$ref_id.'" indicator_id="'.$indicator_id.'" metrics_on="'.$metrics_on.'" ref_parent = "'.$ref_parent.'"/>';
+				}
+			if($metrics_end == FALSE){
+				$dtl .= '<a href="'.$urlpage.'/form_2/'.$indicator_id.'/'.$ref_id.'/add"><input type="button" class="btn_addico vtip" title="เพิ่มตัวชี้วัดย่อย" /></a>';
+			}
+			$dtl .= '<a href="'.$urlpage.'/form_2/'.$indicator_id.'/'.$ref_id.'"><input type="button" class="btn_editico vtip" title="แก้ไขตัวชี้วัดนี้" /></a>';
+			$dtl .= '<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="'.$urlpage.'/delete_metrics/'.$sch_budget_year.'/'.$ref_id.'" />';
+   }
+
+	return $dtl;
+}
+
 ?>
