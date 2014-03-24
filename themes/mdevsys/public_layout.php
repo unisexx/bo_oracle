@@ -3,7 +3,7 @@
 	<head>
 		<base href="<?php echo base_url(); ?>" />
 		<title><?php echo $template['title']; ?></title>
-		<?php require_once('themes/mdevsys/_public_script.php')?>
+		<?php require_once('themes/mdevsys/_script.php')?>
 		<?php echo $template['metadata']; ?>
 	</head>
 	<body>

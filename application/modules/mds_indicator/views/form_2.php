@@ -361,7 +361,7 @@ $(function(){
 						if(@$rs['is_save'] != '2'){ 
 				?>
 				<span style="margin-right: 10px;">&nbsp;</span>
-				<button type="button" class="btn btn-info bt_add_document_ref" ref_m="<?=$month?>"> เพิ่มแถบอัพโหลด </button>
+				<button type="button" class="btn btn-info bt_add_document_ref"> เพิ่มแถบอัพโหลด </button>
 				<?
 						}
 					}

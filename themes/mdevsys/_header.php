@@ -45,3 +45,4 @@
 <a href="logout"><img src="themes/bo/images/btn_logout.jpg" width="59" height="21" style="margin-bottom:-6px;" /></a>
 </div>
 </div>
+<?php echo login_chk(); //--- ภ้าไม่ได้มาจากการล้อกอินให้ redirect กลับไปล้อกอินใหม่ ---?>

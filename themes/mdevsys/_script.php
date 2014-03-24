@@ -185,6 +185,4 @@ $(document).ready(function(){
 	});
 });
 </script>
-<?php echo login_chk(); //--- ภ้าไม่ได้มาจากการล้อกอินให้ redirect กลับไปล้อกอินใหม่ ---?>
-
 

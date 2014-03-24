@@ -142,7 +142,13 @@ $(function(){
  	<? 		
 			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0');
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
-				
+				$metrics_on = '';
+				$dtl = mds_sar_card_metrics_dtl($sub_1,$metrics_on,@$_GET['sch_budget_year'],@$indicator_all_weight_6,@$indicator_all_weight_9,@$indicator_all_weight_12,TRUE);
+				echo @$dtl['dtl'];
+				$sum_score_6 += @$dtl['sum_score_6'];
+				$sum_score_9 += @$dtl['sum_score_9'];
+				$sum_score_12 += @$dtl['sum_score_12'];
+				unset($dtl);
 				
 	?>
 		<tr>
@@ -448,7 +454,7 @@ $(function(){
 										  			<td style="text-align: center"><?=@$metrics_dtl_12['img']?></td>
 										  		</tr>
 										  		<? 		
-													$result_sub_7 = metrics_dtl_indicator(@$indicator['id'],$sub_7['id']);
+													$result_sub_7 = metrics_dtl_indicator(@$indicator['id'],$sub_6['id']);
 													foreach ($result_sub_7 as $key_sub_7 => $sub_7) {
 														
 												?>

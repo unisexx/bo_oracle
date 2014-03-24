@@ -5,13 +5,12 @@ function is_permit($users_id = null,$permit = null){
 			$CI =& get_instance();
 			$condition = '';
 		if($permit != ''){
-			$condition = "AND MDS_SET_PERMISSION_TYPE.MDS_SET_PERMIT_TYPE_ID = '".$permit."'";
+			$condition = "AND MDS_SET_PERMISSION.MDS_SET_PERMIT_TYPE_ID = '".$permit."'";
 		}
 		
 			$sql = "SELECT MDS_SET_PERMIT_TYPE.PERMIT_NAME 
 					FROM  MDS_SET_PERMISSION
-					JOIN MDS_SET_PERMISSION_TYPE ON MDS_SET_PERMISSION.ID =  MDS_SET_PERMISSION_TYPE.MDS_SET_PERMISSION_ID
-					LEFT JOIN MDS_SET_PERMIT_TYPE ON MDS_SET_PERMISSION_TYPE.MDS_SET_PERMIT_TYPE_ID =  MDS_SET_PERMIT_TYPE.ID
+					LEFT JOIN MDS_SET_PERMIT_TYPE ON MDS_SET_PERMISSION.MDS_SET_PERMIT_TYPE_ID =  MDS_SET_PERMIT_TYPE.ID
 					WHERE MDS_SET_PERMISSION.USERS_ID = '".$users_id."' 
 					$condition ";
 			$result = $CI->db->getarray($sql); 
@@ -667,6 +666,260 @@ function set_metrics_dtl($indicator_id=null,$all_metrics_on=null,$metrics_on=nul
 			$dtl .= '<input type="button" class="btn_deleteico vtip"  title="ลบรายการนี้" link="'.$urlpage.'/delete_metrics/'.$sch_budget_year.'/'.$ref_id.'" />';
    }
 
+	return $dtl;
+}
+
+function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_year=null,$indicator_all_weight_6='',$indicator_all_weight_9='',$indicator_all_weight_12='',$link=TRUE,$type=null){
+	$dtl = '';
+	if($metrics_dtl != '' && $sch_budget_year != '' && $indicator_all_weight_6 != '' && $indicator_all_weight_9 != '' && $indicator_all_weight_12 != ''){
+		$dtl = array();
+		$dtl['dtl']  = "<tr>";
+  		$dtl['dtl'] .= "<td>";
+  		$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
+  		$dtl['dtl'] .= @$metrics_dtl['metrics_on']."</td>";
+  		$dtl['dtl'] .=	"<td>".@$metrics_dtl['metrics_name']."</td>";
+  		$dtl['dtl'] .=	"<td>".@$metrics_dtl['result_budget_year_2']."</td>";
+		$dtl['dtl'] .=	"<td>".@$metrics_dtl['result_budget_year_1']."</td>";
+		$dtl['dtl'] .=	'<td style="text-align: right">'.htmlspecialchars_decode(@$metrics_dtl['metrics_target']).'</td>';
+
+				$metrics_dtl_6 = metrics_weight(@$metrics_dtl['id'],6,$sch_budget_year,$link);
+				if($indicator_all_weight_6 != '0'){
+					$dtl['sum_score_6'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics'])/@$indicator_all_weight_6;
+				}
+				if($metrics_dtl_6['result_metrics'] == ''){
+					$metrics_dtl_6['result_metrics'] = 0;
+				}
+			if($type == 'export'){
+				if($metrics_dtl_6['dtl_img'] == '1' || $metrics_dtl_6['dtl_img'] == '0'){
+					@$metrics_dtl_6['img'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics']);
+				}else{
+					@$metrics_dtl_6['img'] = @$metrics_dtl_6['dtl_img'];
+				}
+			}
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['weight'],2).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_6['result_metrics'].'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['score_metrics'],4).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_6['img'].'</td>';
+
+  				$metrics_dtl_9 = metrics_weight(@$metrics_dtl['id'],9,$sch_budget_year,$link);
+				if($indicator_all_weight_9 != '0'){
+					$dtl['sum_score_9'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics'])/@$indicator_all_weight_9;
+				}
+				if($metrics_dtl_9['result_metrics'] == ''){
+					$metrics_dtl_9['result_metrics'] = 0;
+				}
+			if($type == 'export'){
+				if($metrics_dtl_9['dtl_img'] == '1' || $metrics_dtl_9['dtl_img'] == '0'){
+					@$metrics_dtl_9['img'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics']);
+				}else{
+					@$metrics_dtl_9['img'] = @$metrics_dtl_9['dtl_img'];
+				}
+			}
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_9['weight'],2).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_9['result_metrics'].'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_9['score_metrics'],4).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_9['img'].'</td>';
+ 
+  				$metrics_dtl_12 = metrics_weight(@$metrics_dtl['id'],12,$sch_budget_year,$link);
+				if($indicator_all_weight_12 != '0'){
+					$dtl['sum_score_12'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics'])/@$indicator_all_weight_12;
+				}
+				if($metrics_dtl_12['result_metrics'] == ''){
+					$metrics_dtl_12['result_metrics'] = 0;
+				}
+			if($type == 'export'){
+				if($metrics_dtl_12['dtl_img'] == '1' || $metrics_dtl_12['dtl_img'] == '0'){
+					@$metrics_dtl_12['img'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics']);
+				}else{
+					@$metrics_dtl_12['img'] = @$metrics_dtl_12['dtl_img'];
+				}
+			}
+
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_12['weight'],2).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_12['result_metrics'].'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_12['score_metrics'],4).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_12['img'].'</td>';
+  		$dtl['dtl'] .= '</tr>';
+	}
+	return $dtl;
+}
+
+function mds_report_sum_metrics_dtl($metrics_dtl = nul,$metrics_on = null,$sch_round_month = null ,$ass_id = null){
+	$CI =& get_instance();
+	$dtl = '';
+	if($metrics_dtl != '' && $sch_round_month != ''){
+					$dtl = array();
+					$dtl['dtl'] = '';
+					$dtl['ass_id'] = '';
+					if(@$ass_id != @$metrics_dtl['mds_set_assessment_id']){
+						$dtl['ass_id'] = @$metrics_dtl['mds_set_assessment_id'];
+						$dtl['dtl'] .= '<tr>';
+						$dtl['dtl'] .= '<td></td>';
+						$dtl['dtl'] .=	'<td colspan="5"><b>'.@$metrics_dtl['ass_name'].'</b></td>';
+						$dtl['dtl'] .= '</tr>';
+					}else{
+						$dtl['ass_id'] = $ass_id;
+					}
+
+		$dtl['dtl'] .= '<tr>';
+  		$dtl['dtl'] .= '<td>';
+  		$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
+  		$dtl['dtl'] .= @$metrics_dtl['metrics_on'].'</td>';
+  		$dtl['dtl'] .=	'<td>'.@$metrics_dtl['metrics_name'].'</td>';
+  	
+  				if($metrics_dtl['metrics_weight_'.$sch_round_month] != ''){
+  					$metrics_weight = $metrics_dtl['metrics_weight_'.$sch_round_month];
+  				}else{
+  					$metrics_weight = $metrics_dtl['metrics_weight'];
+  				}
+  			
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_weight,2).'</td>';
+  			
+  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
+  								from mds_set_metrics_kpr
+  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
+								left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
+  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$metrics_dtl['id']."' and mds_set_metrics_kpr.round_month = '".@$sch_round_month."' ";
+				$result_control = $CI->db->getarray($sql_control);
+				dbConvert($result_control);
+				$result_control = @$result_control['0'];
+  		
+  		$dtl['dtl'] .=	'<td>'.@$result_control['department_name'].' - '.@$result_control['division_name'].'</td>';
+		$dtl['dtl'] .=	'<td>'.@$result_control['control_name'].'</td>';
+			
+  				$sql_keyer = "select mds_set_metrics_keyer.*
+  								from mds_set_metrics_keyer
+  								where mds_set_metrics_keyer.mds_set_metrics_id = '".@$metrics_dtl['id']."' and mds_set_metrics_keyer.round_month = '".@$sch_round_month."' ";
+				$result_keyer =  $CI->db->getarray($sql_keyer);
+				dbConvert($result_keyer);
+		$dtl['dtl'] .=	'<td>';
+					foreach ($result_keyer as $key => $keyer) {
+						if($key != '0'){
+							$dtl['dtl'] .= ",";
+						}
+						$dtl['dtl'] .= @$keyer['keyer_name'];
+					} 
+				
+		$dtl['dtl'] .=	'</td>';
+  		$dtl['dtl'] .= '</tr>';
+	}
+	return $dtl;
+}
+
+function mds_report_sum_perform_dtl($metrics_dtl=null,$metrics_on=null,$sch_round_month=null,$sch_budget_year=null,$indicator_all_weight=null,$ass_id=null){
+	$dtl = '';
+	if($metrics_dtl != '' && $sch_round_month != '' && $sch_budget_year != '' && $indicator_all_weight != ''){
+			$dtl = array();
+			$dtl['ass_id'] = '';
+			$dtl['dtl'] = '';
+			if($ass_id != @$metrics_dtl['mds_set_assessment_id']){
+					$dtl['ass_id'] = @$metrics_dtl['mds_set_assessment_id'];
+					$dtl['dtl'] .= "<tr>";
+					$dtl['dtl'] .= '<td colspan="7"><b>'.@$metrics_dtl['ass_name'].'</b></td>';
+					$dtl['dtl'] .= '</tr>';
+			}else{
+					$dtl['ass_id'] = $ass_id;
+			}
+	$dtl['dtl'] .= '<tr>';
+  	$dtl['dtl'] .= '<td>ตัวชีวัดที่'; 
+	$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
+  	$dtl['dtl'] .= @$metrics_dtl['metrics_on']." "; 
+  	$dtl['dtl'] .= @$metrics_dtl['metrics_name'].'</td>';
+  	$dtl['dtl']	.= '<td style="text-align: right">'.get_one('measure_name','mds_set_measure','id',@$metrics_dtl['mds_set_measure_id']).'</td>';
+  	$dtl['dtl']	.= '<td style="text-align: right">'.htmlspecialchars_decode(@$metrics_dtl['metrics_target']).'</td>';
+  		
+				$metrics_score_dtl = metrics_weight(@$metrics_dtl['id'],$sch_round_month,$sch_budget_year);
+				if($indicator_all_weight != '0'){
+					//$sum_score += (@$metrics_score_dtl['weight']*@$metrics_score_dtl['score_metrics'])/@$indicator_all_weight;
+					@$score = (@$metrics_score_dtl['weight']*@$metrics_score_dtl['score_metrics'])/@$indicator_all_weight;
+				}
+			
+  	$dtl['dtl']	.= '<td style="text-align: right">'.number_format(@$metrics_score_dtl['weight'],2).'</td>';
+	$dtl['dtl']	.= '<td style="text-align: right">'.@$metrics_score_dtl['result_metrics'].'</td>';
+  	$dtl['dtl']	.= '<td style="text-align: right">'.number_format(@$metrics_score_dtl['score_metrics'],4).'</td>';
+  	$dtl['dtl']	.= '<td style="text-align: right">'.number_format(@$score,4).'</td>';
+  	$dtl['dtl']	.= '</tr>';
+	}
+	return $dtl;
+}
+
+function mds_report_compare_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_year=null,$indicator_all_weight_6='',$indicator_all_weight_9='',$indicator_all_weight_12='',$link=TRUE,$type=null){
+	$dtl = '';
+	if($metrics_dtl != '' && $sch_budget_year != '' && $indicator_all_weight_6 != '' && $indicator_all_weight_9 != '' && $indicator_all_weight_12 != ''){
+		$dtl = array();
+		$dtl['dtl']  = "<tr>";
+  		$dtl['dtl'] .= "<td>";
+  		$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
+  		$dtl['dtl'] .= @$metrics_dtl['metrics_on']."</td>";
+  		$dtl['dtl'] .=	"<td>".@$metrics_dtl['metrics_name']."</td>";
+  		$dtl['dtl'] .=	"<td></td>";
+		$dtl['dtl'] .=	"<td></td>";
+		$dtl['dtl'] .=	"<td></td>";
+		$dtl['dtl'] .=	"<td></td>";
+		$dtl['dtl'] .=	"<td></td>";
+		$dtl['dtl'] .=	"<td></td>";
+		$dtl['dtl'] .=	'<td style="text-align: right">'.htmlspecialchars_decode(@$metrics_dtl['metrics_target']).'</td>';
+
+				$metrics_dtl_6 = metrics_weight(@$metrics_dtl['id'],6,$sch_budget_year,$link);
+				if($indicator_all_weight_6 != '0'){
+					$dtl['sum_score_6'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics'])/@$indicator_all_weight_6;
+				}
+				if($metrics_dtl_6['result_metrics'] == ''){
+					$metrics_dtl_6['result_metrics'] = 0;
+				}
+			if($type == 'export'){
+				if($metrics_dtl_6['dtl_img'] == '1' || $metrics_dtl_6['dtl_img'] == '0'){
+					@$metrics_dtl_6['img'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics']);
+				}else{
+					@$metrics_dtl_6['img'] = @$metrics_dtl_6['dtl_img'];
+				}
+			}
+		
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['weight'],2).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_6['result_metrics'].'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['score_metrics'],4).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_6['img'].'</td>';
+
+  				$metrics_dtl_9 = metrics_weight(@$metrics_dtl['id'],9,$sch_budget_year,$link);
+				if($indicator_all_weight_9 != '0'){
+					$dtl['sum_score_9'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics'])/@$indicator_all_weight_9;
+				}
+				if($metrics_dtl_9['result_metrics'] == ''){
+					$metrics_dtl_9['result_metrics'] = 0;
+				}
+			if($type == 'export'){
+				if($metrics_dtl_9['dtl_img'] == '1' || $metrics_dtl_9['dtl_img'] == '0'){
+					@$metrics_dtl_9['img'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics']);
+				}else{
+					@$metrics_dtl_9['img'] = @$metrics_dtl_9['dtl_img'];
+				}
+			}
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_9['weight'],2).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_9['result_metrics'].'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_9['score_metrics'],4).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_9['img'].'</td>';
+ 
+  				$metrics_dtl_12 = metrics_weight(@$metrics_dtl['id'],12,$sch_budget_year,$link);
+				if($indicator_all_weight_12 != '0'){
+					$dtl['sum_score_12'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics'])/@$indicator_all_weight_12;
+				}
+				if($metrics_dtl_12['result_metrics'] == ''){
+					$metrics_dtl_12['result_metrics'] = 0;
+				}
+			if($type == 'export'){
+				if($metrics_dtl_12['dtl_img'] == '1' || $metrics_dtl_12['dtl_img'] == '0'){
+					@$metrics_dtl_12['img'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics']);
+				}else{
+					@$metrics_dtl_12['img'] = @$metrics_dtl_12['dtl_img'];
+				}
+			}
+
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_12['weight'],2).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_12['result_metrics'].'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_12['score_metrics'],4).'</td>';
+  		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_12['img'].'</td>';
+  		$dtl['dtl'] .= '</tr>';
+	}
 	return $dtl;
 }
 

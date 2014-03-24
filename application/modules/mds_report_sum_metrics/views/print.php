@@ -49,333 +49,67 @@
 			$result_sub_1 = metrics_dtl_indicator(@$indicator['id'],'0',@$_GET['sch_round_month']);
 			$ass_id = '';
 			foreach ($result_sub_1 as $key_sub_1 => $sub_1) {
-				if($ass_id != @$sub_1['mds_set_assessment_id']){
-					$ass_id = @$sub_1['mds_set_assessment_id'];
-					?>
-					<tr>
-						<td></td>
-						<td colspan="5"><b><?=@$sub_1['ass_name']?></b></td>
-					</tr>
-				<?}
-				
-	?>
-		<tr>
-  			<td><?=@$sub_1['metrics_on']?></td>
-  			<td><?=@$sub_1['metrics_name']?></td>
-  			<?
-  				if($sub_1['metrics_weight_'.$_GET['sch_round_month']] != ''){
-  					$metrics_weight = $sub_1['metrics_weight_'.$_GET['sch_round_month']];
-  				}else{
-  					$metrics_weight = $sub_1['metrics_weight'];
-  				}
-  			?>
-  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-  			<?
-  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-  								from mds_set_metrics_kpr
-  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-								left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_1['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
-				$result_control = $this->kpr->get($sql_control);
-				$result_control = @$result_control['0'];
-  			?>
-  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-			<td><?=@$result_control['control_name']?></td>
-			<?
-  				$sql_keyer = "select mds_set_metrics_keyer.*
-  								from mds_set_metrics_keyer
-  								where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_1['id']."' and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-				$result_keyer = $this->keyer->get($sql_keyer);
-  			?>
-			<td>
-				<?
-					foreach ($result_keyer as $key => $keyer) {
-						if($key != '0'){
-							echo ",";
-						}
-						echo @$keyer['keyer_name'];
-					} 
-				?>
-			</td>
-  		</tr>
-  			<? 		
-				
+				$metrics_on = '';
+				$dtl = mds_report_sum_metrics_dtl($sub_1,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+				echo @$dtl['dtl'];
+				$ass_id = @$dtl['ass_id'];
+				unset($dtl);
+
 					$result_sub_2 = metrics_dtl_indicator(@$indicator['id'],$sub_1['id'],@$_GET['sch_round_month']);
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
-						
-			?>
-				<tr>
-		  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?></td>
-		  			<td><?=@$sub_2['metrics_name']?></td>
-		  			<?
-		  				if($sub_2['metrics_weight_'.$_GET['sch_round_month']] != ''){
-		  					$metrics_weight = $sub_2['metrics_weight_'.$_GET['sch_round_month']];
-		  				}else{
-		  					$metrics_weight = $sub_2['metrics_weight'];
-		  				}
-		  			?>
-		  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-		  			<?
-		  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-		  								from mds_set_metrics_kpr
-		  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-										left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-		  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_2['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
-						$result_control = $this->kpr->get($sql_control);
-						$result_control = @$result_control['0'];
-		  			?>
-		  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-					<td><?=@$result_control['control_name']?></td>
-					<?
-		  				$sql_keyer = "select mds_set_metrics_keyer.*
-	  								  from mds_set_metrics_keyer
-	  								  where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_2['id']."' 
-	  								  and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-						$result_keyer = $this->keyer->get($sql_keyer);
-		  			?>
-					<td>
-						<?
-							foreach ($result_keyer as $key => $keyer) {
-								if($key != '0'){
-									echo ",";
-								}
-								echo @$keyer['keyer_name'];
-							} 
-						?>
-					</td>
-		  		</tr>
-		  			<? 		
+						$metrics_on = $sub_1['metrics_on'].".";
+						$dtl = mds_report_sum_metrics_dtl($sub_2,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+						echo @$dtl['dtl'];
+						$ass_id = @$dtl['ass_id'];
+						unset($dtl);
+			
 							$result_sub_3 = metrics_dtl_indicator(@$indicator['id'],$sub_2['id'],@$_GET['sch_round_month']);
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
-									
-					?>
-						<tr>
-				  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?></td>
-				  			<td><?=@$sub_3['metrics_name']?></td>
-				  			<?
-				  				if($sub_3['metrics_weight_'.$_GET['sch_round_month']] != ''){
-				  					$metrics_weight = $sub_3['metrics_weight_'.$_GET['sch_round_month']];
-				  				}else{
-				  					$metrics_weight = $sub_3['metrics_weight'];
-				  				}
-				  			?>
-				  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-				  			<?
-								$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-				  								from mds_set_metrics_kpr
-				  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-												left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-				  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_3['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";								
-				  				$result_control = $this->kpr->get($sql_control);
-								$result_control = @$result_control['0'];
-				  			?>
-				  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-							<td><?=@$result_control['control_name']?></td>
-							<?
-				  				$sql_keyer = "select mds_set_metrics_keyer.*
-			  								  from mds_set_metrics_keyer
-			  								  where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_3['id']."' 
-			  								  and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-								$result_keyer = $this->keyer->get($sql_keyer);
-				  			?>
-							<td>
-								<?
-									foreach ($result_keyer as $key => $keyer) {
-										if($key != '0'){
-											echo ",";
-										}
-										echo @$keyer['keyer_name'];
-									} 
-								?>
-							</td>
-				  		</tr>
-				  			<? 		
+								$metrics_on = $sub_1['metrics_on'].".".$sub_2['metrics_on'].".";
+								$dtl = mds_report_sum_metrics_dtl($sub_3,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+								echo @$dtl['dtl'];
+								$ass_id = @$dtl['ass_id'];
+								unset($dtl);	
+				 		
 								$result_sub_4 = metrics_dtl_indicator(@$indicator['id'],$sub_3['id'],@$_GET['sch_round_month']);
 								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
-									
-							?>
-								<tr>
-						  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?></td>
-						  			<td><?=@$sub_4['metrics_name']?></td>
-						  			<?
-						  				if($sub_4['metrics_weight_'.$_GET['sch_round_month']] != ''){
-						  					$metrics_weight = $sub_4['metrics_weight_'.$_GET['sch_round_month']];
-						  				}else{
-						  					$metrics_weight = $sub_4['metrics_weight'];
-						  				}
-						  			?>
-						  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-						  			<?
-						  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-						  								from mds_set_metrics_kpr
-						  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-														left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-						  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_4['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
-										$result_control = $this->kpr->get($sql_control);
-										$result_control = @$result_control['0'];
-						  			?>
-						  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-									<td><?=@$result_control['control_name']?></td>
-									<?
-						  				$sql_keyer = "select mds_set_metrics_keyer.*
-					  								  from mds_set_metrics_keyer
-					  								  where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_4['id']."' 
-					  								  and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-										$result_keyer = $this->keyer->get($sql_keyer);
-						  			?>
-									<td>
-										<?
-											foreach ($result_keyer as $key => $keyer) {
-												if($key != '0'){
-													echo ",";
-												}
-												echo @$keyer['keyer_name'];
-											} 
-										?>
-									</td>
-						  		</tr>
-						  		
-							  		<? 		
+									$metrics_on = $sub_1['metrics_on'].".".$sub_2['metrics_on'].".".$sub_3['metrics_on'].".";
+									$dtl = mds_report_sum_metrics_dtl($sub_4,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+									echo @$dtl['dtl'];
+									$ass_id = @$dtl['ass_id'];
+									unset($dtl);
+							
 										$result_sub_5 = metrics_dtl_indicator(@$indicator['id'],$sub_4['id'],@$_GET['sch_round_month']);
 										foreach ($result_sub_5 as $key_sub_5 => $sub_5) {
-											
-									?>
-										<tr>
-								  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$$sub_5['metrics_on']?></td>
-								  			<td><?=@$sub_5['metrics_name']?></td>
-								  			<?
-								  				if($sub_5['metrics_weight_'.$_GET['sch_round_month']] != ''){
-								  					$metrics_weight = $sub_5['metrics_weight_'.$_GET['sch_round_month']];
-								  				}else{
-								  					$metrics_weight = $sub_5['metrics_weight'];
-								  				}
-								  			?>
-								  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-								  			<?
-								  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-								  								from mds_set_metrics_kpr
-								  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-																left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-								  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_5['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
-												$result_control = $this->kpr->get($sql_control);
-												$result_control = @$result_control['0'];
-								  			?>
-								  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-											<td><?=@$result_control['control_name']?></td>
-											<?
-								  				$sql_keyer = "select mds_set_metrics_keyer.*
-							  								  from mds_set_metrics_keyer
-							  								  where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_5['id']."' 
-							  								  and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-												$result_keyer = $this->keyer->get($sql_keyer);
-								  			?>
-											<td>
-												<?
-													foreach ($result_keyer as $key => $keyer) {
-														if($key != '0'){
-															echo ",";
-														}
-														echo @$keyer['keyer_name'];
-													} 
-												?>
-											</td>
-								  		</tr>
-									  		<? 		
+											$metrics_on = $sub_1['metrics_on'].".".$sub_2['metrics_on'].".".$sub_3['metrics_on'].".".$sub_4['metrics_on'].".";
+											$dtl = mds_report_sum_metrics_dtl($sub_5,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+											echo @$dtl['dtl'];
+											$ass_id = @$dtl['ass_id'];
+											unset($dtl);
+								
 												$result_sub_6 = metrics_dtl_indicator(@$indicator['id'],$sub_5['id'],@$_GET['sch_round_month']);
 												foreach ($result_sub_6 as $key_sub_6 => $sub_6) {
-													
-											?>
-												<tr>
-										  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?></td>
-										  			<td><?=@$sub_6['metrics_name']?></td>
-										  			<?
-										  				if($sub_6['metrics_weight_'.$_GET['sch_round_month']] != ''){
-										  					$metrics_weight = $sub_6['metrics_weight_'.$_GET['sch_round_month']];
-										  				}else{
-										  					$metrics_weight = $sub_6['metrics_weight'];
-										  				}
-										  			?>
-										  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-										  			<?
-										  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-										  								from mds_set_metrics_kpr
-										  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-																		left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-										  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_6['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
-														$result_control = $this->kpr->get($sql_control);
-														$result_control = @$result_control['0'];
-										  			?>
-										  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-													<td><?=@$result_control['control_name']?></td>
-													<?
-										  				$sql_keyer = "select mds_set_metrics_keyer.*
-									  								  from mds_set_metrics_keyer
-									  								  where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_6['id']."' 
-									  								  and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-														$result_keyer = $this->keyer->get($sql_keyer);
-										  			?>
-													<td>
-														<?
-															foreach ($result_keyer as $key => $keyer) {
-																if($key != '0'){
-																	echo ",";
-																}
-																echo @$keyer['keyer_name'];
-															} 
-														?>
-													</td>
-										  		</tr>
-										  			<? 		
+													$metrics_on = $sub_1['metrics_on'].".".$sub_2['metrics_on'].".".$sub_3['metrics_on'].".".$sub_4['metrics_on'].".".$sub_5['metrics_on'].".";
+													$dtl = mds_report_sum_metrics_dtl($sub_6,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+													echo @$dtl['dtl'];
+													$ass_id = @$dtl['ass_id'];
+													unset($dtl);
+										
 														$result_sub_7 = metrics_dtl_indicator(@$indicator['id'],$sub_6['id'],@$_GET['sch_round_month']);
 														foreach ($result_sub_7 as $key_sub_7 => $sub_7) {
-															
-													?>
-														<tr>
-												  			<td><?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?>.<?=@$sub_7['metrics_on']?></td>
-												  			<td><?=@$sub_7['metrics_name']?></td>
-												  			<?
-												  				if($sub_7['metrics_weight_'.$_GET['sch_round_month']] != ''){
-												  					$metrics_weight = $sub_7['metrics_weight_'.$_GET['sch_round_month']];
-												  				}else{
-												  					$metrics_weight = $sub_7['metrics_weight'];
-												  				}
-												  			?>
-												  			<td style="text-align: right"><?=number_format(@$metrics_weight,2);?></td>
-												  			<?
-												  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-												  								from mds_set_metrics_kpr
-												  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-																				left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-												  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$sub_7['id']."' and mds_set_metrics_kpr.round_month = '".@$_GET['sch_round_month']."' ";
-																$result_control = $this->kpr->get($sql_control);
-																$result_control = @$result_control['0'];
-												  			?>
-												  			<td><?=@$result_control['department_name']?> - <?=@$result_control['division_name']?></td>
-															<td><?=@$result_control['control_name']?></td>
-															<?
-												  				$sql_keyer = "select mds_set_metrics_keyer.*
-											  								  from mds_set_metrics_keyer
-											  								  where mds_set_metrics_keyer.mds_set_metrics_id = '".@$sub_7['id']."' 
-											  								  and mds_set_metrics_keyer.round_month = '".@$_GET['sch_round_month']."' ";
-																$result_keyer = $this->keyer->get($sql_keyer);
-												  			?>
-															<td>
-																<?
-																	foreach ($result_keyer as $key => $keyer) {
-																		if($key != '0'){
-																			echo ",";
-																		}
-																		echo @$keyer['keyer_name'];
-																	} 
-																?>
-															</td>
-												  		</tr>
-										  		<? }//sub7 ?>
-								  		<? }//sub6 ?>
-						  		<? }//sub5 ?>
-				  		<? }//sub4 ?>
-				  <? }//sub3 ?>
+															$metrics_on = $sub_1['metrics_on'].".".$sub_2['metrics_on'].".".$sub_3['metrics_on'].".".$sub_4['metrics_on'].".".$sub_5['metrics_on'].".".$sub_6['metrics_on'].".";
+															$dtl = mds_report_sum_metrics_dtl($sub_7,$metrics_on,@$_GET['sch_round_month'],$ass_id);
+															echo @$dtl['dtl'];
+															$ass_id = @$dtl['ass_id'];
+															unset($dtl);
+												
+														}//sub7 ?>
+								  		<? 		}//sub6 ?>
+						  		<? 		}//sub5 ?>
+				  		<? 		}//sub4 ?>
+				  <? 	}//sub3 ?>
 		  <? }//sub2 ?>
   <? }//sub1 ?>
 <? } ?>
 </table>
+<script>window.print();</script>

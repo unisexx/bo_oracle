@@ -394,7 +394,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
 							from mds_set_metrics_kpr 
 							left join mds_set_position on mds_set_metrics_kpr.control_position_id = mds_set_position.id 
-							left join cnf_division on mds_set_metrics_kpr.contorl_division_id = cnf_division.id 
+							left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
 							left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
 							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."'";
 				$result_kpr = $this->kpr->get($chk_kpr);

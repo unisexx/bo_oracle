@@ -44,7 +44,7 @@ Class Mds_report_compare extends  Mdevsys_Controller{
 		switch($mode){
 			case 'export':
 				header('Content-type:application/xls');
-				$filename= "mds_report_compare".date("Y-m-d_H_i_s").".xls";
+				$filename= "mds_report_compare".date("YmdHis").".xls";
 				header("Content-Disposition: attachment; filename=".$filename);
 				$this->load->view('export',@$data);
 			break;

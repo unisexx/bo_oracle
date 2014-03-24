@@ -159,30 +159,28 @@ $(function(){
 														foreach ($result_sub_7 as $key_sub_7 => $sub_7) {
 															$all_metrics_on = @$sub_1['metrics_on'].'.'.@$sub_2['metrics_on'].'.'.@$sub_3['metrics_on'].'.'.@$sub_4['metrics_on'].'.'.@$sub_5['metrics_on'].'.'.@$sub_6['metrics_on'].'.'.@$sub_7['metrics_on'].'. '.@$sub_7['metrics_name'];
 															echo set_metrics_dtl(@$indicator['id'],@$all_metrics_on,@$sub_7['metrics_on'],@$sub_7['id'],$sub_7['id'],$key_sub_7,$sub_7_all,$urlpage,@$_GET['sch_budget_year'],TRUE);		
-													 } ?>
-													
+														?>
+														</li></ul>
+													<? }//sub7 ?>
 												</li></ul>
-											<? } ?>
+											<? }//sub6 ?>
 										
 										</li></ul>
-									<? } ?>
+									<? }//sub5 ?>
 								
 								</li></ul>
-							<? } ?>
+							<? }//sub4 ?>
 						
 						</li></ul>
-					<? } ?>
+					<? }//sub3 ?>
 					
 					</li></ul>
-				<? } ?>
+				<? }//sub2 ?>
 			
 			</li></ul>
-		<? } ?>
+		<? }//sub1 ?>
 		</li></ul>
-<?
-	}
-?>
-
+<? } ?>
 </ul>
 </div>
 </div>

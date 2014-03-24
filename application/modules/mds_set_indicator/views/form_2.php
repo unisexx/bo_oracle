@@ -90,6 +90,7 @@ $(function(){
 			<?php } ?>
 			
 	$(".metrics_cancel").live('change', function () {
+			var round_month = $(this).val();
 			if ($(this).is(':checked')){
 				$(".metrics_cancel").removeAttr('checked');
 				$(this).attr('checked','checked');
