@@ -3,7 +3,7 @@
 <div id="menu">
 <ul id="navmenu-h">
         <li><a href="#">บันทึก +</a>
-          <ul style="width:220px;">
+          <ul style="width:310px;">
             <?php /*if(permission('fund_contract', 'canview')): ?><li><a href="fund_contract">สํญญารับเงินอุดหนุน</a></li><?php endif; */ ?>
             <li><a href="#">การขอรับเงินสนับสนุนโครงการ</a></li>
             <li><a href="#">สัญญารับเงินอุดหนุน</a></li>
@@ -18,7 +18,7 @@
           </ul>
         </li>
         <li><a href="#">ตั้งค่า +</a>
-          <ul style="width:260px;">
+          <ul style="width:330px;">
            	<li><a href="fund/setting/fund_loan">ประเภทเงินทุนให้กู้</a></li>
             <li><a href="fund/setting/fund_name">กองทุน</a></li>
             <li><a href="fund/setting/fund_transfer_province">งบประมาณแต่ละจังหวัด</a></li>
