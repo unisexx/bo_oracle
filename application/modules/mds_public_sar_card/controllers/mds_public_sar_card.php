@@ -39,7 +39,7 @@ Class Mds_public_sar_card extends  Mdevsys_Controller{
 				where $condition order by  mds_set_indicator.indicator_on asc";
 		
 		$data['rs'] = $this->metrics->get($sql,'true');
-		$this->template->set_layout('public_layout')->build('index',@$data);
+		$this->template->set_layout('public_layout')->build('loop_index',@$data);
 	}
 }
 ?>

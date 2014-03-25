@@ -31,13 +31,16 @@ $(function(){
 											}
 								   },
 					document_plan:{ required : function(element) {
-	        				return $("#is_save").val() == '2';}
-	        			  }
+	        						return $("#is_save").val() == '2';},
+	        						accept: "doc|docx"
+	        			 		  },
+	        		new_document_plan{accept: "doc|docx"}
 				},
 				messages:{
 					score_metrics:{required:"กรุณาระบุค่าคะแนนที่ได้", max:"ลำดับที่ใส่ได้มากที่สุด คือ  5 " },
 					result_metrics:{required:"กรุณาระบุผลการดำเนินงาน",remote:"กรุณาระบุ ข้อมูลให้ถูกต้อง"},
-					document_plan:{required:"กรุณาแนบ แบบฟอร์มรายงาน" }
+					document_plan:{required:"กรุณาแนบ แบบฟอร์มรายงาน" ,accept:"อัพโหลดได้เฉพาะไฟล์ .doc, .docx"},
+					new_document_plan:{accept:"อัพโหลดได้เฉพาะไฟล์ .doc, .docx"}
 					
 				},
 				errorPlacement: function(error, element) 
@@ -58,7 +61,7 @@ $(function(){
 			upload +=	'<span style="margin-right: 40px;">&nbsp;</span>';
 			upload +=	'<div style="width: 428px;display: inline-block"><input type="file" name="document_plan_ref['+i+']" id="document_plan_ref['+i+']">';
 			upload +=	'</div>';
-			upload +=	'<input type="button" value="ลบ" ref="'+i+'" style="width: 50px;" class="dt_delete_ref_uploads" />';
+			upload +=	'<button type="button" class="btn btn-danger dt_delete_ref_uploads" ref="'+i+'"> ลบ </button>';
 			upload += '</div>';
 		
 		$("#document_ref").before(upload);
@@ -157,7 +160,7 @@ $(function(){
   </tr>
   <tr>
     <th>ผู้กำกับดูแลตัวชี้วัด</th>
-    <td style="font-size: 14px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?></td>
+    <td style="font-size: 14px"><?=@$kpr['pos_name']." (".@$kpr['control_name'].")"?></td>
   </tr>
   <tr>
     <th>ติดต่อผู้กำกับ </th>
@@ -168,9 +171,9 @@ $(function(){
     <td style="font-size: 14px;">
     	<? foreach ($keyer as $key => $temp_keyer) {
 			 if($key == '0'){
-			 	echo $temp_keyer['name'];
+			 	echo $temp_keyer['keyer_name'];
 			 }else{
-			 	echo ' , '.$temp_keyer['name'];
+			 	echo ' , '.$temp_keyer['keyer_name'];
 			 }
 		   } ?>
     </td>
@@ -180,10 +183,10 @@ $(function(){
     <td style="font-size: 14px;">
     	<? foreach ($keyer as $key => $temp_keyer) {
 			 if($key == '0'){
-			 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
+			 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['keyer_tel'];
 			 }else{
 			 	echo ' , ';
-			 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
+			 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['keyer_tel'];
 			 }
 		   } ?>
     </td>
@@ -221,23 +224,28 @@ $(function(){
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['control_name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
-				<?=@$keyer_activity['name']; ?>
+				<?php 
+					echo @$keyer_activity['keyer_name']; 
+					if(@$keyer_activity['keyer_score'] == '1'){
+						echo " ( ผู้บันทึกคะแนน )";						
+					}
+				?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['keyer_tle']))?'-':$kpr['control_tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>โทรศัพท์ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
-				<?=(empty($keyer_activity['tel']))?'-':$keyer_activity['tel']; ?>
+				<?=(empty($keyer_activity['keyer_tle']))?'-':$keyer_activity['keyer_tle']; ?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>อีเมลล์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['email']))?'-':$kpr['email'];?></td>
+			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['control_email']))?'-':$kpr['control_email'];?></td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 10px;">&nbsp;</span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>
@@ -320,7 +328,7 @@ $(function(){
 									if(login_data('id') == @$rs['keyer_users_id'] || login_data('id') == @$keyer_activity['change_keyer_users_id']){
 										if(@$rs['is_save'] != '2'){ 
 								?>
-									<input type="button" value="แก้ไขไฟล์ แบบฟอร์มรายงาน" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>" style="width: 200px;" class="edit_document_plan" />
+									<button type="button" class="btn btn-info edit_document_plan" ref_id="<?=@$doc['id']?>" type_doc='1' ref_result_id="<?=@$rs['id']?>"> แก้ไขไฟล์ แบบฟอร์มรายงาน </button>
 									<input type="hidden" name="show_value" id="show_value" value="0" />
 								<? 
 										} 
@@ -355,7 +363,8 @@ $(function(){
 					if(login_data('id') == @$rs['keyer_users_id'] || login_data('id') == @$keyer_activity['change_keyer_users_id']){
 						if(@$rs['is_save'] != '2'){ 
 				?>
-				<span style="margin-right: 10px;">&nbsp;</span><input type="button" class="bt_add_document_ref" style="width: 150px" value=" เพิ่มแถบอัพโหลด " />
+				<span style="margin-right: 10px;">&nbsp;</span>
+				<button type="button" class="btn btn-info bt_add_document_ref"> เพิ่มแถบอัพโหลด </button>
 				<?
 						}
 					}
@@ -379,7 +388,7 @@ $(function(){
 									if(login_data('id') == @$rs['keyer_users_id'] || login_data('id') == @$keyer_activity['change_keyer_users_id']){
 										if(@$rs['is_save'] != '2'){ 
 								?>
-								<input type="button" value="ลบ" ref_id="<?=@$doc_ref['id']?>" type_doc='2' ref_result_id="<?=@$rs['id']?>" style="width: 50px;" class="dt_delete_document" />
+								<button type="button" class="btn btn-danger dt_delete_document" ref_id="<?=@$doc_ref['id']?>" type_doc='2' ref_result_id="<?=@$rs['id']?>"> ลบ </button>
 								<? 
 										} 
 									}
@@ -397,7 +406,7 @@ $(function(){
 					<div style="width: 420px;display: inline-block">
 					<input type="file" name="document_plan_ref[<?=$num_ref?>]" >
 					</div>					
-					<input type="button" value="ลบ" ref="<?=$num_ref?>" style="width: 50px;" class="dt_delete_ref_uploads" />	
+					<button type="button" class="btn btn-danger dt_delete_ref_uploads" ref="<?=$num_ref?>"> ลบ </button>
 				</div>
 				<?
 							}
@@ -413,7 +422,7 @@ $(function(){
 </div>
 <? 
 if(@$rs['id'] != ''){
-	$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS,TOPIC.CODE_COLORS
+	$sql_chk_status = "SELECT RESULT_STATUS.ID,RESULT_STATUS.RESULT_STATUS_ID,RESULT_STATUS.PERMIT_TYPE_ID,RESULT_STATUS.RESULT_COMMENT,RESULT_STATUS.CREATE_BY,TOPIC.STATUS_DTL,TOPIC.STATUS_STEPS,TOPIC.CODE_COLORS
 						FROM MDS_METRICS_RESULT_STATUS RESULT_STATUS
 						LEFT JOIN MDS_STATUS_TOPIC TOPIC ON RESULT_STATUS.PERMIT_TYPE_ID = TOPIC.PERMIT_TYPE_ID AND RESULT_STATUS.RESULT_STATUS_ID = TOPIC.STATUS_ID
 						WHERE RESULT_STATUS.MDS_METRICS_RESULT_ID = '".@$rs['id']."' ORDER BY RESULT_STATUS.ID DESC";
@@ -445,10 +454,10 @@ if((@$result_status['permit_type_id'] == '2' && @$result_status['result_status_i
 			 </td>		
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$kpr['name']?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;"><span style="margin-right: 40px;">&nbsp;</span><strong>ผู้รับรอง : </strong><?=@$result_status['create_by']?></td> 
             </tr>
             <tr>
-		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],'1');?></td> 
+		 	  <td style="text-align: left;padding-top: 10px;padding-bottom: 10px"><span style="margin-right: 40px;">&nbsp;</span><strong>วันที่รับรอง : </strong><?=@chk_date_approve($rs['id'],@$result_status['permit_type_id'],'2');?></td> 
             </tr>
           </tbody></table>
 </div>

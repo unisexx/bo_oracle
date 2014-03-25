@@ -55,13 +55,13 @@
 		<div class="ico"><a href="fund/setting/fund_loan"><img src="themes/fund/images/icon/lender_type_set.png" width="48" height="48" /><h4>ประเภทเงินทุนให้กู้</h4></a></div>
 		<div class="ico"><a href="fund/setting/fund_name"><img src="themes/fund/images/icon/fund_set.png" width="48" height="48" /><h4>กองทุน</h4></a></div>
 		<div class="ico"><a href="fund/setting/fund_transfer_province"><img src="themes/fund/images/icon/each_budget_set.png" width="48" height="48" /><h4>งบประมาณ แต่ละจังหวัด</h4></a></div>
-		<div class="ico"><a href="project_type_set.php"><img src="themes/fund/images/icon/project_type_set.png" width="48" height="48" /><h4>ประเภทโครงการ</h4></a></div>
-		<div class="ico"><a href="project_subtype_set.php"><img src="themes/fund/images/icon/project_list_set.png" width="48" height="48" /><h4>ประเภทโครงการย่อย</h4></a></div>
-		<div class="ico"><a href="child_type_set.php"><img src="themes/fund/images/icon/child_type_set.png" width="48" height="48" /><h4>ประเกทเด็ก</h4></a></div>
-		<div class="ico"><a href="orphanage_type_set.php"><img src="themes/fund/images/icon/orphanage_type_set.png" width="48" height="48" /><h4>ประเภทสงเคราะห์เด็ก</h4></a></div>
-		<div class="ico"><a href="accordance_set.php"><img src="themes/fund/images/icon/accordance_set.png" width="48" height="48" /><h4>ความสอดคล้อง กับหลักเกณฑ์ตาม มาตรฐานต่างๆ</h4></a></div>
-		<div class="ico"><a href="project_set.php"><img src="themes/fund/images/icon/project_set.png" width="48" height="48" /><h4>ลักษณะโครงการ</h4></a></div>
-		<div class="ico"><a href="social_welfare_set.php"><img src="themes/fund/images/icon/social_welfare_set.png" width="48" height="48" /><h4>ส่วนงานสวัสดิการสังคม</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_typep_main"><img src="themes/fund/images/icon/project_type_set.png" width="48" height="48" /><h4>ประเภทโครงการ</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_typep_sub"><img src="themes/fund/images/icon/project_list_set.png" width="48" height="48" /><h4>ประเภทโครงการย่อย</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_typechild"><img src="themes/fund/images/icon/child_type_set.png" width="48" height="48" /><h4>ประเกทเด็ก</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_child_support"><img src="themes/fund/images/icon/orphanage_type_set.png" width="48" height="48" /><h4>ประเภทสงเคราะห์เด็ก</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_consistency"><img src="themes/fund/images/icon/accordance_set.png" width="48" height="48" /><h4>ความสอดคล้อง กับหลักเกณฑ์ตาม มาตรฐานต่างๆ</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_structure"><img src="themes/fund/images/icon/project_set.png" width="48" height="48" /><h4>ลักษณะโครงการ</h4></a></div>
+		<div class="ico"><a href="fund/setting/fund_project_structuresub"><img src="themes/fund/images/icon/social_welfare_set.png" width="48" height="48" /><h4>ส่วนงานสวัสดิการสังคม</h4></a></div>
 		<div class="ico"><a href="attorney_set.php"><img src="themes/fund/images/icon/attorney_set.png" width="48" height="48" /><h4>ผู้รับมอบอำนาจ</h4></a></div>
 		<div class="ico"><a href="organization_set.php"><img src="themes/fund/images/icon/organization_set.png" width="48" height="48" /><h4>องค์กร</h4></a></div>
 		<div class="ico"><a href="reg_get_fund.php"><img src="themes/fund/images/icon/get_fund.png" width="48" height="48" /><h4>ทะเบียนบุคคล ขอรับเงินกองทุน</h4></a></div>

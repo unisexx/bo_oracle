@@ -53,36 +53,36 @@ $(function(){
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>ผู้กำกับดูแลตัวชี้วัด</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=@$kpr['pos_name']." (".@$kpr['control_name'].")"?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<? foreach ($keyer as $key => $temp_keyer) {
 					 if($key == '0'){
-					 	echo $temp_keyer['name'];
+					 	echo $temp_keyer['keyer_name'];
 					 }else{
-					 	echo ' , '.$temp_keyer['name'];
+					 	echo ' , '.$temp_keyer['keyer_name'];
 					 }
 				   } ?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>โทรศัพท์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['tle']))?'-':$kpr['tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
+			<td style="text-align: left;width: 40%;padding-top: 10px"><?=(empty($kpr['control_tle']))?'-':$kpr['control_tle'];?><span style="margin-right: 10px;">&nbsp;</span></td>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><b>โทรศัพท์ผู้จัดเก็บข้อมูล</b></td>
 			<td style="text-align: left;width: 30%;padding-top: 10px">
 				<? foreach ($keyer as $key => $temp_keyer) {
 					 if($key == '0'){
-					 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
+					 	echo (empty($temp_keyer['keyer_tel']))?'-':$temp_keyer['keyer_tel'];
 					 }else{
 					 	echo ' , ';
-					 	echo (empty($temp_keyer['tel']))?'-':$temp_keyer['tel'];
+					 	echo (empty($temp_keyer['keyer_tel']))?'-':$temp_keyer['keyer_tel'];
 					 }
 				   } ?>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 10px"><span style="margin-right: 10px;">&nbsp;</span><b>อีเมลล์ผู้กำกับดูแล</b></td>
-			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['email']))?'-':$kpr['email'];?></td>
+			<td style="text-align: left;width: 30%;padding-top: 10px" colspan="3"><?=(empty($kpr['control_email']))?'-':$kpr['control_email'];?></td>
 		</tr>
 		<tr>
 			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 10px;">&nbsp;</span><b><u>การคำนวณคะแนนจากผลการดำเนินงาน</u></b></td>
@@ -143,7 +143,7 @@ $(function(){
 				<?
 					if(@$rs['id'] != ''){
 					
-						$sql_doc = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID
+						$sql_doc = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID,MDS_SET_METRICS_KEYER.KEYER_NAME
 									FROM MDS_METRICS_DOCUMENT DOC
 									LEFT JOIN MDS_METRICS_RESULT ON DOC.MDS_METRICS_RESULT_ID = MDS_METRICS_RESULT.ID
 									LEFT JOIN MDS_SET_METRICS ON MDS_METRICS_RESULT.MDS_SET_METRICS_ID = MDS_SET_METRICS.ID
@@ -158,7 +158,7 @@ $(function(){
 								<span style="margin-right: 40px;">&nbsp;</span>
 								<div style="width: 900px;display: inline-block">
 								<a target="_blank" href="uploads/mds/<?=@$doc['doc_name_upload']?>"><?=@$doc['doc_name_upload']?></a>
-								<span style="margin-left: 10px"><?php echo chk_premission_dtl($doc['keyer_users_id'],$rs_metrics['id'],$round_month); ?></span>
+								<span style="margin-left: 10px"><?php echo @$doc['keyer_name'];?></span>
 								</div>
 							</div>
 						<?}
@@ -181,7 +181,7 @@ $(function(){
 				<? 	$num_ref = 1;
 					if(@$rs['id'] != ''){
 					
-						$sql_doc_ref = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID
+						$sql_doc_ref = "SELECT DISTINCT DOC.* , MDS_METRICS_RESULT.KEYER_USERS_ID , MDS_SET_METRICS_KEYER.ID AS KEYER_ID,MDS_SET_METRICS_KEYER.KEYER_NAME
 										FROM MDS_METRICS_DOCUMENT DOC
 										LEFT JOIN MDS_METRICS_RESULT ON DOC.MDS_METRICS_RESULT_ID = MDS_METRICS_RESULT.ID
 										LEFT JOIN MDS_SET_METRICS ON MDS_METRICS_RESULT.MDS_SET_METRICS_ID = MDS_SET_METRICS.ID
@@ -197,7 +197,7 @@ $(function(){
 								<div style="width: 900px;display: inline-block">
 									<a target="_blank" href="uploads/mds/<?=@$doc_ref['doc_name_upload']?>"><?=@$doc_ref['doc_name_upload']?></a>
 								</div>
-								<span style="margin-left: 10px"><?php echo chk_premission_dtl($doc_ref['keyer_users_id'],$rs_metrics['id'],$round_month); ?></span>
+								<span style="margin-left: 10px"><?php echo @$doc_ref['keyer_name']; ?></span>
 							</div>
 					<?		
 						}

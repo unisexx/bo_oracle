@@ -76,12 +76,6 @@ tinymce.init({
 	}
 $(function(){
 	
-	$('#metrics_on').live('keyup',function(){
-		var metrics_on =  $('#metrics_on').val();
-		if( metrics_on > '<?=@$max_mrtrics_on?>'){
-			$('#metrics_on').val('<?=@$max_mrtrics_on?>');
-		}
-	});
 	
 	$('#metrics_start').live('change', function(){
 		chang_strat()
@@ -96,6 +90,7 @@ $(function(){
 			<?php } ?>
 			
 	$(".metrics_cancel").live('change', function () {
+			var round_month = $(this).val();
 			if ($(this).is(':checked')){
 				$(".metrics_cancel").removeAttr('checked');
 				$(this).attr('checked','checked');
@@ -518,26 +513,26 @@ for ($i=1; $i <= 3; $i++) {
 <th>กพร.<span class="Txt_red_12"> * </span></th>
 <td>
 <input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr[$month]['id']?>" />
-<?php echo form_dropdown("kpr_$month",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
-																							  left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
-																							  left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-																							  where mds_set_permission_type.mds_set_permit_type_id = 1'),@$kpr[$month]['kpr_users_id'],'','-- กำหนดผู้รับผิดชอบ (กพร.) --') ?>
+<?php echo form_dropdown("kpr_$month",get_option('permission.users_id','users.name','mds_set_permission permission 
+																							  left join users on users.id = permission.users_id 
+																							  where permission.mds_set_permit_type_id = 1 order by users.name asc'),@$kpr[$month]['kpr_users_id'],'','-- กำหนดผู้รับผิดชอบ (กพร.) --') ?>
 </td>
 </tr>
 <tr class="metrics_dtl_<?=$month?>">
   <th>ผู้กำกับดูแลตัวชี้วัด<span class="Txt_red_12"> * </span></th>
   <td>
-    <?php echo form_dropdown("control_$month",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
-    																								  left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id
-    																								  left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id  
-    																								  where mds_set_permission_type.mds_set_permit_type_id = 2'),@$kpr[$month]['control_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้กำกับดูแลตัวชี้วัด) --') ?>
+    <?php echo form_dropdown("control_$month",get_option('permission.users_id','users.name','mds_set_permission permission 
+    																								  left join users on users.id = permission.users_id
+    																								  where permission.mds_set_permit_type_id = 2 order by users.name asc'),@$kpr[$month]['control_users_id'],'','-- กำหนดผู้รับผิดชอบ (ผู้กำกับดูแลตัวชี้วัด) --') ?>
    </td>
 </tr>
 <tr class="metrics_dtl_<?=$month?>">
   <th>ผู้จัดเก็บข้อมูล<span class="Txt_red_12"> * </span></th>
   <td>
   	<div id="error_keyer_score_<?=$month?>"></div>
-  	<div style="width: 780px;text-align: right;"><input type="button" class="bt_add_keyer" style="width: 150px" ref_m="<?=$month?>" value=" เพิ่มผู้จัดเก็บข้อมูล " /></div>
+  	<div style="width: 780px;text-align: right;" class="btn-group">
+  		<button type="button" class="btn btn-info bt_add_keyer" ref_m="<?=$month?>"> เพิ่มผู้จัดเก็บข้อมูล  </button>
+  	</div>
   	<? 
   		@$num_keyer = 1;
 		if(@$rs['id'] != ''){
@@ -546,13 +541,12 @@ for ($i=1; $i <= 3; $i++) {
 		$num_keyer++;			
   	?>	
   		<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
-	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
-	    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
-	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','users.name','mds_set_permission permission 
+	    																													left join users on users.id = permission.users_id 
+	    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" <? if($keyer['keyer_score'] == '1'){echo 'checked="checked"';} ?> /> ผู้บันทึกคะแนน 
-	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+	 	<button type="button" class="btn btn-danger bt_remove_keyer" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>"> ลบ </button>
 	 	<samp id="error_keyer"></samp>
 	 	</div>
 	 	 	
@@ -561,25 +555,23 @@ for ($i=1; $i <= 3; $i++) {
 				$num_keyer = 1; 
 			?>	
 				<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
-			    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
-			    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
-			    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-			    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+			    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','users.name','mds_set_permission permission 
+			    																													left join users on users.id = permission.users_id
+			    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 			    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" value="<?=@$keyer['activity']?>" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 			 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
-			 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+			 	<button type="button" class="btn btn-danger bt_remove_keyer" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>"> ลบ </button>
 			 	<samp id="error_keyer"></samp>
 			 	</div>
 		 <? }
 		}else{ ?>
   		<div id="keyer_div_<?=$month?>_<?=@$num_keyer?>">
-	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
-	    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
-	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
+	    <?php echo form_dropdown("keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','users.name','mds_set_permission permission 
+	    																													left join users on users.id = permission.users_id
+	    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['keyer_users_id'],'class="chk_keyer" ref_id="'.$num_keyer.'" month="'.@$month.'"','-- กำหนดผู้รับผิดชอบ (ผู้จัดเก็บข้อมูล) --') ?>
 	    <input type="text" name="activity_<?=$month?>[<?=$num_keyer?>]" id="activity_<?=$month?>[<?=$num_keyer?>]" style="width:500px;" placeholder="ชื่อกิจกรรมที่รับผิดชอบ" />
 	 	<input type="radio" name="keyer_score_<?=@$month?>[]" id="keyer_score_<?=@$month?>[]" value="<?=@$num_keyer?>" /> ผู้บันทึกคะแนน 
-	 	<input type="button" class="bt_remove_keyer" style="width: 50px" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>" value=" ลบ " />
+	 	<button type="button" class="btn btn-danger bt_remove_keyer" ref_m="<?=@$month?>" ref="<?=@$num_keyer?>"> ลบ </button>
 	 	<samp id="error_keyer"></samp>
 	 	</div>
   	<? } ?>
@@ -624,36 +616,44 @@ for ($i=1; $i <= 3; $i++) {
 		<input type="hidden" name="result_<?=$month?>" value = "<?=$month?>" />
 		<input type="hidden" name="kpr_id_<?=$month?>" id="kpr_id_<?=$month?>" value="<?=@$kpr[$month]['id']?>" />
 		<input type="hidden" name="kpr_<?=$month?>" value="<?=@$kpr[$month]['kpr_users_id']?>" />
-		<input type="hidden" name="kpr_permission_id_<?=$month?>" value="<?=@$kpr[$month]['kpr_permission_id']?>" />
-	<?echo get_one("name","mds_set_permission_dtl","mds_set_permission_id",@$kpr[$month]['kpr_permission_id']); ?>
+		<input type="hidden" name="kpr_name_<?=$month?>" value="<?=@$kpr[$month]['kpr_name']?>" />
+		<input type="hidden" name="kpr_email_<?=$month?>" value="<?=@$kpr[$month]['kpr_email']?>" />
+		<input type="hidden" name="kpr_tel_<?=$month?>" value="<?=@$kpr[$month]['kpr_tel']?>" />
+		<?php echo @$kpr[$month]['kpr_name']; ?>
 	</td></tr>
 	<tr><th>ผู้กำกับดูแลตัวชี้วัด<span class="Txt_red_12"> * </span></th>
 	<td>
 		<input type="hidden" name="control_<?=$month?>" value="<?=@$kpr[$month]['control_users_id']?>" />
-		<input type="hidden" name="control_permission_id_<?=$month?>" value="<?=@$kpr[$month]['control_permission_id']?>" />
-	<?echo get_one("name","mds_set_permission_dtl","mds_set_permission_id",@$kpr[$month]['control_permission_id']); ?>
+		<input type="hidden" name="control_name_<?=$month?>" value="<?=@$kpr[$month]['control_name']?>" />
+		<input type="hidden" name="control_email_<?=$month?>" value="<?=@$kpr[$month]['control_email']?>" />
+		<input type="hidden" name="control_tel_<?=$month?>" value="<?=@$kpr[$month]['control_tel']?>" />
+		<input type="hidden" name="control_position_id_<?=$month?>" value="<?=@$kpr[$month]['control_position_id']?>" />
+		<input type="hidden" name="control_division_id_<?=$month?>" value="<?=@$kpr[$month]['control_division_id']?>" />
+		<input type="hidden" name="control_department_id_<?=$month?>" value="<?=@$kpr[$month]['control_department_id']?>" />
+		<?php echo @$kpr[$month]['control_name']; ?>
 	</td></tr>
 	<tr><th>ผู้จัดเก็บข้อมูล<span class="Txt_red_12"> * </span></th>
 		<td>
 	<? 	@$num_keyer =0;
 		foreach ($result_keyer[$month] as $key => $keyer) {
 			$num_keyer++;
-		echo "<div><div style='display: inline-block;width: 300px;'>";
-		echo  get_one("name","mds_set_permission_dtl","mds_set_permission_id",@$keyer['keyer_permission_id'])."</div>";
+		echo "<div style='display: inline;width: 300px;'><div>";
+		echo  @$keyer['keyer_name']."</div>";
 		echo  "<div style='display: inline-block;width: 300px;'> กิจกรรม ".(empty($keyer['activity'])?" - ":$keyer['activity']);
 		if($keyer['keyer_score'] == '1'){
 			echo " (ผู้บันทึกคะแนน) ";
 		}
 		echo "</div><div style='display: inline-block;'> ผู้จัดเก็บข้อมูลแทน ";
-		echo form_dropdown("change_keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','permission_dtl.name','mds_set_permission permission 
-	    																													left join mds_set_permission_type on permission.id = mds_set_permission_type.mds_set_permission_id 
-	    																													left join mds_set_permission_dtl permission_dtl on permission.id = permission_dtl.mds_set_permission_id 
-	    																													where mds_set_permission_type.mds_set_permit_type_id = 3'),@$keyer['change_keyer_users_id'],'class="chk_change_keyer" ref_id="'.$num_keyer.'" month="'.$month.'" ','-- กำหนดผู้จัดเก็บข้อมูลแทน (ผู้จัดเก็บข้อมูล) --'); 
+		echo form_dropdown("change_keyer_".$month."[".$num_keyer."]",get_option('permission.users_id','users.name','mds_set_permission permission 
+	    																													left join users on users.id = permission.users_id
+	    																													where permission.mds_set_permit_type_id = 3 order by users.name asc'),@$keyer['change_keyer_users_id'],'class="chk_change_keyer" ref_id="'.$num_keyer.'" month="'.$month.'" ','-- กำหนดผู้จัดเก็บข้อมูลแทน (ผู้จัดเก็บข้อมูล) --'); 
 	    echo "</div>";
 	    ?>																											
 		<input type="hidden" name="keyer_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_users_id']?>" />
-		<input type="hidden" name="keyer_permission_id_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_permission_id']?>" />
 		<input type="hidden" name="activity_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['activity']?>" />
+		<input type="hidden" name="keyer_name_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_name']?>" />
+		<input type="hidden" name="keyer_email_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_email']?>" />
+		<input type="hidden" name="keyer_tel_<?=$month?>[<?=$num_keyer?>]" value="<?=@$keyer['keyer_tel']?>" />
 		<? 
 			if($keyer['keyer_score'] == '1'){
 		?>

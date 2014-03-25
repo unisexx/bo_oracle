@@ -16,6 +16,7 @@ class Fund_loan extends Fund_Setting_Controller {
 		}
 		$data['items'] = $this->fund_loan_mdl->get();
 		$data['pagination']	= $this->fund_loan_mdl->pagination();
+		$_GET['page'] = (empty($_GET['page']))?1:$_GET['page'];
 		$this->template->build('setting/fund_loan/index', $data);
 	}
 	
@@ -44,5 +45,24 @@ class Fund_loan extends Fund_Setting_Controller {
 		}
 		redirect('fund/setting/fund_loan');
 	}
-	
+	public function chk_fund_name()
+	{
+		if(@$_GET['fund_name'])
+		{
+			$condition = '';
+			if(@$_GET['id']){
+				$condition = " and id != '".$_GET['id']."' ";
+			}
+			
+			$sql = "select * from fund_mst_fund_loan where fund_name = '".$_GET['fund_name']."'".$condition."";
+			$result = $this->fund_loan_mdl->get($sql);
+			if(count($result) > 0){
+				echo "false";
+			}else{
+				echo "true";
+			}
+		}else{
+			echo "true";
+		}
+	}
 }
