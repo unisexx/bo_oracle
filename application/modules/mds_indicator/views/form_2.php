@@ -31,13 +31,16 @@ $(function(){
 											}
 								   },
 					document_plan:{ required : function(element) {
-	        				return $("#is_save").val() == '2';}
-	        			  }
+	        						return $("#is_save").val() == '2';},
+	        						accept: "doc|docx"
+	        			 		  },
+	        		new_document_plan{accept: "doc|docx"}
 				},
 				messages:{
 					score_metrics:{required:"กรุณาระบุค่าคะแนนที่ได้", max:"ลำดับที่ใส่ได้มากที่สุด คือ  5 " },
 					result_metrics:{required:"กรุณาระบุผลการดำเนินงาน",remote:"กรุณาระบุ ข้อมูลให้ถูกต้อง"},
-					document_plan:{required:"กรุณาแนบ แบบฟอร์มรายงาน" }
+					document_plan:{required:"กรุณาแนบ แบบฟอร์มรายงาน" ,accept:"อัพโหลดได้เฉพาะไฟล์ .doc, .docx"},
+					new_document_plan:{accept:"อัพโหลดได้เฉพาะไฟล์ .doc, .docx"}
 					
 				},
 				errorPlacement: function(error, element) 

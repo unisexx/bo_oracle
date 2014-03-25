@@ -676,7 +676,8 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
 		$dtl['dtl']  = "<tr>";
   		$dtl['dtl'] .= "<td>";
   		$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
-  		$dtl['dtl'] .= @$metrics_dtl['metrics_on']."</td>";
+  		//$dtl['dtl'] .= @$metrics_dtl['metrics_on']."</td>";
+  		$dtl['dtl'] .= "</td>"; //for index_loop
   		$dtl['dtl'] .=	"<td>".@$metrics_dtl['metrics_name']."</td>";
   		$dtl['dtl'] .=	"<td>".@$metrics_dtl['result_budget_year_2']."</td>";
 		$dtl['dtl'] .=	"<td>".@$metrics_dtl['result_budget_year_1']."</td>";
@@ -685,6 +686,8 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
 				$metrics_dtl_6 = metrics_weight(@$metrics_dtl['id'],6,$sch_budget_year,$link);
 				if($indicator_all_weight_6 != '0'){
 					$dtl['sum_score_6'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics'])/@$indicator_all_weight_6;
+				}else{
+					$dtl['sum_score_6'] = 0;
 				}
 				if($metrics_dtl_6['result_metrics'] == ''){
 					$metrics_dtl_6['result_metrics'] = 0;
@@ -704,6 +707,8 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
   				$metrics_dtl_9 = metrics_weight(@$metrics_dtl['id'],9,$sch_budget_year,$link);
 				if($indicator_all_weight_9 != '0'){
 					$dtl['sum_score_9'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics'])/@$indicator_all_weight_9;
+				}else{
+					$dtl['sum_score_9'] = 0;
 				}
 				if($metrics_dtl_9['result_metrics'] == ''){
 					$metrics_dtl_9['result_metrics'] = 0;
@@ -723,6 +728,8 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
   				$metrics_dtl_12 = metrics_weight(@$metrics_dtl['id'],12,$sch_budget_year,$link);
 				if($indicator_all_weight_12 != '0'){
 					$dtl['sum_score_12'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics'])/@$indicator_all_weight_12;
+				}else{
+					$dtl['sum_score_12'] = 0;
 				}
 				if($metrics_dtl_12['result_metrics'] == ''){
 					$metrics_dtl_12['result_metrics'] = 0;
@@ -734,7 +741,6 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
 					@$metrics_dtl_12['img'] = @$metrics_dtl_12['dtl_img'];
 				}
 			}
-
   		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_12['weight'],2).'</td>';
   		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_12['result_metrics'].'</td>';
   		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_12['score_metrics'],4).'</td>';
@@ -764,7 +770,8 @@ function mds_report_sum_metrics_dtl($metrics_dtl = nul,$metrics_on = null,$sch_r
 		$dtl['dtl'] .= '<tr>';
   		$dtl['dtl'] .= '<td>';
   		$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
-  		$dtl['dtl'] .= @$metrics_dtl['metrics_on'].'</td>';
+  		//$dtl['dtl'] .= @$metrics_dtl['metrics_on'].'</td>';
+  		$dtl['dtl'] .= "</td>"; //for index_loop
   		$dtl['dtl'] .=	'<td>'.@$metrics_dtl['metrics_name'].'</td>';
   	
   				if($metrics_dtl['metrics_weight_'.$sch_round_month] != ''){
@@ -823,7 +830,8 @@ function mds_report_sum_perform_dtl($metrics_dtl=null,$metrics_on=null,$sch_roun
 	$dtl['dtl'] .= '<tr>';
   	$dtl['dtl'] .= '<td>ตัวชีวัดที่'; 
 	$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
-  	$dtl['dtl'] .= @$metrics_dtl['metrics_on']." "; 
+  	//$dtl['dtl'] .= @$metrics_dtl['metrics_on']." ";
+  	$dtl['dtl'] .= " "; // for loop_index 
   	$dtl['dtl'] .= @$metrics_dtl['metrics_name'].'</td>';
   	$dtl['dtl']	.= '<td style="text-align: right">'.get_one('measure_name','mds_set_measure','id',@$metrics_dtl['mds_set_measure_id']).'</td>';
   	$dtl['dtl']	.= '<td style="text-align: right">'.htmlspecialchars_decode(@$metrics_dtl['metrics_target']).'</td>';
@@ -850,7 +858,8 @@ function mds_report_compare_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_y
 		$dtl['dtl']  = "<tr>";
   		$dtl['dtl'] .= "<td>";
   		$dtl['dtl'] .= empty($metrics_on)?'':$metrics_on;
-  		$dtl['dtl'] .= @$metrics_dtl['metrics_on']."</td>";
+  		//$dtl['dtl'] .= @$metrics_dtl['metrics_on']."</td>";
+  		$dtl['dtl'] .= "</td>"; // for loop_index
   		$dtl['dtl'] .=	"<td>".@$metrics_dtl['metrics_name']."</td>";
   		$dtl['dtl'] .=	"<td></td>";
 		$dtl['dtl'] .=	"<td></td>";
@@ -863,6 +872,8 @@ function mds_report_compare_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_y
 				$metrics_dtl_6 = metrics_weight(@$metrics_dtl['id'],6,$sch_budget_year,$link);
 				if($indicator_all_weight_6 != '0'){
 					$dtl['sum_score_6'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics'])/@$indicator_all_weight_6;
+				}else{
+					$dtl['sum_score_6'] = 0;
 				}
 				if($metrics_dtl_6['result_metrics'] == ''){
 					$metrics_dtl_6['result_metrics'] = 0;
@@ -874,7 +885,6 @@ function mds_report_compare_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_y
 					@$metrics_dtl_6['img'] = @$metrics_dtl_6['dtl_img'];
 				}
 			}
-		
   		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['weight'],2).'</td>';
   		$dtl['dtl'] .=	'<td style="text-align: right">'.@$metrics_dtl_6['result_metrics'].'</td>';
   		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['score_metrics'],4).'</td>';
@@ -883,6 +893,8 @@ function mds_report_compare_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_y
   				$metrics_dtl_9 = metrics_weight(@$metrics_dtl['id'],9,$sch_budget_year,$link);
 				if($indicator_all_weight_9 != '0'){
 					$dtl['sum_score_9'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics'])/@$indicator_all_weight_9;
+				}else{
+					$dtl['sum_score_9'] = 0;
 				}
 				if($metrics_dtl_9['result_metrics'] == ''){
 					$metrics_dtl_9['result_metrics'] = 0;
@@ -902,6 +914,8 @@ function mds_report_compare_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget_y
   				$metrics_dtl_12 = metrics_weight(@$metrics_dtl['id'],12,$sch_budget_year,$link);
 				if($indicator_all_weight_12 != '0'){
 					$dtl['sum_score_12'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics'])/@$indicator_all_weight_12;
+				}else{
+					$dtl['sum_score_12'] = 0;
 				}
 				if($metrics_dtl_12['result_metrics'] == ''){
 					$metrics_dtl_12['result_metrics'] = 0;

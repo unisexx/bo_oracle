@@ -477,19 +477,24 @@ Class Mds_indicator extends  Mdevsys_Controller{
 			$id = $this->metrics_result->save($_POST);
 			
 				if(@$_FILES['document_plan']['name'] != ''){
-					
+					$correct_type = array('doc', 'docx');
 					$ext = pathinfo($_FILES['document_plan']['name'], PATHINFO_EXTENSION);
-					$upload_1['TYPE_DOC']= '1';	
-					$upload_1['MDS_METRICS_RESULT_ID'] = $id;
-					$upload_1['CREATE_DATE'] = date("Y-m-d");
-					$upload_1['CREATE_BY'] = login_data('name');
-					$file_name = pathinfo($_FILES['document_plan']['name'], PATHINFO_FILENAME)."_".date("YmdHis").'.'.$ext;
-					$upload_1['DOC_NAME_UPLOAD'] = $file_name;
-					$upload_1['DOC_NAME']=$_FILES['document_plan']['name'];
-					$this->doc->save($upload_1);
-					$uploaddir = 'uploads/mds/';
-					$fpicname = $uploaddir.$file_name;
-					move_uploaded_file($_FILES['document_plan']['tmp_name'], $fpicname);
+					if(in_array($ext, $correct_type)) {
+						$upload_1['TYPE_DOC']= '1';	
+						$upload_1['MDS_METRICS_RESULT_ID'] = $id;
+						$upload_1['CREATE_DATE'] = date("Y-m-d");
+						$upload_1['CREATE_BY'] = login_data('name');
+						$file_name = pathinfo($_FILES['document_plan']['name'], PATHINFO_FILENAME)."_".date("YmdHis").'.'.$ext;
+						$upload_1['DOC_NAME_UPLOAD'] = $file_name;
+						$upload_1['DOC_NAME']=$_FILES['document_plan']['name'];
+						$this->doc->save($upload_1);
+						$uploaddir = 'uploads/mds/';
+						$fpicname = $uploaddir.$file_name;
+						move_uploaded_file($_FILES['document_plan']['tmp_name'], $fpicname);
+					}else{
+						set_notify('error', 'ไม่สามารถอัพโหลดไฟล์ ที่ไม่ใช่นามสกุล doc,docx ได้'); 
+						redirect($urlpage.'/form/'.@$_POST['mds_set_metrics_id']);
+					}
 				}
 				
 				if(@$_FILES['new_document_plan']['name'] != ''){
@@ -501,17 +506,24 @@ Class Mds_indicator extends  Mdevsys_Controller{
 					}
 					
 					$ext = pathinfo($_FILES['new_document_plan']['name'], PATHINFO_EXTENSION);
-					$upload_new_1['TYPE_DOC']= '1';	
-					$upload_new_1['MDS_METRICS_RESULT_ID'] = $id;
-					$upload_new_1['CREATE_DATE'] = date("Y-m-d");
-					$upload_new_1['CREATE_BY'] = login_data('name');
-					$file_name_new = pathinfo($_FILES['new_document_plan']['name'], PATHINFO_FILENAME)."_".date("YmdHis").'.'.$ext;
-					$upload_new_1['DOC_NAME_UPLOAD'] = $file_name_new;
-					$upload_new_1['DOC_NAME']=$_FILES['new_document_plan']['name'];
-					$this->doc->save($upload_new_1);
-					$uploaddir = 'uploads/mds/';
-					$fpicname_new = $uploaddir.$file_name_new;
-					move_uploaded_file($_FILES['new_document_plan']['tmp_name'], $fpicname_new);
+					$correct_type = array('doc', 'docx');
+					$ext = pathinfo($_FILES['document_plan']['name'], PATHINFO_EXTENSION);
+					if(in_array($ext, $correct_type)) {
+						$upload_new_1['TYPE_DOC']= '1';	
+						$upload_new_1['MDS_METRICS_RESULT_ID'] = $id;
+						$upload_new_1['CREATE_DATE'] = date("Y-m-d");
+						$upload_new_1['CREATE_BY'] = login_data('name');
+						$file_name_new = pathinfo($_FILES['new_document_plan']['name'], PATHINFO_FILENAME)."_".date("YmdHis").'.'.$ext;
+						$upload_new_1['DOC_NAME_UPLOAD'] = $file_name_new;
+						$upload_new_1['DOC_NAME']=$_FILES['new_document_plan']['name'];
+						$this->doc->save($upload_new_1);
+						$uploaddir = 'uploads/mds/';
+						$fpicname_new = $uploaddir.$file_name_new;
+						move_uploaded_file($_FILES['new_document_plan']['tmp_name'], $fpicname_new);
+					}else{
+						set_notify('error', 'ไม่สามารถอัพโหลดไฟล์ ที่ไม่ใช่นามสกุล doc,docx ได้'); 
+						redirect($urlpage.'/form/'.@$_POST['mds_set_metrics_id']);
+					}
 				}
 				
 			for ($i=1; $i <= $_POST['num_ref']; $i++) { 

@@ -47,13 +47,13 @@ Class Mds_report_sum_metrics extends  Mdevsys_Controller{
 				header('Content-type:application/xls');
 				$filename= "mds_report_sum_metrics_".date("YmdHis").".xls";
 				header("Content-Disposition: attachment; filename=".$filename);
-				$this->load->view('export',@$data);
+				$this->load->view('loop_export',@$data);
 			break;
 			case 'print':
-				$this->load->view('print',@$data);
+				$this->load->view('loop_print',@$data);
 			break;
 			default:
-				$this->template->build('index',@$data);
+				$this->template->build('loop_index',@$data);
 			break;
 		}
 		
