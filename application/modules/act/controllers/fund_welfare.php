@@ -8,7 +8,7 @@ Class fund_welfare extends  Act_Controller{
 	function index(){
 		$condition = @$_GET['search']!='' ? " and headline like '%".$_GET['search']."%'" : "";
 		$condition .= @$_GET['rule_type']!='' ? " and rule_type = ".$_GET['rule_type'] : "" ;
-		$data['fund_projects'] = $this->fund_project->where("1 = 1 ".$condition)->order_by('id','desc')->get(false,false);
+		$data['fund_projects'] = $this->fund_project->where("1 = 1 ".$condition)->order_by('project_id','desc')->get(false,false);
 		$data['pagination'] = $this->fund_project->pagination();
 		$this->template->build('fund_welfare/index',$data);
 	}
@@ -16,6 +16,15 @@ Class fund_welfare extends  Act_Controller{
 	function form($id=false){
 		$data['project'] = $this->fund_project->get_row($id);
 		$this->template->build('fund_welfare/form',$data);
+	}
+	
+	function save(){
+		if($_POST){
+			// $this->db->debug = true;
+			$id = $this->fund_project->save($_POST);
+			set_notify('success', lang('save_data_complete'));
+		}
+		redirect('act/fund_welfare/form/'.$id);
 	}
 	
 	function list_project(){
@@ -47,46 +56,22 @@ Class fund_welfare extends  Act_Controller{
 		$this->load->view('fund_welfare/list_project',$data);
 	}
 
-	function ajax_get_manage_welfare(){
-		$sql = "SELECT * FROM ACT_MANAGE_WELFARE";
-		$manages = $this->fund_project->get($sql,FALSE);
-		echo "<select name='CHACT2'>";
-		foreach($manages as $row){
-			echo "<option value='".$row['wel_id']."'>".$row['wel_name']."</option>";
+	function ajax_get_chac(){
+		if($_GET['type'] == 1){
+			echo form_dropdown('CHACT2', get_option('wel_id', 'wel_name', 'act_manage_welfare', '1=1'), @$project['design'], '', '-- เลือกการจัดสวัสดิการสังคม --');
+		}elseif($_GET['type'] == 2){
+			echo form_dropdown('CHACT2', get_option('ac_id', 'ac_name', 'act_action_welfare', '1=1'), @$project['design'], '', '-- เลือกการปฏิบัติด้านสวัสดิการ --');
+		}elseif($_GET['type'] == 3){
+			echo form_dropdown('CHACT2', get_option('jp_id', 'jp_name', 'act_join_project', '1=1'), @$project['design'], '', '-- เลือกสมทบโครงการ --');
 		}
-		echo "</select>";
+	}
+
+	function ajax_get_subplan(){
+		if($_GET['plan_id']){
+			echo form_dropdown('subplan', get_option('id', 'plansub_name', 'act_plan_sub', '1=1 and plan_id = '.$_GET['plan_id'].' order by seq asc'), @$project['design'], '', '-- เลือกแผนย่อย --');
+		}
 	}
 	
-	function ajax_get_action_welfare(){
-		$sql = "SELECT * FROM ACT_ACTION_WELFARE";
-		$manages = $this->fund_project->get($sql,FALSE);
-		echo "<select name='CHACT2'>";
-		foreach($manages as $row){
-			echo "<option value='".$row['ac_id']."'>".$row['ac_name']."</option>";
-		}
-		echo "</select>";
-	}
-	
-	function ajax_get_action_welfare(){
-		$sql = "SELECT * FROM ACT_JOIN_PROJECT";
-		$manages = $this->fund_project->get($sql,FALSE);
-		echo "<select name='CHACT2'>";
-		foreach($manages as $row){
-			echo "<option value='".$row['jp_id']."'>".$row['jp_name']."</option>";
-		}
-		echo "</select>";
-	}
-	
-	// function save(){
-		// if($_POST){
-			// $this->db->debug = true;
-			// $_POST['create_date'] = date("Y-m-d H:i:s");
-			// $this->orgmain->save($_POST);
-			// set_notify('success', lang('save_data_complete'));
-		// }
-		// redirect('act/welfare');
-	// }
-// 	
 	// function delete($id){
 		// if($id){
 			// $this->affiliate->delete($id);

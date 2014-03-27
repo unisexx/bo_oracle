@@ -1,4 +1,18 @@
 <script>
+$(document).ready(function(){
+	$(".example8").colorbox({width:"50%", inline:true, href:"#inline_example1"});
+	$(".example82").colorbox({width:"50%", inline:true, href:"#inline_example82"});
+	$(".example83").colorbox({width:"50%", inline:true, href:"#inline_example83"});
+	$(".example84").colorbox({width:"50%", inline:true, href:"#inline_example84"});
+	$(".example85").colorbox({width:"50%", inline:true, href:"#inline_example85"});
+});
+
+function organ_view_sub() {
+	var budget_year = $('select[name=budget_year]').find(":selected").val();
+	var province_code = $('select[name=province_code]').find(":selected").val();
+	window.open("act/kss/organ_select?budget_year="+budget_year+"&province_code="+province_code, "", "width=1024,height=768,status=yes,toolbar=no,menubar=no,scrollbars=yes,resizable=yes");
+}
+
 function startDesktop(f)
 {
   var desktop = window.open("act/fund_welfare/list_project?var=project_continue", "_blank", "toolbar=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=1024,height=768");
@@ -7,7 +21,7 @@ function startDesktop(f)
 
 <h3>บันทึก กองทุนส่งเสริมการจัดสวัสดิการสังคม (บันทึก / แก้ไข)</h3>
 
-<form id="composeform" method="post" action="act/fund_welfare/save" enctype="multipart/form-data">
+<form id="composeform_sub" method="post" action="act/fund_welfare/save" enctype="multipart/form-data">
 <table class="tbadd">
   <tr>
     <th>กองทุน<span class="Txt_red_12"> *</span></th>
@@ -18,8 +32,11 @@ function startDesktop(f)
   <tr>
     <th>องค์การ
      <span class="Txt_red_12"> *</span></th>
-    <td><input name="textfield" type="text" value="<?=act_get_organ_name($project['org_id'])?>" style="width:300px;"/>
-    <img src="images/see.png" width="24" height="24" /></td>
+    <td>
+    	<input name="org_name" type="text" value="<?php echo act_get_organ_name($project['org_id'])?>" style="width:250px;"/>
+    	<input name="org_id" type="hidden" value="<?php echo $project['org_id']?>"/>
+    	<a href="javascript:organ_view_sub();"><img src="images/see.png" width="24" height="24" /></td></a>
+    </td>
   </tr>
   <tr>
     <th>ปีงบประมาณ</th>
@@ -62,13 +79,17 @@ function startDesktop(f)
   </tr>
   <tr>
     <th>ลักษณะโครงการ</th>
-    <td><select name="select8">
+    <td>
+    <select name="chac_project">
       <option value="">-- เลือกลักษณะโครงการ --</option>
       <option value="1">การจัดสว้สดิการสังคม</option>
       <option value="2">การปฏิบัติด้านสวัสดิการ</option>
       <option value="3">การสมทบโครงการ</option>
     </select>
-      <select name="select13">
+    
+    <span id="CHACT2"></span>
+      
+      <!-- <select name="select13">
         <option>-- เลือกการจัดสวัสดิการสังคม --</option>
       </select>
       <select name="select14">
@@ -76,66 +97,78 @@ function startDesktop(f)
       </select>
       <select name="select15">
         <option>-- เลือกสมทบโครงการ --</option>
-      </select>
+      </select> -->
       <br />
-    <select name="select9">
-      <option selected="selected">-- เลือกสาขา --</option>
-      <option>บริการทางสังคม</option>
-      <option>การศึกษา</option>
-      <option>สุขภาพอนามัย</option>
-      <option>ที่อยู่อาศัย</option>
-      <option>แรงงาน/การฝึกอาชีพ/การประกอบอาชีพ</option>
-      <option>กระบวนการยุติธรรม</option>
-      <option>นันทนาการ</option>
-      <option>อื่น ๆ</option>
-    </select>
-    <input name="textfield16" type="text" id="textfield16" style="width:300px;"/>
+      
+      <script>
+      	$(document).ready(function(){
+      		$('select[name=chac_project]').change(function(){
+      			chac_project_val = $(this).val();
+      			console.log(chac_project_val);
+      			$.get('act/fund_welfare/ajax_get_chac?type='+chac_project_val,function(data){
+      				$('#CHACT2').html(data);
+      			});
+      		});
+      	});
+      </script>
+      
+      
+    <?=form_dropdown('branch', get_option('service_id', 'service_name', 'act_service', '1=1 order by seq asc'), @$project['branch'], '', '-- เลือกสาขา --'); ?>
+    
+    <input name="pol" type="text" value="<?=$project['pol']?>" style="width:300px;"/>
     <br />
-    <select name="select10">
-      <option>-- เลือกความสอดคล้องกับยุทธศาสตร์และแผน --</option>
-      <option>รัฐบาล</option>
-      <option>ชาติ</option>
-      <option>จังหวัด</option>
-      <option>อื่นๆ</option>
-    </select>
-    <input name="textfield17" type="text" id="textfield17" style="width:300px;"/></td>
+    
+    <?=form_dropdown('design', get_option('id', 'policy_name', 'act_policy', '1=1 order by seq asc'), @$project['design'], '', '-- เลือกความสอดคล้องกับยุทธศาสตร์และแผน --'); ?>
+    
+    <input name="design_text" type="text" value="<?=$project['design_text']?>" style="width:300px;"/></td>
   </tr>
   <tr>
     <th>รหัสทะเบียนโครงการ</th>
-    <td><input name="textfield18" type="text" id="textfield18" style="width:100px;"/></td>
+    <td><input name="doc_id2" type="text" value="<?=$project['doc_id2']?>" style="width:100px;"/></td>
   </tr>
   <tr>
     <th>แผน</th>
-    <td><select name="select11">
-      <option>-- เลือกแผน --</option>
-    </select>
-      <select name="select12">
-        <option>-- เลือกแผนย่อย --</option>
-    </select></td>
+    <td>
+    	<?=form_dropdown('plan', get_option('id', 'plan_name', 'act_plan', '1=1 order by seq asc'), @$project['design'], 'id=select_plan', '-- เลือกความสอดคล้องกับยุทธศาสตร์และแผน --'); ?>
+    <span id="subplan"></span>
+    
+    <script>
+    $(document).ready(function(){
+  		$('select[name=plan]').change(function(){
+  			plan_id = $(this).val();
+  			
+  			$.get('act/fund_welfare/ajax_get_subplan?plan_id='+plan_id,function(data){
+  				$('#subplan').html(data);
+  			});
+  		});
+  	});
+    </script>
+    
+    </td>
   </tr>
   <tr>
     <th>ค่าใช้จ่ายทั้งโครงการ</th>
-    <td><input name="textfield20" type="text" id="textfield20" style="width:150px;"/>
+    <td><input name="cost_all" type="text" value="0.00" style="width:150px;"/>
       บาท (รวมจากรายการค่าใช้จ่าย)</td>
   </tr>
   <tr>
     <th>ค่าใช้จ่ายสมทบ</th>
-    <td><input name="textfield21" type="text" id="textfield21" style="width:150px;"/>
+    <td><input name="cost_associate" type="text" value="0.00" style="width:150px;"/>
 บาท</td>
   </tr>
   <tr>
     <th>ค่าใช้จ่ายสมทบจากองค์กรอื่น</th>
-    <td><input name="textfield22" type="text" id="textfield22" style="width:150px;"/>
+    <td><input name="cost_join" type="text" value="0.00" style="width:150px;"/>
 บาท (รวมจากรายการค่าใช้จ่าย)</td>
   </tr>
   <tr>
     <th>ค่าใช้จ่ายที่เสนอขอรับการสนับสนุน</th>
-    <td><input name="textfield23" type="text" id="textfield23" style="width:150px;"/>
+    <td><input name="cost_request" type="text" value="0.00" style="width:150px;"/>
 บาท (รวมจากรายการค่าใช้จ่าย)</td>
   </tr>
   <tr>
     <th>ค่าใช้จ่ายที่ได้รับอนุมัติ</th>
-    <td><input name="textfield24" type="text" id="textfield24" style="width:150px;"/>
+    <td><input name="cost_get" type="text" value="0.00" style="width:150px;"/>
 บาท (รวมจากรายการค่าใช้จ่าย)</td>
   </tr>
   <tr>
@@ -148,8 +181,7 @@ function startDesktop(f)
   </tr>
   <tr>
     <th>วันที่อนุมัติโครงการตามเอกสารแนบ</th>
-    <td><input name="textfield19" type="text" id="textfield19" style="width:80px;"/>
-    <img src="../images/calendar.png" width="16" height="16" /></td>
+    <td><input class="datepicker" name="approve_date" type="text" value="<?=$project['approve_date']?>" style="width:80px;"/></td>
   </tr>
   <tr>
     <th>ค่าใช้จ่ายสมทบ<span class="Txt_red_12"> *</span></th>
@@ -165,8 +197,10 @@ function startDesktop(f)
 
 
 <div id="btnBoxAdd">
-  <input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
-  <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
+  <input type="hidden" name="fund_id" id="fund_id" value="7">
+  <input type="hidden" name="project_id" value="<?=$project['project_id']?>">
+  <input type="submit" title="บันทึก" value=" " class="btn_save"/>
+  <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
 </div>
 </form>
 

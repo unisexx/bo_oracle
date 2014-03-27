@@ -30,17 +30,17 @@
 </tr>
 <?php $i=(isset($_GET['page']))? (($_GET['page'] -1)* 10)+1:1; ?>
 <?foreach($fund_projects as $row):?>
-<tr class="cursor" onclick="window.location='act/fund_welfare/form/<?=$row['id']?>'">
+<tr class="cursor" onclick="window.location='act/fund_welfare/form/<?=$row['project_id']?>'">
   <td><?=$i?></td>
   <td><?=$row['project_name']?></td>
   <td><?=act_get_organ_name($row['org_id'])?></td>
   <td><?=$row['round_no']?></td>
-  <td><?=act_get_target_name($row['id'])?></td>
+  <td><?=act_get_target_name($row['project_id'])?></td>
   <td nowrap="nowrap"><?=number_format($row['cost_request'])?></td>
   <td nowrap="nowrap"><?=number_format($row['cost_get'])?></td>
   <!-- <td>&nbsp;</td>
   <td>&nbsp;</td> -->
-  <td><a href="act/volunteer/delete/<?=$row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
+  <td><a href="act/volunteer/delete/<?=$row['project_id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
 </tr>
 <?$i++?>
 <?endforeach;?>
