@@ -30,7 +30,7 @@ class MY_Model extends Model{
 		parent::__construct();
 		$this->sort($this->primary_key);
 		$this->target();
-		$this->current_page = number_format(@$_GET['page']);
+		$this->current_page = @$_GET['page'];
 	}
 
 	function free_result()
@@ -132,6 +132,24 @@ class MY_Model extends Model{
 		$this->sort($sort);
 		$this->order($order);
 		return $this;
+	}
+	
+	public function get_page($sql, $limit = 20)
+	{
+		$this->limit = $limit;
+		$sql = iconv('UTF-8','TIS-620',$sql);
+		$total = $this->db->getone("SELECT count(*) FROM ( $sql )");
+		$this->load->library('pagination');
+		$page = new pagination();
+		$page->target($this->target);
+		$page->limit($this->limit);
+		@$page->currentPage($this->current_page);
+		$page->Items($total-$this->limit);
+		$this->pagination = $page->show();
+		$start_page = ($page->page == 1) ? 1 : $page->page;
+		$data = $this->db->getarray("SELECT * FROM ( SELECT ROWNUM AS RN, TBL.* FROM ( $sql ) TBL ) WHERE ROWNUM <= $page->limit AND RN > $start_page*$page->limit");
+		array_walk($data, 'dbConvert');
+		return $data;
 	}
 
 	function get($sql = FALSE,$noSplitPage = FALSE,$custom_order=FALSE)

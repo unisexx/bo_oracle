@@ -23,7 +23,9 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 			$condition .= " and budget_year = '".@$_GET['sch_budget_year']."' ";
 		}
 		
-		$data['rs'] = $this->indicator->where($condition)->get('');
+		$sql = "select * from mds_set_indicator where ".$condition." order by indicator_on asc";
+		
+		$data['rs'] = $this->indicator->get($sql);
 		$data['pagination']=$this->indicator->pagination();
 		$this->template->build('index',@$data);
 
@@ -42,7 +44,8 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 							order by mds_set_metrics.metrics_on asc";
 			$data['rs_ass'] = $this->metrics->get($sql_assessment);
 			$data['mds_set_indicator_id'] = $id;
-			new_save_logfile("VIEW",$this->modules_title,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
+			
+			new_save_logfile("VIEW",$this->modules_title,"mds_set_indicator","ID",$id,"indicator_name",$this->modules_name);
 		}else{
 			set_notify('error', 'การเข้าถึงข้อมูลไม่ภูกต้อง');	
 			redirect($data['urlpage'] );
@@ -60,10 +63,10 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 			for($i=1;$i<=$_POST['num_i'];$i++){
 				$update['id'] = @$_POST['id'][$i];
 				$update['mds_set_measure_id'] = @$_POST['mds_set_measure_id'][$i];
-				$update['metrics_target'] = @$_POST['metrics_target'][$i];
+				$update['metrics_target'] = htmlspecialchars(@$_POST['metrics_target'][$i], ENT_QUOTES ,'UTF-8');
 				if(@$update['id'] != ''){
 					$id = $this->metrics->save($update);
-			   		new_save_logfile("EDIT",$this->modules_title,$this->metrics->table,"ID",$id,"metrics_name",$this->modules_name);
+			   		new_save_logfile("EDIT",$this->modules_title,"mds_set_mitrics","ID",$id,"metrics_name",$this->modules_name);
 			   }
 			}
 		   

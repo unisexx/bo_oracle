@@ -1,5 +1,20 @@
+<script type="text/javascript" src="themes/mdevsys/js/tinymce/tinymce.min.js"></script>
 <script type="text/javascript">
+tinymce.init({
+    selector: ".metrics_target",
+    width: 250,
+    height: 50,
+    language :'th_TH',
+    menubar: false,
+    toolbar: false
+ }); 
+
 $(document).ready(function(){
+		// ทำให้ผ่าน tiny ผ่าน validate
+		$('.btn_save').click(function() {
+		     tinymce.triggerSave();
+		});
+	
 		$("form").validate({
 			rules: {
 				budget_year:{required:true}
@@ -70,30 +85,27 @@ $(document).ready(function(){
 				  <td><?=$metrics['metrics_name']?></td>
 				  <td>
 				  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics['id']?>" />
-				  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name','mds_set_measure'),@$metrics['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+				  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics['mds_set_measure_id']."' "),@$metrics['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
 				  </td>
 				  <td>
 				  	<label>
-				    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?=@$metrics['metrics_target']?>" class="numOnly" />
+				    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?=htmlspecialchars_decode(@$metrics['metrics_target']); ?>" class="metrics_target" />
 				  	</label>
 				  </td>
 				  <td><?=$metrics['metrics_weight']?></td>
 				 			<?
-						  		$sql_chk_result_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics['id']."' and round_month = '6' ";
-						  		$chk_result_6 = $this->metrics_result->get($sql_chk_result_6);
+						  		$chk_result_6 = chk_reslut_keyer_scroe($metrics['id'],'6');
 								
-								$sql_chk_result_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics['id']."' and round_month = '9' ";
-						  		$chk_result_9 = $this->metrics_result->get($sql_chk_result_9);
+						  		$chk_result_9 = chk_reslut_keyer_scroe($metrics['id'],'9');
 								
-								$sql_chk_result_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics['id']."' and round_month = '12' ";
-						  		$chk_result_12 = $this->metrics_result->get($sql_chk_result_12);
+						  		$chk_result_12 = chk_reslut_keyer_scroe($metrics['id'],'12');
 						  	?>
-					<td><?=@$chk_result_6['0']['result_metrics']?></td>
-					<td><?=@$chk_result_6['0']['score_metrics']?></td>
-					<td><?=@$chk_result_9['0']['result_metrics']?></td>
-					<td><?=@$chk_result_9['0']['score_metrics']?></td>
-					<td><?=@$chk_result_12['0']['result_metrics']?></td>
-					<td><?=@$chk_result_12['0']['score_metrics']?></td>
+					<td><?=@$chk_result_6['result_metrics']?></td>
+					<td><?=@$chk_result_6['score_metrics']?></td>
+					<td><?=@$chk_result_9['result_metrics']?></td>
+					<td><?=@$chk_result_9['score_metrics']?></td>
+					<td><?=@$chk_result_12['result_metrics']?></td>
+					<td><?=@$chk_result_12['score_metrics']?></td>
 			  </tr>
 			  <script language="JavaScript">
 		  		$(function(){
@@ -109,30 +121,27 @@ $(document).ready(function(){
 						  <td><?=$metrics_sub_1['metrics_name']?></td>
 						  <td>
 						  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics_sub_1['id']?>" />
-						  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name','mds_set_measure'),@$metrics_sub_1['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+						  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics_sub_1['mds_set_measure_id']."' "),@$metrics_sub_1['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
 						  </td>
 						  <td>
 						  	<label>
-						    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?=@$metrics_sub_1['metrics_target']?>" class="numOnly" />
+						    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?htmlspecialchars_decode(@$metrics_sub_1['metrics_target']);?>" class="metrics_target" />
 						  	</label>
 						  </td>
 						  <td><?=$metrics_sub_1['metrics_weight']?></td>
 						  	<?
-						  		$sql_chk_result_1_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_1['id']."' and round_month = '6' ";
-						  		$chk_result_1_6 = $this->metrics_result->get($sql_chk_result_1_6);
+						  		$chk_result_1_6 = chk_reslut_keyer_scroe($metrics_sub_1['id'],'6');
 								
-								$sql_chk_result_1_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_1['id']."' and round_month = '9' ";
-						  		$chk_result_1_9 = $this->metrics_result->get($sql_chk_result_1_9);
+						  		$chk_result_1_9 = chk_reslut_keyer_scroe($metrics_sub_1['id'],'9');
 								
-								$sql_chk_result_1_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_1['id']."' and round_month = '12' ";
-						  		$chk_result_1_12 = $this->metrics_result->get($sql_chk_result_1_12);
+						  		$chk_result_1_12 = chk_reslut_keyer_scroe($metrics_sub_1['id'],'12');
 						  	?>
-						  <td><?=@$chk_result_1_6['0']['result_metrics']?></td>
-						  <td><?=@$chk_result_1_6['0']['score_metrics']?></td>
-						  <td><?=@$chk_result_1_9['0']['result_metrics']?></td>
-						  <td><?=@$chk_result_1_9['0']['score_metrics']?></td>
-						  <td><?=@$chk_result_1_12['0']['result_metrics']?></td>
-						  <td><?=@$chk_result_1_12['0']['score_metrics']?></td>
+						  <td><?=@$chk_result_1_6['result_metrics']?></td>
+						  <td><?=@$chk_result_1_6['score_metrics']?></td>
+						  <td><?=@$chk_result_1_9['result_metrics']?></td>
+						  <td><?=@$chk_result_1_9['score_metrics']?></td>
+						  <td><?=@$chk_result_1_12['result_metrics']?></td>
+						  <td><?=@$chk_result_1_12['score_metrics']?></td>
 					  </tr>
 					  <script language="JavaScript">
 				  		$(function(){
@@ -150,30 +159,27 @@ $(document).ready(function(){
 							  <td><?=$metrics_sub_2['metrics_name']?></td>
 							  <td>
 							  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics_sub_2['id']?>" />
-							  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name','mds_set_measure'),@$metrics_sub_2['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+							  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics_sub_2['mds_set_measure_id']."'"),@$metrics_sub_2['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
 							  </td>
 							  <td>
 							  	<label>
-							    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?=@$metrics_sub_2['metrics_target']?>" class="numOnly" />
+							    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?php echo htmlspecialchars_decode(@$metrics_sub_2['metrics_target']); ?>" class="metrics_target" />
 							  	</label>
 							  </td>
 							  <td><?=$metrics_sub_2['metrics_weight']?></td>
 								 <?
-							  		$sql_chk_result_2_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_2['id']."' and round_month = '6' ";
-							  		$chk_result_2_6 = $this->metrics_result->get($sql_chk_result_2_6);
+							  		$chk_result_2_6 = chk_reslut_keyer_scroe($metrics_sub_2['id'],'6');
 									
-									$sql_chk_result_2_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_2['id']."' and round_month = '9' ";
-							  		$chk_result_2_9 = $this->metrics_result->get($sql_chk_result_2_9);
+							  		$chk_result_2_9 = chk_reslut_keyer_scroe($metrics_sub_2['id'],'9');
 									
-									$sql_chk_result_2_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_2['id']."' and round_month = '12' ";
-							  		$chk_result_2_12 = $this->metrics_result->get($sql_chk_result_2_12);
+							  		$chk_result_2_12 = chk_reslut_keyer_scroe($metrics_sub_2['id'],'12');
 							  	?>
-							  <td><?=@$chk_result_2_6['0']['result_metrics']?></td>
-							  <td><?=@$chk_result_2_6['0']['score_metrics']?></td>
-							  <td><?=@$chk_result_2_9['0']['result_metrics']?></td>
-							  <td><?=@$chk_result_2_9['0']['score_metrics']?></td>
-							  <td><?=@$chk_result_2_12['0']['result_metrics']?></td>
-							  <td><?=@$chk_result_2_12['0']['score_metrics']?></td>
+							  <td><?=@$chk_result_2_6['result_metrics']?></td>
+							  <td><?=@$chk_result_2_6['score_metrics']?></td>
+							  <td><?=@$chk_result_2_9['result_metrics']?></td>
+							  <td><?=@$chk_result_2_9['score_metrics']?></td>
+							  <td><?=@$chk_result_2_12['result_metrics']?></td>
+							  <td><?=@$chk_result_2_12['score_metrics']?></td>
 						  </tr>
 						  <script language="JavaScript">
 					  		$(function(){
@@ -190,30 +196,27 @@ $(document).ready(function(){
 							  <td><?=$metrics_sub_3['metrics_name']?></td>
 							  <td>
 							  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics_sub_3['id']?>" />
-							  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name','mds_set_measure'),@$metrics_sub_3['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+							  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics_sub_3['mds_set_measure_id']."'"),@$metrics_sub_3['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
 							  </td>
 							  <td>
 							  	<label>
-							    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?=@$metrics_sub_3['metrics_target']?>" class="numOnly" />
+							    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?php echo htmlspecialchars_decode(@$metrics_sub_3['metrics_target']);?>" class="metrics_target" />
 							  	</label>
 							  </td>
 							  <td><?=$metrics_sub_3['metrics_weight']?></td>
 								  <?
-							  		$sql_chk_result_3_6 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_3['id']."' and round_month = '6' ";
-							  		$chk_result_3_6 = $this->metrics_result->get($sql_chk_result_3_6);
+							  		$chk_result_3_6 = chk_reslut_keyer_scroe($metrics_sub_3['id'],'6');
 									
-									$sql_chk_result_3_9 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_3['id']."' and round_month = '9' ";
-							  		$chk_result_3_9 = $this->metrics_result->get($sql_chk_result_3_9);
+							  		$chk_result_3_9 = chk_reslut_keyer_scroe($metrics_sub_3['id'],'9');
 									
-									$sql_chk_result_3_12 = "select * from mds_metrics_result where is_save = '2' and control_status = '1' and kpr_status = '1' and mds_set_metrics_id = '".$metrics_sub_3['id']."' and round_month = '12' ";
-							  		$chk_result_3_12 = $this->metrics_result->get($sql_chk_result_3_12);
+							  		$chk_result_3_12 = chk_reslut_keyer_scroe($metrics_sub_3['id'],'12');
 							  	?>
-							  <td><?=@$chk_result_3_6['0']['result_metrics']?></td>
-							  <td><?=@$chk_result_3_6['0']['score_metrics']?></td>
-							  <td><?=@$chk_result_3_9['0']['result_metrics']?></td>
-							  <td><?=@$chk_result_3_9['0']['score_metrics']?></td>
-							  <td><?=@$chk_result_3_12['0']['result_metrics']?></td>
-							  <td><?=@$chk_result_3_12['0']['score_metrics']?></td>
+							  <td><?=@$chk_result_3_6['result_metrics']?></td>
+							  <td><?=@$chk_result_3_6['score_metrics']?></td>
+							  <td><?=@$chk_result_3_9['result_metrics']?></td>
+							  <td><?=@$chk_result_3_9['score_metrics']?></td>
+							  <td><?=@$chk_result_3_12['result_metrics']?></td>
+							  <td><?=@$chk_result_3_12['score_metrics']?></td>
 						  </tr>
 						  <script language="JavaScript">
 					  		$(function(){
@@ -223,6 +226,82 @@ $(document).ready(function(){
 					  	  </script>
 					<?
 						$i++;
+							$result_metrics_sub_4 = metrics_set_indicator($mds_set_indicator_id,false,$metrics_sub_3['id']);
+							foreach (@$result_metrics_sub_4 as $key => $metrics_sub_4) { ?>
+								<tr>
+								  <td><?=$metrics['metrics_on']?>.<?=$metrics_sub_1['metrics_on']?>.<?=$metrics_sub_2['metrics_on']?>.<?=$metrics_sub_3['metrics_on']?>.<?=$metrics_sub_4['metrics_on']?></td>
+								  <td><?=$metrics_sub_4['metrics_name']?></td>
+								  <td>
+								  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics_sub_4['id']?>" />
+								  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics_sub_4['mds_set_measure_id']."'"),@$metrics_sub_4['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+								  </td>
+								  <td>
+								  	<label>
+								    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?php echo htmlspecialchars_decode(@$metrics_sub_4['metrics_target']); ?>" class="metrics_target" />
+								  	</label>
+								  </td>
+								  <td><?=$metrics_sub_4['metrics_weight']?></td>
+									  <?
+								  		$chk_result_4_6 = chk_reslut_keyer_scroe($metrics_sub_4['id'],'6');
+										
+								  		$chk_result_4_9 = chk_reslut_keyer_scroe($metrics_sub_4['id'],'9');
+										
+								  		$chk_result_4_12 = chk_reslut_keyer_scroe($metrics_sub_4['id'],'12');
+								  	?>
+								  <td><?=@$chk_result_4_6['result_metrics']?></td>
+								  <td><?=@$chk_result_4_6['score_metrics']?></td>
+								  <td><?=@$chk_result_4_9['result_metrics']?></td>
+								  <td><?=@$chk_result_4_9['score_metrics']?></td>
+								  <td><?=@$chk_result_4_12['result_metrics']?></td>
+								  <td><?=@$chk_result_4_12['score_metrics']?></td>
+							  </tr>
+							  <script language="JavaScript">
+						  		$(function(){
+										$("[name='mds_set_measure_id[<?=$i?>]']").rules( 'add', {required: true, messages: {required: "กรุณาเลือกหน่วยวัด" } });
+										$("[name='metrics_target[<?=$i?>]']").rules( 'add', {required: true, messages: {required: "กรุณาเป้าหมาย" } });
+								});
+						  	  </script>
+						<?
+							$i++;
+								$result_metrics_sub_5 = metrics_set_indicator($mds_set_indicator_id,false,$metrics_sub_4['id']);
+								foreach (@$result_metrics_sub_5 as $key => $metrics_sub_5) { ?>
+									<tr>
+									  <td><?=$metrics['metrics_on']?>.<?=$metrics_sub_1['metrics_on']?>.<?=$metrics_sub_2['metrics_on']?>.<?=$metrics_sub_3['metrics_on']?>.<?=$metrics_sub_4['metrics_on']?>.<?=$metrics_sub_5['metrics_on']?></td>
+									  <td><?=$metrics_sub_5['metrics_name']?></td>
+									  <td>
+									  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics_sub_5['id']?>" />
+									  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics_sub_5['mds_set_measure_id']."'"),@$metrics_sub_5['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+									  </td>
+									  <td>
+									  	<label>
+									    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?php echo htmlspecialchars_decode(@$metrics_sub_5['metrics_target']);?>" class="metrics_target" />
+									  	</label>
+									  </td>
+									  <td><?=$metrics_sub_4['metrics_weight']?></td>
+										  <?
+									  		$chk_result_5_6 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'6');
+											
+									  		$chk_result_5_9 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'9');
+											
+									  		$chk_result_5_12 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'12');
+									  	?>
+									  <td><?=@$chk_result_5_6['result_metrics']?></td>
+									  <td><?=@$chk_result_5_6['score_metrics']?></td>
+									  <td><?=@$chk_result_5_9['result_metrics']?></td>
+									  <td><?=@$chk_result_5_9['score_metrics']?></td>
+									  <td><?=@$chk_result_5_12['result_metrics']?></td>
+									  <td><?=@$chk_result_5_12['score_metrics']?></td>
+								  </tr>
+								  <script language="JavaScript">
+							  		$(function(){
+											$("[name='mds_set_measure_id[<?=$i?>]']").rules( 'add', {required: true, messages: {required: "กรุณาเลือกหน่วยวัด" } });
+											$("[name='metrics_target[<?=$i?>]']").rules( 'add', {required: true, messages: {required: "กรุณาเป้าหมาย" } });
+									});
+							  	  </script>
+							<?
+								$i++;
+								}//foreach metrics_sub_5
+							}//foreach metrics_sub_4
 						}//foreach metrics_sub_3
 					} //foreach metrics_sub_2
 				} //foreach metrics_sub_1

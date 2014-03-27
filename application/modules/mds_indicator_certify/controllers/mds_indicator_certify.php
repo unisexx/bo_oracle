@@ -62,23 +62,21 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		$premit = is_permit(login_data('id'),'1');
 		if($id != ''){
 			if($premit == ''){
-				$sql_result = "select distinct result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+				$sql_result = "select distinct result.*,mds_set_metrics_keyer.keyer_name ,mds_set_metrics_keyer.keyer_tel,mds_set_metrics_keyer.keyer_email 
 								from mds_metrics_result result
 								join mds_set_metrics_kpr on result.mds_set_metrics_id = mds_set_metrics_kpr.mds_set_metrics_id and result.round_month = mds_set_metrics_kpr.round_month
 								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id 
 										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id
-								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 								where result.mds_set_metrics_id = '".$id."' and mds_set_metrics_kpr.control_users_id = '".login_data('id')."' 
 								order by result.round_month asc,result.id desc ";
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
 				$data['pagination'] = $this->metrics_result->pagination();
 			}else{
-				$sql_result = "select distinct result.*,mds_set_permission_dtl.name ,mds_set_permission_dtl.tel,mds_set_permission_dtl.email 
+				$sql_result = "select distinct result.*,mds_set_metrics_keyer.keyer_name ,mds_set_metrics_keyer.keyer_tel,mds_set_metrics_keyer.keyer_email 
 								from mds_metrics_result result 
 								left join mds_set_metrics_keyer on result.mds_set_metrics_id = mds_set_metrics_keyer.mds_set_metrics_id 
 										  and result.round_month = mds_set_metrics_keyer.round_month and result.keyer_users_id =  mds_set_metrics_keyer.keyer_users_id
-								left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 								where result.mds_set_metrics_id = '".$id."' order by result.round_month asc,result.id desc ";
 									
 				$data['rs'] = $this->metrics_result->get($sql_result);
@@ -99,7 +97,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 			$data['parent_on'] = '';
 			$parent_on_id = $data['rs_metrics']['id'];
 			if(@$data['rs_metrics']['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {
+				for ($i=1; $i <= 8 ; $i++) {
 					
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
@@ -112,7 +110,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 						$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
 					}
 					if($parent_on['parent_id'] == '0'){
-						$i = 5;
+						$i = 9;
 					}
 					
 				}
@@ -129,69 +127,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		$this->template->build('form',@$data);
 
 	}
-	/*
-	function form_list($users_keyer=null,$id=null){
-		$data['urlpage'] = $this->urlpage;
-		$premit = is_permit(login_data('id'),'1');
-		$data['metrics_id'] = $id;
-		$data['users_keyer'] = $users_keyer;
-		if($users_keyer != '' && $id !=''){
-			
-				$sql_result_status = "select result_status.*,result.mds_set_metrics_id ,topic.status_dtl,topic.status_steps,result.round_month
-										from mds_metrics_result result 
-										join mds_metrics_result_status result_status on result.id = result_status.mds_metrics_result_id
-										join mds_status_topic topic on result_status.permit_type_id = topic.permit_type_id and result_status.result_status_id = topic.status_id
-										where result.keyer_users_id = '".$users_keyer."' and RESULT.MDS_SET_METRICS_ID = '".$id."' order by result_status.id asc ";
-														
-
-									
-				$data['rs'] = $this->metrics_result->get($sql_result_status);
-				$data['pagination'] = $this->metrics_result->pagination();
-				
-			$data['rs_metrics'] = $this->metrics->get_row(@$data['rs']['0']['mds_set_metrics_id']);
-				if($premit == "")
-				{
-				  $chk_control_indicator = chk_control_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id']);
-				  if($chk_control_indicator != 'Y'){
-				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); //redirect("mds");
-				  }	
-				}
-			
-			
-			$data['parent_on'] = '';
-			$parent_on_id = $data['rs_metrics']['id'];
-			if(@$data['rs_metrics']['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {
-					
-					$parent_on = '';
-					$parent_on = $this->metrics->get_row($parent_on_id);
-					$parent_on_id = $parent_on['parent_id'];
-					
-					
-					if($data['parent_on'] != ''){
-						$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
-					}else{
-						$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
-					}
-					if($parent_on['parent_id'] == '0'){
-						$i = 5;
-					}
-					
-				}
-			}else{
-				$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
-			}
-			
-			$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
-		}else{
-			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
-			redirect($data['urlpage'].'/index/');
-		}
-			
-		$this->template->build('form_list',@$data);
-
-	}
-	*/
+	
 	
 	function form_list($result_id=null){
 		$data['urlpage'] = $this->urlpage;
@@ -199,7 +135,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		$data['result_id'] = $result_id;
 		if($result_id !=''){
 			
-				$sql_result_status = "select result_status.*,result.mds_set_metrics_id ,topic.status_dtl,topic.status_steps,result.round_month
+				$sql_result_status = "select result_status.*,result.mds_set_metrics_id ,topic.status_dtl,topic.status_steps,topic.code_colors,result.round_month
 										from mds_metrics_result result 
 										join mds_metrics_result_status result_status on result.id = result_status.mds_metrics_result_id
 										join mds_status_topic topic on result_status.permit_type_id = topic.permit_type_id and result_status.result_status_id = topic.status_id
@@ -213,9 +149,8 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				// หา หน่วยงานรับผิดชอบ
 				$chk_kpr = "select mds_set_metrics_kpr.*,cnf_division.title , cnf_department.title as department_name 
 							from mds_set_metrics_kpr 
-							left join mds_set_permission_dtl on mds_set_metrics_kpr.control_permission_id = mds_set_permission_dtl.mds_set_permission_id 
-							left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
-							left join cnf_department on mds_set_permission_dtl.departmentid = cnf_department.id 
+							left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
+							left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
 							where mds_set_metrics_kpr.mds_set_metrics_id = '".@$data['rs']['0']['mds_set_metrics_id']."' and mds_set_metrics_kpr.round_month = '".@$data['rs']['0']['round_month']."'";
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$data['kpr'] = @$result_kpr['0'];
@@ -236,7 +171,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 			$data['parent_on'] = '';
 			$parent_on_id = $data['rs_metrics']['id'];
 			if(@$data['rs_metrics']['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {
+				for ($i=1; $i <= 8 ; $i++) {
 					
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
@@ -249,7 +184,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 						$data['parent_on'] = @$data['rs_metrics']['metrics_on'];
 					}
 					if($parent_on['parent_id'] == '0'){
-						$i = 5;
+						$i = 9;
 					}
 					
 				}
@@ -294,13 +229,11 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 					
 					//$this->db->debug = true;
 					$chk_kpr = "select mds_set_metrics_kpr.*,
-							mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username ,
 							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
 							from mds_set_metrics_kpr 
-							left join mds_set_permission_dtl on mds_set_metrics_kpr.control_permission_id = mds_set_permission_dtl.mds_set_permission_id
-							left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id 
-							left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
-							left join cnf_department on mds_set_permission_dtl.departmentid = cnf_department.id 
+							left join mds_set_position on mds_set_metrics_kpr.control_position_id = mds_set_position.id 
+							left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
+							left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
 							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."'";
 					$result_kpr = $this->kpr->get($chk_kpr);
 					$data['kpr'] = @$result_kpr['0'];
@@ -316,18 +249,18 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 					*/
 					
 					// หาคะแนนขอผู้บันทึกคะแนน
-					$chk_keyer_score = "select mds_set_metrics_keyer.*,mds_metrics_result.score_metrics
-										from mds_set_metrics_keyer 
-										join mds_metrics_result on mds_set_metrics_keyer.mds_set_metrics_id = mds_metrics_result.mds_set_metrics_id 
-																						and mds_metrics_result.round_month = mds_set_metrics_keyer.round_month
-										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_score = '1'";
+					$chk_keyer_score = "select mds_set_metrics_keyer.*,mds_metrics_result.score_metrics,mds_metrics_result.result_metrics
+									from mds_set_metrics_keyer 
+									join mds_metrics_result on mds_set_metrics_keyer.mds_set_metrics_id = mds_metrics_result.mds_set_metrics_id 
+																					and mds_metrics_result.round_month = mds_set_metrics_keyer.round_month
+																					and mds_metrics_result.keyer_users_id = mds_set_metrics_keyer.keyer_users_id
+									where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' 
+									      and mds_set_metrics_keyer.keyer_score = '1'";
 					$data['score'] = $this->keyer->get($chk_keyer_score);
 					$data['score'] = @$data['score']['0'];
 				
-					$chk_keyer_activity = "select mds_set_metrics_keyer.*,
-										mds_set_permission_dtl.name , mds_set_permission_dtl.email , mds_set_permission_dtl.tel , mds_set_permission_dtl.username 
+					$chk_keyer_activity = "select mds_set_metrics_keyer.*
 										from mds_set_metrics_keyer 
-										left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".$data['rs']['keyer_users_id']."' ";
 					$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
@@ -371,9 +304,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 			if($_POST['permit_type_id'] == '2'){
 				if($_POST['control_status'] == '1'){
 					$update_result['control_status'] = $_POST['control_status'];
-					$update_result['permission_id'] = chk_permission_id(login_data('id'));
 				}else{
-					$update_result['permission_id'] = chk_permission_id(login_data('id'));
 					$update_result['control_status'] = '';
 					$update_result['is_save'] = '1';
 				}
@@ -389,9 +320,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 			if($_POST['permit_type_id'] == '1'){
 				if($_POST['kpr_status'] == '1'){
 					$update_result['kpr_status'] = $_POST['kpr_status'];
-					$update_result['permission_id'] = chk_permission_id(login_data('id'));
 				}else{
-					$update_result['permission_id'] = chk_permission_id(login_data('id'));
 					$update_result['kpr_status'] = '';
 					$update_result['control_status'] = '';
 					$update_result['is_save'] = '1';
@@ -410,7 +339,6 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				$update_status['mds_metrics_result_id'] = $id;
 				$update_status['permit_type_id'] = '2';
 				$update_status['result_status_id'] = $_POST['control_status'];
-				$update_status['permission_id'] = chk_permission_id(login_data('id'));
 				if($_POST['control_status'] == '1'){
 					$update_status['result_comment'] = '';
 					$status = "อนุมัติ";
@@ -420,7 +348,7 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				}		
 				$update_status['users_id'] = login_data('id');
 				$update_status['CREATE_DATE'] = date("Y-m-d");
-				$update_status['CREATE_BY'] = login_data('id');
+				$update_status['CREATE_BY'] = login_data('name');
 				$this->result_status->save($update_status);
 			}
 			
@@ -428,7 +356,6 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				$update_status['mds_metrics_result_id'] = $id;
 				$update_status['permit_type_id'] = '1';
 				$update_status['result_status_id'] = $_POST['kpr_status'];
-				$update_status['permission_id'] = chk_permission_id(login_data('id'));
 				if($_POST['kpr_status'] == '1'){
 					$update_status['result_comment'] = '';
 					$status = "ผ่าน";

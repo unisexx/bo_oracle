@@ -1,7 +1,7 @@
 <table class="tbadd">
 <tr>
   <th><img src="themes/mdevsys/images/circle_0.png" alt="" width="16" height="16" /></th>
-  <td>N/A</td>
+  <td>ยังไม่ผ่านการรับรอง</td>
 </tr>
 <?
 	for ($i=1; $i <= 5 ; $i++) { 

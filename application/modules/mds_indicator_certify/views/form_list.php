@@ -85,8 +85,8 @@ foreach ($rs as $key => $result_status) { ?>
 
   ?>
   <td><?=$steps?></td>
-  <td><?=get_one('name','mds_set_permission_dtl','mds_set_permission_id',@$result_status['permission_id'])?></td>
-  <td><?=$status?></td>
+  <td><?=@$result_status['create_by']?></td>
+  <td><span style="color: <?=@$result_status['code_colors']?>"><?=$status?></span></td>
   <td><?=@$result_status['result_comment']?></td>
 </tr>
 

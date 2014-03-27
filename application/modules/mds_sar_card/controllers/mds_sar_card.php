@@ -14,9 +14,12 @@ Class Mds_sar_card extends  Mdevsys_Controller{
 		$this->load->model('mds_indicator/Mds_metrics_result_status_model','result_status');
 		$this->load->model('mds_set_score/Mds_set_score_model','score');
 		
+		/*
 		if(is_permit(login_data('id'),'1') == ''){
 			 set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds"); // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		}
+		 * 
+		 */
 	}
 	
 	public $urlpage = "mds_sar_card";
@@ -42,15 +45,15 @@ Class Mds_sar_card extends  Mdevsys_Controller{
 		switch($mode){
 			case 'export':
 				header('Content-type:application/xls');
-				$filename= "mds_sar_card_data_".date("Y-m-d_H_i_s").".xls";
+				$filename= "mds_sar_card_data_".date("YmdHis").".xls";
 				header("Content-Disposition: attachment; filename=".$filename);
-				$this->load->view('export',@$data);
+				$this->load->view('loop_export',@$data);
 			break;
 			case 'print':
-				$this->load->view('print',@$data);
+				$this->load->view('loop_print',@$data);
 			break;
 			default:
-				$this->template->build('index',@$data);
+				$this->template->build('loop_index',@$data);
 			break;
 		}
 		

@@ -73,9 +73,24 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 									from mds_set_metrics
 									join mds_set_indicator on mds_set_metrics.mds_set_indicator_id = mds_set_indicator.id
 								   where mds_set_indicator.budget_year = '".@$data['rs_indicator']['budget_year']."' 
-								   		 and mds_set_metrics.parent_id = '0' "; 
+								   		 and mds_set_metrics.parent_id = '0' and mds_set_indicator.indicator_on = '".@$data['rs_indicator']['indicator_on']."' "; 
 			$result_max = $this->metrics->get($sql_max_metrics_on);
 			$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
+			if(@$data['rs_indicator']['indicator_on'] == '1'){
+				$data['min_mrtrics_on'] = '1';
+			}else{
+				$indicator_on = @$data['rs_indicator']['indicator_on']-1;
+				$sql_min_metrics_on = "select max(mds_set_metrics.metrics_on) as max_metrics_on 
+									from mds_set_metrics
+									join mds_set_indicator on mds_set_metrics.mds_set_indicator_id = mds_set_indicator.id
+								   where mds_set_indicator.budget_year = '".@$data['rs_indicator']['budget_year']."' 
+								   		 and mds_set_metrics.parent_id = '0' and mds_set_indicator.indicator_on = '".$indicator_on."' "; 
+				$result_min = $this->metrics->get($sql_min_metrics_on);
+				$data['min_mrtrics_on'] = @$result_min['0']['max_metrics_on']+1;
+			}
+			if(@$result_max['0']['max_metrics_on'] == ''){
+				$data['max_mrtrics_on'] = @$result_min['0']['max_metrics_on']+1;
+			}
 			
 			$data['rs']['parent_id'] = '0';
 			
@@ -101,25 +116,25 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
 			}else{
 				$sql_max_metrics_on = "select max(metrics_on) as max_metrics_on from mds_set_metrics 
-								   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '".$id."' "; 
+								   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '".$data['rs']['parent_id']."' "; 
 				$result_max = $this->metrics->get($sql_max_metrics_on);
 				$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
 			
 			}
-			
+				$data['min_mrtrics_on'] = '1';
 			
 			$data['parent_on'] = '';
 			$parent_on_id = $data['rs']['parent_id'];
 			
 			if($data['rs']['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {				
+				for ($i=1; $i <= 8 ; $i++) {				
 					$parent_on = '';
 					$parent_on = $this->metrics->get_row($parent_on_id);
 					$parent_on_id = $parent_on['parent_id'];
 					
 					if($parent_on['parent_id'] == '0'){
 						$data['mds_set_assessment_id'] = $parent_on['mds_set_assessment_id'];
-						$i = '6';
+						$i = '9';
 					}
 					
 					if($data['parent_on'] != ''){
@@ -139,18 +154,19 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				redirect($data['urlpage']);
 			}
 			
-			$sql_max_metrics_on = "select max(metrics_on) as max_metrics_on from mds_set_metrics 
-								   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '".$id."' "; 
-			$result_max = $this->metrics->get($sql_max_metrics_on);
-			$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
+				$sql_max_metrics_on = "select max(metrics_on) as max_metrics_on from mds_set_metrics 
+									   where mds_set_indicator_id = '".@$indicator_id."' and parent_id = '".$id."' "; 
+				$result_max = $this->metrics->get($sql_max_metrics_on);
+				$data['max_mrtrics_on'] = @$result_max['0']['max_metrics_on']+1;
+				$data['min_mrtrics_on'] = '1';
 			
 			$data['parent_on'] = '';
 			$parent_on = $this->metrics->get_row($id);
 			$parent_on_id = $parent_on['id'];
 			
 			if(@$parent_on['parent_id'] != '0'){
-				for ($i=1; $i <= 4 ; $i++) {
-					if($i == 4){
+				for ($i=1; $i <= 8 ; $i++) {
+					if($i == 8){
 						set_notify('error', 'การเข้าถึงข้อมูลผิดพลาด');
 						redirect($data['urlpage'].'/index?sch_budget_year='.@$data['rs_indicator']['budget_year']);
 					}
@@ -159,15 +175,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					$parent_on_id = $parent_on['parent_id'];
 					if($parent_on['parent_id'] == '0'){
 						$data['mds_set_assessment_id'] = $parent_on['mds_set_assessment_id'];
-						$i = 5;
+						$i = 9;
 					}
 					
 					if($data['parent_on'] != ''){
 						$data['parent_on'] = @$parent_on['metrics_on'].'.'.@$data['parent_on'];
 					}else{
 						$data['parent_on'] = @$parent_on['metrics_on'];
-					}
-					
+					}	
 				}
 			}else{
 				$data['parent_on'] = @$parent_on['metrics_on'];
@@ -227,15 +242,22 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			if($metrics_cancel == ''){
 				@$_POST['metrics_cancel'] = '';
 			}
+			$_POST['metrics_target'] = htmlspecialchars($_POST['metrics_target'], ENT_QUOTES ,'UTF-8');
 			
 			if($_POST['id']>0){
-				$_POST['UPDATE_DATE'] = date("Y-m-d");
+				//$_POST['UPDATE_DATE'] = date("Y-m-d");
 				$_POST['UPDATE_BY'] = login_data('id');
+				unset($_POST['metrics_on']);
 			}else{
-				$_POST['CREATE_DATE'] = date("Y-m-d");
+				if($_POST['metrics_on'] < $_POST['min_mrtrics_on'] || $_POST['metrics_on'] > $_POST['max_mrtrics_on']){
+					set_notify('error', 'ไม่สามารถบันทึกข้อมูลได้เนื่องจาก มีลำดับตัวชี้วัดไม่ถูกต้อง');	
+					redirect($urlpage.'/index?sch_budget_year='.@$_POST['budget_year']);
+				}
+				//$_POST['CREATE_DATE'] = date("Y-m-d");
 				$_POST['CREATE_BY'] = login_data('id');
 			}
 			
+			/*
 			if(@$_POST['id'] != ''){ // ตรวจสอบว่ามีเลขลำดับซ้ำกันหรือไม่
 				$chk_metrics_on = "SELECT METRICS.ID,METRICS.METRICS_ON
 							  FROM MDS_SET_METRICS METRICS
@@ -254,22 +276,57 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				$num_chk_on = count($result_chk_on);
 			}
 			
-			if($num_chk_on > 0){ // ถ้ามีเลขลำดับซ้ำกัน
-				$sql_update_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+			 * 
+			 */
+			 if(@$_POST['id'] == ''){
+				$chk_metrics_on = "SELECT METRICS.ID,METRICS.METRICS_ON
 								  FROM MDS_SET_METRICS METRICS
 								  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
 								  WHERE INDICATOR.BUDGET_YEAR = '".@$_POST['budget_year']."' AND METRICS.PARENT_ID = '".@$_POST['parent_id']."' 
-								  AND METRICS.METRICS_ON >= '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
-				$result_on = $this->metrics->get($sql_update_on);
-				foreach ($result_on as $key => $result) {
-					$update_on['id'] = $result['id'];
-					$update_on['metrics_on'] = $result['metrics_on']+1;
-					$this->metrics->save($update_on);
+								  AND METRICS.METRICS_ON = '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
+				$result_chk_on = $this->metrics->get($chk_metrics_on);
+				$num_chk_on = count($result_chk_on);
+			
+				if($num_chk_on > 0){ // ถ้ามีเลขลำดับซ้ำกัน
+					$sql_update_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+									  FROM MDS_SET_METRICS METRICS
+									  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
+									  WHERE INDICATOR.BUDGET_YEAR = '".@$_POST['budget_year']."' AND METRICS.PARENT_ID = '".@$_POST['parent_id']."' 
+									  AND METRICS.METRICS_ON >= '".@$_POST['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
+					$result_on = $this->metrics->get($sql_update_on);
+					foreach ($result_on as $key => $result) {
+						$update_on['id'] = $result['id'];
+						$update_on['metrics_on'] = $result['metrics_on']+1;
+						$this->metrics->save($update_on);
+					}
 				}
 			}
 			
 			$id = $this->metrics->save($_POST);
+			// ตรวจสอบว่ามีการบันทึกข้อมูลแล้วหรือยัง
+			$sql_result_round = "select * from mds_metrics_result where mds_set_metrics_id = '".$id."' ";
+  			$chk_result_round = $this->metrics_result->get($sql_result_round);
+			$num_chk_round = count($chk_result_round);
+			if($num_chk_round > '0'){
+				$data_metrics = $this->metrics->get_row($id);
+				$_POST['metrics_start'] = $data_metrics['metrics_start'];
+				$chk_month = '6';
+				for($i_month=1;$i_month<=3;$i_month++){
+					if($chk_month < 12){
+						$sql_result_round_month = "select * from mds_metrics_result where mds_set_metrics_id = '".@$rs['id']."' and round_month = '".$chk_month."' ";
+  						$chk_result_round_month = $this->metrics_result->get($sql_result_round_month);
+						$num_chk_round_month = count($chk_result_round_month);
+						if($num_chk_round > '0'){
+							$_POST['sem_'.$chk_month] = $data_metrics['sem_'.$chk_month];
+						}
+						unset($num_chk_round_month);
+					}
+					$chk_month = $chk_month+3;
+				}
+			}
 			
+			//return false;
+			// ผู้จัดเก็บข้อมูล  , ผู้กำกับตัวชี้วัด  , กพร. 
 			if($_POST['metrics_responsible'] == 'Y'){
 				$kpr_6['id'] = @$_POST['kpr_id_6'];
 				$kpr_9['id'] = @$_POST['kpr_id_9'];
@@ -278,18 +335,37 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				if(@$_POST['metrics_start'] == 6){ // เรื่มที่รอบ 6 เดือน
 					
 					$kpr_6['kpr_users_id'] = $_POST['kpr_6'];
-					if(@$_POST['kpr_permission_id_6'] == ''){
-						$kpr_6['kpr_permission_id'] = chk_permission_id($_POST['kpr_6']);
+					if(@$_POST['kpr_name_6'] == ''){
+						$users_dtl = chk_user_dtl($_POST['kpr_6']);
+						$kpr_6['kpr_name'] = $users_dtl['name'];
+						$kpr_6['kpr_email'] = $users_dtl['email'];
+						$kpr_6['kpr_tel'] = $users_dtl['tel'];
+						unset($users_dtl);
 					}else{
-						$kpr_6['kpr_permission_id'] = @$_POST['kpr_permission_id_6'];
+						$kpr_6['kpr_name'] = $_POST['kpr_name_6'];
+						$kpr_6['kpr_email'] = $_POST['kpr_email_6'];
+						$kpr_6['kpr_tel'] = $_POST['kpr_tel_6'];
 					}
 					
 					$kpr_6['control_users_id'] = $_POST['control_6'];
-					if(@$_POST['control_permission_id_6'] == ''){
-						$kpr_6['control_permission_id'] = chk_permission_id($_POST['control_6']);
+					if(@$_POST['control_name_6'] == ''){
+						$users_dtl = chk_user_dtl($_POST['control_6']);
+						$kpr_6['control_name'] = $users_dtl['name'];
+						$kpr_6['control_email'] = $users_dtl['email'];
+						$kpr_6['control_tel'] = $users_dtl['tel'];
+						$kpr_6['control_position_id'] = $users_dtl['position_id'];
+						$kpr_6['control_division_id'] = $users_dtl['division_id'];
+						$kpr_6['control_department_id'] = $users_dtl['department_id'];
+						unset($users_dtl);
 					}else{
-						$kpr_6['control_permission_id'] = @$_POST['control_permission_id_6'];
+						$kpr_6['control_name'] = $_POST['control_name_6'];
+						$kpr_6['control_email'] = $_POST['control_email_6'];
+						$kpr_6['control_tel'] = $_POST['control_tel_6'];
+						$kpr_6['control_position_id'] = $_POST['control_position_id_6'];
+						$kpr_6['control_division_id'] = $_POST['control_division_id_6'];
+						$kpr_6['control_department_id'] = $_POST['control_department_id_6'];
 					}
+					
 					$kpr_6['round_month'] = '6';
 					$kpr_6['mds_set_metrics_id'] = $id;
 					$kpr_6_id = $this->kpr->save($kpr_6);
@@ -297,10 +373,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					$this->keyer->where("round_month = '6' and mds_set_metrics_id = '".$id."'")->delete();
 					for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
 						$keyer_6['keyer_users_id'] = @$_POST['keyer_6'][$i];
-						if(@$_POST['keyer_permission_id_6'][$i] == ''){
-						    $keyer_6['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_6'][$i]);
+						if(@$_POST['keyer_name_6'][$i] == ''){
+							$users_dtl = chk_user_dtl(@$_POST['keyer_6'][$i]);
+							$keyer_6['keyer_name'] = $users_dtl['name'];
+							$keyer_6['keyer_email'] = $users_dtl['email'];
+							$keyer_6['keyer_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$keyer_6['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
+							$keyer_6['keyer_name'] = @$_POST['keyer_name_6'][$i];
+							$keyer_6['keyer_email'] = @$_POST['keyer_email_6'][$i];
+							$keyer_6['keyer_tel'] = @$_POST['keyer_tel_6'][$i];
 						}
 						// ผู้บันทึกคะแนน
 						if(@$_POST['keyer_score_6']['0'] == $i){
@@ -312,6 +394,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$keyer_6['activity'] = @$_POST['activity_6'][$i];
 						$keyer_6['round_month'] = '6';
 						$keyer_6['mds_set_metrics_id'] = $id;
+						$keyer_6['change_keyer_users_id'] = @$_POST['change_keyer_6'][$i];
 						if(@$keyer_6['keyer_users_id'] != ''){
 							$this->keyer->save($keyer_6);
 						}
@@ -320,17 +403,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				
 					if(@$_POST['sem_9'] == 6){ // เรื่มที่รอบ 6 เดือนกรณี ผู้รับผิดชอบรอบ 9 เดือนเหมือนรอบ 6 เดือน
 						$kpr_9['kpr_users_id'] = $_POST['kpr_6'];
-						if(@$_POST['kpr_permission_id_6'] == ''){
-							$kpr_9['kpr_permission_id'] = chk_permission_id($_POST['kpr_6']);
+						if(@$_POST['kpr_name_6'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_6']);
+							$kpr_9['kpr_name'] = $users_dtl['name'];
+							$kpr_9['kpr_email'] = $users_dtl['email'];
+							$kpr_9['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_9['kpr_permission_id'] = @$_POST['kpr_permission_id_6'];
+							$kpr_9['kpr_name'] = $_POST['kpr_name_6'];
+							$kpr_9['kpr_email'] = $_POST['kpr_email_6'];
+							$kpr_9['kpr_tel'] = $_POST['kpr_tel_6'];
 						}
 						
 						$kpr_9['control_users_id'] = $_POST['control_6'];
-						if(@$_POST['control_permission_id_6'] == ''){
-							$kpr_9['control_permission_id'] = chk_permission_id($_POST['control_6']);
+						if(@$_POST['control_name_6'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_6']);
+							$kpr_9['control_name'] = $users_dtl['name'];
+							$kpr_9['control_email'] = $users_dtl['email'];
+							$kpr_9['control_tel'] = $users_dtl['tel'];
+							$kpr_9['control_position_id'] = $users_dtl['position_id'];
+							$kpr_9['control_division_id'] = $users_dtl['division_id'];
+							$kpr_9['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_9['control_permission_id'] = @$_POST['control_permission_id_6'];
+							$kpr_9['control_name'] = $_POST['control_name_6'];
+							$kpr_9['control_email'] = $_POST['control_email_6'];
+							$kpr_9['control_tel'] = $_POST['control_tel_6'];
+							$kpr_9['control_position_id'] = $_POST['control_position_id_6'];
+							$kpr_9['control_division_id'] = $_POST['control_division_id_6'];
+							$kpr_9['control_department_id'] = $_POST['control_department_id_6'];
 						}
 
 						$kpr_9['round_month'] = '9';
@@ -340,10 +441,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '9' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
 							$keyer_9['keyer_users_id'] = @$_POST['keyer_6'][$i];
-							if(@$_POST['keyer_permission_id_6'][$i] == ''){
-								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_6'][$i]);
+							if(@$_POST['keyer_name_6'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_6'][$i]);
+								$keyer_9['keyer_name'] = $users_dtl['name'];
+								$keyer_9['keyer_email'] = $users_dtl['email'];
+								$keyer_9['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
+								$keyer_9['keyer_name'] = @$_POST['keyer_name_6'][$i];
+								$keyer_9['keyer_email'] = @$_POST['keyer_email_6'][$i];
+								$keyer_9['keyer_tel'] = @$_POST['keyer_tel_6'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -356,6 +463,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_9['activity'] = @$_POST['activity_6'][$i];
 							$keyer_9['round_month'] = '9';
 							$keyer_9['mds_set_metrics_id'] = $id;
+							$keyer_9['change_keyer_users_id'] = @$_POST['change_keyer_9'][$i];
 							if(@$keyer_9['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_9);
 							}	
@@ -363,17 +471,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						
 					}else{ // เรื่มที่รอบ 6 เดือนกรณี ผู้รับผิดชอบรอบ 9 เดือน เปลี่ยนผู้ดูแลตัวชี้วัด
 						$kpr_9['kpr_users_id'] = $_POST['kpr_9'];
-						if(@$_POST['kpr_permission_id_9'] == ''){
-							$kpr_9['kpr_permission_id'] = chk_permission_id($_POST['kpr_9']);
+						if(@$_POST['kpr_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_9']);
+							$kpr_9['kpr_name'] = $users_dtl['name'];
+							$kpr_9['kpr_email'] = $users_dtl['email'];
+							$kpr_9['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_9['kpr_permission_id'] = @$_POST['kpr_permission_id_9'];
+							$kpr_9['kpr_name'] = $_POST['kpr_name_9'];
+							$kpr_9['kpr_email'] = $_POST['kpr_email_9'];
+							$kpr_9['kpr_tel'] = $_POST['kpr_tel_9'];
 						}
 						
 						$kpr_9['control_users_id'] = $_POST['control_9'];
-						if(@$_POST['control_permission_id_9'] == ''){
-							$kpr_9['control_permission_id'] = chk_permission_id($_POST['control_9']);
+						if(@$_POST['control_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_9']);
+							$kpr_9['control_name'] = $users_dtl['name'];
+							$kpr_9['control_email'] = $users_dtl['email'];
+							$kpr_9['control_tel'] = $users_dtl['tel'];
+							$kpr_9['control_position_id'] = $users_dtl['position_id'];
+							$kpr_9['control_division_id'] = $users_dtl['division_id'];
+							$kpr_9['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_9['control_permission_id'] = @$_POST['control_permission_id_9'];
+							$kpr_9['control_name'] = $_POST['control_name_9'];
+							$kpr_9['control_email'] = $_POST['control_email_9'];
+							$kpr_9['control_tel'] = $_POST['control_tel_9'];
+							$kpr_9['control_position_id'] = $_POST['control_position_id_9'];
+							$kpr_9['control_division_id'] = $_POST['control_division_id_9'];
+							$kpr_9['control_department_id'] = $_POST['control_department_id_9'];
 						}
 
 						$kpr_9['round_month'] = '9';
@@ -383,10 +509,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '9' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
 							$keyer_9['keyer_users_id'] = @$_POST['keyer_9'][$i];
-							if(@$_POST['keyer_permission_id_9'][$i] == ''){
-								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
+							if(@$_POST['keyer_name_9'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_9'][$i]);
+								$keyer_9['keyer_name'] = $users_dtl['name'];
+								$keyer_9['keyer_email'] = $users_dtl['email'];
+								$keyer_9['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+								$keyer_9['keyer_name'] = @$_POST['keyer_name_9'][$i];
+								$keyer_9['keyer_email'] = @$_POST['keyer_email_9'][$i];
+								$keyer_9['keyer_tel'] = @$_POST['keyer_tel_9'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -399,6 +531,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_9['activity'] = @$_POST['activity_9'][$i];
 							$keyer_9['round_month'] = '9';
 							$keyer_9['mds_set_metrics_id'] = $id;
+							$keyer_9['change_keyer_users_id'] = @$_POST['change_keyer_9'][$i];
 							if(@$keyer_9['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_9);
 							}	
@@ -409,17 +542,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						 // เรื่มที่รอบ 6 เดือน กรณี ผู้รับผิดชอบรอบ 12 เดือน เหมือนรอบ 9 เดือน และ รอบ 9 เดือน เหมือนรอบ 6 เดือน
 						 
 						$kpr_12['kpr_users_id'] = $_POST['kpr_6'];
-						if(@$_POST['kpr_permission_id_6'] == ''){
-							$kpr_12['kpr_permission_id'] = chk_permission_id($_POST['kpr_6']);
+						if(@$_POST['kpr_name_6'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_6']);
+							$kpr_12['kpr_name'] = $users_dtl['name'];
+							$kpr_12['kpr_email'] = $users_dtl['email'];
+							$kpr_12['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['kpr_permission_id'] = @$_POST['kpr_permission_id_6'];
+							$kpr_12['kpr_name'] = $_POST['kpr_name_6'];
+							$kpr_12['kpr_email'] = $_POST['kpr_email_6'];
+							$kpr_12['kpr_tel'] = $_POST['kpr_tel_6'];
 						}
 
 						$kpr_12['control_users_id'] = $_POST['control_6'];
-						if(@$_POST['control_permission_id_6'] == ''){
-							$kpr_12['control_permission_id'] = chk_permission_id($_POST['control_6']);
+						if(@$_POST['control_name_6'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_6']);
+							$kpr_12['control_name'] = $users_dtl['name'];
+							$kpr_12['control_email'] = $users_dtl['email'];
+							$kpr_12['control_tel'] = $users_dtl['tel'];
+							$kpr_12['control_position_id'] = $users_dtl['position_id'];
+							$kpr_12['control_division_id'] = $users_dtl['division_id'];
+							$kpr_12['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['control_permission_id'] = @$_POST['control_permission_id_6'];
+							$kpr_12['control_name'] = $_POST['control_name_6'];
+							$kpr_12['control_email'] = $_POST['control_email_6'];
+							$kpr_12['control_tel'] = $_POST['control_tel_6'];
+							$kpr_12['control_position_id'] = $_POST['control_position_id_6'];
+							$kpr_12['control_division_id'] = $_POST['control_division_id_6'];
+							$kpr_12['control_department_id'] = $_POST['control_department_id_6'];
 						}
 						
 						$kpr_12['round_month'] = '12';
@@ -429,10 +580,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_6'][$i];
-							if(@$_POST['keyer_permission_id_6'][$i] == ''){
-								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_6'][$i]);
+							if(@$_POST['keyer_name_6'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_6'][$i]);
+								$keyer_12['keyer_name'] = $users_dtl['name'];
+								$keyer_12['keyer_email'] = $users_dtl['email'];
+								$keyer_12['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_6'][$i];
+								$keyer_12['keyer_name'] = @$_POST['keyer_name_6'][$i];
+								$keyer_12['keyer_email'] = @$_POST['keyer_email_6'][$i];
+								$keyer_12['keyer_tel'] = @$_POST['keyer_tel_6'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -445,6 +602,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_12['activity'] = @$_POST['activity_6'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
+							$keyer_12['change_keyer_users_id'] = @$_POST['change_keyer_12'][$i];
 							if(@$keyer_12['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_12);
 							}	
@@ -454,17 +612,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						 // เรื่มที่รอบ 6 เดือน กรณี ผู้รับผิดชอบรอบ 12 เดือน เหมือนรอบ 9 เดือน และ รอบ 9 เดือน เปลี่ยนผู้รับผิดชอบ
 						 
 						$kpr_12['kpr_users_id'] = $_POST['kpr_9'];
-						if(@$_POST['kpr_permission_id_9'] == ''){
-							$kpr_12['kpr_permission_id'] = chk_permission_id($_POST['kpr_9']);
+						if(@$_POST['kpr_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_9']);
+							$kpr_12['kpr_name'] = $users_dtl['name'];
+							$kpr_12['kpr_email'] = $users_dtl['email'];
+							$kpr_12['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['kpr_permission_id'] = @$_POST['kpr_permission_id_9'];
+							$kpr_12['kpr_name'] = $_POST['kpr_name_9'];
+							$kpr_12['kpr_email'] = $_POST['kpr_email_9'];
+							$kpr_12['kpr_tel'] = $_POST['kpr_tel_9'];
 						}
 						
 						$kpr_12['control_users_id'] = $_POST['control_9'];
-						if(@$_POST['control_permission_id_9'] == ''){
-							$kpr_12['control_permission_id'] = chk_permission_id($_POST['control_9']);
+						if(@$_POST['control_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_9']);
+							$kpr_12['control_name'] = $users_dtl['name'];
+							$kpr_12['control_email'] = $users_dtl['email'];
+							$kpr_12['control_tel'] = $users_dtl['tel'];
+							$kpr_12['control_position_id'] = $users_dtl['position_id'];
+							$kpr_12['control_division_id'] = $users_dtl['division_id'];
+							$kpr_12['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['control_permission_id'] = @$_POST['control_permission_id_9'];
+							$kpr_12['control_name'] = $_POST['control_name_9'];
+							$kpr_12['control_email'] = $_POST['control_email_9'];
+							$kpr_12['control_tel'] = $_POST['control_tel_9'];
+							$kpr_12['control_position_id'] = $_POST['control_position_id_9'];
+							$kpr_12['control_division_id'] = $_POST['control_division_id_9'];
+							$kpr_12['control_department_id'] = $_POST['control_department_id_9'];
 						}
 						
 						$kpr_12['round_month'] = '12';
@@ -474,10 +650,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_9'][$i];
-							if(@$_POST['keyer_permission_id_9'][$i] == ''){
-								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
+							if(@$_POST['keyer_name_9'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_9'][$i]);
+								$keyer_12['keyer_name'] = $users_dtl['name'];
+								$keyer_12['keyer_email'] = $users_dtl['email'];
+								$keyer_12['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+								$keyer_12['keyer_name'] = @$_POST['keyer_name_9'][$i];
+								$keyer_12['keyer_email'] = @$_POST['keyer_email_9'][$i];
+								$keyer_12['keyer_tel'] = @$_POST['keyer_tel_9'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -490,6 +672,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_12['activity'] = @$_POST['activity_9'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
+							$keyer_12['change_keyer_users_id'] = @$_POST['change_keyer_12'][$i];
 							if(@$keyer_12['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_12);
 							}	
@@ -499,17 +682,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						// เรื่มที่รอบ 6 เดือน กรณี ผู้รับผิดชอบรอบ 12 เดือน มีผู้รับผิดชอบ ไม่เหมือนรอบ 9 เดือน และ 6 เดือน
 						
 						$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
-						if(@$_POST['kpr_permission_id_12'] == ''){
-							$kpr_12['kpr_permission_id'] = chk_permission_id($_POST['kpr_12']);
+						if(@$_POST['kpr_name_12'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_12']);
+							$kpr_12['kpr_name'] = $users_dtl['name'];
+							$kpr_12['kpr_email'] = $users_dtl['email'];
+							$kpr_12['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['kpr_permission_id'] = @$_POST['kpr_permission_id_12'];
+							$kpr_12['kpr_name'] = $_POST['kpr_name_12'];
+							$kpr_12['kpr_email'] = $_POST['kpr_email_12'];
+							$kpr_12['kpr_tel'] = $_POST['kpr_tel_12'];
 						}
 						
 						$kpr_12['control_users_id'] = $_POST['control_12'];
-						if(@$_POST['control_permission_id_12'] == ''){
-							$kpr_12['control_permission_id'] = chk_permission_id($_POST['control_12']);
+						if(@$_POST['control_name_12'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_12']);
+							$kpr_12['control_name'] = $users_dtl['name'];
+							$kpr_12['control_email'] = $users_dtl['email'];
+							$kpr_12['control_tel'] = $users_dtl['tel'];
+							$kpr_12['control_position_id'] = $users_dtl['position_id'];
+							$kpr_12['control_division_id'] = $users_dtl['division_id'];
+							$kpr_12['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['control_permission_id'] = @$_POST['control_permission_id_12'];
+							$kpr_12['control_name'] = $_POST['control_name_12'];
+							$kpr_12['control_email'] = $_POST['control_email_12'];
+							$kpr_12['control_tel'] = $_POST['control_tel_12'];
+							$kpr_12['control_position_id'] = $_POST['control_position_id_12'];
+							$kpr_12['control_division_id'] = $_POST['control_division_id_12'];
+							$kpr_12['control_department_id'] = $_POST['control_department_id_12'];
 						}
 						
 						$kpr_12['round_month'] = '12';
@@ -519,10 +720,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_12'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_12'][$i];
-							if(@$_POST['keyer_permission_id_12'][$i] == ''){
-								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_12'][$i]);
+							if(@$_POST['keyer_name_12'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_12'][$i]);
+								$keyer_12['keyer_name'] = $users_dtl['name'];
+								$keyer_12['keyer_email'] = $users_dtl['email'];
+								$keyer_12['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
+								$keyer_12['keyer_name'] = @$_POST['keyer_name_12'][$i];
+								$keyer_12['keyer_email'] = @$_POST['keyer_email_12'][$i];
+								$keyer_12['keyer_tel'] = @$_POST['keyer_tel_12'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -535,6 +742,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
+							$keyer_12['change_keyer_users_id'] = @$_POST['change_keyer_12'][$i];
 							if(@$keyer_12['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_12);
 							}	
@@ -545,17 +753,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					
 					if(@$_POST['sem_9'] == 9){
 						$kpr_9['kpr_users_id'] = $_POST['kpr_9'];
-						if(@$_POST['kpr_permission_id_9'] == ''){
-							$kpr_9['kpr_permission_id'] = chk_permission_id($_POST['kpr_9']);
+						if(@$_POST['kpr_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_9']);
+							$kpr_9['kpr_name'] = $users_dtl['name'];
+							$kpr_9['kpr_email'] = $users_dtl['email'];
+							$kpr_9['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_9['kpr_permission_id'] = @$_POST['kpr_permission_id_9'];
+							$kpr_9['kpr_name'] = $_POST['kpr_name_9'];
+							$kpr_9['kpr_email'] = $_POST['kpr_email_9'];
+							$kpr_9['kpr_tel'] = $_POST['kpr_tel_9'];
 						}
 						
 						$kpr_9['control_users_id'] = $_POST['control_9'];
-						if(@$_POST['control_permission_id_9'] == ''){
-							$kpr_9['control_permission_id'] = chk_permission_id($_POST['control_9']);
+						if(@$_POST['control_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_9']);
+							$kpr_9['control_name'] = $users_dtl['name'];
+							$kpr_9['control_email'] = $users_dtl['email'];
+							$kpr_9['control_tel'] = $users_dtl['tel'];
+							$kpr_9['control_position_id'] = $users_dtl['position_id'];
+							$kpr_9['control_division_id'] = $users_dtl['division_id'];
+							$kpr_9['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_9['control_permission_id'] = @$_POST['control_permission_id_9'];
+							$kpr_9['control_name'] = $_POST['control_name_9'];
+							$kpr_9['control_email'] = $_POST['control_email_9'];
+							$kpr_9['control_tel'] = $_POST['control_tel_9'];
+							$kpr_9['control_position_id'] = $_POST['control_position_id_9'];
+							$kpr_9['control_division_id'] = $_POST['control_division_id_9'];
+							$kpr_9['control_department_id'] = $_POST['control_department_id_9'];
 						}
 
 						$kpr_9['round_month'] = '9';
@@ -565,10 +791,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '9' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
 							$keyer_9['keyer_users_id'] = @$_POST['keyer_9'][$i];
-							if(@$_POST['keyer_permission_id_9'][$i] == ''){
-								$keyer_9['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
+							if(@$_POST['keyer_name_9'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_9'][$i]);
+								$keyer_9['keyer_name'] = $users_dtl['name'];
+								$keyer_9['keyer_email'] = $users_dtl['email'];
+								$keyer_9['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_9['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+								$keyer_9['keyer_name'] = @$_POST['keyer_name_9'][$i];
+								$keyer_9['keyer_email'] = @$_POST['keyer_email_9'][$i];
+								$keyer_9['keyer_tel'] = @$_POST['keyer_tel_9'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -581,6 +813,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_9['activity'] = @$_POST['activity_9'][$i];
 							$keyer_9['round_month'] = '9';
 							$keyer_9['mds_set_metrics_id'] = $id;
+							$keyer_9['change_keyer_users_id'] = @$_POST['change_keyer_9'][$i];
 							if(@$keyer_9['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_9);
 							}	
@@ -591,17 +824,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						// เริ่มที่รอบ 9  เดือน กรณีผู้รับผิดสอบรอบ 12 เดือน เหมือน 9 เดือน
 						
 						$kpr_12['kpr_users_id'] = $_POST['kpr_9'];
-						if(@$_POST['kpr_permission_id_9'] == ''){
-							$kpr_12['kpr_permission_id'] = chk_permission_id($_POST['kpr_9']);
+						if(@$_POST['kpr_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_9']);
+							$kpr_12['kpr_name'] = $users_dtl['name'];
+							$kpr_12['kpr_email'] = $users_dtl['email'];
+							$kpr_12['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['kpr_permission_id'] = @$_POST['kpr_permission_id_9'];
+							$kpr_12['kpr_name'] = $_POST['kpr_name_9'];
+							$kpr_12['kpr_email'] = $_POST['kpr_email_9'];
+							$kpr_12['kpr_tel'] = $_POST['kpr_tel_9'];
 						}
 						
 						$kpr_12['control_users_id'] = $_POST['control_9'];
-						if(@$_POST['control_permission_id_9'] == ''){
-							$kpr_12['control_permission_id'] = chk_permission_id($_POST['control_9']);
+						if(@$_POST['control_name_9'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_9']);
+							$kpr_12['control_name'] = $users_dtl['name'];
+							$kpr_12['control_email'] = $users_dtl['email'];
+							$kpr_12['control_tel'] = $users_dtl['tel'];
+							$kpr_12['control_position_id'] = $users_dtl['position_id'];
+							$kpr_12['control_division_id'] = $users_dtl['division_id'];
+							$kpr_12['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['control_permission_id'] = @$_POST['control_permission_id_9'];
+							$kpr_12['control_name'] = $_POST['control_name_9'];
+							$kpr_12['control_email'] = $_POST['control_email_9'];
+							$kpr_12['control_tel'] = $_POST['control_tel_9'];
+							$kpr_12['control_position_id'] = $_POST['control_position_id_9'];
+							$kpr_12['control_division_id'] = $_POST['control_division_id_9'];
+							$kpr_12['control_department_id'] = $_POST['control_department_id_9'];
 						}
 						
 						$kpr_12['round_month'] = '12';
@@ -611,10 +862,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_9'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_9'][$i];
-							if(@$_POST['keyer_permission_id_9'][$i] == ''){
-								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_9'][$i]);
+							if(@$_POST['keyer_name_9'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_9'][$i]);
+								$keyer_12['keyer_name'] = $users_dtl['name'];
+								$keyer_12['keyer_email'] = $users_dtl['email'];
+								$keyer_12['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_9'][$i];
+								$keyer_12['keyer_name'] = @$_POST['keyer_name_9'][$i];
+								$keyer_12['keyer_email'] = @$_POST['keyer_email_9'][$i];
+								$keyer_12['keyer_tel'] = @$_POST['keyer_tel_9'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -627,6 +884,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_12['activity'] = @$_POST['activity_9'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
+							$keyer_12['change_keyer_users_id'] = @$_POST['change_keyer_12'][$i];
 							if(@$keyer_12['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_12);
 							}	
@@ -636,17 +894,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						// เริ่มรอบ 9 เดือน กรณี รอบ 12 เดือน ผู้รับผิดชอบไม่เหมือน รอบ 9 เดือน
 						
 						$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
-						if(@$_POST['kpr_permission_id_12'] == ''){
-							$kpr_12['kpr_permission_id'] = chk_permission_id($_POST['kpr_12']);
+						if(@$_POST['kpr_name_12'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_12']);
+							$kpr_12['kpr_name'] = $users_dtl['name'];
+							$kpr_12['kpr_email'] = $users_dtl['email'];
+							$kpr_12['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['kpr_permission_id'] = @$_POST['kpr_permission_id_12'];
+							$kpr_12['kpr_name'] = $_POST['kpr_name_12'];
+							$kpr_12['kpr_email'] = $_POST['kpr_email_12'];
+							$kpr_12['kpr_tel'] = $_POST['kpr_tel_12'];
 						}
 
 						$kpr_12['control_users_id'] = $_POST['control_12'];
-						if(@$_POST['control_permission_id_12'] == ''){
-							$kpr_12['control_permission_id'] = chk_permission_id($_POST['control_12']);
+						if(@$_POST['control_name_12'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_12']);
+							$kpr_12['control_name'] = $users_dtl['name'];
+							$kpr_12['control_email'] = $users_dtl['email'];
+							$kpr_12['control_tel'] = $users_dtl['tel'];
+							$kpr_12['control_position_id'] = $users_dtl['position_id'];
+							$kpr_12['control_division_id'] = $users_dtl['division_id'];
+							$kpr_12['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['control_permission_id'] = @$_POST['control_permission_id_12'];
+							$kpr_12['control_name'] = $_POST['control_name_12'];
+							$kpr_12['control_email'] = $_POST['control_email_12'];
+							$kpr_12['control_tel'] = $_POST['control_tel_12'];
+							$kpr_12['control_position_id'] = $_POST['control_position_id_12'];
+							$kpr_12['control_division_id'] = $_POST['control_division_id_12'];
+							$kpr_12['control_department_id'] = $_POST['control_department_id_12'];
 						}
 
 						$kpr_12['round_month'] = '12';
@@ -656,10 +932,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_12'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_12'][$i];
-							if(@$_POST['keyer_permission_id_12'][$i] == ''){
-								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_12'][$i]);
+							if(@$_POST['keyer_name_12'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_12'][$i]);
+								$keyer_12['keyer_name'] = $users_dtl['name'];
+								$keyer_12['keyer_email'] = $users_dtl['email'];
+								$keyer_12['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
+								$keyer_12['keyer_name'] = @$_POST['keyer_name_12'][$i];
+								$keyer_12['keyer_email'] = @$_POST['keyer_email_12'][$i];
+								$keyer_12['keyer_tel'] = @$_POST['keyer_tel_12'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -672,6 +954,7 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 							$keyer_12['activity'] = @$_POST['activity_12'][$i];
 							$keyer_12['round_month'] = '12';
 							$keyer_12['mds_set_metrics_id'] = $id;
+							$keyer_12['change_keyer_users_id'] = @$_POST['change_keyer_12'][$i];
 							if(@$keyer_12['keyer_users_id'] != ''){
 								$this->keyer->save($keyer_12);
 							}	
@@ -681,17 +964,35 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					// เริ่มรอบ 12 เดือน
 					
 						$kpr_12['kpr_users_id'] = $_POST['kpr_12'];
-						if(@$_POST['kpr_permission_id_12'] == ''){
-							$kpr_12['kpr_permission_id'] = chk_permission_id($_POST['kpr_12']);
+						if(@$_POST['kpr_name_12'] == ''){
+							$users_dtl = chk_user_dtl($_POST['kpr_12']);
+							$kpr_12['kpr_name'] = $users_dtl['name'];
+							$kpr_12['kpr_email'] = $users_dtl['email'];
+							$kpr_12['kpr_tel'] = $users_dtl['tel'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['kpr_permission_id'] = @$_POST['kpr_permission_id_12'];
+							$kpr_12['kpr_name'] = $_POST['kpr_name_12'];
+							$kpr_12['kpr_email'] = $_POST['kpr_email_12'];
+							$kpr_12['kpr_tel'] = $_POST['kpr_tel_12'];
 						}
 						
 						$kpr_12['control_users_id'] = $_POST['control_12'];
-						if(@$_POST['control_permission_id_12'] == ''){
-							$kpr_12['control_permission_id'] = chk_permission_id($_POST['control_12']);
+						if(@$_POST['control_name_12'] == ''){
+							$users_dtl = chk_user_dtl($_POST['control_12']);
+							$kpr_12['control_name'] = $users_dtl['name'];
+							$kpr_12['control_email'] = $users_dtl['email'];
+							$kpr_12['control_tel'] = $users_dtl['tel'];
+							$kpr_12['control_position_id'] = $users_dtl['position_id'];
+							$kpr_12['control_division_id'] = $users_dtl['division_id'];
+							$kpr_12['control_department_id'] = $users_dtl['department_id'];
+							unset($users_dtl);
 						}else{
-							$kpr_12['control_permission_id'] = @$_POST['control_permission_id_12'];
+							$kpr_12['control_name'] = $_POST['control_name_12'];
+							$kpr_12['control_email'] = $_POST['control_email_12'];
+							$kpr_12['control_tel'] = $_POST['control_tel_12'];
+							$kpr_12['control_position_id'] = $_POST['control_position_id_12'];
+							$kpr_12['control_division_id'] = $_POST['control_division_id_12'];
+							$kpr_12['control_department_id'] = $_POST['control_department_id_12'];
 						}
 
 						$kpr_12['round_month'] = '12';
@@ -701,10 +1002,16 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_12'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_12'][$i];
-							if(@$_POST['keyer_permission_id_12'][$i] == ''){
-								$keyer_12['keyer_permission_id'] = chk_permission_id(@$_POST['keyer_12'][$i]);
+							if(@$_POST['keyer_name_12'][$i] == ''){
+								$users_dtl = chk_user_dtl(@$_POST['keyer_12'][$i]);
+								$keyer_12['keyer_name'] = $users_dtl['name'];
+								$keyer_12['keyer_email'] = $users_dtl['email'];
+								$keyer_12['keyer_tel'] = $users_dtl['tel'];
+								unset($users_dtl);
 							}else{
-								$keyer_12['keyer_permission_id'] = @$_POST['keyer_permission_id_12'][$i];
+								$keyer_12['keyer_name'] = @$_POST['keyer_name_12'][$i];
+								$keyer_12['keyer_email'] = @$_POST['keyer_email_12'][$i];
+								$keyer_12['keyer_tel'] = @$_POST['keyer_tel_12'][$i];
 							}
 							
 							// ผู้บันทึกคะแนน
@@ -769,6 +1076,23 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			$num_chk_result = count($chk_metrics_result);
 			if($num_chk_result == 0){
 				new_save_logfile("DELETE",$this->modules_title_2,$this->metrics->table,"ID",$ID,"ass_name",$this->modules_name);					
+				
+				$chk_dtl_metrics = $this->metrics->get_row($ID);
+				$chk_metrics_on = "SELECT METRICS.ID,METRICS.METRICS_ON
+								  FROM MDS_SET_METRICS METRICS
+								  LEFT JOIN MDS_SET_INDICATOR INDICATOR ON METRICS.MDS_SET_INDICATOR_ID = INDICATOR.ID
+								  WHERE INDICATOR.BUDGET_YEAR = '".@$budget_year."' AND METRICS.PARENT_ID = '".@$chk_dtl_metrics['parent_id']."' 
+								  AND METRICS.METRICS_ON > '".@$chk_dtl_metrics['metrics_on']."' ORDER BY METRICS.METRICS_ON ASC ";
+				$result_chk_on = $this->metrics->get($chk_metrics_on);
+				$num_chk_on = count($result_chk_on);
+			
+				if($num_chk_on > 0){ // ถ้ามีเลขลำดับที่มากกว่า
+					foreach ($result_chk_on as $key => $result) {
+						$update_on['id'] = $result['id'];
+						$update_on['metrics_on'] = $result['metrics_on']-1;
+						$this->metrics->save($update_on);
+					}
+				}
 				
 				$this->kpr->where("mds_set_metrics_id = '".$ID."' ")->delete($ID); // ลบ กพร. ตัวชี้วัดภายใต้  id นี้
 				$this->keyer->where("mds_set_metrics_id = '".$ID."' ")->delete($ID); // ลบ ผู็จัดเก็บข้อมูล. ตัวชี้วัดภายใต้  id นี้

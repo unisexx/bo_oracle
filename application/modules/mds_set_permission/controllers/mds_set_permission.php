@@ -29,21 +29,23 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		$condition = " 1=1 ";
 		if(@$_GET['sch_txt'] != ''){
-			$condition .= " and ( permission.name like '%".@$_GET['sch_txt']."%' 
-						    or permission.username like '%".@$_GET['sch_txt']."%' )";
+			$condition .= " and ( users.name like '%".@$_GET['sch_txt']."%' 
+						    or users.username like '%".@$_GET['sch_txt']."%' )";
 		}
-		if(@$_GET['permit_type'] != ''){
-			$condition .= " and permission.mds_set_permit_id = '".@$_GET['permit_type']."' ";
+		if(@$_GET['premit_type'] != ''){
+			$condition .= " and permission.mds_set_permit_type_id = '".@$_GET['permit_type']."' ";
 		}
 		
 		//$this->db->debug = true;
 		$sql = "select permission.users_id,permission.id, 
-				mds_set_permission_dtl.name,mds_set_permission_dtl.username
-				,mds_set_position.pos_name , cnf_division.title 
+				users.name,users.username
+				,mds_set_position.pos_name , cnf_division.title ,mds_set_permit_type.permit_name
 				from mds_set_permission permission
-				left join mds_set_permission_dtl on permission.id = mds_set_permission_dtl.mds_set_permission_id
-				left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id
-				left join cnf_division on mds_set_permission_dtl.divisionid = cnf_division.id 
+				join users on permission.users_id = users.id
+				left join cnf_division on users.divisionid = cnf_division.id 
+				left join cnf_department on users.departmentid = cnf_department.id 
+				left join mds_set_position on permission.mds_set_position_id = mds_set_position.id
+				left join mds_set_permit_type on permission.mds_set_permit_type_id = mds_set_permit_type.id
 				where $condition order by permission.id desc ";
 		
 		$data['rs'] = $this->permission->get($sql);
@@ -57,13 +59,12 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($id != ''){
 			
-			$sql = "select permission.users_id as permission_users_id,permission.id as permission_id 
-				,mds_set_permission_dtl.*
-				,mds_set_position.pos_name  
-				from mds_set_permission permission
-				left join mds_set_permission_dtl on permission.id = mds_set_permission_dtl.mds_set_permission_id
-				left join mds_set_position on mds_set_permission_dtl.mds_set_position_id = mds_set_position.id
-				where permission.id = '".$id."' order by permission.id desc ";
+			$sql = "select permission.users_id as permission_users_id,permission.id as permission_id
+					,permission.mds_set_permit_type_id,permission.mds_set_position_id,users.*,mds_set_position.pos_name  
+					from mds_set_permission permission
+					left join users on permission.users_id = users.id
+					left join mds_set_position on permission.mds_set_position_id = mds_set_position.id
+					where permission.id = '".$id."' order by permission.id desc ";
 			
 			$data['rs'] = $this->permission->get($sql);
 			$data['rs'] = @$data['rs']['0'];
@@ -86,16 +87,9 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		   	
 		   		$_POST['CREATE_DATE'] = date("Y-m-d");
 		   		$_POST['CREATE_BY'] = login_data('name');
-		   		$_POST['id'] = ($this->db->getone("SELECT MAX(NUM_ID) FROM MDS_PERMISSION_ID"))+1;
-		   		$update_id['id'] = 1;
-		   		$update_id['num_id'] = $_POST['id'];
-		   		$this->permission_id->save($update_id);
-		   		
-		   		$id = $this->permission->save($_POST,true);
+		   		$id = $this->permission->save($_POST);
 		   }
-		 
-		   
-		   
+		 /*
 		   $permit_dtl['id'] = $_POST['dtl_id'];
 		   $permit_dtl['mds_set_permission_id'] = $id;
 		   $permit_dtl['name'] = $_POST['name'];
@@ -110,6 +104,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		   $permit_dtl['tel'] = $_POST['tel'];
 		   $permit_dtl['mds_set_position_id'] = $_POST['mds_set_position_id'];
 		   $this->permission_dtl->save($permit_dtl);
+		 
 		   
 		   $this->permission_type->where("mds_set_permission_id = '".$id."'")->delete();
 		   //for ($i=0; $i <= count(@$_POST['mds_set_permit_type_id']); $i++) { 
@@ -119,6 +114,16 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 			   		$this->permission_type->save($permit);
 			   }
 		  // }
+		   */
+		   if($_POST['email'] != ''){
+		   		$users_update_email['id'] = $_POST['users_id'];
+				$users_update_email['email'] = $_POST['email'];
+				$this->users->save($users_update_email);
+		   }else if($_POST['tel'] != ''){
+		   		$users_update_tel['id'] = $_POST['users_id'];
+				$users_update_tel['tel'] = $_POST['tel'];
+				$this->users->save($users_update_tel);
+		   }
 		   
 		   set_notify('success', lang('save_data_complete'));		   
 		   if($_POST['id']>0){
@@ -157,6 +162,9 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 					from users 
 					left join cnf_division on users.divisionid = cnf_division.id 
 					left join cnf_department on users.departmentid = cnf_department.id
+					left join user_type_title on users.id = user_type_title.user_id
+					join usertype on  user_type_title.id = usertype.usertypetitleid 
+									   and usertype.systemid = '7' and usertype.menuid = '1'
 					where 1=1 $condition  order by id asc";
 			$data['rs_users'] = $this->users->get($sql);
 			$data['pagination'] = $this->users->pagination();	

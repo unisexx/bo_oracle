@@ -18,11 +18,17 @@ Class Mds_set_measure extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
+		$data['option_status'] = array('1'=>'เปิดใช้งาน','0'=>'ปิดใช้งาน','all'=>'แสดงทั้งหมด');
+		(@$_GET['sch_status_id'] == '')?$_GET['sch_status_id'] = 1:$_GET['sch_status_id'] = $_GET['sch_status_id'];
 		$condition = " 1=1 ";
 		if(@$_GET['sch_txt'] != ''){
 			$condition .= " and measure_name like '%".@$_GET['sch_txt']."%' ";
 		}
-		$data['rs'] = $this->measure->where($condition)->get();
+		if(@$_GET['sch_status_id'] !='all'){
+			$condition .= " and status_id = '".@$_GET['sch_status_id']."' ";
+		}
+		$sql = "SELECT * FROM MDS_SET_MEASURE WHERE ".$condition." ORDER BY STATUS_ID DESC , ID DESC";
+		$data['rs'] = $this->measure->get($sql);
 		$data['pagination']=$this->measure->pagination();
 		$this->template->build('index',@$data);
 
@@ -105,6 +111,27 @@ Class Mds_set_measure extends  Mdevsys_Controller{
 			echo 'true';
 		}
 		
+	}
+	
+	public function change_status(){
+		$data = '';
+		if(@$_GET['ref_id'] != ''){
+			$update_status['id'] = $_GET['ref_id'];
+			$update_status['status_id'] = @$_GET['status_id'];
+			$id = $this->measure->save($update_status);
+			new_save_logfile("EDIT สถานะการใช้งาน",$this->modules_title,$this->measure->table,"ID",$id,"measure_name",$this->modules_name);
+			
+			//$data['item'] = $this->measure->get_row($id);
+			$item = $this->measure->get_row($id);
+			$id = $item['id'];
+			$check = '';
+			if($item['status_id'] == '1'){
+				$check = 'checked="checked"';
+			}
+			$data = '<input type="checkbox" name="status_id['.$id.']" value="1" class="change_status" ref_id="'.$id.'"'.$check.'data-on-label="เปิด" data-off-label="ปิด" />';
+		}	
+		//$this->load->view('mds_set_measure/_status',@$data);
+		echo $data;
 	}
 }
 ?>
