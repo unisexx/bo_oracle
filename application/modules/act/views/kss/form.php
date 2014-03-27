@@ -62,7 +62,7 @@ function organ_view_sub() {
     <td>
     	<input name="org_name" type="text" value="<?php echo act_get_organ_name($kss['org_id'])?>" style="width:250px;"/>
     	<input name="org_id" type="hidden" value="<?php echo $kss['org_id']?>"/>
-    	<a href="javascript:organ_view_sub();"><img src="images/see.png" width="24" height="24" /></td></a>
+    	<a href="javascript:organ_view_sub();"><img src="images/see.png" width="24" height="24" /></a>
     </td>
   </tr>
   <tr>

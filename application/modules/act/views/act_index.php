@@ -2,7 +2,7 @@
 <div id="BOico">
 <div class="lineico">
 <div class="ico"><a href="act/welfare"><img src="themes/act/images/icon/welfare.png" width="48" height="48" /><h4>องค์การ สวัสดิการสังคม</h4></a></div>
-<div class="ico"><a href="social_worker.php"><img src="themes/act/images/icon/social_worker.png" width="48" height="48" /><h4>นักสังคมสงเคราะห์</h4></a></div>
+<div class="ico"><a href="act/social_worker"><img src="themes/act/images/icon/social_worker.png" width="48" height="48" /><h4>นักสังคมสงเคราะห์</h4></a></div>
 <div class="ico"><a href="act/volunteer"><img src="themes/act/images/icon/volunteer.png" width="48" height="48" /><h4>อาสาสมัคร</h4></a></div>
 <div class="ico"><a href="act/welfare_service"><img src="themes/act/images/icon/welfare_service.png" width="48" height="48" /><h4>ผู้รับบริการ สวัสดิการสังคม</h4></a></div>
 <div class="ico"><a href="act/director"><img src="themes/act/images/icon/director.png" width="48" height="48" /><h4>คณะกรรมการ</h4></a></div>

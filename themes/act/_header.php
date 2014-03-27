@@ -4,9 +4,9 @@
 <ul id="navmenu-h">
         <li><a href="#">บันทึก +</a>
           <ul style="width:300px;">
-            <li><a href="#">องค์การสวัสดิการสังคม</a></li>
-            <li><a href="#">นักสังคมสงเคราะห์</a></li>
-            <li><a href="#">อาสาสมัคร</a></li>
+            <li><a href="act/welfare">องค์การสวัสดิการสังคม</a></li>
+            <li><a href="act/social_worker">นักสังคมสงเคราะห์</a></li>
+            <li><a href="act/volunteer">อาสาสมัคร</a></li>
             <li><a href="act/welfare_service">ผู้รับบริการสวัสดิการสังคม</a></li>
             <li><a href="act/director">คณะกรรมการ</a></li>
             <li><a href="act/committee">คณะอนุกรรมการ</a></li>
@@ -14,7 +14,7 @@
             <li><a href="act/workinggroup">รายชื่อคณะทำงาน</a></li>
             <li><a href="act/meet_report">รายงานการประชุม</a></li>
             <li><a href="act/requirement">ข้อกำหนด/ระเบียบ/ประกาศ</a></li>
-            <li><a href="#">กองทุนส่งเสริมการจัดสวัสดิการสังคม</a></li>
+            <li><a href="act/fund_welfare">กองทุนส่งเสริมการจัดสวัสดิการสังคม</a></li>
             <li><a href="act/kss">แบบฟอร์มผลการปฏิบัติงานกองทุนส่งเสริม (แบบกสส.๐๓)</a></li>
           </ul>
         </li>
