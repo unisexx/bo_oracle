@@ -16,12 +16,32 @@ $(document).ready(function(){
     		$("#subcommittee_form").html(data);
     	});
     });
+    
+    $("#committee").validate({
+		rules: {
+			headline:"required",
+			subcommittee_type:"required",
+			province_code:"required",
+			order_no:"required",
+			order_date:"required",
+			status:"required"
+		},
+		messages:{
+			headline:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			subcommittee_type:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			province_code:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			order_no:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			order_date:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			status:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+	
 });
 </script>
 
 <h3>บันทึก คณะอนุกรรมการ (บันทึก / แก้ไข)</h3>
 
-<form method="post" action="act/committee/save">
+<form id="committee" method="post" action="act/committee/save">
 <table class="tbadd">
   <tr>
     <th>คณะอนุกรรมการ

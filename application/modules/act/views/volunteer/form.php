@@ -15,6 +15,34 @@ $(document).ready(function(){
 	    	label: 'text'
 	    });
     });
+    
+    $("form").validate({
+		rules: {
+			passport:"required",
+			id_card:"required",
+			title_id:"required",
+			fname:"required",
+			lname:"required",
+			sex:"required",
+			birthday:"required",
+			home_no:"required",
+			tel:"required",
+			status_id:"required"
+		},
+		messages:{
+			passport:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			id_card:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			title_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			fname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			lname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sex:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			birthday:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			home_no:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			tel:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			status_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+
 });
 </script>
 
@@ -25,9 +53,9 @@ $(document).ready(function(){
   <tr>
     <th>เลขที่ Passport <span class="Txt_red_12"> *</span></th>
     <td><span>
-      <input type="radio" name="radio" id="radio3" value="radio" />
+      <input type="radio" name="passport" id="radio3" value="radio" />
 ไม่มี </span> <span>
-<input type="radio" name="radio" id="radio4" value="radio" />
+<input type="radio" name="passport" id="radio4" value="radio" />
 มี </span>
 <input name="v_id" type="text" style="width:200px;" value="<?=$volunteer['v_id']?>"/></td>
   </tr>

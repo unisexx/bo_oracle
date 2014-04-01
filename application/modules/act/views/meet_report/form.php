@@ -1,6 +1,21 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#meetreport").validate({
+		rules: {
+			headline:"required",
+			session_h:"required"
+		},
+		messages:{
+			headline:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			session_h:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+});
+</script>
+
 <h3>บันทึก รายงานการประชุม (บันทึก / แก้ไข)</h3>
 
-<form method="post" action="act/meet_report/save" enctype="multipart/form-data">
+<form id="meetreport" method="post" action="act/meet_report/save" enctype="multipart/form-data">
 <table class="tbadd">
   <tr>
     <th>เรื่องการประชุม <span class="Txt_red_12"> *</span></th>

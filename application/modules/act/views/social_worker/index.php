@@ -40,7 +40,7 @@
   <td nowrap="nowrap"><?=$row['tel']?></td>
   <td nowrap="nowrap"><?=$row['fax']?></td>
   <td><?=$row['email']?></td>
-  <td><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td>
+  <td><a href="act/social_worker/delete/<?=$row['id']?>"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
 </tr>
 <?$i++?>
 <?endforeach;?>
