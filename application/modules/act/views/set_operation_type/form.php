@@ -1,3 +1,16 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$("form").validate({
+		rules: {
+			pcommunity_name:"required"
+		},
+		messages:{
+			pcommunity_name:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+});
+</script>
+
 <h3>ตั้งค่า ลักษณะการดำเนินงาน (บันทึก / แก้ไข)</h3>
 
 <form method="post" action="act/set_operation_type/save">

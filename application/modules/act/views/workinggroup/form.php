@@ -15,12 +15,29 @@ $(document).ready(function(){
 	    	label: 'text'
 	    });
     });
+    
+    $("#workinggroup").validate({
+		rules: {
+			title_id:"required",
+			fname:"required",
+			lname:"required",
+			sex:"required",
+			home_no:"required"
+		},
+		messages:{
+			title_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			fname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			lname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sex:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			home_no:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
 });
 </script>
 
 <h3>บันทึก รายชื่อคณะทำงาน (บันทึก / แก้ไข)</h3>
 
-<form method="post" action="act/workinggroup/save">
+<form id="workinggroup" method="post" action="act/workinggroup/save">
 <table class="tbadd">
   <tr>
     <th>จังหวัด </th>

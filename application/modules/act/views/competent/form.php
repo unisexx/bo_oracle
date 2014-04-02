@@ -15,12 +15,29 @@ $(document).ready(function(){
 	    	label: 'text'
 	    });
     });
+    
+    $("#competent").validate({
+		rules: {
+			title_id:"required",
+			fname:"required",
+			lname:"required",
+			sex:"required",
+			home_no:"required"
+		},
+		messages:{
+			title_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			fname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			lname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sex:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			home_no:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
 });
 </script>
 
 <h3>บันทึก รายชื่อพนักงานเข้าหน้าที่ (บันทึก / แก้ไข)</h3>
 
-<form method="post" action="act/competent/save">
+<form id="competent" method="post" action="act/competent/save">
 <table class="tbadd">
   <tr>
     <th>จังหวัด </th>

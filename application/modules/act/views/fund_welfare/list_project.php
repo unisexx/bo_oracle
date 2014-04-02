@@ -17,10 +17,10 @@ function ins_name(n,ngo) {
 }
 
 function fill_value (project_id,project_name,fund_name,org_name) {
-	opener.composeform.project_continue.value = project_id;
-    opener.composeform.project_continue_name.value = project_name;
-    opener.composeform.project_continue_fund.value = fund_name;
-    opener.composeform.project_continue_org.value = org_name;
+	opener.composeform_sub.project_continue.value = project_id;
+    opener.composeform_sub.project_continue_name.value = project_name;
+    opener.composeform_sub.project_continue_fund.value = fund_name;
+    opener.composeform_sub.project_continue_org.value = org_name;
     
 	window.close();
 }

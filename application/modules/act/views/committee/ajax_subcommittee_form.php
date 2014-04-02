@@ -16,6 +16,21 @@ $(document).ready(function(){
 	    	label: 'text'
 	    });
     });
+    
+    $("#sform").validate({
+		rules: {
+			title_id:"required",
+			fname:"required",
+			lname:"required",
+			sex:"required"
+		},
+		messages:{
+			title_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			fname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			lname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sex:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
 });
 
 Cufon.replace('h1, h3, h4, h5, ul#navmenu-h');
@@ -35,9 +50,9 @@ Cufon.replace('h1, h3, h4, h5, ul#navmenu-h');
   <tr>
     <th>เพศ <span class="Txt_red_12"> *</span></th>
     <td><span>
-      <input type="radio" name="radio" value="M" <?php echo ($sub['sex'] == "M")?'checked=checked':'';?> />
+      <input type="radio" name="sex" value="M" <?php echo ($sub['sex'] == "M")?'checked=checked':'';?> />
       ชาย </span> <span>
-        <input type="radio" name="radio" value="F" <?php echo ($sub['sex'] == "F")?'checked=checked':'';?> />
+        <input type="radio" name="sex" value="F" <?php echo ($sub['sex'] == "F")?'checked=checked':'';?> />
         หญิง </span></td>
   </tr>
 <tr>

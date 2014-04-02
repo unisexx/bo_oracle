@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
 	$.get('act/director/ajax_subcommittee_edit',{
 		committee_id : $("input[name=committee_id]").val()
@@ -16,6 +16,24 @@ $(document).ready(function(){
     		$("#subcommittee_form").html(data);
     	});
     });
+    
+    $("#director").validate({
+		rules: {
+			committee_type:"required",
+			province_code:"required",
+			order_no:"required",
+			order_date:"required",
+			status:"required"
+		},
+		messages:{
+			committee_type:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			province_code:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			order_no:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			order_date:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			status:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+	
 });
 </script>
 
@@ -31,12 +49,12 @@ $(document).ready(function(){
 
 <h3>บันทึก คณะกรรมการ (บันทึก / แก้ไข)</h3>
 
-<form method="post" action="act/director/save">
+<form id="director" method="post" action="act/director/save">
 <table class="tbadd">
   <tr>
     <th>คณะกรรมการ<span class="Txt_red_12"> *</span></th>
     <td><select name="committee_type">
-      <option>-- เลือกประเภทคณะกรรมการ --</option>
+      <option value="">-- เลือกประเภทคณะกรรมการ --</option>
       <option value="1" <?php echo ($main['committee_type'] == 1)?"selected=selected":"";?>>คณะกรรมการส่งเสริมการจัดสวัสดิการสังคมแห่งชาติ</option>
       <option value="2" <?php echo ($main['committee_type'] == 2)?"selected=selected":"";?>>คณะกรรมการส่งเสริมการจัดสวัสดิการสังคมจังหวัด</option>
       <option value="3" <?php echo ($main['committee_type'] == 3)?"selected=selected":"";?>>คณะกรรมการส่งเสริมการจัดสวัสดิการสังคมกรุงเทพมหานคร</option>

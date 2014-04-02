@@ -17,6 +17,22 @@ $(document).ready(function(){
 	    	label: 'text'
 	    });
     });
+    
+    $("#sform").validate({
+		rules: {
+			title_id:"required",
+			fname:"required",
+			lname:"required",
+			sex:"required"
+		},
+		messages:{
+			title_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			fname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			lname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sex:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+	
 });
 
 function organ_view_sub() {

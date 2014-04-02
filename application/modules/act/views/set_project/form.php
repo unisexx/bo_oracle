@@ -1,3 +1,16 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$("form").validate({
+		rules: {
+			ps_name:"required"
+		},
+		messages:{
+			ps_name:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+});
+</script>
+
 <h3>ตั้งค่า ลักษณะโครงการ (บันทึก / แก้ไข)</h3>
 
 <form method="post" action="act/set_project/save">
