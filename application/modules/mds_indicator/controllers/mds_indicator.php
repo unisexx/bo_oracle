@@ -46,8 +46,13 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				from mds_set_metrics metrics
 				inner join mds_set_indicator indicator on metrics.mds_set_indicator_id = indicator.id
 				left join mds_set_assessment assessment on metrics.mds_set_assessment_id = assessment.id
-				where $condition and metrics.parent_id = '0' order by  metrics.metrics_on asc";
-		
+				where $condition and metrics.metrics_responsible = 'Y' ";
+				
+		if(@$_GET['sch_metrics_name'] != ''){
+			$sql .= "order by  metrics.id asc";
+		}else{
+			$sql .= "and metrics.parent_id = '0' order by  metrics.metrics_on asc";
+		}
 		$data['rs'] = $this->metrics->get($sql,'true');
 		
 		
@@ -142,7 +147,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				 
 				  $data['round_month'] = $chk_round_month['round_month']; //รอบการส่งประเมิน
-				 // return false;
+				  //return false;
 				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id'],$data['round_month']);
 				  if($chk_keyer_indicator != 'Y'){
 				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในบันทึกตัวชี้วัดในรอบถัดไป'); 
@@ -150,6 +155,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				  }	
 				
 				if(@$data['rs_metrics']['metrics_cancel'] != ''){
+
 					if($data['round_month'] >= @$data['rs_metrics']['metrics_cancel']){
 						set_notify('error', 'ท่านไม่บันทึกตัวชี้วัดในรอบถัดไป เนื่องจากมีการยกเลิกตัวชี้วัดแล้ว'); 
 				  		redirect($data['urlpage'].'/form/'.$metrics_id);

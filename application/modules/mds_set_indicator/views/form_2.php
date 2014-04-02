@@ -28,10 +28,12 @@ tinymce.init({
 				$('.metrics_dtl_9').hide();
 				$('#sem_9_6').attr('checked','checked');
 			<? } ?>
-			<?php if(@$rs['sem_12'] != '12'){ ?>
-				$('.metrics_dtl_12').hide();
-				$('#sem_12_6').attr('checked','checked');
-			<? } ?>
+			<?php if(@$rs['sem_12'] != '12' && @$rs['sem_12'] != '9'){ ?>
+						$('.metrics_dtl_12').hide();
+						$('#sem_12_6').attr('checked','checked');
+			<?php 	}else if(@$rs['sem_12'] == '9'){ ?>
+						$('.metrics_dtl_12').hide();
+			<?php	} ?>
 			
 		}else if($('#metrics_start').val() == 9){
 			$('.metrics_cancel_6').hide();
@@ -63,6 +65,7 @@ tinymce.init({
 			$('.metrics_dtl_9').hide();
 			$('.metrics_dtl_12').show();
 			$('#sem_12_12').attr('checked','checked');
+			
 		}
 	}
 	
@@ -82,7 +85,7 @@ $(function(){
 	});
 	chang_strat();
 	
-			<?php if(@$rs['sem_9'] == '9'){ ?>
+			<?php if(@$rs['sem_9'] == '9' && @$rs['metrics_start'] < '12'){ ?>
 					$('.metrics_dtl_9').show();
 			<?php }
 			 if(@$rs['sem_12'] == '12'){ ?>
@@ -308,7 +311,7 @@ $(function(){
 	});
 });
 </script>
-<h3>ตั้งค่า  มิติและตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
+<h3>ตั้งค่า ตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
 <h5>ตัวชี้วัด</h5>
 <form action="<?php echo $urlpage;?>/save_2" id="Myform" method="POST">
 <table class="tbadd">
@@ -401,6 +404,7 @@ $(function(){
   <tr>
     <th>ตัวชี้วัดเริ่มที่รอบ <span class="Txt_red_12">*</span></th>
     <? 
+   // echo $rs['metrics_start'];
     	if(@$rs['metrics_start'] == 6){
     		$selcet_6 = 'selected="selected"';
     	}else if(@$rs['metrics_start'] == 9){
@@ -408,6 +412,7 @@ $(function(){
     	}else if(@$rs['metrics_start'] == 12){
     		$selcet_12 = 'selected="selected"';
     	}
+		
     ?>
     <td>
     <? if($num_chk_result > 0){ ?> 

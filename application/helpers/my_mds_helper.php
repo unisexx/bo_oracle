@@ -29,14 +29,15 @@ function metrics_dtl_indicator($indicator_id = null,$parent_id = null,$round_mon
 			$CI =& get_instance();
 			$condition = '';
 			if($round_month != ''){
-				$condition = "and metrics.metrics_start <= '".$round_month."' ";
+				//$condition = "and metrics.metrics_start <= '".$round_month."' ";
 			}
 			$sql = "select metrics.*,assessment.ass_name
 						  from mds_set_metrics metrics
 						  left join mds_set_assessment assessment on metrics.mds_set_assessment_id = assessment.id
 						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.parent_id = '".$parent_id."' 
-						  $condition
+						  $condition 
 						  order by metrics.metrics_on asc  ";
+	
 			$result_1 = $CI->db->getarray($sql); 
 			dbConvert($result_1);
 			$result=$result_1;
@@ -54,7 +55,8 @@ function chk_keyer_indicator($indicator_id = null,$id = null,$round_month=null){
 						  from mds_set_metrics metrics
 						  join mds_set_metrics_keyer metrics_keyer on metrics.id = metrics_keyer.mds_set_metrics_id
 						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
-						  		and ( metrics_keyer.keyer_users_id = '".login_data('id')."' or metrics_keyer.change_keyer_users_id = '".login_data('id')."' )
+						  		and ( metrics_keyer.keyer_users_id = '".login_data('id')."' or metrics_keyer.change_keyer_users_id = '".login_data('id')."' ) 
+								and metrics.metrics_responsible = 'Y'
 						  order by metrics.metrics_on asc  ";
 			$result_1 = $CI->db->getarray($sql); 
 			$num_result = count($result_1);
@@ -69,7 +71,7 @@ function chk_keyer_indicator($indicator_id = null,$id = null,$round_month=null){
 						  join mds_set_metrics_keyer metrics_keyer on metrics.id = metrics_keyer.mds_set_metrics_id
 						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
 						  		and  ( metrics_keyer.keyer_users_id = '".login_data('id')."' or metrics_keyer.change_keyer_users_id = '".login_data('id')."' )
-						  		and metrics_keyer.round_month = '".$round_month."' 
+						  		and metrics_keyer.round_month = '".$round_month."' and metrics.metrics_responsible = 'Y'
 						  order by metrics.metrics_on asc  ";
 			$result_1 = $CI->db->getarray($sql); 
 			$num_result = count($result_1);
@@ -90,7 +92,7 @@ function chk_control_indicator($indicator_id = null,$id = null,$result_id = null
 						  from mds_set_metrics metrics
 						  join mds_set_metrics_kpr metrics_kpr on metrics.id = metrics_kpr.mds_set_metrics_id
 						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
-						  		and  metrics_kpr.control_users_id = '".login_data('id')."'
+						  		and  metrics_kpr.control_users_id = '".login_data('id')."' and metrics.metrics_responsible = 'Y' 
 						  order by metrics.metrics_on asc  ";
 			$result_1 = $CI->db->getarray($sql); 
 			$num_result = count($result_1);
@@ -107,7 +109,7 @@ function chk_control_indicator($indicator_id = null,$id = null,$result_id = null
 						  join mds_set_metrics_kpr metrics_kpr on metrics.id = metrics_kpr.mds_set_metrics_id and mds_metrics_result.round_month = metrics_kpr.round_month
 						  where metrics.mds_set_indicator_id = '".@$indicator_id."' and metrics.id = '".$id."' 
 						  		and mds_metrics_result.id = '".$result_id."' 
-						  		and  metrics_kpr.control_users_id = '".login_data('id')."'
+						  		and  metrics_kpr.control_users_id = '".login_data('id')."' and metrics.metrics_responsible = 'Y' 
 						  order by metrics.metrics_on asc  ";
 			$result_1 = $CI->db->getarray($sql); 
 			$num_result = count($result_1);
@@ -229,11 +231,15 @@ function indicator_weight($id = null , $round_month = null){ // หาค่า�
 					}else if($round_month == '9' && $indicator_weight['metrics_weight_9'] != '' && $indicator_weight['metrics_start'] < '12' && count($result_chk_result) > '0' && $result_all == 'ok'){
 						if($indicator_weight['metrics_cancel'] == ''){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_9'];
+								//echo var_dump(@$result_chk_result['score_metrics']*$data['weight_perc_tot']);
 								$data['sum_result'] += @$result_chk_result['score_metrics']*$indicator_weight['metrics_weight_9'];
+								//echo "<HR/>";
 						}else{
 							if($indicator_weight['metrics_cancel'] > '9'){
 								$data['weight_perc_tot'] += $indicator_weight['metrics_weight_9'];
+								//echo var_dump(@$result_chk_result['score_metrics']*$data['weight_perc_tot']);
 								$data['sum_result'] += @$result_chk_result['score_metrics']*$indicator_weight['metrics_weight_9'];
+								//echo "<HR/>";
 							}
 						}	
 						
@@ -251,13 +257,24 @@ function indicator_weight($id = null , $round_month = null){ // หาค่า�
 						if($indicator_weight['metrics_start'] <= $round_month && count($result_chk_result) > '0' && $result_all == 'ok'){
 							if($indicator_weight['metrics_cancel'] == ''){
 								 	$data['weight_perc_tot'] += $indicator_weight['metrics_weight'];
-									$data['sum_result'] += @$result_chk_result['score_metrics']*$data['weight_perc_tot'];
+									$data['sum_result'] += @$result_chk_result['score_metrics']*$indicator_weight['metrics_weight'];
 							}else{
 								if($indicator_weight['metrics_cancel'] > $round_month){
 									$data['weight_perc_tot'] += $indicator_weight['metrics_weight'];
-									$data['sum_result'] += @$result_chk_result['score_metrics']*$data['weight_perc_tot'];
+									$data['sum_result'] += @$result_chk_result['score_metrics']*$indicator_weight['metrics_weight'];
 								}
 							}
+							/*
+							if($round_month == '9'){
+								var_dump($data);
+								echo @$result_chk_result['score_metrics'];
+								echo $data['weight_perc_tot'];
+								echo "<br/>";
+								echo $data['sum_result'];
+								echo "<HR/>";
+							}
+							 * 
+							 */
 						}
 					}
 					  
@@ -533,7 +550,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 											and mds_set_metrics_keyer.keyer_users_id = result.keyer_users_id 
 						where result.mds_set_metrics_id = '".$metrics_id."'
 									and  (mds_set_metrics_keyer.keyer_users_id = '".$users_keyer."' or mds_set_metrics_keyer.change_keyer_users_id = '".$users_keyer."' )
-									order by result.id desc ";
+									order by result.id asc ";
 		$result_chk = $CI->db->getarray($sql_result);
 		dbConvert($result_chk);
 		
@@ -543,7 +560,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 								LEFT JOIN MDS_METRICS_RESULT RESULT ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
 								AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH 
 								AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID 
-								WHERE ( KEYER.KEYER_USERS_ID = '943' OR KEYER.CHANGE_KEYER_USERS_ID = '947') AND KEYER.MDS_SET_METRICS_ID = '2' ";
+								WHERE ( KEYER.KEYER_USERS_ID = '".$users_keyer."' OR KEYER.CHANGE_KEYER_USERS_ID = '".$users_keyer."') AND KEYER.MDS_SET_METRICS_ID = '2' ";
 				$result_chk_user = $CI->db->getarray($sql_chk_users);
 				dbConvert($result_chk_user);
 				$users_round_month = $result_chk_user['0']['min_month'];
@@ -572,15 +589,21 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 									$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบเดือนก่อนหน้าที่ท่านรับผิดชอบยังไม่ผ่านการอนุมัติ";
 								}
 							}
-							$chk_metrics_start = $chk_metrics_start+3;
+							if($result_all == "ok"){
+								$chk_metrics_start = $chk_metrics_start+3;
+								$i = '5';
+							}
 						}
 						
 				}
+			
 			if($chk_metrics_start == '15'){
 				$chk_metrics_start = $metrics_start;
 			}
 			$data['round_month'] = $chk_metrics_start;
 		}else{
+			//var_dump($result_chk);
+			//echo "<HR/>";
 			foreach ($result_chk as $key => $chk) {
 				if($chk['control_status'] == '' && $chk['kpr_status'] == ''){
 					$data['round_month'] = $result_chk['0']['round_month'];
@@ -592,7 +615,53 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 					
 				}else if($chk['control_status'] == '1' && $chk['kpr_status'] == '1'){
 					if($result_chk['0']['round_month'] < '12'){
-						$data['round_month'] = $result_chk['0']['round_month']+3;
+						// หาว่ารอบที่รับผิดชอบรอบถัดไปคือเดือนไหน
+						$sql_round_month = "select mds_set_metrics_keyer.change_keyer_users_id ,mds_set_metrics_keyer.round_month as keyer_round_month,result.* ,mds_set_metrics.metrics_cancel
+												from mds_set_metrics 
+												left join mds_set_metrics_keyer on mds_set_metrics.id = mds_set_metrics_keyer.mds_set_metrics_id  
+												left join mds_metrics_result result on mds_set_metrics.id = result.mds_set_metrics_id and mds_set_metrics_keyer.keyer_users_id = result.keyer_users_id
+												and mds_set_metrics_keyer.round_month = result.round_month
+											where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' and  mds_set_metrics_keyer.round_month > ".$chk['round_month']."
+											and (mds_set_metrics_keyer.keyer_users_id = '".$users_keyer."' or mds_set_metrics_keyer.change_keyer_users_id = '".$users_keyer."' ) 
+											order by mds_set_metrics_keyer.round_month asc ";
+						$result_round_month = $CI->db->getarray($sql_round_month);
+						dbConvert($result_round_month);
+						$data['round_month'] = @$result_round_month['0']['keyer_round_month'];
+						
+						if($data['round_month'] > '6' && $data['round_month'] != '' && ($data['round_month'] < @$result_round_month['0']['metrics_cancel'])){
+							$chk_metrics_reound_month = @$result_round_month['0']['keyer_round_month']-3;
+							// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
+							$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
+												 FROM  MDS_SET_METRICS_KEYER KEYER
+												 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
+															AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
+											   	 WHERE KEYER.MDS_SET_METRICS_ID = '".$metrics_id."' AND KEYER.ROUND_MONTH = '".$chk_metrics_reound_month."' ";
+							
+							$result_keyer_result = $CI->db->getarray($chk_keyer_result);
+							dbConvert($result_keyer_result);
+							
+							$result_all = "ok";
+							foreach ($result_keyer_result as $key => $keyer_result) {
+								if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
+									$result_all = "no";
+								}
+								if($chk_metrics_reound_month > $metrics_start && $result_all == "no"){
+									$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบเดือน ก่อนหน้าที่ท่านรับผิดชอบยังไม่ผ่านการอนุมัติ";
+									return $data;
+									break;
+								}
+
+							}
+							if(count($result_keyer_result) == 0){
+								$data['error'] = "ท่านไม่สิทธิบันทึกตัวชี้วัดในรอบถัดไป";
+							}
+						}else{
+							if(@$result_round_month['0']['metrics_cancel'] != ''){
+								$data['error'] = "ท่านไม่บันทึกตัวชี้วัดในรอบถัดไป เนื่องจากมีการยกเลิกตัวชี้วัดแล้ว";
+							}else if($data['round_month'] == ''){
+								$data['error'] = "ท่านไม่สิทธิบันทึกตัวชี้วัดในรอบถัดไป";
+							}
+						}
 					}else{
 						$data['error'] = "ท่านทำการกรอกข้อมูลถึงรอบ 12 เดือนแล้ว ไม่สามารถเพิ่มผลการปฎิบัติราชการได้";
 					}	
@@ -779,36 +848,45 @@ function mds_report_sum_metrics_dtl($metrics_dtl = nul,$metrics_on = null,$sch_r
   				}else{
   					$metrics_weight = $metrics_dtl['metrics_weight'];
   				}
-  			
-  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_weight,2).'</td>';
-  			
-  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
-  								from mds_set_metrics_kpr
-  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
-								left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
-  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$metrics_dtl['id']."' and mds_set_metrics_kpr.round_month = '".@$sch_round_month."' ";
-				$result_control = $CI->db->getarray($sql_control);
-				dbConvert($result_control);
-				$result_control = @$result_control['0'];
-  		
-  		$dtl['dtl'] .=	'<td>'.@$result_control['department_name'].' - '.@$result_control['division_name'].'</td>';
-		$dtl['dtl'] .=	'<td>'.@$result_control['control_name'].'</td>';
-			
-  				$sql_keyer = "select mds_set_metrics_keyer.*
-  								from mds_set_metrics_keyer
-  								where mds_set_metrics_keyer.mds_set_metrics_id = '".@$metrics_dtl['id']."' and mds_set_metrics_keyer.round_month = '".@$sch_round_month."' ";
-				$result_keyer =  $CI->db->getarray($sql_keyer);
-				dbConvert($result_keyer);
-		$dtl['dtl'] .=	'<td>';
-					foreach ($result_keyer as $key => $keyer) {
-						if($key != '0'){
-							$dtl['dtl'] .= ",";
-						}
-						$dtl['dtl'] .= @$keyer['keyer_name'];
-					} 
+  		if(@$metrics_dtl['metrics_responsible'] == 'Y'){	
+	  		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_weight,2).'</td>';
+	  			
+	  				$sql_control = "select mds_set_metrics_kpr.*,cnf_division.title as division_name ,cnf_department.title as department_name
+	  								from mds_set_metrics_kpr
+	  								left join cnf_division on mds_set_metrics_kpr.control_division_id = cnf_division.id 
+									left join cnf_department on mds_set_metrics_kpr.control_department_id = cnf_department.id 
+	  								where mds_set_metrics_kpr.mds_set_metrics_id = '".@$metrics_dtl['id']."' and mds_set_metrics_kpr.round_month = '".@$sch_round_month."' ";
+					$result_control = $CI->db->getarray($sql_control);
+					dbConvert($result_control);
+					$result_control = @$result_control['0'];
+	  		
+	  		$dtl['dtl'] .=	'<td>'.@$result_control['department_name'].' - '.@$result_control['division_name'].'</td>';
+			$dtl['dtl'] .=	'<td>'.@$result_control['control_name'].'</td>';
 				
-		$dtl['dtl'] .=	'</td>';
-  		$dtl['dtl'] .= '</tr>';
+	  				$sql_keyer = "select mds_set_metrics_keyer.*
+	  								from mds_set_metrics_keyer
+	  								where mds_set_metrics_keyer.mds_set_metrics_id = '".@$metrics_dtl['id']."' and mds_set_metrics_keyer.round_month = '".@$sch_round_month."' ";
+					$result_keyer =  $CI->db->getarray($sql_keyer);
+					dbConvert($result_keyer);
+			$dtl['dtl'] .=	'<td>';
+						foreach ($result_keyer as $key => $keyer) {
+							if($key != '0'){
+								$dtl['dtl'] .= ",";
+							}
+							$dtl['dtl'] .= @$keyer['keyer_name'];
+						} 
+					
+			$dtl['dtl'] .=	'</td>';
+	  		$dtl['dtl'] .= '</tr>';
+	  	}else{
+	  		$dtl['dtl'] .=	'<td>';
+	  		$dtl['dtl'] .=	'ไม่มีผู้รับผิดชอบ';
+	  		$dtl['dtl'] .=	'</td>';
+	  		$dtl['dtl'] .=	'<td>';
+			$dtl['dtl'] .=	'ไม่มีผู้รับผิดชอบ';
+	  		$dtl['dtl'] .=	'</td>';
+	  		$dtl['dtl'] .= '</tr>';
+	  	}
 	}
 	return $dtl;
 }
