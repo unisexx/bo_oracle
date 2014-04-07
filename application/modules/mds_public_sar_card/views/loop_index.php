@@ -85,7 +85,7 @@ $(function(){
 		foreach ($result_sub as $key_sub => $sub) {
 			// ลำดับตัวชี้วัด
 			if($parent_id != '0'){
-				echo $metrics_on;
+				//echo $metrics_on;
 				if($metrics_on != ''){
 					$metrics_on = $metrics_on.".".$sub['metrics_on'];
 				}else{

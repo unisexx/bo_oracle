@@ -120,7 +120,29 @@ $(function(){
 			$('.metrics_dtl_12').hide();
 		}
 	});
-	
+	function checked_keyer_score(keyer_month){
+		if(keyer_month == ''){
+			if($("[name='id']").val() == ''){
+				$("[name='keyer_score_6[]']:eq(0)").attr('checked', 'checked');
+				$("[name='keyer_score_9[]']:eq(0)").attr('checked', 'checked');
+				$("[name='keyer_score_12[]']:eq(0)").attr('checked', 'checked');
+			}else{
+				if($("[name='result_6']").val() == '' && typeof($("[name='keyer_score_6[]']:checked").val()) === "undefined" && $("[name='metrics_start]").val() == "6"){
+					$("[name='keyer_score_6[]']:eq(0)").attr('checked', 'checked');
+				}
+				if($("[name='result_9']").val() == '' && typeof($("[name='keyer_score_9[]']:checked").val()) === "undefined" && $("[name='metrics_start]").val() <= "9"){
+					$("[name='keyer_score_9[]']:eq(0)").attr('checked', 'checked');
+				}
+				if($("[name='result_12']").val() == '' && typeof($("[name='keyer_score_12[]']:checked").val()) === "undefined" && $("[name='metrics_start]").val() <= "12"){
+					$("[name='keyer_score_12[]']:eq(0)").attr('checked', 'checked');
+				}
+			}
+		}else{
+			$("[name='keyer_score_"+keyer_month+"[]']:eq(0)").attr('checked', 'checked');
+		}
+		
+	}
+	checked_keyer_score('');
 	$('.bt_add_keyer').click(function(){
 	var ref_m = $(this).attr('ref_m');
 	var num = $('#keyer_num_'+ref_m).val();
@@ -163,6 +185,9 @@ $(function(){
 		var i = $(this).attr("ref");
 		var m = $(this).attr("ref_m");
 		$("#keyer_div_"+m+"_"+i).remove();
+		if(typeof($("[name='keyer_score_"+m+"[]']:checked").val()) === "undefined"){
+			checked_keyer_score(m);
+		}
 	});
 		// ทำให้ผ่าน tiny ผ่าน validate
 		$('.btn_save').click(function() {
