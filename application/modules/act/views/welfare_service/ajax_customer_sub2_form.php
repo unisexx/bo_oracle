@@ -7,13 +7,29 @@ z-index: 10000;
 <script type="text/javascript" src="../../themes/bo/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="../../js/jquery.datepick/jquery.datepick.js"></script>
 <script type="text/javascript" src="../../js/jquery.datepick/jquery.datepick-th.js"></script>
+<script type="text/javascript" src="../../js/jquery-validation-1.8.1/jquery.validate.js"></script>
 <script>
 $(document).ready(function(){
 	$('.datepicker').datepick({showOn: 'both', buttonImageOnly: true, buttonImage: 'js/jquery.datepick/calendar.png'});
+	
+	$("#customer_sub2").validate({
+		rules: {
+			sub2_name:"required",
+			sub2_date:"required",
+			problem:"required",
+			detail:"required"
+		},
+		messages:{
+			sub2_name:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sub2_date:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			problem:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			detail:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
 });
 </script>
 
-<form method="post" action="act/welfare_service/customer_sub2_save">
+<form id="customer_sub2" method="post" action="act/welfare_service/customer_sub2_save">
 <h3>หน่วยงานที่เข้ารับบริการ</h3>
 <table class="tbadd">
 <tr>

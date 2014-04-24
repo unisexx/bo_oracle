@@ -28,10 +28,12 @@ tinymce.init({
 				$('.metrics_dtl_9').hide();
 				$('#sem_9_6').attr('checked','checked');
 			<? } ?>
-			<?php if(@$rs['sem_12'] != '12'){ ?>
-				$('.metrics_dtl_12').hide();
-				$('#sem_12_6').attr('checked','checked');
-			<? } ?>
+			<?php if(@$rs['sem_12'] != '12' && @$rs['sem_12'] != '9'){ ?>
+						$('.metrics_dtl_12').hide();
+						$('#sem_12_6').attr('checked','checked');
+			<?php 	}else if(@$rs['sem_12'] == '9'){ ?>
+						$('.metrics_dtl_12').hide();
+			<?php	} ?>
 			
 		}else if($('#metrics_start').val() == 9){
 			$('.metrics_cancel_6').hide();
@@ -63,6 +65,7 @@ tinymce.init({
 			$('.metrics_dtl_9').hide();
 			$('.metrics_dtl_12').show();
 			$('#sem_12_12').attr('checked','checked');
+			
 		}
 	}
 	
@@ -82,7 +85,7 @@ $(function(){
 	});
 	chang_strat();
 	
-			<?php if(@$rs['sem_9'] == '9'){ ?>
+			<?php if(@$rs['sem_9'] == '9' && @$rs['metrics_start'] < '12'){ ?>
 					$('.metrics_dtl_9').show();
 			<?php }
 			 if(@$rs['sem_12'] == '12'){ ?>
@@ -117,7 +120,29 @@ $(function(){
 			$('.metrics_dtl_12').hide();
 		}
 	});
-	
+	function checked_keyer_score(keyer_month){
+		if(keyer_month == ''){
+			if($("[name='id']").val() == ''){
+				$("[name='keyer_score_6[]']:eq(0)").attr('checked', 'checked');
+				$("[name='keyer_score_9[]']:eq(0)").attr('checked', 'checked');
+				$("[name='keyer_score_12[]']:eq(0)").attr('checked', 'checked');
+			}else{
+				if($("[name='result_6']").val() == '' && typeof($("[name='keyer_score_6[]']:checked").val()) === "undefined" && $("[name='metrics_start]").val() == "6"){
+					$("[name='keyer_score_6[]']:eq(0)").attr('checked', 'checked');
+				}
+				if($("[name='result_9']").val() == '' && typeof($("[name='keyer_score_9[]']:checked").val()) === "undefined" && $("[name='metrics_start]").val() <= "9"){
+					$("[name='keyer_score_9[]']:eq(0)").attr('checked', 'checked');
+				}
+				if($("[name='result_12']").val() == '' && typeof($("[name='keyer_score_12[]']:checked").val()) === "undefined" && $("[name='metrics_start]").val() <= "12"){
+					$("[name='keyer_score_12[]']:eq(0)").attr('checked', 'checked');
+				}
+			}
+		}else{
+			$("[name='keyer_score_"+keyer_month+"[]']:eq(0)").attr('checked', 'checked');
+		}
+		
+	}
+	checked_keyer_score('');
 	$('.bt_add_keyer').click(function(){
 	var ref_m = $(this).attr('ref_m');
 	var num = $('#keyer_num_'+ref_m).val();
@@ -160,6 +185,9 @@ $(function(){
 		var i = $(this).attr("ref");
 		var m = $(this).attr("ref_m");
 		$("#keyer_div_"+m+"_"+i).remove();
+		if(typeof($("[name='keyer_score_"+m+"[]']:checked").val()) === "undefined"){
+			checked_keyer_score(m);
+		}
 	});
 		// ทำให้ผ่าน tiny ผ่าน validate
 		$('.btn_save').click(function() {
@@ -308,7 +336,7 @@ $(function(){
 	});
 });
 </script>
-<h3>ตั้งค่า  มิติและตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
+<h3>ตั้งค่า ตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
 <h5>ตัวชี้วัด</h5>
 <form action="<?php echo $urlpage;?>/save_2" id="Myform" method="POST">
 <table class="tbadd">
@@ -401,6 +429,7 @@ $(function(){
   <tr>
     <th>ตัวชี้วัดเริ่มที่รอบ <span class="Txt_red_12">*</span></th>
     <? 
+   // echo $rs['metrics_start'];
     	if(@$rs['metrics_start'] == 6){
     		$selcet_6 = 'selected="selected"';
     	}else if(@$rs['metrics_start'] == 9){
@@ -408,6 +437,7 @@ $(function(){
     	}else if(@$rs['metrics_start'] == 12){
     		$selcet_12 = 'selected="selected"';
     	}
+		
     ?>
     <td>
     <? if($num_chk_result > 0){ ?> 

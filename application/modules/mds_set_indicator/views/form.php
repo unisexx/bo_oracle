@@ -33,7 +33,7 @@ $(document).ready(function(){
 		
 });
 </script>
-<h3>ตั้งค่า  มิติและตัวชี้วัด (เพิ่ม / แก้ไข)</h3>
+<h3>ตั้งค่า  มิติ (เพิ่ม / แก้ไข)</h3>
 <h5>มิติ</h5>
 <form action="<?php echo $urlpage;?>/save" method="POST">
 <input type="hidden" name="id" id="id" class="form-control" value="<?php echo @$rs['id']?>" style="width:500px;" />

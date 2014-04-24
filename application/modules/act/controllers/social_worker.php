@@ -28,7 +28,7 @@ Class social_worker extends  Act_Controller{
 		if($_POST){
 			/***** รูปภาพ *****/
 			fix_file($_FILES["UploadFile"]);		    
-		   $_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->supporter_main->upload($_FILES["UploadFile"],"uploads/act/social_worker") : $_POST['hdfilename'];
+		   @$_POST['file_data'] = !empty($_FILES['UploadFile']['name']) ? $this->supporter_main->upload($_FILES["UploadFile"],"uploads/act/social_worker") : $_POST['hdfilename'];
 		   
 		    /***** เชพฟอร์มหลัก *****/
 			$id = $this->supporter_main->save($_POST);

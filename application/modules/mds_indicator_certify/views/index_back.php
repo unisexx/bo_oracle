@@ -1,4 +1,4 @@
-<h3>บันทึก ตัวชี้วัด</h3>
+<h3>บันทึก ตรวจรับรองผลการทำตัวชี้วัด</h3>
 <!--<div class="allstrategy"><img src="../images/tree/department.png" /> กรม | <img src="../images/tree/down.png" />  เป้าหมายการให้บริการกระทรวง | <img src="../images/tree/cube.png"/> ยุทธศาสตร์กระทรวง  | <img src="../images/tree/pro.png" /> เป้าหมายการให้บริการหน่วยงาน | <img src="../images/tree/chart_bar.png" /> กลยุทธ์หน่วยงาน   | <img src="../images/tree/asterisk.png" /> ผลผลิต  |  <img src="../images/tree/layout_sidebar.png" /> กิจกรรมหลัก(กรม)  | <img src="../images/tree/file.gif" /> กิจกรรมย่อย | <img src="../images/tree/project_ico.png" /> โครงการ | <img src="../images/tree/subproject_ico.png" /> โครงการย่อย </div>-->
 <style>
 .btn_upico{
@@ -57,12 +57,12 @@ $(function(){
 <div id="searchBox">
 ปีงบประมาณ <?php echo form_dropdown('sch_budget_year',get_year_option('2556'),@$_GET['sch_budget_year'],'','-- เลือกปีงบประมาณ --'); ?>
  มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกชื่อมิติ --'); ?> 
-<!-- ชื่อตัวชี้วัด <input type="text" name="sch_metrics_name" id="sch_metrics_name" placeholder="ชื่อตัวชี้วัด" value="<?=@$_GET['sch_metrics_name']?>" style="width:300px;" /> -->
+<!--<input type="text" name="sch_metrics_name" id="sch_metrics_name" placeholder="ชื่อตัวชี้วัด" value="<?=@$_GET['sch_metrics_name']?>" style="width:300px;" />-->
 <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
 </div>
 </form> 
-<? if(@$_GET['sch_budget_year'] != '' &&  @$_GET['sch_metrics_name'] == ''){ ?>
+<? if(@$_GET['sch_budget_year'] != ''){ ?>
 <table class="tblist">
 <tr>
   <th align="left" style="width: 10%">ลำดับ</th>
@@ -77,7 +77,7 @@ $(function(){
 		$premit = is_permit(login_data('id'),'1');
 				if($premit == "")
 				{
-					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$item['id']);	
+					 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$item['id']);	
 				}else{
 					 $chk_keyer_indicator = 'Y';
 				}
@@ -97,7 +97,7 @@ $(function(){
 				
 				if($premit == "")
 				{
-					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_1['id']);	
+					 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_1['id']);	
 				}else{
 					 $chk_keyer_indicator = 'Y';
 				}
@@ -116,7 +116,7 @@ $(function(){
 					foreach ($result_sub_2 as $key_sub_2 => $sub_2) {
 						if($premit == "")
 						{
-							 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_2['id']);	
+							 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_2['id']);	
 						}else{
 							 $chk_keyer_indicator = 'Y';
 						}
@@ -133,7 +133,7 @@ $(function(){
 							foreach ($result_sub_3 as $key_sub_3 => $sub_3) {
 								if($premit == "")
 								{
-									 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_3['id']);	
+									 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_3['id']);	
 								}else{
 									 $chk_keyer_indicator = 'Y';
 								}
@@ -150,7 +150,7 @@ $(function(){
 								foreach ($result_sub_4 as $key_sub_4 => $sub_4) {
 									if($premit == "")
 									{
-										 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_4['id']);	
+										 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_4['id']);	
 									}else{
 										 $chk_keyer_indicator = 'Y';
 									}
@@ -167,7 +167,7 @@ $(function(){
 									foreach ($result_sub_5 as $key_sub_5 => $sub_5) {
 										if($premit == "")
 										{
-											 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_5['id']);	
+											 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_5['id']);	
 										}else{
 											 $chk_keyer_indicator = 'Y';
 										}
@@ -184,7 +184,7 @@ $(function(){
 										foreach ($result_sub_6 as $key_sub_6 => $sub_6) {
 											if($premit == "")
 											{
-												 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$sub_6['id']);	
+												 $chk_keyer_indicator = chk_control_indicator(@$item['mds_set_indicator_id'],$sub_6['id']);	
 											}else{
 												 $chk_keyer_indicator = 'Y';
 											}
@@ -196,76 +196,19 @@ $(function(){
 							  			<td nowrap="nowrap"><?=@$item['metrics_on']?>.<?=@$sub_1['metrics_on']?>.<?=@$sub_2['metrics_on']?>.<?=@$sub_3['metrics_on']?>.<?=@$sub_4['metrics_on']?>.<?=@$sub_5['metrics_on']?>.<?=@$sub_6['metrics_on']?></td>
 							  			<td nowrap="nowrap"><?=@$sub_6['metrics_name']?></td>
 							  		<tr>
-							  <?php	$i++;} ?>
-						<?php 	} //sub6 ?>
-					<?php 	} //sub5 ?>
-				<?php	} //sub4 ?>
-			<?php	}//sub3 ?>
-		  <?php  }//sub2 ?>
-  <?php }//sub1 ?>
+							  <? $i++;}
+						   }//sub6
+					   }//sub5
+				   }//sub4
+			   }//sub3
+		   }//sub2 
+   }//sub1 
 
-<?php } ?>
+ } ?>
 </table>
 </div>
 </div>
-<? }else if(@$_GET['sch_metrics_name'] != ''){?>
-	<table class="tblist">
-<tr>
-  <th align="left" style="width: 10%">ลำดับ</th>
-  <th align="left" style="width: 25%">ประเด็นการประเมินผล</th>
-  <th align="left" style="width: 10%">ตัวชี้วัดที่</th>
-  <th align="left">ชื่อตัวชี้วัด</th>
-</tr>
-<?
-$num = 1;
-foreach ($rs as $key => $item) {
-		$premit = is_permit(login_data('id'),'1');
-				if($premit == "")
-				{
-					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$item['id']);	
-				}else{
-					 $chk_keyer_indicator = 'Y';
-				}
-				
-				if($chk_keyer_indicator == 'Y'){
-					$parent_on_id = $item['id'];
-					$metrics_on = '';
-					if($item['parent_id'] != '0'){
-						for ($i=1; $i <= 8 ; $i++) {				
-							$parent_on = '';
-							$parent_on = $this->metrics->get_row($parent_on_id);
-							$parent_on_id = $parent_on['parent_id'];
-							
-							if(@$metrics_on != ''){
-								$metrics_on = @$parent_on['metrics_on'].'.'.@$metrics_on;
-							}else{
-								$metrics_on = @$parent_on['metrics_on'];
-							}	
-							if($parent_on['parent_id']=='0'){
-								$i = 9;
-							}
-							
-						}
-					}else{
-						$metrics_on = $item['metrics_on'];
-					}
-?>	
-
-					<tr class="odd cursor" onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'">
-					  <td><? echo $num?></td>
-					  <td><?=@$item['ass_name']?></td>
-					  <td nowrap="nowrap"><?=@$metrics_on?></td>
-					  <td nowrap="nowrap"><?=@$item['metrics_name']?></td>
-					</tr>
-<?
-			$num++;	}	
-}
-?>
-</table>
-</div>
-</div>
-<?
-}else{
+<? }else{
 	echo "<div align='center'>กรุณาเลือกปีงบประมาณ</div>";
 	} ?>
  

@@ -1,6 +1,21 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#requirement").validate({
+		rules: {
+			rule_type:"required",
+			headline:"required"
+		},
+		messages:{
+			rule_type:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			headline:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+});
+</script>
+
 <h3>บันทึก ข้อกำหนด/ระเบียบ/ประกาศ (บันทึก / แก้ไข)</h3>
 
-<form method="post" action="act/requirement/save" enctype="multipart/form-data">
+<form id="requirement" method="post" action="act/requirement/save" enctype="multipart/form-data">
 <table class="tbadd">
   <tr>
     <th>ประเภทของกฎหมาย <span class="Txt_red_12"> *</span></th>

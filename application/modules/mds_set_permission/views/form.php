@@ -113,7 +113,7 @@ $(document).ready(function(){
 
 });
 </script>
-<h3>ตั้งค่า สิทธิ์การใช้ระบบ SAR CARD (บันทึก / แก้ไข)</h3>
+<h3>ตั้งค่า สิทธิ์การใช้ระบบ (บันทึก / แก้ไข)</h3>
 <form action="<?php echo $urlpage;?>/save" method="post">
 <input type="hidden" name="id" id="id" class="form-control" value="<?php echo @$rs['permission_id']?>" style="width:500px;" />
 <table class="tbadd">

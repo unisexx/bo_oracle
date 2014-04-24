@@ -43,12 +43,16 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		}	
 		
 		
-		 $sql = "select distinct metrics.*,assessment.ass_name
+		$sql = "select distinct metrics.*,assessment.ass_name
 				from mds_set_metrics metrics
 				inner join mds_set_indicator indicator on metrics.mds_set_indicator_id = indicator.id
 				left join mds_set_assessment assessment on metrics.mds_set_assessment_id = assessment.id
-				where $condition and metrics.parent_id = '0' order by  metrics.metrics_on asc";
-		
+				where $condition and metrics_responsible = 'Y' ";
+		if(@$_GET['sch_metrics_name'] != ''){
+			$sql .= "order by  metrics.id asc";
+		}else{
+			$sql .= "and metrics.parent_id = '0' order by  metrics.metrics_on asc";
+		}
 		$data['rs'] = $this->metrics->get($sql,'true');
 		
 		

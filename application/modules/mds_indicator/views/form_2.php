@@ -34,7 +34,7 @@ $(function(){
 	        						return $("#is_save").val() == '2';},
 	        						accept: "doc|docx"
 	        			 		  },
-	        		new_document_plan{accept: "doc|docx"}
+	        		new_document_plan:{accept: "doc|docx"}
 				},
 				messages:{
 					score_metrics:{required:"กรุณาระบุค่าคะแนนที่ได้", max:"ลำดับที่ใส่ได้มากที่สุด คือ  5 " },
@@ -127,7 +127,7 @@ $(function(){
 								$('.btn_savesend').removeAttr('disabled');
 								$( "#Myform" ).submit();
 							}else{
-								alert('ไม่สามารถบันทึกส่งได้ เนื่องจาก ผู้จักเก็บท่านอื่นยังไม่ผ่านการรับรอง จาก กพร.');
+								alert('ไม่สามารถบันทึกส่งได้ เนื่องจาก ผู้จัดเก็บท่านอื่นยังไม่ผ่านการรับรอง จาก กพร.');
 								$('.btn_save').removeAttr('disabled');
 								$('.btn_savesend').removeAttr('disabled');
 							}

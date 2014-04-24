@@ -1,3 +1,16 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$("form").validate({
+		rules: {
+			specific_name:"required"
+		},
+		messages:{
+			specific_name:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+});
+</script>
+
 <h3>ตั้งค่า ลักษณะงานที่ปฏิบัติ (นักสังคมสงเคราะห์)  (บันทึก / แก้ไข)</h3>
 
 <form method="post" action="act/set_practice_type/save">

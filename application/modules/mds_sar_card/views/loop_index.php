@@ -51,12 +51,11 @@ $(function(){
 </form> 
 <? 
 	if(@$_GET['sch_budget_year'] != ''){ 
-	
-	function explode_list($indicator, $parent_id,$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on){
+	$sum_score_6 = 0;
+	$sum_score_9 = 0;
+	$sum_score_9 = 0;
+	function explode_list($indicator, $parent_id,$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,&$sum_score_6,&$sum_score_9,&$sum_score_12,$metrics_on){
 		// ประกาศเพื่อให้นอก function ใช้ค่าตัวแปรได้
-		global $sum_score_6;
-		global $sum_score_9;
-		global $sum_score_12;
 		$result_sub = metrics_dtl_indicator(@$indicator,$parent_id);
 		$sum_score['sum_score_6'] = $sum_score_6;
 		$sum_score['sum_score_9'] = $sum_score_9;
@@ -91,8 +90,6 @@ $(function(){
 				explode_list($indicator,$sub['id'],$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);
 				//return $sum_score;
     	}
-		// 	return ค่าคะแนน
-		return $sum_score;
 	}
 ?>
 <div style="padding:10px; text-align:right;" align="center">
@@ -206,14 +203,9 @@ $(function(){
 				$sum_score_9 =  0;
 				$sum_score_12 =  0;
 				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);			
-				$sum_score_6 =  $list['sum_score_6'];
-				$sum_score_9 =  $list['sum_score_9'];
-				$sum_score_12 =  $list['sum_score_12'];
 			}else{
 				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);
-				$sum_score_6 =  $list['sum_score_6'];
-				$sum_score_9 =  $list['sum_score_9'];
-				$sum_score_12 =  $list['sum_score_12'];
+
 			}
 }
 ?>

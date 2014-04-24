@@ -32,6 +32,29 @@ $(document).ready(function(){
 	    	label: 'text'
 	    });
     });
+    
+    $("form").validate({
+		rules: {
+			passport:"required",
+			id_card:"required",
+			title_id:"required",
+			fname:"required",
+			lname:"required",
+			sex:"required",
+			home_no:"required",
+		},
+		messages:{
+			passport:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			id_card:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			title_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			fname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			lname:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			sex:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			home_no:"ฟิลด์นี้ห้ามเป็นค่าว่าง",
+			status_id:"ฟิลด์นี้ห้ามเป็นค่าว่าง"
+		}
+	});
+	
 });
 </script>
 

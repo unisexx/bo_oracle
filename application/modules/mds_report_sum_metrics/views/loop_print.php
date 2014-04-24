@@ -48,7 +48,9 @@
 					$metrics_on = $sub['metrics_on'];
 				}
 				$dtl = mds_report_sum_metrics_dtl($sub,$metrics_on,@$_GET['sch_round_month'],$ass_id);
-				echo @$dtl['dtl'];
+				if( @$_GET['sch_round_month'] >= $sub['metrics_start']){
+					echo @$dtl['dtl'];
+				}
 				$ass_id = @$dtl['ass_id'];
 				explode_list($indicator,$sub['id'],$ass_id,$metrics_on);
 				return $dtl;

@@ -22,7 +22,7 @@ Class volunteer extends  Act_Controller{
 		if($_POST){
 			// $this->db->debug = true;
 			fix_file($_FILES["UploadFile"]);
-			$_POST['picture_name'] = !empty($_FILES['UploadFile']['name']) ? $this->volunteer->upload($_FILES["UploadFile"],"uploads/act/volunteer") : @$_POST['hdfilename'];
+			@$_POST['picture_name'] = !empty($_FILES['UploadFile']['name']) ? $this->volunteer->upload($_FILES["UploadFile"],"uploads/act/volunteer") : @$_POST['hdfilename'];
 			
 			$this->volunteer->save($_POST);
 			set_notify('success', lang('save_data_complete'));

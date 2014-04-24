@@ -57,12 +57,12 @@ $(function(){
 <div id="searchBox">
 ปีงบประมาณ <?php echo form_dropdown('sch_budget_year',get_year_option('2556'),@$_GET['sch_budget_year'],'','-- เลือกปีงบประมาณ --'); ?>
  มิติที่  <?php echo form_dropdown('sch_indicatorn',get_option('id','indicator_name',"mds_set_indicator where budget_year = '".@$_GET['sch_budget_year']."' "),@$_GET['sch_indicatorn'],'','-- เลือกชื่อมิติ --'); ?> 
-<!-- ชื่อตัวชี้วัด <input type="text" name="sch_metrics_name" id="sch_metrics_name" placeholder="ชื่อตัวชี้วัด" value="<?=@$_GET['sch_metrics_name']?>" style="width:300px;" /> -->
+<input type="text" name="sch_metrics_name" id="sch_metrics_name" placeholder="ชื่อตัวชี้วัด" value="<?=@$_GET['sch_metrics_name']?>" style="width:300px;" />
 <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
 </div>
 </form> 
-<? if(@$_GET['sch_budget_year'] != '' &&  @$_GET['sch_metrics_name'] == ''){ ?>
+<? if(@$_GET['sch_budget_year'] != ''){ ?>
 <table class="tblist">
 <tr>
   <th align="left" style="width: 10%">ลำดับ</th>
@@ -208,64 +208,7 @@ $(function(){
 </table>
 </div>
 </div>
-<? }else if(@$_GET['sch_metrics_name'] != ''){?>
-	<table class="tblist">
-<tr>
-  <th align="left" style="width: 10%">ลำดับ</th>
-  <th align="left" style="width: 25%">ประเด็นการประเมินผล</th>
-  <th align="left" style="width: 10%">ตัวชี้วัดที่</th>
-  <th align="left">ชื่อตัวชี้วัด</th>
-</tr>
-<?
-$num = 1;
-foreach ($rs as $key => $item) {
-		$premit = is_permit(login_data('id'),'1');
-				if($premit == "")
-				{
-					 $chk_keyer_indicator = chk_keyer_indicator(@$item['mds_set_indicator_id'],$item['id']);	
-				}else{
-					 $chk_keyer_indicator = 'Y';
-				}
-				
-				if($chk_keyer_indicator == 'Y'){
-					$parent_on_id = $item['id'];
-					$metrics_on = '';
-					if($item['parent_id'] != '0'){
-						for ($i=1; $i <= 8 ; $i++) {				
-							$parent_on = '';
-							$parent_on = $this->metrics->get_row($parent_on_id);
-							$parent_on_id = $parent_on['parent_id'];
-							
-							if(@$metrics_on != ''){
-								$metrics_on = @$parent_on['metrics_on'].'.'.@$metrics_on;
-							}else{
-								$metrics_on = @$parent_on['metrics_on'];
-							}	
-							if($parent_on['parent_id']=='0'){
-								$i = 9;
-							}
-							
-						}
-					}else{
-						$metrics_on = $item['metrics_on'];
-					}
-?>	
-
-					<tr class="odd cursor" onclick="window.location='<?php echo @$urlpage;?>/form/<?=$item['id'];?>'">
-					  <td><? echo $num?></td>
-					  <td><?=@$item['ass_name']?></td>
-					  <td nowrap="nowrap"><?=@$metrics_on?></td>
-					  <td nowrap="nowrap"><?=@$item['metrics_name']?></td>
-					</tr>
-<?
-			$num++;	}	
-}
-?>
-</table>
-</div>
-</div>
-<?
-}else{
+<? }else{
 	echo "<div align='center'>กรุณาเลือกปีงบประมาณ</div>";
 	} ?>
  

@@ -312,12 +312,12 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 				$_POST['metrics_start'] = $data_metrics['metrics_start'];
 				$chk_month = '6';
 				for($i_month=1;$i_month<=3;$i_month++){
-					if($chk_month < 12){
-						$sql_result_round_month = "select * from mds_metrics_result where mds_set_metrics_id = '".@$rs['id']."' and round_month = '".$chk_month."' ";
+					if($chk_month <= 12){
+						$sql_result_round_month = "select * from mds_metrics_result where mds_set_metrics_id = '".@$id."' and round_month = '".$chk_month."' ";
   						$chk_result_round_month = $this->metrics_result->get($sql_result_round_month);
 						$num_chk_round_month = count($chk_result_round_month);
 						if($num_chk_round > '0'){
-							$_POST['sem_'.$chk_month] = $data_metrics['sem_'.$chk_month];
+							$_POST['sem_'.$chk_month] = @$data_metrics['sem_'.$chk_month];
 						}
 						unset($num_chk_round_month);
 					}
@@ -580,6 +580,8 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 						$this->keyer->where("round_month = '12' and mds_set_metrics_id = '".$id."'")->delete();
 						for($i=1; $i <= @$_POST['keyer_num_6'] ; $i++) { 
 							$keyer_12['keyer_users_id'] = @$_POST['keyer_6'][$i];
+							//echo $_POST['keyer_6'][$i];
+							//echo "<HR/>";
 							if(@$_POST['keyer_name_6'][$i] == ''){
 								$users_dtl = chk_user_dtl(@$_POST['keyer_6'][$i]);
 								$keyer_12['keyer_name'] = $users_dtl['name'];
