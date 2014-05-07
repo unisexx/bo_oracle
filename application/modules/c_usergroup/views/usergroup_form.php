@@ -23,6 +23,13 @@ $(document).ready(function(){
 		$().colorbox.close();
 		}
 	})	
+	
+	$('.active_user').live('change',function(){
+		if ($(this).is(':checked')){
+			$(".active_user").removeAttr('checked');
+			$(this).attr('checked','checked');			
+		}
+	})
 })
 function CheckAll(pSystemID, pMenuID,pValue)
 {
@@ -1084,8 +1091,8 @@ function CheckAll(pSystemID, pMenuID,pValue)
         <tr>
           <th>สิทธิ์การอนุมัติผู้ใช้งานใหม่</th>
           <td colspan="2">
-          	<input type="checkbox" name="intranet_active_user" value="on" <? if($result['intranet_active_user']=='on')echo 'checked="checked"';?>>
-          	
+          	<input type="checkbox" name="intranet_active_user" class="active_user" value="all" <? if($result['intranet_active_user']=='all')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
+          	<input type="checkbox" name="intranet_active_user" class="active_user" value="on" <? if($result['intranet_active_user']=='on')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
           </td>
         </tr>    
       <? $menu_id=1;?>     
@@ -1106,7 +1113,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
     
-       <? $menu_id=3;?>     
+       <? $menu_id=2;?>     
         <tr>
           <th><?=$menu_id;?> ปฏิทินกิจกรรม </th>
           <td>
@@ -1123,7 +1130,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
          	 <input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',true);" style="cursor:pointer;" value="เลือกทั้งหมด"><input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',false);" style="cursor:pointer;" value="ไม่เลือกทั้งหมด">
           </td> 
         </tr>
-        <? $menu_id=4;?>     
+        <? $menu_id=3;?>     
         <tr>
           <th><?=$menu_id;?> แชร์ไฟล์ </th>
           <td>
@@ -1140,7 +1147,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
          	 <input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',true);" style="cursor:pointer;" value="เลือกทั้งหมด"><input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',false);" style="cursor:pointer;" value="ไม่เลือกทั้งหมด">
           </td> 
         </tr>
-         <? $menu_id=5;?>     
+         <? $menu_id=4;?>     
         <tr>
           <th><?=$menu_id;?> รายงาน </th>
           <td>
@@ -1156,9 +1163,9 @@ function CheckAll(pSystemID, pMenuID,pValue)
         <tr>
         	<th colspan="3">ตั้งค่าข้อมูล</th>
         </tr>
-          <? $menu_id=2;?>     
+          <? $menu_id=5;?>     
         <tr>
-          <th><?=$menu_id;?> รายการโฆษณา </th>
+          <th><?=$menu_id;?> ไฮไลท์กิจกรรม </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
             View
@@ -1230,12 +1237,8 @@ function CheckAll(pSystemID, pMenuID,pValue)
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
             View
-          	<input type="checkbox" name="Add_<?=$system_id;?>_<?=$menu_id;?>" id="Add_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANADD"]=='on')echo "checked";?> />
-            Add
             <input type="checkbox" name="Edit_<?=$system_id;?>_<?=$menu_id;?>" id="Edit_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANEDIT"]=='on')echo "checked";?> />
             Edit
-            <input type="checkbox" name="Delete_<?=$system_id;?>_<?=$menu_id;?>" id="Delete_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANDELETE"]=='on')echo "checked";?> />
-            Delete
           </td>
           <td  align="left" nowrap="nowrap">
          	 <input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',true);" style="cursor:pointer;" value="เลือกทั้งหมด"><input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',false);" style="cursor:pointer;" value="ไม่เลือกทั้งหมด">
@@ -1247,12 +1250,8 @@ function CheckAll(pSystemID, pMenuID,pValue)
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
             View
-          	<input type="checkbox" name="Add_<?=$system_id;?>_<?=$menu_id;?>" id="Add_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANADD"]=='on')echo "checked";?> />
-            Add
             <input type="checkbox" name="Edit_<?=$system_id;?>_<?=$menu_id;?>" id="Edit_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANEDIT"]=='on')echo "checked";?> />
             Edit
-            <input type="checkbox" name="Delete_<?=$system_id;?>_<?=$menu_id;?>" id="Delete_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANDELETE"]=='on')echo "checked";?> />
-            Delete
           </td>
           <td  align="left" nowrap="nowrap">
          	 <input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',true);" style="cursor:pointer;" value="เลือกทั้งหมด"><input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',false);" style="cursor:pointer;" value="ไม่เลือกทั้งหมด">

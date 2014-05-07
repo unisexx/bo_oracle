@@ -73,7 +73,7 @@ class c_usergroup extends Admin_Controller
 		$system_menu[7]['menu_title'] = array('','mds');
 		$system_menu[7]['nmenu'] = count($system_menu[7]['menu_title'])-1;
 		
-		$system_menu[8]['menu_title'] = array('','cirletter','advertise','actcalendar','sharefile','report','cirletter_type','sharefile_type','actcalendar_type','share_limitation','share_agreement','weblink');
+		$system_menu[8]['menu_title'] = array('','cirletter','actcalendar','sharefile','report','advertise','cirletter_type','sharefile_type','actcalendar_type','share_limitation','share_agreement','weblink');
 		$system_menu[8]['nmenu'] = count($system_menu[8]['menu_title'])-1;
 		
 		if($_POST){
@@ -86,7 +86,7 @@ class c_usergroup extends Admin_Controller
 		   $_POST['fund_access_all']  = @$_POST['fund_access_all']!='' ? 'on' : 'off';
 		   $_POST['fn_access_all']  = @$_POST['fn_access_all']!='' ? 'on' : 'off';
 		   $_POST['intranet_access_all']  = @$_POST['intranet_access_all']!='' ? 'on' : 'off';
-		   $_POST['intranet_active_user']  = @$_POST['intranet_active_user']!='' ? 'on' : 'off';
+		   $_POST['intranet_active_user']  = @$_POST['intranet_active_user']!='' ? $_POST['intranet_active_user'] : 'off';
 		   $id = $this->usertype_title->save($_POST);
 			$this->usertype->delete('USERTYPETITLEID', $id);		
 			$system = array('','bo','budget','finance','monitor','inspect','fund','mds','intranet');

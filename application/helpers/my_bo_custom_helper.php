@@ -36,6 +36,10 @@
 							case 7:
 								$systemName.= $systemName != "" ? ", " : "";
 								$systemName.="งานพัฒนาระบบบริหาร";							
+							break;
+							case 8:
+								$systemName.= $systemName != "" ? ", " : "";
+								$systemName.="ระบบงาน Intranet";							
 							break;																					
 							default :
 								$systemName.="";
