@@ -37,6 +37,7 @@ function is_login($usertype = FALSE)
 	return ($id) ? true : false;
 }
 
+/*
 function permission($module, $action)
 {
 	$sql = 'SELECT '.strtoupper($action).' 
@@ -46,6 +47,19 @@ function permission($module, $action)
 	$CI =& get_instance();
 	$perm = $CI->db->getone($sql);
 	return $perm == 'on' ? TRUE : FALSE;
+}
+*/
+
+function permission($module, $action)
+{
+	$actions = array(
+		'canview' => 'action_view',
+		'canadd' => 'action_add',
+		'canedit' => 'action_edit',
+		'candelete' => 'action_delete',
+	);
+	$result = get_instance()->db->getone("select $actions[$action] from permission where module_name = '$module'");
+	return $result ? TRUE : FALSE;
 }
 
 function login_data($field)
