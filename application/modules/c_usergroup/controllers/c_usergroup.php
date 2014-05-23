@@ -85,8 +85,9 @@ class c_usergroup extends Admin_Controller
 		   $_POST['budgetcanaccessall']= @$_POST['budgetcanaccessall']!='' ? 'on' : 'off';	
 		   $_POST['fund_access_all']  = @$_POST['fund_access_all']!='' ? 'on' : 'off';
 		   $_POST['fn_access_all']  = @$_POST['fn_access_all']!='' ? 'on' : 'off';
-		   $_POST['intranet_access_all']  = @$_POST['intranet_access_all']!='' ? 'on' : 'off';
+		   $_POST['intranet_access_all']  = @$_POST['intranet_access_all']!='' ? $_POST['intranet_access_all'] : 'off';
 		   $_POST['intranet_active_user']  = @$_POST['intranet_active_user']!='' ? $_POST['intranet_active_user'] : 'off';
+		   $_POST['intranet_use_admin']  = @$_POST['intranet_use_admin']!='' ? $_POST['intranet_use_admin'] : 'off';
 		   $id = $this->usertype_title->save($_POST);
 			$this->usertype->delete('USERTYPETITLEID', $id);		
 			$system = array('','bo','budget','finance','monitor','inspect','fund','mds','intranet');
