@@ -1,3 +1,6 @@
+<style type="text/css" media="screen">
+	label {display: inline-block; margin-bottom: 0;}
+</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("input[name=firstname],[name=lastname]").keyup(function(){
@@ -79,8 +82,18 @@ $(document).ready(function(){
 			})
 })
 </script>
-<form name="fmUser" enctype="multipart/form-data"  method="post" action="c_user/save<?=$url_parameter;?>">
+
 <h3>ข้อมูลผู้ใช้งาน (เพิ่ม / แก้ไข)</h3>
+
+<div id="tabs" style="margin-top: 20px;">
+	<ul>
+		<li><a href="#tab-1">ข้อมูลผู้ใช้งาน</a></li>
+		<li><a href="#tab-2">สิทธิการใช้งาน</a></li>
+	</ul>
+
+<div id="tab-1">
+<form name="fmUser" enctype="multipart/form-data"  method="post" action="c_user/save<?=$url_parameter;?>">
+
 <table class="tbadd">
   <th>ชื่อ - นามสกุล<span class="Txt_red_12"> *</span></th>
   <td>
@@ -193,3 +206,34 @@ $(document).ready(function(){
   <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
 </div>
 </form>
+</div>
+
+	<div id="tab-2">
+		<table class="tblist">
+			<tr>
+				<td>สิทธิผู้ใช้งาน</td>
+				<td>
+					<input type="radio" name="group_type" value="2" id="group_type_2" /> <label for="group_type_2">กำหนดเอง</label>&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="group_type" value="1" id="group_type_1" /> <label for="group_type_1">เลือกตามกลุ่ม</label>
+					<?php echo form_dropdown('permission_group_id', get_option('id', 'group_name', 'permission_group', 'group_type = 1')); ?></td>
+			</tr>
+		</table>
+		
+		<div id="permission"></div>
+		
+	</div>
+	
+</div>
+<script src="http://jquery-loadmask.googlecode.com/svn/trunk/src/jquery.loadmask.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+	$(function(){
+		$('[name=group_type], [name=permission_group_id]').change(function(){
+			$("#permission").mask("Waiting...");
+			var pg_id = ($('[name=group_type]:checked').val() == 1) ? $('[name=permission_group_id]').val() : null;
+			$.get('user/permission/ajax_get/' + pg_id, function(data){
+				$('#permission').html(data);
+				$("#permission").unmask();
+			});
+		});
+	});
+</script>

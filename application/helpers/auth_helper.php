@@ -52,14 +52,27 @@ function permission($module, $action)
 
 function permission($module, $action)
 {
-	$actions = array(
-		'canview' => 'action_view',
-		'canadd' => 'action_add',
-		'canedit' => 'action_edit',
-		'candelete' => 'action_delete',
-	);
-	$result = get_instance()->db->getone("select $actions[$action] from permission where module_name = '$module'");
-	return $result ? TRUE : FALSE;
+	if(is_login())
+	{
+		$actions = array(
+			'canview' => 'action_view',
+			'canadd' => 'action_add',
+			'canedit' => 'action_edit',
+			'candelete' => 'action_delete',
+		);
+		$ci = get_instance();
+		$user_id = $ci->session->userdata('id');
+		$result = $ci->db->getone("SELECT PD.$actions[$action]
+		FROM USERS U
+		JOIN PERMISSION_GROUP PG ON PG.ID = U.PERMISSION_GROUP_ID
+		JOIN PERMISSION_DETAIL PD ON PD.PERMISSION_GROUP_ID = PG.ID
+		JOIN PERMISSION P ON P.ID = PD.PERMISSION_ID
+		WHERE U.ID = $user_id
+		AND P.MODULE_NAME = '$module'");
+		return $result ? TRUE : FALSE;
+	}else{
+		return FALSE;
+	}
 }
 
 function login_data($field)

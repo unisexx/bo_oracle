@@ -73,5 +73,19 @@ class Permission extends Admin_Controller {
 		}
 		redirect('user/permission');
 	}
+	
+	public function ajax_get($id = null)
+	{
+		$data['rs'] = $this->pg_mdl->get_row($id);
+		$data['pds'] = array();
+		if($id)
+		{
+			$pds = $this->pd_mdl->where('permission_group_id = '.$id)->get(FALSE, TRUE);
+			foreach($pds as $pd) $data['pds'][$pd['permission_id']] = $pd;	
+		}
+		$data['system'] = $this->sys_mdl->get();
+		$data['extras'] = $this->extras;
+		$this->load->view('permission/ajax_get', $data);
+	}
 		
 }

@@ -116,6 +116,33 @@ class c_user extends Admin_Controller
 		//$this->db->debug = true;
 		$url_parameter = GetCurrentUrlGetParameter();	
 		if($_POST){
+			
+			// save permission
+		   if(!empty($_POST['group_type']) && $_POST['group_type'] == 2)
+		   {
+		   		$group_id = $this->pg_mdl->save($_POST);
+				$vals = array();
+				$actions = array('action_view', 'action_add', 'action_edit', 'action_delete', 'action_extra1', 'action_extra2', 'action_extra3');
+				$this->pd_mdl->delete('permission_group_id', $group_id);
+				foreach($actions as $action)
+				{
+					foreach($_POST[$action] as $system_id => $permissions)
+					{
+						foreach($permissions as $permission_id => $value)
+						{
+							$vals[$permission_id]['system_id'] = $system_id;
+							$vals[$permission_id]['permission_group_id'] = $group_id;
+							$vals[$permission_id]['permission_id'] = $permission_id;
+							$vals[$permission_id][$action] = $value;
+						}
+					}
+				}
+				foreach($vals as $val)
+				{
+					$this->pd_mdl->save($val);
+				}
+		   }
+			
 		   $_POST['password'] = $_POST['password'] !='' ? $_POST['password'] :$_POST['hdpassword']; 		   
 		   $_POST['registerdate'] =  $_POST['registerdate']=='' ? th_to_stamp(date("d-m-Y H:i:s"),TRUE) : $_POST['registerdate'];
 		   $_POST['updatedate'] = th_to_stamp(date("d-m-Y H:i:s"),TRUE);
@@ -125,7 +152,7 @@ class c_user extends Admin_Controller
 		   $update['id'] = $usergroup_id;
 		   $update['title'] = $_POST['name'];
 		   $this->usertype_title->save($update);
-		   		   		
+						
 		   new_save_logfile("EDIT",$this->modules_title,"USERS","ID",$id,"name","profile");				   
 		   
 		   set_notify('success', lang('save_data_complete'));
