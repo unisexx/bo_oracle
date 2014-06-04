@@ -5,7 +5,7 @@ Class Mds_set_score extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_score/Mds_set_score_model','score');
+		$this->load->model('mds_set_score/mds_set_score_model','score');
 		
 	}
 	

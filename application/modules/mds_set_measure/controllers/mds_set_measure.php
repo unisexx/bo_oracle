@@ -5,8 +5,8 @@ Class Mds_set_measure extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_measure/Mds_set_measure_model','measure');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
+		$this->load->model('mds_set_measure/mds_set_measure_model','measure');
+		$this->load->model('mds_set_indicator/mds_set_metrics_model','metrics');
 	}
 	
 	public $urlpage = "mds_set_measure";

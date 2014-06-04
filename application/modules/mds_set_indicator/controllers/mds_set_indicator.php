@@ -5,11 +5,11 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
-		$this->load->model('mds_indicator/Mds_metrics_result_model','metrics_result');
+		$this->load->model('mds_set_indicator/mds_set_indicator_model','indicator');
+		$this->load->model('mds_set_indicator/mds_set_metrics_model','metrics');
+		$this->load->model('mds_set_indicator/mds_set_metrics_kpr_model','kpr');
+		$this->load->model('mds_set_indicator/mds_set_metrics_keyer_model','keyer');
+		$this->load->model('mds_indicator/mds_metrics_result_model','metrics_result');
 		
 	}
 	

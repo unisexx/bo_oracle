@@ -5,8 +5,8 @@ Class Mds_set_assessment extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_assessment/Mds_set_assessment_model','assessment');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
+		$this->load->model('mds_set_assessment/mds_set_assessment_model','assessment');
+		$this->load->model('mds_set_indicator/mds_set_metrics_model','metrics');
 	}
 	
 	public $urlpage = "mds_set_assessment";

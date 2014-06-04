@@ -5,14 +5,14 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_permission/Mds_set_permission_model','permission');
-		$this->load->model('mds_set_permission/Mds_permission_id_model','permission_id');
-		$this->load->model('mds_set_permission/Mds_set_permission_type_model','permission_type');
-		$this->load->model('mds_set_permission/Mds_set_permission_dtl_model','permission_dtl');
+		$this->load->model('mds_set_permission/mds_set_permission_model','permission');
+		$this->load->model('mds_set_permission/mds_permission_id_model','permission_id');
+		$this->load->model('mds_set_permission/mds_set_permission_type_model','permission_type');
+		$this->load->model('mds_set_permission/mds_set_permission_dtl_model','permission_dtl');
 		$this->load->model('mds_set_permission/users_model','users');
 		
-		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
+		$this->load->model('mds_set_indicator/mds_set_metrics_kpr_model','kpr');
+		$this->load->model('mds_set_indicator/mds_set_metrics_keyer_model','keyer');
 		
 	}
 	
