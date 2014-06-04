@@ -16,4 +16,6 @@ Class Fund extends Fund_Controller {
 	{
 		$this->template->build('main');
 	}
+	
+	
 }
