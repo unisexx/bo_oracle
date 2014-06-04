@@ -6,7 +6,7 @@ class mds_log extends Mdevsys_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('mds_log_model','mds_log');
+		$this->load->model('mds_log/mds_log_model','mds_log');
 		
 	}
 	

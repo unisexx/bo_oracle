@@ -5,14 +5,14 @@ Class Mds_sar_card extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
-		$this->load->model('mds_indicator/Mds_metrics_result_model','metrics_result');
-		$this->load->model('mds_indicator/Mds_metrics_document_model','doc');
-		$this->load->model('mds_indicator/Mds_metrics_result_status_model','result_status');
-		$this->load->model('mds_set_score/Mds_set_score_model','score');
+		$this->load->model('mds_set_indicator/mds_set_indicator_model','indicator');
+		$this->load->model('mds_set_indicator/mds_set_metrics_model','metrics');
+		$this->load->model('mds_set_indicator/mds_set_metrics_kpr_model','kpr');
+		$this->load->model('mds_set_indicator/mds_set_metrics_keyer_model','keyer');
+		$this->load->model('mds_indicator/mds_metrics_result_model','metrics_result');
+		$this->load->model('mds_indicator/mds_metrics_document_model','doc');
+		$this->load->model('mds_indicator/mds_metrics_result_status_model','result_status');
+		$this->load->model('mds_set_score/mds_set_score_model','score');
 		
 		/*
 		if(is_permit(login_data('id'),'1') == ''){

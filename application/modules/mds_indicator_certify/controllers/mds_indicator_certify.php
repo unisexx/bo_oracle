@@ -13,14 +13,14 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		
 		parent::__construct();
-		$this->load->model('mds_set_indicator/Mds_set_indicator_model','indicator');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_model','metrics');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_kpr_model','kpr');
-		$this->load->model('mds_set_indicator/Mds_set_metrics_keyer_model','keyer');
-		$this->load->model('mds_indicator/Mds_metrics_result_model','metrics_result');
-		$this->load->model('mds_indicator/Mds_metrics_document_model','doc');
-		$this->load->model('mds_indicator/Mds_metrics_result_status_model','result_status');
-		$this->load->model('mds_indicator/Mds_status_topic_model','status_topic');
+		$this->load->model('mds_set_indicator/mds_set_indicator_model','indicator');
+		$this->load->model('mds_set_indicator/mds_set_metrics_model','metrics');
+		$this->load->model('mds_set_indicator/mds_set_metrics_kpr_model','kpr');
+		$this->load->model('mds_set_indicator/mds_set_metrics_keyer_model','keyer');
+		$this->load->model('mds_indicator/mds_metrics_result_model','metrics_result');
+		$this->load->model('mds_indicator/mds_metrics_document_model','doc');
+		$this->load->model('mds_indicator/mds_metrics_result_status_model','result_status');
+		$this->load->model('mds_indicator/mds_status_topic_model','status_topic');
 	}
 	
 	public $urlpage = "mds_indicator_certify";

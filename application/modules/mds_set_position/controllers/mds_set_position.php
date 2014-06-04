@@ -5,9 +5,9 @@ Class Mds_set_position extends  Mdevsys_Controller{
 	
 	function __construct(){
 		parent::__construct();
-		$this->load->model('mds_set_position/Mds_set_position_model','position');
-		$this->load->model('mds_set_permission/Mds_set_permission_model','permission');
-		$this->load->model('mds_set_permission/Mds_set_permission_dtl_model','permission_dtl');
+		$this->load->model('mds_set_position/mds_set_position_model','position');
+		$this->load->model('mds_set_permission/mds_set_permission_model','permission');
+		$this->load->model('mds_set_permission/mds_set_permission_dtl_model','permission_dtl');
 	}
 	
 	public $urlpage = "mds_set_position";
