@@ -1,4 +1,5 @@
 <h3>แบบฟอร์มขอรับเงินสนับสนุน รายบุคคล (เพิ่ม / แก้ไข)</h3>
+<form action="#" method="post" >
 <table class="tbadd">
 	<tr>
 		<th>ปีงบประมาณ <span class="Txt_red_12">*</span></th>
@@ -61,8 +62,8 @@
 	</tr>
 </table>
 
-
-
 <div id="btnBoxAdd">
-	<input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
+	<button type="submit" class="btn_save" title="บันทึก" ></button>
 </div>
+
+</form>

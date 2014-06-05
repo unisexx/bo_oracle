@@ -14,28 +14,28 @@
 			  
 			<h3>บันทึกข้อมูล กองทุนเด็กรายบุคคล</h3>
 			<div class="lineico">
-				<div class="ico"><a href="fund/support_personal" title="แบบฟอร์ม ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal.png" width="48" height="48"  alt="แบบฟอร์ม ขอรับเงินสนับสนุน" /><h4>แบบฟอร์ม ขอรับเงินสนับสนุน</h4></a></div>
-				<div class="ico"><a href="fund/support_personal/result" title="ผลการพิจารณา ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal2.png" width="48" height="48" alt="ผลการพิจารณา ขอรับเงินสนับสนุน" /><h4>ผลการพิจารณา ขอรับเงินสนับสนุน</h4></a></div>
-				<div class="ico"><a href="fund/support_personal/pay" title="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal2.png" width="48" height="48" alt="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" /><h4>ผลการจ่ายเงิน ขอรับเงินสนับสนุน</h4></a></div>
+				<div class="ico"><a href="fund/personal/form" title="แบบฟอร์ม ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal.png" width="48" height="48"  alt="แบบฟอร์ม ขอรับเงินสนับสนุน" /><h4>แบบฟอร์ม ขอรับเงินสนับสนุน</h4></a></div>
+				<div class="ico"><a href="fund/personal/result" title="ผลการพิจารณา ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal2.png" width="48" height="48" alt="ผลการพิจารณา ขอรับเงินสนับสนุน" /><h4>ผลการพิจารณา ขอรับเงินสนับสนุน</h4></a></div>
+				<div class="ico"><a href="fund/personal/pay" title="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal2.png" width="48" height="48" alt="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" /><h4>ผลการจ่ายเงิน ขอรับเงินสนับสนุน</h4></a></div>
 				
 				<div class="clear"></div>
 			</div><!--lineico-->
 			            
 			<h3>รายงาน กองทุนเด็กรายบุคคล</h3>
 			<div class="lineico">
-				<div class="ico"><a href="fund/support_personal/report_01" title="สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)" ><img src="images/fund/icon/report1_1.png" width="48" height="48" alt="สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)" /><h4>สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)</h4></a></div>
-				<div class="ico"><a href="fund/support_personal/report_02" title="การจัดสรรเงิน สงเคราะห์รายบุคคล (คคด.02) (บ)" ><img src="images/fund/icon/report1_2.png" width="48" height="48" alt="การจัดสรรเงิน สงเคราะห์รายบุคคล (คคด.02) (บ)" /><h4>การจัดสรรเงิน สงเคราะห์รายบุคคล (คคด.02) (บ)</h4></a></div>
-				<div class="ico"><a href="fund/support_personal/report_03" title="สรุปผลการพิจารณา อนุมัติเงินสงเคราะห์ รายบุคคล (คคด.03) (บ)" ><img src="images/fund/icon/report1_3.png" width="48" height="48" alt="สรุปผลการพิจารณา อนุมัติเงินสงเคราะห์ รายบุคคล (คคด.03) (บ)" /><h4>สรุปผลการพิจารณา อนุมัติเงินสงเคราะห์ รายบุคคล (คคด.03) (บ)</h4></a></div>
-				<div class="ico"><a href="fund/support_personal/report_04" title="สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)" ><img src="images/fund/icon/report1_4.png" width="48" height="48" alt="สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)" /><h4>สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)</h4></a></div>
-				<div class="ico"><a href="fund/support_personal/report_05" title="สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)" ><img src="images/fund/icon/report1_5.png" width="48" height="48" alt="สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)" /><h4>สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)</h4></a></div>
+				<div class="ico"><a href="fund/personal/report_01" title="สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)" ><img src="images/fund/icon/report1_1.png" width="48" height="48" alt="สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)" /><h4>สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)</h4></a></div>
+				<div class="ico"><a href="fund/personal/report_02" title="การจัดสรรเงิน สงเคราะห์รายบุคคล (คคด.02) (บ)" ><img src="images/fund/icon/report1_2.png" width="48" height="48" alt="การจัดสรรเงิน สงเคราะห์รายบุคคล (คคด.02) (บ)" /><h4>การจัดสรรเงิน สงเคราะห์รายบุคคล (คคด.02) (บ)</h4></a></div>
+				<div class="ico"><a href="fund/personal/report_03" title="สรุปผลการพิจารณา อนุมัติเงินสงเคราะห์ รายบุคคล (คคด.03) (บ)" ><img src="images/fund/icon/report1_3.png" width="48" height="48" alt="สรุปผลการพิจารณา อนุมัติเงินสงเคราะห์ รายบุคคล (คคด.03) (บ)" /><h4>สรุปผลการพิจารณา อนุมัติเงินสงเคราะห์ รายบุคคล (คคด.03) (บ)</h4></a></div>
+				<div class="ico"><a href="fund/personal/report_04" title="สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)" ><img src="images/fund/icon/report1_4.png" width="48" height="48" alt="สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)" /><h4>สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)</h4></a></div>
+				<div class="ico"><a href="fund/personal/report_05" title="สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)" ><img src="images/fund/icon/report1_5.png" width="48" height="48" alt="สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)" /><h4>สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)</h4></a></div>
 			
 	        <div class="clear"></div>
 	        </div><!--lineico-->
 			            
 			<h3>ตั้งค่า กองทุนเด็กรายบุคคล</h3>
 			<div class="lineico">
-				<div class="ico"><a href="reg_get_fund.php" title="ทะเบียนบุคคล ขอรับเงินกองทุน" ><img src="images/fund/icon/get_fund.png" width="48" height="48" alt="ทะเบียนบุคคล ขอรับเงินกองทุน" /><h4>ทะเบียนบุคคล ขอรับเงินกองทุน</h4></a></div>
-				<div class="ico"><a href="reg_child.php" title="ทะเบียนข้อมูลเด็ก" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="ทะเบียนข้อมูลเด็ก" /><h4>ทะเบียนข้อมูลเด็ก</h4></a></div>
+				<div class="ico"><a href="fund/personal/reg_fund" title="ทะเบียนบุคคล ขอรับเงินกองทุน" ><img src="images/fund/icon/get_fund.png" width="48" height="48" alt="ทะเบียนบุคคล ขอรับเงินกองทุน" /><h4>ทะเบียนบุคคล ขอรับเงินกองทุน</h4></a></div>
+				<div class="ico"><a href="fund/personal/reg_child" title="ทะเบียนข้อมูลเด็ก" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="ทะเบียนข้อมูลเด็ก" /><h4>ทะเบียนข้อมูลเด็ก</h4></a></div>
 				
 				<div class="clear"></div>
 			</div><!--lineico-->

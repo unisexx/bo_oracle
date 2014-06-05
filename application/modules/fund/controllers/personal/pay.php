@@ -11,11 +11,11 @@ class Pay extends Fund_Controller {
 	}
 	
 	public function index() {
-		$this->template->build("support_personal/pay/index");
+		$this->template->build("personal/pay/index");
 	}
 	
 	public function form() {
-		$this->template->build("support_personal/pay/form");
+		$this->template->build("personal/pay/form");
 	}
 	
 	public function save() {

@@ -11,11 +11,11 @@ class Result extends Fund_Controller {
 	}
 	
 	public function index() {
-		$this->template->build("support_personal/result/index");
+		$this->template->build("personal/result/index");
 	}
 	
 	public function form() {
-		$this->template->build("support_personal/result/form");
+		$this->template->build("personal/result/form");
 	}
 	
 	public function save() {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Support Personal
+ * Form
  * กองทุนรายบุคคล
  */
 class Form extends Fund_Controller {
@@ -11,7 +11,7 @@ class Form extends Fund_Controller {
 	}
 	
 	public function index() {
-		$this->template->build("support_personal/form.php");
+		$this->template->build("personal/form");
 	}
 	
 	public function save() {
