@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<div id="btnBox" ><a href="#" ><button class="btn_add" ></button></a></div>
+<div id="btnBox" ><a href="fund/personal/reg_fund/form" ><button class="btn_add" ></button></a></div>
 
 <?php echo @$pagination?>
 

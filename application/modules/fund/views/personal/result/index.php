@@ -47,7 +47,7 @@
 		<td>นางกนกพร คงเฉลิม</td>
 		<td>รอดำเนินการ</td>
 		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
+			<a href="fund/personal/result/form" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
 			<a href="#" onclick="return confirm('<?php echo 1?>')" ><button type="button" class="btn_delete" ></button></a>
 		</td>
 	</tr>
@@ -58,7 +58,6 @@
 		<td>นายสมหวัง  จตุรงค์ล้ำเลิศ</td>
 		<td>อนุมัติ</td>
 		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
 			<a href="#" onclick="return confirm('<?php echo 1?>')" ><button type="button" class="btn_delete" ></button></a>
 		</td>
 	</tr>
@@ -69,7 +68,6 @@
 		<td>นางสาวประภาศรี  ทองกิ่งแก้ว</td>
 		<td>ไม่อนุมัติ</td>
 		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
 			<a href="#" onclick="return confirm('<?php echo 1?>')" ><button type="button" class="btn_delete" ></button></a>
 		</td>
 	</tr>
@@ -80,7 +78,6 @@
 		<td>นางวารุณี  ลภิธนานุวัฒน์</td>
 		<td>อนุมัติ</td>
 		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
 			<a href="#" onclick="return confirm('<?php echo 1?>')" ><button type="button" class="btn_delete" ></button></a>
 		</td>
 	</tr>
