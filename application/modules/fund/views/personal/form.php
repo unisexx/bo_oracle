@@ -13,16 +13,13 @@
 	<tr>
 		<th>จังหวัด <span class="Txt_red_12">*</span></th>
 		<td>
-			<select name="select2" id="select2">
-				<option>-- เลือกจังหวัด --</option>
-	    	</select>
+			<?php echo form_dropdown("PROVINCE_ID",get_option("ID","TITLE","CNF_PROVINCE",NULL,"TITLE"))?>
 		</td>
 	</tr>
 	<tr>
 		<th>วันเดือนปี ที่รับเรื่อง<span class="Txt_red_12"> *</span></th>
 		<td>
-			<input name="textfield13" type="text" id="textfield13" style="width:80px;" />
-			<img src="images/calendar.png" alt="" width="16" height="16" />
+			<input type="text" class="datepicker" name="textfield13" style="width:80px;" />
 		</td>
 	</tr>
 	<tr>
@@ -35,8 +32,8 @@
 	<tr>
 		<th>ประเภทขอรับการช่วยเหลือ</th>
 		<td>
-			<span style="margin-right:20px;"><input type="radio" name="radio" id="radio" value="radio" />เด็กและครอบครัว</span>
-			<input type="radio" name="radio" id="radio2" value="radio" /> ครอบครัวอุปถัมภ์
+			<span><label><input type="radio" name="radio" id="radio" value="radio" />เด็กและครอบครัว</label></span>
+			<span><label><input type="radio" name="radio" id="radio2" value="radio" /> ครอบครัวอุปถัมภ์</label></span>
 		</td>
 	</tr>
 	<tr>
@@ -53,11 +50,10 @@
 	<tr>
 		<th>ความเกี่ยวข้องกับเด็ก</th>
 		<td>
-			<span style="margin-right:20px;">
-	    	<input type="radio" name="radio" id="radio3" value="radio" /> บิดา/มารดา</span>
-	    	<span style="margin-right:20px;"><input type="radio" name="radio" id="radio4" value="radio" />ญาติ </span>
-			<span style="margin-right:20px;"><input type="radio" name="radio" id="radio4" value="radio" />ผู้ดูแล/ผู้อุปถัมภ์ </span>
-			<span><input type="radio" name="radio" id="radio4" value="radio" />คนรู้จัก </span>
+			<span><label><input type="radio" name="radio" id="radio3" value="radio" /> บิดา/มารดา</label></span>
+	    	<span><label><input type="radio" name="radio" id="radio4" value="radio" />ญาติ</label></span>
+			<span><label><input type="radio" name="radio" id="radio4" value="radio" />ผู้ดูแล/ผู้อุปถัมภ์</label></span>
+			<span><label><input type="radio" name="radio" id="radio4" value="radio" />คนรู้จัก</label></span>
 		</td>
 	</tr>
 </table>
