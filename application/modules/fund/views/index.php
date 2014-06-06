@@ -147,8 +147,8 @@
 				<div class="ico"><a href="fund/setting/fund_project_consistency" title="ความสอดคล้อง กับหลักเกณฑ์ตาม มาตรฐานต่างๆ" ><img src="images/fund/icon/accordance_set.png" width="48" height="48" alt="ความสอดคล้อง กับหลักเกณฑ์ตาม มาตรฐานต่างๆ" /><h4>ความสอดคล้อง กับหลักเกณฑ์ตาม มาตรฐานต่างๆ</h4></a></div>
 				<div class="ico"><a href="fund/setting/fund_project_structure" title="ลักษณะโครงการ" ><img src="images/fund/icon/project_set.png" width="48" height="48" alt="ลักษณะโครงการ" /><h4>ลักษณะโครงการ</h4></a></div>
 				<div class="ico"><a href="fund/setting/fund_project_structuresub" title="ส่วนงานสวัสดิการสังคม" ><img src="images/fund/icon/social_welfare_set.png" width="48" height="48" alt="ส่วนงานสวัสดิการสังคม" /><h4>ส่วนงานสวัสดิการสังคม</h4></a></div>
-				<div class="ico"><a href="#" title="ผู้รับมอบอำนาจ" ><img src="images/fund/icon/attorney_set.png" width="48" height="48" alt="ผู้รับมอบอำนาจ" /><h4>ผู้รับมอบอำนาจ</h4></a></div>
-				<div class="ico"><a href="#" title="องค์กร" ><img src="images/fund/icon/organization_set.png" width="48" height="48" alt="องค์กร" /><h4>องค์กร</h4></a></div>
+				<div class="ico"><a href="fund/setting/fund_attorney" title="ผู้รับมอบอำนาจ" ><img src="images/fund/icon/attorney_set.png" width="48" height="48" alt="ผู้รับมอบอำนาจ" /><h4>ผู้รับมอบอำนาจ</h4></a></div>
+				<div class="ico"><a href="fund/setting/fund_organize" title="องค์กร" ><img src="images/fund/icon/organization_set.png" width="48" height="48" alt="องค์กร" /><h4>องค์กร</h4></a></div>
 				<div class="ico"><a href="../../intranet_mso/actcalendar.php" target="_blank" title="ปฎิทินกิจกรรม" ><img src="images/fund/icon/calendar.png" width="48" height="48" alt="ปฎิทินกิจกรรม" /><h4>ปฎิทินกิจกรรม</h4></a></div>
 				<div class="ico"><a href="#" title="ข่าวสาร" ><img src="images/fund/icon/news_set.png" width="48" height="48" alt="ข่าวสาร" /><h4>ข่าวสาร</h4></a></div>
 				<div class="ico"><a href="#" title="เอกสาร" ><img src="images/fund/icon/document_set.png" width="48" height="48" alt="เอกสาร" /><h4>เอกสาร</h4></a></div>
