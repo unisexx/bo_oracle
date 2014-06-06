@@ -1,5 +1,6 @@
 <h3>ทะเบียนบุคคลขอรับเงินกองทุน (เพิ่ม / แก้ไข)</h3>
 
+<form action="fund/personal/reg_fund/save/<?php echo $value["id"]?>" method="post" >
 <table class="tbadd">
 	<tr>
 		<th>กองทุน <span class="Txt_red_12">*</span></th>
@@ -114,6 +115,7 @@
 	<button type="submit" class="btn_save" title="บันทึก" ></button>
 	<button type="button" class="btn_back" title="ย้อนกลับ" onclick="history.back(-1)" ></button>
 </div>
+</form>
 
 <script type="text/javascript" >
 	$(document).ready(function(){
