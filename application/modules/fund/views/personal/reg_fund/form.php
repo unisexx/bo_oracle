@@ -4,17 +4,12 @@
 	<tr>
 		<th>กองทุน <span class="Txt_red_12">*</span></th>
 		<td>
-			<select name="select4" id="select">
-				<option selected="selected">-- เลือกกองทุน --</option>
-				<option>กองทุนคุ้มครองเด็ก</option>
-				<option>กองทุนเพื่อการป้องกันและปราบปรามการค้ามนุษย์</option>
-				<option>กองทุนส่งเสริมการจัดสวัสดิการสังคม</option>
-			</select>
+			<?php echo form_dropdown("FUND_MST_FUND_NAME_ID",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$value->FUND_MST_FUND_NAME_ID,"id=\"fund_mst_fund_name\"","-- เลือกกองทุน --",0)?>
 		</td>
 	</tr>
 	<tr>
     	<th>เลขบัตรประชาชน</th>
-		<td><input name="textfield5" type="text" id="textfield5" style="width:150px;" maxlength="13"/></td>
+		<td><input type="text" id="textfield5" name="IDCARD" maxlength="13" style="width:150px;" /></td>
 	</tr>
 	<tr>
 		<th>ชื่อ - สกุล <span class="Txt_red_12">*</span></th>
@@ -23,8 +18,8 @@
 				<option>-- คำนำหน้า --</option>
 			</select>
 			
-			<input type="text" name="textfield" id="textfield" placeholder="ชื่อ" />
-			<input type="text" name="textfield2" id="textfield2" placeholder="นามสกุล"/></td>
+			<input type="text" name="FIRSTNAME" id="FIRSTNAME" placeholder="ชื่อ" />
+			<input type="text" name="LASTNAME" id="LASTNAME" placeholder="นามสกุล"/></td>
 	</tr>
 	<tr>
     	<th>เพศ <span class="Txt_red_12">*</span></th>
@@ -37,74 +32,81 @@
 	<tr>
 		<th>วันเกิด <span class="Txt_red_12">*</span></th>
 		<td>
-			<input type="text" class="datepicker" id="birth_date" name="BIRTH_DATE" date style="width:70px;"/>
+			<input type="text" class="datepicker" id="BIRTHDAY" name="BIRTHDAY" date style="width:70px;"/>
 			อายุ <input type="text" id="personal_age" style="width:50px;" readonly="readonly"/> ปี
 		</td>
 	</tr>
 	<tr>
     	<th>ที่อยู่ <span class="Txt_red_12">*</span></th>
 		<td>
-			เลขที่ <input name="textfield8" type="text" id="textfield8" style="width:50px;"/>
-			หมู่ที่ <input name="textfield9" type="text" id="textfield9" style="width:30px;"/>
-      		ตรอก <input name="textfield10" type="text" id="textfield10" style="width:200px;"/>
+			เลขที่ <input name="ADDR_NUMBER" type="text" id="ADDR_NUMBER" style="width:50px;"/>
+			หมู่ที่ <input name="ADDR_MOO" type="text" id="ADDR_MOO" style="width:30px;"/>
+      		ตรอก <input name="ADDR_TROK" type="text" id="ADDR_TROK" style="width:200px;"/>
       		<br />
       		
-      		ซอย <input name="textfield3" type="text" id="textfield3" style="width:200px;"/>
-      		ถนน <input name="textfield11" type="text" id="textfield11" style="width:200px;"/>
+      		ซอย <input name="ADDR_SOI" type="text" id="ADDR_SOI" style="width:200px;"/>
+      		ถนน <input name="ADDR_ROAD" type="text" id="ADDR_ROAD" style="width:200px;"/>
       		<br />
       		
       		จังหวัด 
-			<?php echo form_dropdown("PROVINCE_CODE",get_option("ID","TITLE","CNF_PROVINCE",NULL,"TITLE"),@$value->PROVINCE_CODE,"id=\"province_code\"","-- เลือกจังหวัด --",0)?>
+			<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value->PROVINCE_CODE,"id=\"province_id\"","-- เลือกจังหวัด --",0)?>
      		
       		อำเภอ
-			<select name="AMPOR_CODE" id="ampor_code" >
-				<option value="0" >-- เลือกอำเภอ --</option>
-			</select>
+      		<span id="span_amphur">
+				<select name="amphur_id" id="amphur_id" >
+					<option value="0" >-- เลือกอำเภอ --</option>
+				</select>
+			</span>
 			
 			ตำบล
-			<select name="AMPOR_CODE" id="tumbon_code" >
-				<option value="0" >-- เลือกตำบล --</option>
-			</select>
+      		<span id="span_district">
+				<select name="district_id" id="district_id" >
+					<option value="0" >-- เลือกตำบล --</option>
+				</select>
+			</span>
+			
 		</td>
 	</tr>
 	<tr>
 		<th>โทรศัพท์ <span class="Txt_red_12">*</span></th>
-		<td><input name="textfield4" type="text" id="textfield4" style="width:200px;"/></td>
+		<td><input name="PHONE" type="text" id="textfield4" style="width:200px;"/></td>
 	</tr>
 	<tr>
 		<th>ชื่อที่ทำงาน</th>
-		<td><input name="textfield14" type="text" id="textfield23" style="width:200px;"/></td>
+		<td><input name="OFFICE_NAME" type="text" id="OFFICE_NAME" style="width:200px;"/></td>
 	</tr>
 	<tr>
     	<th>ที่อยู่ที่ทำงาน</th>
     	<td>
-    		เลขที่ <input name="textfield7" type="text" id="textfield17" style="width:50px;"/>
-      		หมู่ที่ <input name="textfield7" type="text" id="textfield18" style="width:30px;"/>
-      		ตรอก <input name="textfield7" type="text" id="textfield19" style="width:200px;"/>
+    		เลขที่ <input name="OFFICE_ADDR_NUMBER" type="text" id="OFFICE_ADDR_NUMBER" style="width:50px;"/>
+      		หมู่ที่ <input name="OFFICE_ADDR_MOO" type="text" id="OFFICE_ADDR_MOO" style="width:30px;"/>
+      		ตรอก <input name="OFFICE_ADDR_TROK" type="text" id="OFFICE_ADDR_TROK" style="width:200px;"/>
       		<br />
       		
-      		ซอย <input name="textfield7" type="text" id="textfield20" style="width:200px;"/>
-      		ถนน <input name="textfield7" type="text" id="textfield21" style="width:200px;"/>
+      		ซอย <input name="OFFICE_ADDR_SOI" type="text" id="OFFICE_ADDR_SOI" style="width:200px;"/>
+      		ถนน <input name="OFFICE_ADDR_ROAD" type="text" id="OFFICE_ADDR_ROAD" style="width:200px;"/>
       		<br />
       		
       		จังหวัด
-			<?php echo form_dropdown("PROVINCE_CODE",get_option("ID","TITLE","CNF_PROVINCE",NULL,"TITLE"),@$value->PROVINCE_CODE,"id=\"province_code_office\"","-- เลือกจังหวัด --",0)?>
+			<?php echo form_dropdown("OFFICE_PROVINCE_ID",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value->PROVINCE_CODE,"id=\"office_province_id\"","-- เลือกจังหวัด --",0)?>
+     		
+      		อำเภอ
+      		<span id="span_amphur_office">
+				<select name="OFFICE_AMPHUR_ID" id="office_amphur_id" >
+					<option value="0" >-- เลือกอำเภอ --</option>
+				</select>
+			</span>
 			
-			อำเภอ
-			<select name="AMPOR_CODE" id="ampor_code_office" >
-				<option value="0" >-- เลือกอำเภอ --</option>
-			</select>
-			<?php //echo form_dropdown("AMPOR_CODE",get_option("AMPOR_CODE","AMPOR_NAME","ACT_AMPOR",NULL,"AMPOR_NAME"),@$value->AMPOR_CODE,"id=\"ampor_code\"","-- เลือกอำเภอ --",0)?>
-		      
 			ตำบล
-			<select name="AMPOR_CODE" id="tumbon_code_office" >
-				<option value="0" >-- เลือกตำบล --</option>
-			</select>
-			<?php //echo form_dropdown("TUMBON_CODE",get_option("TUMBON_CODE","TUMBON_NAME","ACT_TUMBON",NULL,"TUMBON_NAME"),@$value->TUMBON_CODE,"id=\"tumbon_code\"","-- เลือกตำบล --",0)?>
+      		<span id="span_district_office">
+				<select name="OFFICE_DISTRICT_ID" id="office_district_id" >
+					<option value="0" >-- เลือกตำบล --</option>
+				</select>
+			</span>
   </tr>
   <tr>
     <th>โทรศัพท์ที่ทำงาน</th>
-    <td><input name="textfield15" type="text" id="textfield24" style="width:200px;"/></td>
+    <td><input name="OFFICE_PHONE" type="text" id="OFFICE_PHONE" style="width:200px;"/></td>
   </tr>
 </table>
 			
@@ -116,11 +118,31 @@
 <script type="text/javascript" >
 	$(document).ready(function(){
 		
-		$("#province_code").change(function(){
-			var province_id = $(this).val();
-			$.get("fund/province/"+province_id,
-				function(data) {
-					$("#ampor_code").html(data)
+		$("#province_id").live("change",function(){
+			var province_id = $("#province_id").val();
+			$.get("fund/get_amphur/"+province_id,function(data) {
+				$("#span_amphur").html(data)
+			})
+		})
+		
+		$("#amphur_id").live("change",function(){
+			var amphur_id = $("#amphur_id").val();
+			$.get("fund/get_district/"+amphur_id,function(data) {
+				$("#span_district").html(data)
+			})
+		})
+		
+		$("#office_province_id").live("change",function(){
+			var province_id = $("#office_province_id").val();
+			$.get("fund/get_amphur/"+province_id,function(data) {
+				$("#span_amphur_office").html(data)
+			})
+		})
+		
+		$("#office_amphur_id").live("change",function(){
+			var amphur_id = $("#amphur_id").val();
+			$.get("fund/get_district/"+amphur_id,function(data) {
+				$("#span_district_office").html(data)
 			})
 		})
     	
