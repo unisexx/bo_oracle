@@ -5,10 +5,8 @@
   	<tr>
     	<th>เลขบัตรประชาชน</th>
     	<td>
-    		<input type="radio" name="is_idcard" value="radio" />
-      	มี      <input name="idcard" type="text" style="width:150px;" maxlength="13"/>
-      	<span style="margin-left:30px;"><input type="radio" name="radio" id="radio2" value="radio" />
-		ไม่มี
+    		<input type="radio" name="is_idcard" value="1" /> มี      <input name="idcard" type="text" style="width:150px;" maxlength="13"/>
+      		<span style="margin-left:30px;"><input type="radio" name="is_idcard" value="0" /> ไม่มี
 		<input name="textfield4" type="text" id="textfield4" style="width:250px;"/></span></td>
   	</tr>
   	<tr>
