@@ -5,10 +5,16 @@
   	<tr>
     	<th>เลขบัตรประชาชน</th>
     	<td>
+<<<<<<< HEAD
     		<span><label><input type="radio" name="is_idcard" value="1" <?php if($value["is_idcard"]==1) echo "checked"?> /> มี</label></span>
     		<span><label><input type="radio" name="is_idcard" value="0" <?php if($value["is_idcard"]==0) echo "checked"?> /> ไม่มี</label></span>
     		<input name="idcard" type="text" style="width:150px;" maxlength="13" value="<?php echo $value["idcard"]?>" />
 		</td>
+=======
+    		<input type="radio" name="is_idcard" value="1" /> มี      <input name="idcard" type="text" style="width:150px;" maxlength="13"/>
+      		<span style="margin-left:30px;"><input type="radio" name="is_idcard" value="0" /> ไม่มี
+		<input name="textfield4" type="text" id="textfield4" style="width:250px;"/></span></td>
+>>>>>>> 008833acf5761677c8f70756038f9798e907438b
   	</tr>
   	<tr>
     	<th>ชื่อเด็ก</th>
