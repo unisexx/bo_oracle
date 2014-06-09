@@ -25,17 +25,35 @@
   	</tr>
   	
 	<tbody>
-  	<?php if (empty($items)): ?>
+  	<?php if (empty($variable)): ?>
 	<tr>
 		<td colspan="4" class="text-center">- ไม่มีข้อมูล -</td>
 	</tr>
 	<?php else: ?>	  
-  	<?php foreach ($items as $key => $item): ?>
+  	<?php foreach ($variable as $key => $value): ?>
 	<tr>
-		<td><?php echo ($key+1)+(($_GET['page']-1)*20); ?></td>
-  		<td nowrap="nowrap" onclick="window.location='fund/personal/reg_child/form/<?php echo $item['id']; ?>'"><?php echo $item['firstname'] ?></td>
-  		<td nowrap="nowrap" onclick="window.location='fund/personal/reg_child/form/<?php echo $item['id']; ?>'"><?php echo $item['addr_number'] ?></td>
-  		<td><input type="button" value="x" class="btn_delete" onclick="del('<?php echo site_url('fund/personal/reg_child/delete/'.$item['id']); ?>')" /></td>
+		<?php
+			$page = 0;
+			if(@$_GET["page"]) {
+				$page = ($_GET["page"]-1)*20;
+			}
+			$number = $page+($key+1);
+			$district = $this->district->get_row($value["district_id"]);
+			$amphur = $this->amphur->get_row($value["amphur_id"]);
+			$province = $this->province->get_row($value["province_id"]);
+			
+			$name = $value["firstname"]." ".$value["lastname"];
+			
+			$address = $value["addr_number"];
+			$address .= ($value["addr_moo"]) ? " หมู่ ".$value["addr_moo"] : null;
+			$address .= ($value["district_id"]) ? " ตำบล".$district["title"] : null;
+			$address .= ($value["amphur_id"]) ? " อำเภอ".$amphur["title"] : null;
+			$address .= ($value["province_id"]) ? " จังหวัด".$province["title"] : null;
+		?>
+		<td><?php echo $number?></td>
+		<td><a href="#" title="<?php echo $name?>" ><?php echo $name?></a></td>
+  		<td><a href="fund/personal/reg_child/form/<?php echo $value["id"]?>" ><?php echo $address?></a></td>
+  		<td><a href="fund/personal/reg_child/delete/<?php echo $value["id"]?>" onclick="return confirm('<?php echo $name?>')" ><button type="button" class="btn_delete" ></button></a></td>
 	</tr>
 	<?php endforeach ?>
 	<?php endif ?>

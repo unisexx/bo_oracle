@@ -25,8 +25,8 @@
 	<tr>
 		<th>ข้อมูลเด็ก <span class="Txt_red_12">*</span></th>
 		<td>
-			<input type="text" name="textfield13" id="textfield14" style="width:350px;" />
-			<img src="images/see.png" width="24" height="24" />
+			<input type="text" name="child_detail" id="child_detail" style="width:350px;" />
+			<a href="#" id="add-child" ><img src="images/see.png" width="24" height="24" /></a>
 		</td>
 	</tr>
 	<tr>
@@ -63,3 +63,25 @@
 </div>
 
 </form>
+
+<div id="child-list" class="hide" ></div>
+<div id="request-list" class="hide" ></div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$("#add-child").click(function(){
+			$.post("fund/personal/form/modal_child",function(data) {
+				$("#child-list").html(data)
+			})
+			return false;
+		});
+		
+		$(".child-list").live("click",function(){
+			var name = $(this).attr("data-name");
+			$("#child_detail").val(name);
+			return false;
+		})
+		
+	});
+</script>

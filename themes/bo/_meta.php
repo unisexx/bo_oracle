@@ -87,7 +87,11 @@
 			});
 			$( "#tabs" ).tabs();
 
-			$('.datepicker').datepick({showOn: 'both', buttonImageOnly: true, buttonImage: 'js/jquery.datepick/calendar.png'});
+			$('.datepicker').datepick({
+				showOn: 'both', 
+				buttonImageOnly: true, 
+				buttonImage: 'js/jquery.datepick/calendar.png'
+			});
 
 		//----- Disabled Enter Key Submit -----
 		   var textboxes = $("input:text");

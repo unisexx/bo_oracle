@@ -5,9 +5,13 @@
  */
 class Reg_Fund extends Fund_Controller {
 	
-	function __construct() {
+	function __construct()
+	{
 		parent::__construct();
 		$this->load->model("fund_reg_personal_model","reg_personal");
+		$this->load->model("fund_province","province");
+		$this->load->model("fund_district","district");
+		$this->load->model("fund_amphur","amphur");
 	}
 	
 	public function index()
@@ -29,15 +33,21 @@ class Reg_Fund extends Fund_Controller {
 			
 			if($id) {
 				$_POST["id"] = $id;
+				$_POST["birthday"] = date_to_mysql($_POST["birthday"],TRUE);
+				$this->reg_personal->save($_POST);
+			} else {
+				$_POST["birthday"] = date_to_mysql($_POST["birthday"],TRUE);				
+				$this->reg_personal->save($_POST);
 			}
 			
 		}
+		redirect("fund/personal/reg_fund");
 	}
 	
 	public function delete($id)
 	{
 		if($id) {
-			// $this->reg_personal->delete($id);
+			$this->reg_personal->delete($id);
 		}
 	}
 	

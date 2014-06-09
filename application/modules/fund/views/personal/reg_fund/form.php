@@ -5,52 +5,59 @@
 	<tr>
 		<th>กองทุน <span class="Txt_red_12">*</span></th>
 		<td>
-			<?php echo form_dropdown("FUND_MST_FUND_NAME_ID",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$value->FUND_MST_FUND_NAME_ID,"id=\"fund_mst_fund_name\"","-- เลือกกองทุน --",0)?>
+			<?php echo form_dropdown("FUND_MST_FUND_NAME_ID",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$value["fund_mst_fund_name_id"],"id=\"fund_mst_fund_name\"","-- เลือกกองทุน --",0)?>
 		</td>
 	</tr>
 	<tr>
     	<th>เลขบัตรประชาชน</th>
-		<td><input type="text" id="textfield5" name="IDCARD" maxlength="13" style="width:150px;" /></td>
+		<td><input type="text" id="idcard" name="IDCARD" maxlength="13" style="width:150px;" value="<?php echo $value["idcard"]?>" /></td>
 	</tr>
 	<tr>
 		<th>ชื่อ - สกุล <span class="Txt_red_12">*</span></th>
 		<td>
-			<select name="select3" id="select3">
-				<option>-- คำนำหน้า --</option>
+			<select name="title" id="title">
+				<option <?php if($value==null) echo "selected"?> >-- คำนำหน้า --</option>
+				<option value="นาย" <?php if($value["title"]=="นาย") echo "selected"?> >นาย</option>
+				<option value="นางสาว" <?php if($value["title"]=="นางสาว") echo "selected"?> >นางสาว</option>
+				<option value="นาง" <?php if($value["title"]=="นาง") echo "selected"?> >นาง</option>
 			</select>
 			
-			<input type="text" name="FIRSTNAME" id="FIRSTNAME" placeholder="ชื่อ" />
-			<input type="text" name="LASTNAME" id="LASTNAME" placeholder="นามสกุล"/></td>
+			<input type="text" name="FIRSTNAME" id="FIRSTNAME" value="<?php echo $value["firstname"]?>" placeholder="ชื่อ" />
+			<input type="text" name="LASTNAME" id="LASTNAME" value="<?php echo $value["lastname"]?>" placeholder="นามสกุล"/></td>
 	</tr>
 	<tr>
     	<th>เพศ <span class="Txt_red_12">*</span></th>
 		<td>
-			<span><label><input type="radio" />ชาย</label></span>
-			<span><label><input type="radio" />หญิง</label></span>
-			<span>
+			<span><label><input type="radio" name="sex" value="ชาย" <?php if($value["sex"]=="ชาย") echo "selected"?> />ชาย</label></span>
+			<span><label><input type="radio" name="sex" value="หญิง" <?php if($value["sex"]=="หญิง") echo "selected"?> />หญิง</label></span>
 		</td>
 	</tr>
 	<tr>
 		<th>วันเกิด <span class="Txt_red_12">*</span></th>
 		<td>
-			<input type="text" class="datepicker" id="BIRTHDAY" name="BIRTHDAY" date style="width:70px;"/>
-			อายุ <input type="text" id="personal_age" style="width:50px;" readonly="readonly"/> ปี
+			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"])?>" style="width:80px;"/>
+			<?php
+				if($value["birthday"]) {
+					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
+				}
+			?>
+			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
 		</td>
 	</tr>
 	<tr>
     	<th>ที่อยู่ <span class="Txt_red_12">*</span></th>
 		<td>
-			เลขที่ <input name="ADDR_NUMBER" type="text" id="ADDR_NUMBER" style="width:50px;"/>
-			หมู่ที่ <input name="ADDR_MOO" type="text" id="ADDR_MOO" style="width:30px;"/>
-      		ตรอก <input name="ADDR_TROK" type="text" id="ADDR_TROK" style="width:200px;"/>
+			เลขที่ <input name="ADDR_NUMBER" type="text" id="ADDR_NUMBER" value="<?php echo $value["addr_number"]?>" style="width:50px;"/>
+			หมู่ที่ <input name="ADDR_MOO" type="text" id="ADDR_MOO" value="<?php echo $value["addr_moo"]?>" style="width:30px;"/>
+      		ตรอก <input name="ADDR_TROK" type="text" id="ADDR_TROK" value="<?php echo $value["addr_trok"]?>" style="width:200px;"/>
       		<br />
       		
-      		ซอย <input name="ADDR_SOI" type="text" id="ADDR_SOI" style="width:200px;"/>
-      		ถนน <input name="ADDR_ROAD" type="text" id="ADDR_ROAD" style="width:200px;"/>
+      		ซอย <input name="ADDR_SOI" type="text" id="ADDR_SOI" value="<?php echo $value["addr_soi"]?>" style="width:200px;"/>
+      		ถนน <input name="ADDR_ROAD" type="text" id="ADDR_ROAD" value="<?php echo $value["addr_road"]?>" style="width:200px;"/>
       		<br />
       		
       		จังหวัด 
-			<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value->PROVINCE_CODE,"id=\"province_id\"","-- เลือกจังหวัด --",0)?>
+			<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",null,"TITLE"),@$value["province_id"],"id=\"province_id\"","-- เลือกจังหวัด --",0)?>
      		
       		อำเภอ
       		<span id="span_amphur">
@@ -70,26 +77,26 @@
 	</tr>
 	<tr>
 		<th>โทรศัพท์ <span class="Txt_red_12">*</span></th>
-		<td><input name="PHONE" type="text" id="textfield4" style="width:200px;"/></td>
+		<td><input name="phone" type="text" id="phone" value="<?php echo $value["phone"]?>" style="width:200px;"/></td>
 	</tr>
 	<tr>
 		<th>ชื่อที่ทำงาน</th>
-		<td><input name="OFFICE_NAME" type="text" id="OFFICE_NAME" style="width:200px;"/></td>
+		<td><input name="office_name" type="text" id="office_name" value="<?php echo $value["office_name"]?>" style="width:200px;"/></td>
 	</tr>
 	<tr>
     	<th>ที่อยู่ที่ทำงาน</th>
     	<td>
-    		เลขที่ <input name="OFFICE_ADDR_NUMBER" type="text" id="OFFICE_ADDR_NUMBER" style="width:50px;"/>
-      		หมู่ที่ <input name="OFFICE_ADDR_MOO" type="text" id="OFFICE_ADDR_MOO" style="width:30px;"/>
-      		ตรอก <input name="OFFICE_ADDR_TROK" type="text" id="OFFICE_ADDR_TROK" style="width:200px;"/>
+    		เลขที่ <input name="office_addr_number" type="text" id="office_addr_number" value="<?php echo $value["office_addr_number"]?>" style="width:50px;"/>
+      		หมู่ที่ <input name="office_addr_moo" type="text" id="office_addr_moo" value="<?php echo $value["office_addr_moo"]?>" style="width:30px;"/>
+      		ตรอก <input name="office_addr_trok" type="text" id="office_addr_trok" value="<?php echo $value["office_addr_trok"]?>" style="width:200px;"/>
       		<br />
       		
-      		ซอย <input name="OFFICE_ADDR_SOI" type="text" id="OFFICE_ADDR_SOI" style="width:200px;"/>
-      		ถนน <input name="OFFICE_ADDR_ROAD" type="text" id="OFFICE_ADDR_ROAD" style="width:200px;"/>
+      		ซอย <input name="office_addr_soi" type="text" id="office_addr_soi" value="<?php echo $value["office_addr_soi"]?>" style="width:200px;"/>
+      		ถนน <input name="office_addr_road" type="text" id="office_addr_road" value="<?php echo $value["office_addr_road"]?>" style="width:200px;"/>
       		<br />
       		
       		จังหวัด
-			<?php echo form_dropdown("OFFICE_PROVINCE_ID",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value->PROVINCE_CODE,"id=\"office_province_id\"","-- เลือกจังหวัด --",0)?>
+			<?php echo form_dropdown("OFFICE_PROVINCE_ID",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value["office_province_id"],"id=\"office_province_id\"","-- เลือกจังหวัด --",0)?>
      		
       		อำเภอ
       		<span id="span_amphur_office">
@@ -107,7 +114,7 @@
   </tr>
   <tr>
     <th>โทรศัพท์ที่ทำงาน</th>
-    <td><input name="OFFICE_PHONE" type="text" id="OFFICE_PHONE" style="width:200px;"/></td>
+    <td><input name="OFFICE_PHONE" type="text" id="OFFICE_PHONE" value="<?php echo $value["office_phone"]?>" style="width:200px;"/></td>
   </tr>
 </table>
 			
@@ -138,17 +145,21 @@
 			var province_id = $("#office_province_id").val();
 			$.get("fund/get_amphur/"+province_id,function(data) {
 				$("#span_amphur_office").html(data)
+				$("#span_amphur_office select").attr("id","office_amphur_id");
+				$("#span_amphur_office select").attr("name","office_amphur_id");
 			})
 		})
 		
 		$("#office_amphur_id").live("change",function(){
-			var amphur_id = $("#amphur_id").val();
+			var amphur_id = $("#office_amphur_id").val();
 			$.get("fund/get_district/"+amphur_id,function(data) {
 				$("#span_district_office").html(data)
+				$("#span_amphur_office select").attr("id","office_district_id");
+				$("#span_amphur_office select").attr("name","office_amphur_id");
 			})
 		})
     	
-		$("#birth_date").change(function(){
+		$("#birthday").change(function(){
     		var d = new Date();
 			var birth_date = $(this).val();
 			var age = d.getFullYear()-birth_date.substring(0,4);

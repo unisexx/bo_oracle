@@ -1,51 +1,84 @@
 <h3>ทะเบียนข้อมูลเด็ก (เพิ่ม / แก้ไข)</h3>
 
-<?php echo form_open('fund/personal/reg_child/save'); ?>
+<?php echo form_open('fund/personal/reg_child/save/'.$value["id"]); ?>
 <table class="tbadd">
   	<tr>
     	<th>เลขบัตรประชาชน</th>
     	<td>
-    		<input type="radio" name="is_idcard" value="radio" />
-      	มี      <input name="idcard" type="text" style="width:150px;" maxlength="13"/>
-      	<span style="margin-left:30px;"><input type="radio" name="radio" id="radio2" value="radio" />
-		ไม่มี
-		<input name="textfield4" type="text" id="textfield4" style="width:250px;"/></span></td>
+    		<span><label><input type="radio" name="is_idcard" value="1" <?php if($value["is_idcard"]==1) echo "checked"?> /> มี</label></span>
+    		<span><label><input type="radio" name="is_idcard" value="0" <?php if($value["is_idcard"]==0) echo "checked"?> /> ไม่มี</label></span>
+    		<input name="idcard" type="text" style="width:150px;" maxlength="13" value="<?php echo $value["idcard"]?>" />
+		</td>
   	</tr>
   	<tr>
     	<th>ชื่อเด็ก</th>
-    	<td><select name="select3" id="select3">
-      		<option>-- เพศ --</option>
-      		<option>ชาย</option>
-      		<option>หญิง</option>
-      		<option>อื่นๆ</option>
+    	<td><select name="sex" id="sex">
+      			<option >-- เพศ --</option>
+      			<option value="ชาย" <?php if($value=="ชาย") echo "selected"?> >ชาย</option>
+      			<option value="หญิง" <?php if($value=="หญิง") echo "selected"?> >หญิง</option>
+      			<option value="อื่นๆ" <?php if($value=="อื่นๆ") echo "selected"?> >อื่นๆ</option>
    			</select>
-    	<input type="text" name="textfield" id="textfield" placeholder="ชื่อ" />
-    <input type="text" name="textfield2" id="textfield2" placeholder="นามสกุล"/></td>
+    	<input type="text" name="firstname" id="firstname" placeholder="ชื่อ" value="<?php echo $value["firstname"]?>" />
+    	<input type="text" name="lastname" id="lastname" placeholder="นามสกุล" value="<?php echo $value["lastname"]?>" /></td>
   	</tr>
   	<tr>
     	<th>วันเกิด</th>
-    	<td><input name="textfield12" type="text" id="textfield12" style="width:70px;"/>
-    	<img src="../images/calendar.png" alt="" width="16" height="16" /> อายุ
-    	<input name="textfield23" type="text" id="textfield32" style="width:50px;" readonly="readonly"/> 
-    ปี</td>
+    	<td>
+    		<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"])?>" style="width:80px;"/>
+			<?php
+				if($value["birthday"]) {
+					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
+				}
+			?>
+			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
+		</td>
   	</tr>
   	<tr>
     	<th>ที่อยู่</th>
     	<td>
-    		เลขที่ <input name="textfield8" type="text" id="textfield8" style="width:50px;"/>
-      		หมู่ที่ <input name="textfield9" type="text" id="textfield9" style="width:30px;"/>
-      		ตรอก <input name="textfield10" type="text" id="textfield10" style="width:200px;"/><br />
-      		ซอย <input name="textfield3" type="text" id="textfield3" style="width:200px;"/>
-      		ถนน <input name="textfield11" type="text" id="textfield11" style="width:200px;"/><br />
-      		จังหวัด <select name="select5" id="select4"></select>
-      		อำเภอ <select name="select5" id="select5"></select>
-      		ตำบล <select name="select5" id="select6"></select>
+    		เลขที่ <input type="text" name="addr_number" id="addr_number" value="<?php echo $value["addr_number"]?>" style="width:50px;"/>
+      		หมู่ที่ <input type="text" name="addr_moo" id="addr_moo" value="<?php echo $value["addr_moo"]?>" style="width:30px;"/>
+      		ตรอก <input type="text" name="addr_trok" id="addr_trok" value="<?php echo $value["addr_trok"]?>" style="width:200px;"/><br />
+      		ซอย <input type="text" name="addr_soi" id="addr_soi" value="<?php echo $value["addr_soi"]?>" style="width:200px;"/>
+      		ถนน <input type="text" name="addr_road" id="addr_road" value="<?php echo $value["addr_road"]?>" style="width:200px;"/><br />
+      		จังหวัด <?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",null,"TITLE"),@$value["province_id"],"id=\"province_id\"","-- เลือกจังหวัด --",0)?>
+     		อำเภอ <span id="span_amphur" ><select name="amphur_id" id="amphur_id"><option value="0" >-- เลือกอำเภอ --</option></select></span>
+      		ตำบล <span id="span_district"><select name="district_id" id="district_id" ><option value="0" >-- เลือกตำบล --</option></select></span>
       	</td>
   	</tr>
 </table>
 
 <div id="btnBoxAdd">
-	<input name="input" type="button" title="บันทึก" value=" " class="btn_save"/>
-  	<input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
+	<button type="submit" class="btn_save" title="บันทึก" ></button>
+	<button type="button" class="btn_back" title="ย้อนกลับ" onclick="history.back(-1)" ></button>
 </div>
+
+
 <?php echo form_close(); ?>
+
+<script type="text/javascript" >
+	$(document).ready(function(){
+		
+		$("#province_id").live("change",function(){
+			var province_id = $("#province_id").val();
+			$.get("fund/get_amphur/"+province_id,function(data) {
+				$("#span_amphur").html(data)
+			})
+		})
+		
+		$("#amphur_id").live("change",function(){
+			var amphur_id = $("#amphur_id").val();
+			$.get("fund/get_district/"+amphur_id,function(data) {
+				$("#span_district").html(data)
+			})
+		})
+    	
+		$("#birthday").change(function(){
+    		var d = new Date();
+			var birth_date = $(this).val();
+			var age = d.getFullYear()-birth_date.substring(0,4);
+			$("#personal_age").val(age);
+		})
+		
+	});
+</script>
