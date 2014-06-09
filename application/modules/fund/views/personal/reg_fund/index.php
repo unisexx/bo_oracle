@@ -2,7 +2,7 @@
 
 <div id="search">
 	<div id="searchBox">
-		<form>
+		<form method="get" >
 		<input type="text" name="textfield3" id="textfield3"  style="width:250px;" placeholder="ชื่อเด็ก" />
 		
 		<select name="select" id="select">
@@ -32,66 +32,23 @@
 		<th>ลบ</th>
 	</tr>
 	
-	<tr class="odd" >
-		<td>1</td>
-		<td>นางสาวอำพร อินทร์ศรี</td>
-		<td>226/6 หมู่ 2 ต.เนินพระ อ.เมืองระยอง จ.ระยอง</td>
-		<td><a href="#" onclick="return confirm('<?php echo 1?>')" ><button type="button" class="btn_delete" ></button></a></td>
-	</tr>
+	<tbody>
+	<?php if(empty($variable)):?>
 	<tr>
-		<td>2</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td colspan="4" class="text-center" >- ไม่มีข้อมูล -</td>
 	</tr>
-	<tr class="odd" >
-		<td>3</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
+	<?php else:?>
+	<?php foreach ($variable as $key => $value):?>
 	<tr>
-		<td>4</td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td><?php echo ($key+1)+(($_GET["page"]-1)*20)?></td>
+		<td><a href="fund/personal/reg_fund/form/<?php echo $value["id"]?>" title="<?php echo $value["FIRSTNAME"]." ".$value["LASTNAME"]?>" ><?php echo $value["FIRSTNAME"]." ".$value["LASTNAME"]?></a></td>
+		<td><?php echo $value["ADDR_NUMBER"]." ".$value["ADDR_MOO"]." ".$value["DISTRICT_ID"]." ".$value["AMPHUR_ID"]." ".$value["PROVINCE_ID"]?></td>
+		<td><a href="#" onclick="return confirm('<?php echo $value->title?>?>')" ><button type="button" class="btn_delete" ></button></a></td>
 	</tr>
-	<tr class="odd" >
-		<td>5</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>6</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr class="odd" >
-		<td>7</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>8</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr class="odd" >
-		<td>9</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td>10</td>
-		<td></td>
-		<td></td>
-		<td></td>
-	</tr>
+	<?php endforeach?>
+	<?php endif?>
+	</tbody>
+	
 </table>
 
 <?php echo @$pagination?>
