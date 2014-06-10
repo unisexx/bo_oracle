@@ -16,6 +16,7 @@ class Reg_Child extends Fund_Controller {
 	
 	public function index() 
 	{
+		
 		$data['variable'] = $this->fund_child->get();
 		$data['pagination'] = $this->fund_child->pagination();
 		$this->template->build("personal/reg_child/index", $data);

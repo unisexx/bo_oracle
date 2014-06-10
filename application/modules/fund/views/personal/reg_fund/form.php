@@ -35,7 +35,6 @@
 	<tr>
 		<th>วันเกิด <span class="Txt_red_12">*</span></th>
 		<td>
-			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" style="width:80px;"/>
 			<?php
 				if($value["birthday"]) {
 					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
@@ -43,6 +42,7 @@
 					$value["age"] = null;
 				}
 			?>
+			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" readonly style="width:80px;"/>
 			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
 		</td>
 	</tr>
@@ -131,8 +131,10 @@
 		
 		$("#province_id").live("change",function(){
 			var province_id = $("#province_id").val();
+			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
-				$("#span_amphur").html(data)
+				$("#span_amphur").html(data);
+				$("#span_district").html(clear_district_id);
 			})
 		})
 		
@@ -162,17 +164,19 @@
 		
 		$("#office_province_id").live("change",function(){
 			var province_id = $("#office_province_id").val();
+			var clear_district_id = "<select name='office_district_id' id='office_district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
-				$("#span_amphur_office").html(data)
+				$("#span_amphur_office").html(data);
 				$("#span_amphur_office select").attr("id","office_amphur_id");
 				$("#span_amphur_office select").attr("name","office_amphur_id");
+				$("#span_district_office").html(clear_district_id);
 			})
 		})
 		
 		$("#office_amphur_id").live("change",function(){
 			var amphur_id = $("#office_amphur_id").val();
 			$.get("fund/get_district/"+amphur_id,function(data) {
-				$("#span_district_office").html(data)
+				$("#span_district_office").html(data);
 				$("#span_district_office select").attr("id","office_district_id");
 				$("#span_district_office select").attr("name","office_district_id");
 			})
@@ -198,6 +202,10 @@
 				<?php endif?>
 		
 		<?php endif?>
+		
+		$("#birthday").click(function(){
+			$(this).val("");
+		})
     	
 		$("#birthday").change(function(){
     		var d = new Date();

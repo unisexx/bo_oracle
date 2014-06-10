@@ -31,7 +31,7 @@
 					$value["age"] = null;
 				}
 			?>
-    		<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" style="width:80px;"/>
+    		<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" readonly style="width:80px;" />
 			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
 		</td>
   	</tr>
@@ -63,8 +63,10 @@
 		
 		$("#province_id").live("change",function(){
 			var province_id = $("#province_id").val();
+			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
-				$("#span_amphur").html(data)
+				$("#span_amphur").html(data);
+				$("#span_district").html(clear_district_id);
 			})
 		})
 		
@@ -91,6 +93,10 @@
 				<?php endif?>
 		
 		<?php endif?>
+		
+		$("#birthday").click(function(){
+			$(this).val("");
+		})
     	
 		$("#birthday").change(function(){
     		var d = new Date();
