@@ -13,7 +13,7 @@
 	<tr>
 		<th>จังหวัด <span class="Txt_red_12">*</span></th>
 		<td>
-			<?php echo form_dropdown("PROVINCE_ID",get_option("ID","TITLE","CNF_PROVINCE",NULL,"TITLE"))?>
+			<?php echo form_dropdown("PROVINCE_ID",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"))?>
 		</td>
 	</tr>
 	<tr>
@@ -26,7 +26,7 @@
 		<th>ข้อมูลเด็ก <span class="Txt_red_12">*</span></th>
 		<td>
 			<input type="text" name="child_detail" id="child_detail" style="width:350px;" />
-			<a href="#" id="add-child" ><img src="images/see.png" width="24" height="24" /></a>
+			<a href="fund/personal/form/modal_child" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
 		</td>
 	</tr>
 	<tr>
@@ -66,22 +66,3 @@
 
 <div id="child-list" class="hide" ></div>
 <div id="request-list" class="hide" ></div>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$("#add-child").click(function(){
-			$.post("fund/personal/form/modal_child",function(data) {
-				$("#child-list").html(data)
-			})
-			return false;
-		});
-		
-		$(".child-list").live("click",function(){
-			var name = $(this).attr("data-name");
-			$("#child_detail").val(name);
-			return false;
-		})
-		
-	});
-</script>

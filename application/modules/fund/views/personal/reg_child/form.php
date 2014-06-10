@@ -14,9 +14,9 @@
     	<th>ชื่อเด็ก</th>
     	<td><select name="sex" id="sex">
       			<option >-- เพศ --</option>
-      			<option value="ชาย" <?php if($value=="ชาย") echo "selected"?> >ชาย</option>
-      			<option value="หญิง" <?php if($value=="หญิง") echo "selected"?> >หญิง</option>
-      			<option value="อื่นๆ" <?php if($value=="อื่นๆ") echo "selected"?> >อื่นๆ</option>
+      			<option value="ชาย" <?php if($value["sex"]=="ชาย") echo "selected"?> >ชาย</option>
+      			<option value="หญิง" <?php if($value["sex"]=="หญิง") echo "selected"?> >หญิง</option>
+      			<option value="อื่นๆ" <?php if($value["sex"]=="อื่นๆ") echo "selected"?> >อื่นๆ</option>
    			</select>
     	<input type="text" name="firstname" id="firstname" placeholder="ชื่อ" value="<?php echo $value["firstname"]?>" />
     	<input type="text" name="lastname" id="lastname" placeholder="นามสกุล" value="<?php echo $value["lastname"]?>" /></td>
@@ -24,12 +24,14 @@
   	<tr>
     	<th>วันเกิด</th>
     	<td>
-    		<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"])?>" style="width:80px;"/>
 			<?php
 				if($value["birthday"]) {
 					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
+				} else {
+					$value["age"] = null;
 				}
 			?>
+    		<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" style="width:80px;"/>
 			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
 		</td>
   	</tr>
@@ -72,6 +74,23 @@
 				$("#span_district").html(data)
 			})
 		})
+		
+		<?php if($value["province_id"]):?>
+			var is_province_id = <?php echo $value["province_id"]?>;
+			$.get("fund/get_amphur/"+is_province_id,function(data) {
+				$("#span_amphur").html(data)
+				$("#amphur_id option[value=<?php echo $value["amphur_id"]?>]").attr("selected","selected");
+			})
+			
+				<?php if($value["amphur_id"]):?>
+				var is_amphur_id = <?php echo $value["amphur_id"]?>;
+				$.get("fund/get_district/"+is_amphur_id,function(data) {
+					$("#span_district").html(data)
+					$("#district_id option[value=<?php echo $value["district_id"]?>]").attr("selected","selected");
+				})
+				<?php endif?>
+		
+		<?php endif?>
     	
 		$("#birthday").change(function(){
     		var d = new Date();

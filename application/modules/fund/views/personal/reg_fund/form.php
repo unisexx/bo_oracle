@@ -16,7 +16,7 @@
 		<th>ชื่อ - สกุล <span class="Txt_red_12">*</span></th>
 		<td>
 			<select name="title" id="title">
-				<option <?php if($value==null) echo "selected"?> >-- คำนำหน้า --</option>
+				<option <?php if($value["title"]==null) echo "selected"?> >-- คำนำหน้า --</option>
 				<option value="นาย" <?php if($value["title"]=="นาย") echo "selected"?> >นาย</option>
 				<option value="นางสาว" <?php if($value["title"]=="นางสาว") echo "selected"?> >นางสาว</option>
 				<option value="นาง" <?php if($value["title"]=="นาง") echo "selected"?> >นาง</option>
@@ -28,17 +28,19 @@
 	<tr>
     	<th>เพศ <span class="Txt_red_12">*</span></th>
 		<td>
-			<span><label><input type="radio" name="sex" value="ชาย" <?php if($value["sex"]=="ชาย") echo "selected"?> />ชาย</label></span>
-			<span><label><input type="radio" name="sex" value="หญิง" <?php if($value["sex"]=="หญิง") echo "selected"?> />หญิง</label></span>
+			<span><label><input type="radio" name="sex" value="ชาย" <?php if($value["sex"]=="ชาย") echo "checked"?> />ชาย</label></span>
+			<span><label><input type="radio" name="sex" value="หญิง" <?php if($value["sex"]=="หญิง") echo "checked"?> />หญิง</label></span>
 		</td>
 	</tr>
 	<tr>
 		<th>วันเกิด <span class="Txt_red_12">*</span></th>
 		<td>
-			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"])?>" style="width:80px;"/>
+			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" style="width:80px;"/>
 			<?php
 				if($value["birthday"]) {
 					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
+				} else {
+					$value["age"] = null;
 				}
 			?>
 			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
@@ -141,6 +143,23 @@
 			})
 		})
 		
+		<?php if($value["province_id"]):?>
+			var is_province_id = <?php echo $value["province_id"]?>;
+			$.get("fund/get_amphur/"+is_province_id,function(data) {
+				$("#span_amphur").html(data)
+				$("#amphur_id option[value=<?php echo $value["amphur_id"]?>]").attr("selected","selected");
+			})
+			
+				<?php if($value["amphur_id"]):?>
+				var is_amphur_id = <?php echo $value["amphur_id"]?>;
+				$.get("fund/get_district/"+is_amphur_id,function(data) {
+					$("#span_district").html(data)
+					$("#district_id option[value=<?php echo $value["district_id"]?>]").attr("selected","selected");
+				})
+				<?php endif?>
+		
+		<?php endif?>
+		
 		$("#office_province_id").live("change",function(){
 			var province_id = $("#office_province_id").val();
 			$.get("fund/get_amphur/"+province_id,function(data) {
@@ -154,10 +173,31 @@
 			var amphur_id = $("#office_amphur_id").val();
 			$.get("fund/get_district/"+amphur_id,function(data) {
 				$("#span_district_office").html(data)
-				$("#span_amphur_office select").attr("id","office_district_id");
-				$("#span_amphur_office select").attr("name","office_amphur_id");
+				$("#span_district_office select").attr("id","office_district_id");
+				$("#span_district_office select").attr("name","office_district_id");
 			})
 		})
+		
+		<?php if($value["office_province_id"]):?>
+			var is_office_province_id = <?php echo $value["office_province_id"]?>;
+			$.get("fund/get_amphur/"+is_office_province_id,function(data) {
+				$("#span_amphur_office").html(data)
+				$("#span_amphur_office select").attr("id","office_amphur_id");
+				$("#span_amphur_office select").attr("name","office_amphur_id");
+				$("#office_amphur_id option[value=<?php echo $value["office_amphur_id"]?>]").attr("selected","selected");
+			})
+			
+				<?php if($value["office_amphur_id"]):?>
+				var is_office_amphur_id = <?php echo $value["office_amphur_id"]?>;
+				$.get("fund/get_district/"+is_office_amphur_id,function(data) {
+					$("#span_district_office").html(data)
+					$("#span_district_office select").attr("id","office_district_id");
+					$("#span_district_office select").attr("name","office_district_id");
+					$("#office_district_id option[value=<?php echo $value["office_district_id"]?>]").attr("selected","selected");
+				})
+				<?php endif?>
+		
+		<?php endif?>
     	
 		$("#birthday").change(function(){
     		var d = new Date();
