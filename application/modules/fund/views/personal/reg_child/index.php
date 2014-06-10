@@ -29,30 +29,36 @@
 	<tr>
 		<td colspan="4" class="text-center">- ไม่มีข้อมูล -</td>
 	</tr>
-	<?php else: ?>	  
-  	<?php foreach ($variable as $key => $value): ?>
-	<tr>
-		<?php
-			$page = 0;
-			if(@$_GET["page"]) {
-				$page = ($_GET["page"]-1)*20;
-			}
-			$number = $page+($key+1);
-			$district = $this->district->get_row($value["district_id"]);
-			$amphur = $this->amphur->get_row($value["amphur_id"]);
-			$province = $this->province->get_row($value["province_id"]);
-			
-			$name = $value["firstname"]." ".$value["lastname"];
-			
-			$address = $value["addr_number"];
-			$address .= ($value["addr_moo"]) ? " หมู่ ".$value["addr_moo"] : null;
-			$address .= ($value["district_id"]) ? " ตำบล".$district["title"] : null;
-			$address .= ($value["amphur_id"]) ? " อำเภอ".$amphur["title"] : null;
-			$address .= ($value["province_id"]) ? " จังหวัด".$province["title"] : null;
-		?>
-		<td><?php echo $number?></td>
-		<td><a href="#" title="<?php echo $name?>" ><?php echo $name?></a></td>
-  		<td><a href="fund/personal/reg_child/form/<?php echo $value["id"]?>" ><?php echo $address?></a></td>
+	<?php 
+		else:
+	  		foreach ($variable as $key => $value):
+				$page = 0;
+				if(@$_GET["page"]) {
+					$page = ($_GET["page"]-1)*20;
+				}
+				$number = $page+($key+1);
+				$district = $this->district->get_row($value["district_id"]);
+				$amphur = $this->amphur->get_row($value["amphur_id"]);
+				$province = $this->province->get_row($value["province_id"]);
+				
+				$name = $value["firstname"]." ".$value["lastname"];
+				
+				$address = $value["addr_number"];
+				$address .= ($value["addr_moo"]) ? " หมู่ ".$value["addr_moo"] : null;
+				$address .= ($value["district_id"]) ? " ตำบล".$district["title"] : null;
+				$address .= ($value["amphur_id"]) ? " อำเภอ".$amphur["title"] : null;
+				$address .= ($value["province_id"]) ? " จังหวัด".$province["title"] : null;
+				
+				if($key%2==0) {
+					$odd = " odd";
+				} else {
+					$odd = null;
+				}
+	?>
+	<tr class="cursor<?php echo $odd?>" >
+		<td onclick="window.location='fund/personal/reg_child/form/<?php echo $value["id"]?>'" ><?php echo $number?></td>
+		<td onclick="window.location='fund/personal/reg_child/form/<?php echo $value["id"]?>'" ><?php echo $name?></td>
+  		<td onclick="window.location='fund/personal/reg_child/form/<?php echo $value["id"]?>'" ><?php echo $address?></td>
   		<td><a href="fund/personal/reg_child/delete/<?php echo $value["id"]?>" onclick="return confirm('<?php echo $name?>')" ><button type="button" class="btn_delete" ></button></a></td>
 	</tr>
 	<?php endforeach ?>

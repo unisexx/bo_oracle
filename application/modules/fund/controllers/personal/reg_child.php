@@ -41,7 +41,7 @@ class Reg_Child extends Fund_Controller {
 			}
 			
 		}
-		redirect("fund/personal/reg_fund");
+		redirect("fund/personal/reg_child");
 	}
 	
 	public function delete($id)
