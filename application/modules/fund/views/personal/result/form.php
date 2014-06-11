@@ -506,30 +506,19 @@
 			}
 		})
 		
-		function chkMonth(target) {
+		$(".calculate-number").change(function(){
+			var target = $(this).attr("data-target");
+
 			var sm = $("#month4"+target+"_start").val();
 			var sy = $("#year4"+target+"_start").val();
 			
 			var em = $("#month4"+target+"_end").val();
 			var ey = $("#year4"+target+"_end").val();
 			
-			switch(target) {
-				case 1:
-					$("#4_1_number").val(555);
-					break;
-				case 5:
-					break;
-				case 6:
-					break;
-				default:
-					return false;
-			}
-		}
-		
-		$(".calculate-number").change(function(){
-			var target = $(this).attr("data-target");
-			alert(target);
-			chkMonth(target);
+			var d = new Date();
+			d = d.getFullYear();
+			
+			$("#4_"+target+"_number").val(555);
 		})
 		
 	})
