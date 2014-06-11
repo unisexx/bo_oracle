@@ -38,8 +38,6 @@
 			<?php
 				if($value["birthday"]) {
 					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
-				} else {
-					$value["age"] = null;
 				}
 			?>
 			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" readonly style="width:80px;"/>

@@ -16,7 +16,19 @@ class Reg_Fund extends Fund_Controller {
 	
 	public function index()
 	{
-		$data["variable"] = $this->reg_personal->get();
+		$where = " 1=1 ";
+		
+		if(@$_GET["type"]) {
+			$where .= " AND FUND_MST_FUND_NAME_ID = ".$_GET["type"];
+		}
+		
+		if(@$_GET["keyword"]) {
+			$where .= " AND (FIRSTNAME LIKE '%".$_GET["keyword"]."%' OR LASTNAME LIKE '%".$_GET["keyword"]."%')";
+		}
+		
+		$sql = "SELECT * FROM FUND_REG_PERSONAL WHERE ".$where;
+		
+		$data["variable"] = $this->reg_personal->get($sql);
 		$data["pagination"] = $this->reg_personal->pagination();
 		$this->template->build("personal/reg_fund/index",$data);
 	}

@@ -7,7 +7,18 @@
     	<td>
     		<span><label><input type="radio" name="is_idcard" value="1" <?php if($value["is_idcard"]==1) echo "checked"?> /> มี</label></span>
     		<span><label><input type="radio" name="is_idcard" value="0" <?php if($value["is_idcard"]==0) echo "checked"?> /> ไม่มี</label></span>
-    		<input name="idcard" type="text" style="width:150px;" maxlength="13" value="<?php echo $value["idcard"]?>" />
+    		<span>
+    			<label id="label-idcard" >
+    				<?php
+    					if($value["is_idcard"]==1) {
+    						echo null;
+    					} else {
+    						echo "หมายเลขบัตรอื่นๆ";
+    					}
+    				?>
+    			</label>
+			</span>
+    		<input type="text" id="idcard" name="idcard" maxlength="13" value="<?php echo $value["idcard"]?>" style="width:150px;" />
 		</td>
   	</tr>
   	<tr>
@@ -27,8 +38,6 @@
 			<?php
 				if($value["birthday"]) {
 					$value["age"] = date("Y",strtotime("now")) - date("Y",strtotime($value["birthday"]));
-				} else {
-					$value["age"] = null;
 				}
 			?>
     		<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" readonly style="width:80px;" />
@@ -60,6 +69,16 @@
 
 <script type="text/javascript" >
 	$(document).ready(function(){
+		
+		$("input[name=is_idcard]").click(function(){
+			var value = $(this).val();
+			if(value==1) {
+				$("#label-idcard").html("")
+			} else {
+				var textLabel = "หมายเลขบัตรอื่นๆ";
+				$("#label-idcard").html(textLabel)
+			}
+		})
 		
 		$("#province_id").live("change",function(){
 			var province_id = $("#province_id").val();

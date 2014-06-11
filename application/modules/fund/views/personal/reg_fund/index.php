@@ -3,9 +3,9 @@
 <div id="search">
 	<div id="searchBox">
 		<form method="get" >
-		<input type="text" name="keyword" id="keyword"  style="width:250px;" placeholder="ชื่อเด็ก" />
+		<input type="text" name="keyword" id="keyword"  style="width:250px;" placeholder="ชื่อเด็ก" value="<?php echo @$_GET["keyword"]?>" />
 		
-		<?php echo form_dropdown("type",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$_GET["type"],"id=\"type\"","-- เลือกกองทุน --",0)?>
+		<?php echo form_dropdown("type",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$_GET["type"],"id=\"type\"","-- เลือกกองทุน --",null)?>
 		
 		<button type="submit" title="ค้นหา" class="btn_search" ></button>
 		</form>

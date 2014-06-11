@@ -48,7 +48,12 @@
 		
 		$("a.child-list").click(function(){
 			var value = $(this).attr("data-name");
-			$("#child_detail", window.parent.document).val(value)
+			var id = $(this).attr("data-id");
+			$("#child_name", window.parent.document).val("");
+			$("#child_name", window.parent.document).val(value);
+			
+			$("#child_id", window.parent.document).val("");
+			$("#child_id", window.parent.document).val(id);
 	 	});
 		
 	});

@@ -12,7 +12,7 @@
   	</div>
 </div>
 
-<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='fund/personal/reg_child/form'" class="btn_add"/></div>
+<div id="btnBox" ><a href="fund/personal/reg_child/form" ><button class="btn_add" ></button></a></div>
 
 <?php echo $pagination; ?>
 
