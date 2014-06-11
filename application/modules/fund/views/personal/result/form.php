@@ -141,7 +141,7 @@
 					</span>
 				
 					<span style="margin-left:20px; display:block;"> ตั้งแต่เดือน 
-						<?php echo form_dropdown("start_month",get_month())?>
+						<?php echo form_dropdown("start_month",get_month(),null,"class=\"calculate-number\" data-target=\"1\" ")?>
 						พ.ศ.
 							<select name="select5" id="select5">
 								<option>-- เลือกปี --</option>
@@ -528,6 +528,8 @@
 		
 		$(".calculate-number").change(function(){
 			var target = $(this).attr("data-target");
+			alert(target);
+			chkMonth(target);
 		})
 		
 	})
