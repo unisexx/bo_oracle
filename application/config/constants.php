@@ -63,5 +63,8 @@ define("BUDGET_DBUSER","db2inst1");
 define("BUDGET_DBPASSWORD","p@ssword");
 define("JS_FIX_URLPATH","http://bo.m-society.go.th");
 define("LOADING_IMG","<img id='loading' src='images/loading.gif' align='absmiddle'>");
+
+define("MIN_YEAR","1997");
+define("MAX_YEAR",date("Y")+5);
 /* End of file constants.php */
 /* Location: ./system/application/config/constants.php */

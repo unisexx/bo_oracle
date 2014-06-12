@@ -18,37 +18,56 @@
 		<th style="text-align:center">ยุติการช่วยเหลือ</th>
 	</tr>
 	<tr class="topic">
-		<td colspan="10" >ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ</td>
+		<td colspan="7" >ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ</td>
 	</tr>
-	<tr class="odd">
-		<td>1</td>
-		<td>2557</td>
-		<td>มีนาคม</td>
-		<td>3,000</td>
-		<td style="text-align:center"><img src="images/fund/ico_check.png" alt="" width="24" height="24" /></td>
-		<td>&nbsp;</td>
-		<td style="text-align:center"><a href="inline_example82" class="example82 cboxElement"><img src="images/fund/list_data.png" alt="" width="32" height="32" /></a></td>
-  	</tr>
-	<tr>
-		<td>2</td>
-		<td>2557</td>
-		<td>เมษายน</td>
-		<td>3,000</td>
-		<td style="text-align:center"><img src="images/fund/ico_check.png" width="24" height="24" /></td>
-		<td>&nbsp;</td>
-		<td style="text-align:center"><img src="images/fund/list_data.png" width="32" height="32" /></td>
-	</tr>
-	<tr class="odd">
-		<td>3</td>
-		<td>2557</td>
-		<td>พฤษภาคม</td>
-		<td>3,000</td>
-		<td style="text-align:center">&nbsp;</td>
-		<td>&nbsp;</td>
-		<td style="text-align:center"><img src="images/fund/list_data.png" alt="" width="32" height="32" /></td>
-	</tr>
+	
+		<?php if(empty($variable)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable as $key => $value):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key+1);
+					$province = $this->province->get_row($value["province_id"]);
+					
+					if($value["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+					
+					if($key%2==0) {
+						$odd = " odd";
+					} else {
+						$odd = null;
+					}
+		?>
+		<tr class="cursor<?php echo $odd?>" >
+			<td><?php echo $number?></td>
+			<td><?php echo $value41["year"]?></td>
+			<td><?php echo $value41["month"]?></td>
+			<td><?php echo $value41["cost"]?></td>
+			<td><?php echo $status?></td>
+			<td>&nbsp;</td>
+			<td>
+				<a href="inline_example82" class="example82 cboxElement">
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
+		
 	<tr class="topic">
-		<td colspan="10">ข้อ 4(2) ค่าใช้จ่ายทางการศึกษา </td>
+		<td colspan="7">ข้อ 4(2) ค่าใช้จ่ายทางการศึกษา </td>
 	</tr>
 	<tr class="odd">
 		<td colspan="4">ประถม</td>
@@ -90,7 +109,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="topic">
-		<td colspan="10">ข้อ 4(3) ทุนประกอบอาชีพ/ค่ารักษาพยาบาล</td>
+		<td colspan="7">ข้อ 4(3) ทุนประกอบอาชีพ/ค่ารักษาพยาบาล</td>
 	</tr>
 	<tr class="odd">
 		<td>1</td>
@@ -102,7 +121,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="topic">
-		<td colspan="10">ข้อ 4(4) ค่าใช้จ่ายเกี่ยวกับกายอุปกรณ์</td>
+		<td colspan="7">ข้อ 4(4) ค่าใช้จ่ายเกี่ยวกับกายอุปกรณ์</td>
 	</tr>
 	<tr class="odd">
 		<td>1</td>
@@ -114,7 +133,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="topic">
-		<td colspan="10">ข้อ 4(5) ค่าเครื่องอุปโภคบริโภค</td>
+		<td colspan="7">ข้อ 4(5) ค่าเครื่องอุปโภคบริโภค</td>
 	</tr>
 	<tr class="odd">
 		<td>1</td>
@@ -126,7 +145,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="topic">
-		<td colspan="10">ข้อ 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์</td>
+		<td colspan="7">ข้อ 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์</td>
 	</tr>
 	<tr>
 		<td>1</td>
@@ -138,7 +157,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="topic">
-		<td colspan="10">ข้อ 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก</td>
+		<td colspan="7">ข้อ 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก</td>
 	</tr>
 	<tr>
 		<td>1</td>
@@ -150,7 +169,7 @@
 		<td>&nbsp;</td>
 	</tr>
 	<tr class="topic">
-		<td colspan="10">(พิเศษ) ค่าตรวจ DNA</td>
+		<td colspan="7">(พิเศษ) ค่าตรวจ DNA</td>
 	</tr>
 	<tr>
 		<td>1</td>

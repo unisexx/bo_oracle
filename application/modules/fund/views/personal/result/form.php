@@ -1,5 +1,5 @@
 <h3>รายละเอียดการขอรับเงินสนับสนุน รายบุคคล</h3>
-<form action="#" method="post" >
+<form action="fund/personal/result/save/<?php echo $value["id"]?>" method="post"  enctype="multipart/form-data" >
 	<table class="tbadd">
 		<tr>
 			<th>ปีงบประมาณ <span class="Txt_red_12">*</span></th>
@@ -19,7 +19,7 @@
 		<tr>
 			<th>วันเดือนปี ที่รับเรื่อง<span class="Txt_red_12"> *</span></th>
 			<td>
-				<input type="text" id="date_request" class="datepicker" name="date_request" value="<?php echo mysql_to_date($value["date_request"])?>" readonly style="width:80px;" />
+				<input type="text" id="date_request" class="datepicker" name="date_request" value="<?php echo mysql_to_date($value["date_request"],TRUE)?>" readonly style="width:80px;" />
 			</td>
 		</tr>
 		<tr>
@@ -64,14 +64,14 @@
 			<th>มติที่ประชุมครั้งที่ / ลงวันที่<span class="Txt_red_12"> *</span></th>
 			<td>
 				<input name="metting_number" type="text" id="metting_number" value="<?php echo $value["meeting_number"]?>" style="width:50px;"/> /
-				<input type="text" class="datepicker" name="metting_date" value="<?php echo mysql_to_date($value["meeting_date"])?>" readonly style="width:80px;" />
+				<input type="text" class="datepicker" name="metting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
 			</td>
 		</tr>
 		<tr>
 			<th>รายละเอียดการอนุมัติ <span class="Txt_red_12">*</span></th>
 			<td>
-				<span><label><input type="radio" name="status" value="0" <?php if($value["relation_type"]==1) echo "checked"?> />ไม่อนุมัติ</label></span>
-				<span><label><input type="radio" name="status" value="1" <?php if($value["relation_type"]==2) echo "checked"?> />อนุมัติ</label></span>
+				<span><label><input type="radio" name="status" value="0" <?php if($value["status"]==1) echo "checked"?> />ไม่อนุมัติ</label></span>
+				<span><label><input type="radio" name="status" value="1" <?php if($value["status"]==2) echo "checked"?> />อนุมัติ</label></span>
 			</td>
 		</tr>
 	</table>
@@ -87,7 +87,13 @@
 	</div>
 	
 	<!-- กรณีที่อนุมัติ -->
-	<div class="dvApprove" style="display: none;" >
+	<?php
+		$status = "style=\"display: none;\"";
+		if($value["status"]==2) {
+			$status = null;
+		}
+	?>
+	<div class="dvApprove" <?php echo $status?> >
 	<!--<div id="tabs">
 	<ul>
 	      <li><a href="#tabs-1">ข้อ 4(1) </a></li>
@@ -135,134 +141,129 @@
 				<td>
 			 
 					<span style="display:block;">
-						ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ จำนวน <input name="4_1_number" type="text" id="4_1_number" style="width:20px;" readonly="readonly" />
-						ครั้ง/เดือน ครั้งละ <input name="textfield22" type="text" id="textfield23" style="width:100px;" /> บาท/เดือน  
-				    	<span style="margin-left:20px;">รวมเป็นเงิน <input name="textfield23" type="text" id="textfield26" style="width:120px;" readonly="readonly" /> บาท</span>
+						ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ จำนวน <input name="4_1_number" type="text" id="4_1_number" readonly value="<?php echo $value["4_1_number"]?>" style="width:40px;" />
+						ครั้ง/เดือน ครั้งละ <input name="4_1_permonth" type="text" id="4_1_permonth" class="calculate-total" data-target="1" value="<?php echo $value["4_1_permonth"]?>" style="width:100px;" /> บาท/เดือน  
+				    	<span style="margin-left:20px;">รวมเป็นเงิน <input name="4_1_total" type="text" id="4_1_total" readonly value="<?php echo $value["4_1_total"]?>" style="width:120px;" /> บาท</span>
 					</span>
 				
-					<span style="margin-left:20px; display:block;"> ตั้งแต่เดือน 
-						<?php echo form_dropdown("start_month",get_month(),null,"class=\"calculate-number\" data-target=\"1\" ")?>
+					<span style="margin-left:20px; display:block;">
+						ตั้งแต่เดือน 
+							<?php echo form_dropdown("4_1_start_month",get_month(),null,"id=\"month41_start\" class=\"calculate-number\" data-target=\"1\" ")?>
+						
 						พ.ศ.
-							<select name="select5" id="select5">
-								<option>-- เลือกปี --</option>
-								<option>2557</option>
-								<option>2558</option>
-							</select>
+							<?php echo form_dropdown("4_1_start_year",get_year(),$value["4_1_start_year"],"id=\"year41_start\" class=\"calculate-number\" data-target=\"1\"","-- เลือกปี --")?>
+							
 						ถึง เดือน
-						<?php echo form_dropdown("start_month",get_month())?>
+							<?php echo form_dropdown("4_1_end_month",get_month(),null,"id=\"month41_end\" class=\"calculate-number\" data-target=\"1\"")?>
+							
 						พ.ศ.
-							<select name="select5" id="select5">
-								<option>-- เลือกปี --</option>
-								<option>2557</option>
-								<option>2558</option>
-							</select>
+							<?php echo form_dropdown("4_1_end_year",get_year(),$value["4_1_end_year"],"id=\"year41_end\" class=\"calculate-number\" data-target=\"1\"","-- เลือกปี --")?>
 					</span>
 				</td>
 			</tr>
 			<tr>
 			  <th>&nbsp;</th>
-			  <td><span style="display:block; margin-bottom:20px;"> ข้อ 4(2) ค่าใช้จ่ายทางการศึกษา <span style="margin-left:333px;">รวมเป็นเงิน <input name="textfield23" type="text" id="textfield26" style="width:120px;" value="" readonly="readonly" /> บาท</span></span> 
-			    <span style="margin-left:50px; display:block;">ระดับ 
-			    <span style="margin-left:20px; display:inline-block; width:100px;">
-			    ประถมศึกษา</span>
-			    <span style="margin-right:20px;">จำนวน <input name="textfield8" type="text" id="textfield9" style="width:20px;" /> ปี</span>
-			     ปีละ <input name="textfield8" type="text" id="textfield9" style="width:100px;"  /> บาท <span style="margin-left:20px;">รวม <input name="textfield23" type="text" id="textfield26" style="width:120px;" readonly="readonly" /> บาท</span></span>
+			  <td>
+			  		<span style="display:block; margin-bottom:20px;">
+			  			ข้อ 4(2) ค่าใช้จ่ายทางการศึกษา 
+			  			<span style="margin-left:333px;">
+			  				รวมเป็นเงิน <input name="4_2_total" type="text" id="edu_total" style="width:120px;" readonly value="<?php echo $value["4_2_total"]?>" /> บาท
+			  			</span>
+		  			</span> 
+		  			
+			    	<span style="margin-left:50px; display:block;">ระดับ 
+			    		<span style="margin-left:20px; display:inline-block; width:100px;">
+			    			ประถมศึกษา
+		    			</span>
+		    			
+			    		<span style="margin-right:20px;">
+			    			จำนวน <input name="4_2_junior_year" type="text" id="junior_year" class="edu_fund" data-fund="junior" value="<?php echo $value["4_2_junior_year"]?>" style="width:20px;" /> ปี
+		    			</span>
+		    			
+			     		ปีละ <input name="4_2_junior_peryear" type="text" id="junior_peryear" class="edu_fund" data-fund="junior" value="<?php echo $value["4_2_junior_peryear"]?>" style="width:100px;"  /> บาท 
+			     		
+			     		<span style="margin-left:20px;">
+			     			รวม <input name="4_2_junior_total" type="text" id="junior_total" data-fund="junior" readonly value="<?php echo $value["4_2_junior_total"]?>" style="width:120px;" /> บาท
+		     			</span>
+	     			</span>
 			     
-			     <span style="margin-left:82px; display:block;">
-			     <span style="margin-left:20px; display:inline-block; width:100px;">  มัธยมศึกษา</span>
-			    <span style="margin-right:20px;">จำนวน <input name="textfield8" type="text" id="textfield9" style="width:20px;" /> ปี</span>
-			     ปีละ <input name="textfield8" type="text" id="textfield9" style="width:100px;"  /> บาท <span style="margin-left:20px;">รวม <input name="textfield23" type="text" id="textfield26" style="width:120px;" readonly="readonly" /> บาท</span>
-			     </span>
+					<span style="margin-left:82px; display:block;">
+						
+			     		<span style="margin-left:20px; display:inline-block; width:100px;">  
+			     			มัธยมศึกษา
+		     			</span>
+		     			
+						<span style="margin-right:20px;">
+							จำนวน <input name="4_2_senior_year" type="text" id="senior_year" class="edu_fund" data-fund="senior" value="<?php echo $value["4_2_senior_year"]?>" style="width:20px;" /> ปี
+						</span>
+						
+						ปีละ <input name="4_2_senior_peryear" type="text" id="senior_peryear" class="edu_fund" data-fund="senior" value="<?php echo $value["4_2_senior_peryear"]?>" style="width:100px;"  /> บาท 
+						
+						<span style="margin-left:20px;">
+							รวม <input name="4_2_senior_total" type="text" id="senior_total" data-fund="senior" readonly value="<?php echo $value["4_2_senior_total"]?>" style="width:120px;" /> บาท
+						</span>
+						
+			     	</span>
 			     
-			     <span style="margin-left:82px; display:block;">
-			     <span style="margin-left:20px; display:inline-block; width:100px;">  อาชีวศึกษา</span>
-			    <span style="margin-right:20px;">จำนวน <input name="textfield8" type="text" id="textfield9" style="width:20px;" /> ปี</span>
-			     ปีละ <input name="textfield8" type="text" id="textfield9" style="width:100px;"  /> บาท <span style="margin-left:20px;">รวม <input name="textfield23" type="text" id="textfield26" style="width:120px;" readonly="readonly" /> บาท</span>
-			     </span>
+					<span style="margin-left:82px; display:block;">
+						
+						<span style="margin-left:20px; display:inline-block; width:100px;">  
+							อาชีวศึกษา
+						</span>
+		     			
+						<span style="margin-right:20px;">
+							จำนวน <input name="4_2_high_year" type="text" id="high_year" class="edu_fund" data-fund="high" value="<?php echo $value["4_2_high_year"]?>" style="width:20px;" /> ปี
+						</span>
+						
+						ปีละ <input name="4_2_high_peryear" type="text" id="high_peryear" class="edu_fund" data-fund="high" value="<?php echo $value["4_2_high_peryear"]?>" style="width:100px;"  /> บาท 
+						
+						<span style="margin-left:20px;">
+							รวม <input name="4_2_high_total" type="text" id="high_total" data-fund="high" readonly value="<?php echo $value["4_2_high_total"]?>" style="width:120px;" /> บาท
+						</span>
+				     	
+				     </span>
 			    </td>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<td>
 					ข้อ 4(3) ทุนประกอบอาชีพ/ค่ารักษาพยาบาล
-					<input name="textfield8" type="text" id="textfield3" style="width:100px;" />
+					<input name="4_3" type="text" id="4_3" value="<?php echo $value["4_3"]?>" style="width:100px;" />
 			   		บาท
 				</td>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<td>ข้อ 4(4) ค่าใช้จ่ายเกี่ยวกับกายอุปกรณ์
-			    	<input name="textfield9" type="text" id="textfield24" style="width:100px;" /> บาท
-					<p style="margin-left:20px;">ระบุประเภทกายอุปกรณ์ <input name="textfield9" type="text" id="textfield24" style="width:400px;" /></p>
+			    	<input name="4_4" type="text" id="4_4" value="<?php echo $value["4_4"]?>" style="width:100px;" /> บาท
+					<p style="margin-left:20px;">ระบุประเภทกายอุปกรณ์ <input name="4_4_detail" type="text" id="4_4_detail" value="<?php echo $value["4_4_detail"]?>" style="width:400px;" /></p>
 			    </td>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<td>
-					
-					<span style="display:block;"> ข้อ 4(5) ค่าเครื่องอุปโภคบริโภค จำนวน
-					<input name="textfield10" type="text" id="textfield15" style="width:20px;" readonly="readonly" /> เดือน
-					
-					เดือนละ <input name="textfield14" type="text" id="textfield28" style="width:100px;" /> บาท
-					
-					<span style="margin-left:20px;">
-						รวมเป็นเงิน <input name="textfield24" type="text" id="textfield27" style="width:120px;" readonly="readonly" /> บาท
-					</span>
-					
+			 						
+					<span style="display:block;">
+						ข้อ 4(5) ค่าเครื่องอุปโภคบริโภค จำนวน <input name="4_5_number" type="text" id="4_5_number" value="<?php echo $value["4_5_number"]?>" style="width:40px;" readonly="readonly" /> เดือน 
+						เดือนละ <input name="4_5_permonth" type="text" id="4_5_permonth" class="calculate-total" data-target="5" value="<?php echo $value["4_5_permonth"]?>" style="width:100px;" /> บาท  
+						
+				    	<span style="margin-left:20px;">
+				    		รวมเป็นเงิน <input name="4_5_total" type="text" id="4_5_total" style="width:120px;" readonly value="<?php echo $value["4_5_total"]?>" /> บาท
+			    		</span>
 					</span>
 			
 					<span style="margin-left:20px; display:block;">
-						ตั้งแต่เดือน <?php echo form_dropdown("start_month",get_month())?>
+						ตั้งแต่เดือน
+						<?php echo form_dropdown("4_5_start_month",get_month(),null,"id=\"month45_start\" class=\"calculate-number\" data-target=\"5\" ")?>
 						
 						พ.ศ.
-							<select name="select8" id="select9">
-								<option>-- เลือกปี --</option>
-								<option>2557</option>
-								<option>2558</option>
-							</select>
-						ถึง เดือน <?php echo form_dropdown("start_month",get_month())?>
-						
-						พ.ศ.
-							<select name="select8" id="select9">
-								<option>-- เลือกปี --</option>
-								<option>2557</option>
-								<option>2558</option>
-							</select>
-					</span>
-					
-				</td>
-			</tr>
-			<tr>
-				<th>&nbsp;</th>
-				<td>
-					
-					<span style="display:block;"> 
-						ข้อ 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์ จำนวน <input name="textfield15" type="text" id="textfield29" style="width:20px;" readonly="readonly" />เดือน
-						เดือนละ <input name="textfield15" type="text" id="textfield34" style="width:100px;" /> บาท
-						
-						<span style="margin-left:20px;">
-							รวมเป็นเงิน <input name="textfield25" type="text" id="textfield30" style="width:120px;" readonly="readonly" /> บาท
-						</span>
-					</span>
-					
-					<span style="margin-left:20px; display:block;">
-						ตั้งแต่เดือน <?php echo form_dropdown("start_month",get_month())?>
-						
-						พ.ศ.
-							<select name="select8" id="select9">
-								<option>-- เลือกปี --</option>
-								<option>2557</option>
-								<option>2558</option>
-							</select>
+							<?php echo form_dropdown("4_5_start_year",get_year(),$value["4_5_start_year"],"id=\"year45_start\" class=\"calculate-number\" data-target=\"5\"","-- เลือกปี --")?>
 							
-						ถึง เดือน <?php echo form_dropdown("start_month",get_month())?>
+						ถึง เดือน
+							<?php echo form_dropdown("4_5_end_month",get_month(),null,"id=\"month45_end\" class=\"calculate-number\" data-target=\"5\" ")?>
 						
 						พ.ศ.
-							<select name="select8" id="select9">
-								<option>-- เลือกปี --</option>
-								<option>2557</option>
-								<option>2558</option>
-							</select>
+							<?php echo form_dropdown("4_5_end_year",get_year(),$value["4_5_end_year"],"id=\"year45_end\" class=\"calculate-number\" data-target=\"5\"","-- เลือกปี --")?>
 					</span>
 					
 				</td>
@@ -270,13 +271,42 @@
 			<tr>
 				<th>&nbsp;</th>
 				<td>
-					ข้อ 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก <input name="textfield9" type="text" id="textfield33" style="width:100px;" /> บาท
+			 
+					<span style="display:block;">
+						ข้อ 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์ จำนวน <input name="4_6_number" type="text" id="4_6_number" value="<?php echo $value["4_6_number"]?>" style="width:40px;" readonly="readonly" /> เดือน 
+						เดือนละ <input name="4_6_permonth" type="text" id="4_6_permonth" class="calculate-total" data-target="6" value="<?php echo $value["4_6_permonth"]?>" style="width:100px;" /> บาท  
+						
+				    	<span style="margin-left:20px;">
+				    		รวมเป็นเงิน <input name="4_6_total" type="text" id="4_6_total" style="width:120px;" readonly value="<?php echo $value["4_6_total"]?>" /> บาท
+			    		</span>
+					</span>
+			
+					<span style="margin-left:20px; display:block;">
+						ตั้งแต่เดือน
+							<?php echo form_dropdown("4_6_start_month",get_month(),null,"id=\"month46_start\" class=\"calculate-number\" data-target=\"6\" ")?>
+						
+						พ.ศ.
+							<?php echo form_dropdown("4_6_start_year",get_year(),$value["4_6_start_year"],"id=\"year46_start\" class=\"calculate-number\" data-target=\"6\"","-- เลือกปี --")?>
+							
+						ถึง เดือน
+							<?php echo form_dropdown("4_6_end_month",get_month(),null,"id=\"month46_end\" class=\"calculate-number\" data-target=\"6\" ")?>
+						
+						พ.ศ.
+							<?php echo form_dropdown("4_6_end_year",get_year(),$value["4_6_end_year"],"id=\"year46_end\" class=\"calculate-number\" data-target=\"6\"","-- เลือกปี --")?>
+					</span>
+					
 				</td>
 			</tr>
 			<tr>
 				<th>&nbsp;</th>
 				<td>
-					(พิเศษ) ค่าตรวจ DNA <input name="textfield9" type="text" id="textfield32" style="width:100px;" /> บาท
+					ข้อ 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก <input name="4_7" type="text" id="4_7" value="<?php echo $value["4_7"]?>" style="width:100px;" /> บาท
+				</td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+					(พิเศษ) ค่าตรวจ DNA <input name="dna_charges" type="text" id="dna_charges" value="<?php echo $value["dna_charges"]?>" style="width:100px;" /> บาท
 				</td>
 			</tr>
 		</table>
@@ -503,22 +533,88 @@
 				$("#commandFile").fadeIn();
 			} else {
 				$("#commandFile").fadeOut();
+				$("input[name=file_command]").val("");
+				$("input[name=file_idcard_child]").val("");
+				$("input[name=file_idcard_request]").val("");
 			}
 		})
 		
-		$(".calculate-number").change(function(){
+		$(".calculate-number").live("change",function(){
 			var target = $(this).attr("data-target");
 
 			var sm = $("#month4"+target+"_start").val();
 			var sy = $("#year4"+target+"_start").val();
-			
 			var em = $("#month4"+target+"_end").val();
 			var ey = $("#year4"+target+"_end").val();
 			
-			var d = new Date();
-			d = d.getFullYear();
+			if(sm<10) {
+				sm = "0"+sm;
+			}
 			
-			$("#4_"+target+"_number").val(555);
+			if(em<10) {
+				em = "0"+em;
+			}
+
+			var sd = sy+"/"+sm+"/01";
+			var ed = ey+"/"+em+"/01";
+
+			var msg = sd+"\n"+ed;
+
+			var diff = Math.abs(new Date(ed) - new Date(sd));
+			var realDiff = Math.round(diff/(1000*60*60*24*30)+1);
+
+			var pm = $("#4_"+target+"_permonth").val();
+			var totalPm = realDiff*pm;
+
+			$("#4_"+target+"_number").val(realDiff);
+			$("#4_"+target+"_total").val(totalPm);
+		})
+		
+		$(".calculate-total").keyup(function(){
+			var target = $(this).attr("data-target");
+
+			var sm = $("#month4"+target+"_start").val();
+			var sy = $("#year4"+target+"_start").val();
+			var em = $("#month4"+target+"_end").val();
+			var ey = $("#year4"+target+"_end").val();
+			
+			if(sm<10) {
+				sm = "0"+sm;
+			}
+			
+			if(em<10) {
+				em = "0"+em;
+			}
+
+			var sd = sy+"/"+sm+"/01";
+			var ed = ey+"/"+em+"/01";
+
+			var msg = sd+"\n"+ed;
+
+			var diff = Math.abs(new Date(ed) - new Date(sd));
+			var realDiff = Math.round(diff/(1000*60*60*24*30)+1);
+
+			var pm = $("#4_"+target+"_permonth").val();
+			var totalPm = realDiff*pm;
+
+			$("#4_"+target+"_number").val(realDiff);
+			$("#4_"+target+"_total").val(totalPm);
+		})
+		
+		$(".edu_fund").keyup(function(){
+			var type = $(this).attr("data-fund");
+			
+			var y = $("#"+type+"_year").val() ? $("#"+type+"_year").val() : 0;
+			var py = $("#"+type+"_peryear").val() ? $("#"+type+"_peryear").val() : 0;
+			var total_type = y*py;
+			
+			$("#"+type+"_total").val(total_type);
+			
+			var j = $("#junior_total").val() ? $("#junior_total").val() : 0;
+			var s = $("#senior_total").val() ? $("#senior_total").val() : 0;
+			var h = $("#high_total").val() ? $("#high_total").val() : 0;
+			var total = parseInt(j)+parseInt(s)+parseInt(h);
+			$("#edu_total").val(parseInt(total));
 		})
 		
 	})

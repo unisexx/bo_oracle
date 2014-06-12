@@ -39,84 +39,41 @@
 		<th>ชื่อผู้ขอ</th>
 		<th>บันทึกผลการจ่ายเงิน</th>
 	</tr>
-	<tr class="odd">
-		<td>1</td>
-		<td>สมุทรปราการ</td>
-		<td>ด.ช.วันชัย ดวงดี</td>
-		<td>นางกนกพร คงเฉลิม</td>
+	
+	<?php if(empty($variable)):?>
+	<tr>
+		<td colspan="5" class="text-center" >- ไม่มีข้อมูล -</td>
+	</tr>
+	<?php
+		else:
+			foreach ($variable as $key => $value):
+				$page = 0;
+				$status = "รอดำเนินการ";
+				
+				if(@$_GET["page"]) {
+					$page = ($_GET["page"]-1)*20;
+				}
+				$number = $page+($key+1);
+				$province = $this->province->get_row($value["province_id"]);
+				
+				if($key%2==0) {
+					$odd = " odd";
+				} else {
+					$odd = null;
+				}
+	?>
+	<tr class="cursor<?php echo $odd?>" >
+		<td onclick="window.location='fund/personal/pay/form/<?php echo $value["id"]?>'" ><?php echo $number?></td>
+		<td onclick="window.location='fund/personal/pay/form/<?php echo $value["id"]?>'" ><?php echo $province["title"]?></td>
+		<td onclick="window.location='fund/personal/pay/form/<?php echo $value["id"]?>'" ><?php echo $value["fund_child_name"]?></td>
+		<td onclick="window.location='fund/personal/pay/form/<?php echo $value["id"]?>'" ><?php echo $value["fund_reg_personal_name"]?></td>
 		<td>
-			<a href="fund/personal/pay/form" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
+			<a href="fund/personal/pay/form/<?php echo $value["id"]?>" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
 		</td>
 	</tr>
-	<tr>
-		<td>2</td>
-		<td>นนทบุรี</td>
-		<td>ด.ช.ชูศักดิ์  เกียรติเฉลิมคุณ</td>
-		<td>นายสมหวัง  จตุรงค์ล้ำเลิศ</td>
-		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
-		</td>
-	</tr>
-	<tr class="odd">
-		<td>3</td>
-		<td>นครปฐม</td>
-		<td>ด.ช.ทรงพล  อาริยวัฒน์</td>
-		<td>นางสาวประภาศรี  ทองกิ่งแก้ว</td>
-		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
-		</td>
-	</tr>
-	<tr>
-		<td>4</td>
-		<td>เพชรบุรี</td>
-		<td>ด.ญ.สุดารัตน์  เกื้อทวีกุล</td>
-		<td>นางวารุณี  ลภิธนานุวัฒน์</td>
-		<td>
-			<a href="#" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
-		</td>
-	</tr>
-	<tr class="odd">
-		<td>5</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>6</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="odd">
-		<td>7</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>8</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="odd">
-		<td>9</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr>
-		<td>10</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	<?php endforeach?>
+	<?php endif?>
+	
 </table>
 
 <?php echo @$pagination?>
