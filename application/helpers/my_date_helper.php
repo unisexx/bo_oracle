@@ -1,4 +1,11 @@
 <?php
+if(!function_exists("month_th")) {
+	function month_th($month) {
+		$month_array = array('มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม');
+		return $month_array[$month-1];
+	}
+}
+
 if ( ! function_exists('db_to_th'))
 {
 function db_to_th($datetime = '', $time = TRUE ,$format = 'F')

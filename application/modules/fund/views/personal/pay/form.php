@@ -21,30 +21,30 @@
 		<td colspan="7" >ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ</td>
 	</tr>
 	
-		<?php if(empty($variable)):?>
+		<?php if(empty($variable41)):?>
 		<tr>
 			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
 		</tr>
 		<?php
 			else:
-				foreach ($variable as $key => $value):
+				foreach ($variable41 as $key41 => $value41):
 					$page = 0;
 					$status = "รอดำเนินการ";
 					
 					if(@$_GET["page"]) {
 						$page = ($_GET["page"]-1)*20;
 					}
-					$number = $page+($key+1);
-					$province = $this->province->get_row($value["province_id"]);
+					$number = $page+($key41+1);
+					$province = $this->province->get_row($value41["province_id"]);
 					
-					if($value["status"]==0) {
+					if($value41["status"]==0) {
 						$status = "รอดำเนินการ";
 					}
-					if($value["status"]==1) {
+					if($value41["status"]==1) {
 						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
 					}
 					
-					if($key%2==0) {
+					if($key41%2==0) {
 						$odd = " odd";
 					} else {
 						$odd = null;
@@ -52,13 +52,13 @@
 		?>
 		<tr class="cursor<?php echo $odd?>" >
 			<td><?php echo $number?></td>
-			<td><?php echo $value41["year"]?></td>
-			<td><?php echo $value41["month"]?></td>
-			<td><?php echo $value41["cost"]?></td>
-			<td><?php echo $status?></td>
-			<td>&nbsp;</td>
-			<td>
-				<a href="inline_example82" class="example82 cboxElement">
+			<td><?php echo $value41["fund_year"]+543?></td>
+			<td><?php echo month_th($value41["fund_month"])?></td>
+			<td><?php echo number_format($value41["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php echo $status?></td>
+			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value41["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
 				</a>
 			</td>
@@ -75,87 +75,248 @@
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
-	<tr class="odd">
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>5,000</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="odd">
-		<td>2</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>5,000</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable42)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable42 as $key42 => $value42):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key42+1);
+					$province = $this->province->get_row($value42["province_id"]);
+					
+					if($value42["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value42["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+					
+					if($key41%2==0) {
+						$odd = " odd";
+					} else {
+						$odd = null;
+					}
+		?>
+		<tr>
+			<td>ปีที่ <?php echo $number?></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($value41["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php echo $status?></td>
+			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value42["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
+		
 	<tr class="odd">
 		<td colspan="4">มัธยม</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
+		
 	<tr class="odd">
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>7,000</td>
+		<td colspan="4">อาชีวศึกษา</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
+
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(3) ทุนประกอบอาชีพ/ค่ารักษาพยาบาล</td>
 	</tr>
-	<tr class="odd">
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable43)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable43 as $key43 => $value43):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key43+1);
+					
+					if($value43["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value43["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+		?>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($value43["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php echo $status?></td>
+			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value43["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
+		
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(4) ค่าใช้จ่ายเกี่ยวกับกายอุปกรณ์</td>
 	</tr>
-	<tr class="odd">
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable44)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable44 as $key44 => $value44):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key44+1);
+					
+					if($value43["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value43["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+		?>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($value44["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php echo $status?></td>
+			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value44["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
+		
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(5) ค่าเครื่องอุปโภคบริโภค</td>
 	</tr>
-	<tr class="odd">
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable45)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable45 as $key45 => $value45):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key45+1);
+					$province = $this->province->get_row($value45["province_id"]);
+					
+					if($value45["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value45["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+					
+					if($key45%2==0) {
+						$odd = " odd";
+					} else {
+						$odd = null;
+					}
+		?>
+		<tr class="cursor<?php echo $odd?>" >
+			<td><?php echo $number?></td>
+			<td><?php echo $value45["fund_year"]+543?></td>
+			<td><?php echo month_th($value45["fund_month"])?></td>
+			<td><?php echo number_format($value45["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php echo $status?></td>
+			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value45["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
+		
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์</td>
 	</tr>
-	<tr>
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable46)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable46 as $key46 => $value46):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key46+1);
+					$province = $this->province->get_row($value46["province_id"]);
+					
+					if($value46["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value46["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+					
+					if($key46%2==0) {
+						$odd = " odd";
+					} else {
+						$odd = null;
+					}
+		?>
+		<tr class="cursor<?php echo $odd?>" >
+			<td><?php echo $number?></td>
+			<td><?php echo $value46["fund_year"]+543?></td>
+			<td><?php echo month_th($value46["fund_month"])?></td>
+			<td><?php echo number_format($value46["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php echo $status?></td>
+			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value46["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
+		
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก</td>
 	</tr>
@@ -186,114 +347,36 @@
 
 <!-- This contains the hidden content for inline calls -->
 <div style="display:none">
-	<div id="inline_example82" style="padding:10px; background:#fff;">
-		<h3><strong>รายละเอียดการจ่ายเงิน</strong></h3>
-		
-		<div class="topicDetail">
-			<span>ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ</span> ครั้งที่ <span>1</span> เดือน <span>พฤษภาคม</span> จำนวนเงิน<span> 3,000 บาท</span>
-		</div>
-		
-		<table class="tbadd">
-			<tr>
-				<th>สถานะ<span class="Txt_red_12"> *</span></th>
-				<td>
-					<select name="select" id="select">
-						<option>-- เลือกสถานะการจ่ายเงิน --</option>
-						<option value="paid">จ่ายเงินไปแล้ว</option>
-						<option value="stop">ยุติการช่วยเหลือ</option>
-					</select>
-					<span class="note">* กรณีเลือกยุติการช่วยเหลือ ให้กรอกเฉพาะหมายเหตุ</span></td>
-			</tr>
-		</table>    
-		
-		<div class="boxStop" style="display:none">
-			<table class="tbadd">
-				<tr>
-					<th>หมายเหตุ<span class="Txt_red_12"> *</span></th>
-					<td><textarea name="" cols="" rows="" style="width:500px;" placeholder="หมายเหตุการยุติการช่วยเหลือ"></textarea></td>
-				</tr>
-			</table> 
-		</div>
-	
-		<div class="boxPaid">
-			<table class="tbadd">
-				<tr>
-					<th> วัน เดือน ปี ที่จ่ายเงิน<span class="Txt_red_12"> *</span></th>
-					<td><input type="text" class="datepicker" style="width:80px;" /></td>
-				</tr>
-			    <tr>
-					<th>ผู้รับเงิน<span class="Txt_red_12"> *</span></th>
-					<td>
-						<span><label><input type="radio" name="radio5" id="radio" value="radio5" />เป็นบุคคลเดียวกันกับผู้ขอ</label></span>
-						<span><label><input type="radio" name="radio5" id="radio" value="radio5" />ไม่ใช่บุคคลเดียวกันกับผู้ขอ</label></span>
-			        	<span class="note">* กรณีเลือกเป็นบุคคลเดียวกัน ข้อมูลจะแสดงขึ้นโดยอัตโนมัติ</span>
-					</td>
-				</tr>
-			    <tr>
-					<th>ชื่อ - สกุล <span class="Txt_red_12">*</span></th>
-					<td>
-						<select name="select3" id="select3">
-							<option>-- คำนำหน้า --</option>
-			        	</select>
-			        	
-						<input type="text" name="textfield" id="textfield" placeholder="ชื่อ" />
-			        	<input type="text" name="textfield" id="textfield" placeholder="นามสกุล"/></td>
-			    </tr>
-			    <tr>
-					<th>ที่อยู่ <span class="Txt_red_12">*</span></th>
-					<td>
-						เลขที่ <input name="textfield8" type="text" id="textfield8" style="width:50px;"/>
-			        	หมู่ที่ <input name="textfield9" type="text" id="textfield9" style="width:30px;"/>
-			        	ตรอก <input name="textfield10" type="text" id="textfield10" style="width:200px;"/>
-			        	<br />
-			        	
-			        	ซอย <input name="textfield3" type="text" id="textfield3" style="width:200px;"/>
-			       		ถนน <input name="textfield11" type="text" id="textfield11" style="width:200px;"/>
-			        	<br />
-			        	
-			        	จังหวัด
-			        		<select name="select5" id="select4">
-			          		</select>
-			          		
-			        	อำเภอ
-							<select name="select5" id="select5">
-			          		</select>
-			        	ตำบล
-			        	
-							<select name="select5" id="select6">
-							</select>
-					</td>
-			    </tr>
-			    <tr>
-					<th>สำเนาบัตรประชาชนผู้มอบ</th>
-					<td><input type="file" name="fileField2" id="fileField2" /></td>
-			    </tr>
-			    <tr>
-					<th>สำเนาบัตรประชาชนผู้รับมอบ</th>
-					<td><input type="file" name="fileField2" id="fileField3" /></td>
-			    </tr>
-			    <tr>
-					<th>ใบมอบฉันทะ</th>
-					<td><input type="file" name="fileField2" id="fileField4" /></td>
-			    </tr>
-			    <tr>
-					<th>ใบเสร็จการจ่ายเงิน</th>
-					<td><input type="file" name="fileField" id="fileField" /></td>
-			    </tr>
-			</table>
-		</div>
-			
-		<div id="btnBoxAdd">
-			<button type="submit" class="btn_save" title="บันทึก" ></button>
-		</div>
-	
+	<div id="inline_example82" style="padding:10px; background:#fff;">	
 	</div>
 </div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		$(".example82").colorbox({width:"80%", inline:true, href:"#inline_example82"});
+		$(".subform").click(function(){
+			var id = $(this).attr("data-value");
+			$.get("fund/personal/pay/subform/"+id, function(data){
+				$("#inline_example82").html("<div style='text-align: center; vertical-align: middle; width: 80%;' >กำลังโหลดข้อมูล...<br /><img src='images/ajax-loader.gif' /></div>");
+				$("#inline_example82").html(data);
+			})
+		});
+		
+		$(".example82").colorbox({
+			height	: "80%",
+			width		: "80%",
+			inline		: true,
+			href		: "#inline_example82",
+			onClosed : function(){
+				$("#inline_example82").html("");
+			}
+		});
 		
 	})
 </script>
+
+<style type="text/css" >
+	#datepick-div {
+		z-index: 10000;
+	}
+</style>

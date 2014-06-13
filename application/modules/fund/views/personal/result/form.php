@@ -70,8 +70,8 @@
 		<tr>
 			<th>รายละเอียดการอนุมัติ <span class="Txt_red_12">*</span></th>
 			<td>
-				<span><label><input type="radio" name="status" value="0" <?php if($value["status"]==1) echo "checked"?> />ไม่อนุมัติ</label></span>
-				<span><label><input type="radio" name="status" value="1" <?php if($value["status"]==2) echo "checked"?> />อนุมัติ</label></span>
+				<span><label><input type="radio" name="status" value="0" <?php if($value["status"]==0) echo "checked"?> />ไม่อนุมัติ</label></span>
+				<span><label><input type="radio" name="status" value="1" <?php if($value["status"]==1) echo "checked"?> />อนุมัติ</label></span>
 			</td>
 		</tr>
 	</table>
