@@ -13,6 +13,8 @@ class c_user extends Admin_Controller
 		$this->load->model('c_division/division_model','division');
 		$this->load->model('c_department/department_model','department');	
 		$this->load->model('type_human_model','type_human');
+		$this->load->model('user/permission_group_model', 'pg_mdl');
+		$this->load->model('user/permission_detail_model', 'pd_mdl');
 					
 	}
 	
@@ -39,6 +41,7 @@ class c_user extends Admin_Controller
 		$usertype_title = $this->usertype_title->get(FALSE,TRUE);		
 		if($ID>0){
 			$data['result']= $this->users->get_row($ID);
+			$data['pg'] = $this->pg_mdl->get_row($data['result']['permission_group_id']);
 			new_save_logfile("VIEW",$this->modules_title,"USERS","ID",$ID,"name",$this->modules_name);		
 		}
 		$data['usertype_title'] = $this->usertype_title->get(FALSE,TRUE);
@@ -95,6 +98,33 @@ class c_user extends Admin_Controller
 		}
 		
 		$url_parameter = GetCurrentUrlGetParameter();	
+		
+		// save permission
+		   if(!empty($_POST['group_type']) && $_POST['group_type'] == 2)
+		   {
+		   		$group_id = $this->pg_mdl->save($_POST);
+				$vals = array();
+				$actions = array('action_view', 'action_add', 'action_edit', 'action_delete', 'action_extra1', 'action_extra2', 'action_extra3');
+				$this->pd_mdl->delete('permission_group_id', $group_id);
+				foreach($actions as $action)
+				{
+					foreach($_POST[$action] as $system_id => $permissions)
+					{
+						foreach($permissions as $permission_id => $value)
+						{
+							$vals[$permission_id]['system_id'] = $system_id;
+							$vals[$permission_id]['permission_group_id'] = $group_id;
+							$vals[$permission_id]['permission_id'] = $permission_id;
+							$vals[$permission_id][$action] = $value;
+						}
+					}
+				}
+				foreach($vals as $val)
+				{
+					$this->pd_mdl->save($val);
+				}
+		   }		
+		
 		if($_POST){
 		   $_POST['password'] = $_POST['password'] !='' ? $_POST['password'] :$_POST['hdpassword']; 		   
 		   $_POST['registerdate'] =  $_POST['registerdate']=='' ? th_to_stamp(date("d-m-Y H:i:s"),TRUE) : $_POST['registerdate'];

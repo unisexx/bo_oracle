@@ -205,7 +205,7 @@ $(document).ready(function(){
   <?php if(permission('c_user', 'canedit')): ?><input name="input" type="button" title="บันทึก" value=" " class="btn_save"/><?php endif;?>
   <input name="input2" type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
 </div>
-</form>
+
 </div>
 
 	<div id="tab-2">
@@ -213,12 +213,12 @@ $(document).ready(function(){
 			<tr>
 				<td>สิทธิผู้ใช้งาน</td>
 				<td>
-					<input type="radio" name="group_type" value="2" id="group_type_2" /> <label for="group_type_2">กำหนดเอง</label>&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="group_type" value="1" id="group_type_1" /> <label for="group_type_1">เลือกตามกลุ่ม</label>
-					<?php echo form_dropdown('permission_group_id', get_option('id', 'group_name', 'permission_group', 'group_type = 1')); ?></td>
+					<input type="radio" name="group_type" value="2" id="group_type_2" <?php if($pg['group_type'] == 2) echo 'checked'; ?> /> <label for="group_type_2">กำหนดเอง</label>&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="group_type" value="1" id="group_type_1" <?php if($pg['group_type'] == 1) echo 'checked'; ?> /> <label for="group_type_1">เลือกตามกลุ่ม</label>
+					<?php echo form_dropdown('permission_group_id', get_option('id', 'group_name', 'permission_group', 'group_type = 1'), $result['permission_group_id']); ?></td>
 			</tr>
 		</table>
-		
+		</form>
 		<div id="permission"></div>
 		
 	</div>
@@ -228,12 +228,22 @@ $(document).ready(function(){
 <script type="text/javascript" charset="utf-8">
 	$(function(){
 		$('[name=group_type], [name=permission_group_id]').change(function(){
-			$("#permission").mask("Waiting...");
+			$("#permission").html("Waiting...");
 			var pg_id = ($('[name=group_type]:checked').val() == 1) ? $('[name=permission_group_id]').val() : null;
 			$.get('user/permission/ajax_get/' + pg_id, function(data){
 				$('#permission').html(data);
 				$("#permission").unmask();
 			});
+		});
+		$('[name=group_type]').each(function(i, index){
+			if($(index).attr('checked') == true && $(index).val() == 1) {
+				$("#permission").html("Waiting...");
+				var pg_id = ($('[name=group_type]:checked').val() == 1) ? $('[name=permission_group_id]').val() : null;
+				$.get('user/permission/ajax_get/' + pg_id, function(data){
+					$('#permission').html(data);
+					$("#permission").unmask();
+				});
+			}
 		});
 	});
 </script>
