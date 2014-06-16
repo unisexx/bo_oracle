@@ -6,6 +6,15 @@
 		<title><?php echo $template['title']; ?></title>
 		<?php require_once('themes/bo/_meta.php')?>
 		<?php echo $template['metadata']; ?>
+		
+		<style type="text/css" >
+			select.datepick-new-month,select.datepick-new-year {
+				margin: 0;
+				padding: 0;
+				height: 22px;
+			}
+		</style>
+		
 	</head>
 	<body>
 		<div id="head"><?php require_once('_header.php')?></div>
