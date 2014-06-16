@@ -198,16 +198,13 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 	
 	function save(){
 		$urlpage = $this->urlpage;
-		$this->db->debug = true;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
 			
 			if($_POST['id']>0){
-		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
 				$_POST['UPDATE_BY'] = login_data('id');
 			}else{
-				$_POST['CREATE_DATE'] = date("Y-m-d");
 				$_POST['CREATE_BY'] = login_data('id');
 			}
 			$id = $this->indicator->save($_POST);
@@ -218,22 +215,14 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 		   	new_save_logfile("ADD",$this->modules_title,$this->indicator->table,"ID",$id,"indicator_name",$this->modules_name);
 		   }
 		   
-		   
 		   set_notify('success', lang('save_data_complete'));	  
 		}
 		redirect($urlpage.'/index?sch_budget_year='.@$_POST['budget_year']);
 
 	}
+	
 	function save_2(){
 		$urlpage = $this->urlpage;
-		/*
-		echo "<pre>";
-		print_r($_POST);
-		echo "</pre>";
-		 * 
-		 */
-		//return false;
-		//$this->db->debug = true;
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
@@ -245,7 +234,6 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 			$_POST['metrics_target'] = htmlspecialchars($_POST['metrics_target'], ENT_QUOTES ,'UTF-8');
 			
 			if($_POST['id']>0){
-				//$_POST['UPDATE_DATE'] = date("Y-m-d");
 				$_POST['UPDATE_BY'] = login_data('id');
 				unset($_POST['metrics_on']);
 			}else{
@@ -253,7 +241,6 @@ Class Mds_set_indicator extends  Mdevsys_Controller{
 					set_notify('error', 'ไม่สามารถบันทึกข้อมูลได้เนื่องจาก มีลำดับตัวชี้วัดไม่ถูกต้อง');	
 					redirect($urlpage.'/index?sch_budget_year='.@$_POST['budget_year']);
 				}
-				//$_POST['CREATE_DATE'] = date("Y-m-d");
 				$_POST['CREATE_BY'] = login_data('id');
 			}
 			
