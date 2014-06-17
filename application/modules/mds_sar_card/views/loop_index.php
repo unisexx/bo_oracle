@@ -54,7 +54,7 @@ $(function(){
 	$sum_score_6 = 0;
 	$sum_score_9 = 0;
 	$sum_score_9 = 0;
-	function explode_list($indicator, $parent_id,$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,&$sum_score_6,&$sum_score_9,&$sum_score_12,$metrics_on){
+	function explode_list($indicator, $parent_id,$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,&$sum_score_6,&$sum_score_9,&$sum_score_12,$metrics_on, $old_parent){
 		// ประกาศเพื่อให้นอก function ใช้ค่าตัวแปรได้
 		$result_sub = metrics_dtl_indicator(@$indicator,$parent_id);
 		$sum_score['sum_score_6'] = $sum_score_6;
@@ -64,13 +64,16 @@ $(function(){
 			// ลำดับตัวชี้วัด
 			if($parent_id != '0'){
 				//echo $metrics_on;
-				if($metrics_on != ''){
+				if ($metrics_on != '' && $old_parent != $parent_id) {
 					$metrics_on = $metrics_on.".".$sub['metrics_on'];
-				}else{
-					$metrics_on = $sub['metrics_on'];
+					$old_parent = $parent_id;
+				} else {
+					$metrics_on = substr($metrics_on,0,-2);
+					$metrics_on = $metrics_on.".".$sub['metrics_on'];
 				}
 			}else{
 				$metrics_on = $sub['metrics_on'];
+				$old_parent = $parent_id;
 			}
 			// ลำดับตัวชี้วัด 
 			
@@ -87,7 +90,7 @@ $(function(){
 				$sum_score_9 = $sum_score['sum_score_9'];
 				$sum_score_12 = $sum_score['sum_score_12'];
 				
-				explode_list($indicator,$sub['id'],$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);
+				explode_list($indicator,$sub['id'],$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on, $old_parent);
 				//return $sum_score;
     	}
 	}
@@ -134,7 +137,6 @@ $(function(){
 	
 	foreach ($rs as $key => $indicator) {
 ?>
-	
 <tr style="background-color:#E2E2E2;font-weight: bold">
   <th style="width: 4%;text-align: left;">มิติที่ <?=@$indicator['indicator_on']?></th>
   <th style="width: 25%;text-align: left;"><?=@$indicator['indicator_name']?></th>
@@ -202,9 +204,9 @@ $(function(){
 				$sum_score_6 =  0;
 				$sum_score_9 =  0;
 				$sum_score_12 =  0;
-				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);			
+				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on,'0');			
 			}else{
-				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);
+				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on,'0');
 
 			}
 }

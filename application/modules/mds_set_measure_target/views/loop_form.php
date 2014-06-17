@@ -25,17 +25,27 @@ $(document).ready(function(){
 		});
 });
 <?php 
-	function explode_list($indicator, $assessment_id, $parent_id, &$i, $number_metrics){
+	function explode_list($indicator, $assessment_id, $parent_id, &$i, $metrics_on, $old_parent){
 		$result_metrics = metrics_set_indicator($indicator,$assessment_id,$parent_id);
 		foreach (@$result_metrics as $key => $metrics) {
-			if ($parent_id != '0'){
-				$number_metrics = $number_metrics.".".$metrics['metrics_on'];
+			// ลำดับตัวชี้วัด
+			if($parent_id != '0'){
+				//echo $metrics_on;
+				if ($metrics_on != '' && $old_parent != $parent_id) {
+					$metrics_on = $metrics_on.".".$metrics['metrics_on'];
+					$old_parent = $parent_id;
+				} else {
+					$metrics_on = substr($metrics_on,0,-2);
+					$metrics_on = $metrics_on.".".$metrics['metrics_on'];
+				}
 			}else{
-				$number_metrics = $metrics['metrics_on'];
+				$metrics_on = $metrics['metrics_on'];
+				$old_parent = $parent_id;
 			}
+			// ลำดับตัวชี้วัด 
 ?>
 			<tr>
-				  <td><?=$number_metrics?></td>
+				  <td><?=$metrics_on?></td>
 				  <td><?=$metrics['metrics_name']?></td>
 				  <td>
 				  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics['id']?>" />
@@ -68,7 +78,7 @@ $(document).ready(function(){
 				});
 		  	  </script>
 <?				$i++;
-				explode_list($indicator, false, $metrics['id'], $i,$number_metrics);
+				explode_list($indicator, false, $metrics['id'], $i, $metrics_on, $old_parent);
 		}
 	}
 ?>
@@ -125,7 +135,7 @@ $(document).ready(function(){
 	<td colspan="11"><strong><?=@$ass_name?></strong></td>
 </tr>
 <?php		
-			explode_list($mds_set_indicator_id, $assessment['mds_set_assessment_id'], '0', $i,'');
+			explode_list($mds_set_indicator_id, $assessment['mds_set_assessment_id'], '0', $i, '', '0');
 		} //if($ass_name != $assessment['ass_name'])
 	} 
 	

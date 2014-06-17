@@ -34,24 +34,28 @@
 	$sum_indicator_score = '';
 	$sum_score = '';
 	
-	function explode_list($indicator,$parent_id,$ass_id,$metrics_on,$indicator_all_weight){
+	function explode_list($indicator,$parent_id,$ass_id,$metrics_on,$indicator_all_weight, $old_parent){
 		$result_sub = metrics_dtl_indicator(@$indicator,$parent_id,@$_GET['sch_round_month']);
 		foreach($result_sub as $key_sub => $sub) {
-				//$metrics_on = '';
+				// ลำดับตัวชี้วัด
 				if($parent_id != '0'){
 					//echo $metrics_on;
-					if(@$metrics_on != ''){
+					if ($metrics_on != '' && $old_parent != $parent_id) {
 						$metrics_on = $metrics_on.".".$sub['metrics_on'];
-					}else{
-						$metrics_on = $sub['metrics_on'];
+						$old_parent = $parent_id;
+					} else {
+						$metrics_on = substr($metrics_on,0,-2);
+						$metrics_on = $metrics_on.".".$sub['metrics_on'];
 					}
 				}else{
 					$metrics_on = $sub['metrics_on'];
+					$old_parent = $parent_id;
 				}
+				// ลำดับตัวชี้วัด 
 				$dtl = mds_report_sum_perform_dtl($sub,$metrics_on,@$_GET['sch_round_month'],$_GET['sch_budget_year'],@$indicator_all_weight,@$ass_id);
 				echo @$dtl['dtl'];
 				$ass_id = @$dtl['ass_id'];
-				explode_list($indicator,$sub['id'],$ass_id,$metrics_on,$indicator_all_weight);
+				explode_list($indicator,$sub['id'],$ass_id,$metrics_on,$indicator_all_weight, $old_parent);
 				//return $dtl;
 				unset($dtl);
     	}
@@ -79,7 +83,7 @@
 <? 		
  			$ass_id = '';
 			$metrics_on='';
-			$list = explode_list(@$indicator['id'],'0',$ass_id,$metrics_on,$indicator_all_weight);
+			$list = explode_list(@$indicator['id'],'0',$ass_id,$metrics_on,$indicator_all_weight, '0');
 			$ass_id = $list['ass_id'];
 			
 	} ?>

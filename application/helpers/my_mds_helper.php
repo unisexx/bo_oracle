@@ -170,7 +170,7 @@ function metrics_set_indicator($mds_set_indicator_id = null,$mds_set_assessment_
 							from mds_set_metrics
 							where mds_set_metrics.parent_id = '".$parent_id."' 
 							and mds_set_metrics.mds_set_indicator_id = '".$mds_set_indicator_id."' 
-							$condition ";
+							$condition order by mds_set_metrics.metrics_on asc";
 			$result_1 = $CI->db->getarray($sql); 
 			dbConvert($result_1);
 			$result=$result_1;
