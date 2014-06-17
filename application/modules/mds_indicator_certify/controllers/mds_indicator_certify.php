@@ -299,10 +299,8 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 		if($_POST){
 			
 			if($_POST['id']>0){
-		   		$update_result['UPDATE_DATE'] = date("Y-m-d");
 				$update_result['UPDATE_BY'] = login_data('name');
 			}else{
-				$update_result['CREATE_DATE'] = date("Y-m-d");
 				$update_result['CREATE_BY'] = login_data('name');
 			}
 			if($_POST['permit_type_id'] == '2'){
@@ -351,7 +349,6 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 					$status = "ไม่อนุมัติ";
 				}		
 				$update_status['users_id'] = login_data('id');
-				$update_status['CREATE_DATE'] = date("Y-m-d");
 				$update_status['CREATE_BY'] = login_data('name');
 				$this->result_status->save($update_status);
 			}
@@ -368,7 +365,6 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 					$status = "ไม่ผ่าน";
 				}		
 				$update_status['users_id'] = login_data('id');
-				$update_status['CREATE_DATE'] = date("Y-m-d");
 				$update_status['CREATE_BY'] = login_data('name');
 				$this->result_status->save($update_status);
 			}

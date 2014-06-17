@@ -50,7 +50,7 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 			set_notify('error', 'การเข้าถึงข้อมูลไม่ภูกต้อง');	
 			redirect($data['urlpage'] );
 		}
-		$this->template->build('form',@$data);
+		$this->template->build('loop_form',@$data);
 
 	}
 	function save(){
@@ -60,7 +60,7 @@ Class Mds_set_measure_target extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
 			
-			for($i=1;$i<=$_POST['num_i'];$i++){
+			for($i=1;$i<=count($_POST['id']);$i++){
 				$update['id'] = @$_POST['id'][$i];
 				$update['mds_set_measure_id'] = @$_POST['mds_set_measure_id'][$i];
 				$update['metrics_target'] = htmlspecialchars(@$_POST['metrics_target'][$i], ENT_QUOTES ,'UTF-8');

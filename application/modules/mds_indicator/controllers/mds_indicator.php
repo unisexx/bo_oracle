@@ -150,7 +150,7 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				  //return false;
 				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id'],$data['round_month']);
 				  if($chk_keyer_indicator != 'Y'){
-				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในบันทึกตัวชี้วัดในรอบถัดไป'); 
+				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในบันทึกตัวชี้วัดรอบ '.$data['round_month']); 
 				  	redirect($data['urlpage'].'/form/'.$metrics_id);
 				  }	
 				
@@ -236,8 +236,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' 
 										and ( mds_set_metrics_keyer.keyer_users_id = '".login_data('id')."' or mds_set_metrics_keyer.change_keyer_users_id = '".login_data('id')."' )";
-				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
-				$data['keyer_activity'] = @$result_keyer_activity['0'];
+				//$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+				$result_keyer_activity = $this->db->getrow($chk_keyer_activity); 
+				dbConvert($result_keyer_activity);
+				
+				$data['keyer_activity'] = @$result_keyer_activity;
 				
 				$data['rs']['keyer_users_id'] = @$data['keyer_activity']['keyer_users_id'];
 			
@@ -336,8 +339,10 @@ Class Mds_indicator extends  Mdevsys_Controller{
 										from mds_set_metrics_keyer 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".@$data['rs']['keyer_users_id']."'";
-				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
-				$data['keyer_activity'] = @$result_keyer_activity['0'];
+				//$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+				$result_keyer_activity = $this->db->getrow($chk_keyer_activity); 
+				dbConvert($result_keyer_activity);
+				$data['keyer_activity'] = @$result_keyer_activity;
 		}else{
 			set_notify('error', 'การเข้าถึงข้อมูลไม่ถูกต้อง');
 			redirect($data['urlpage'].'/form/'.@$metrics_id);
@@ -430,8 +435,10 @@ Class Mds_indicator extends  Mdevsys_Controller{
 										from mds_set_metrics_keyer 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$data['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".@$data['rs']['keyer_users_id']."'";
-				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
-				$data['keyer_activity'] = @$result_keyer_activity['0'];
+				//$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+				$result_keyer_activity = $this->db->getrow($chk_keyer_activity); 
+				dbConvert($result_keyer_activity);
+				$data['keyer_activity'] = @$result_keyer_activity;
 				
 				$this->template->build('form_show',@$data);
 		}else{
@@ -442,24 +449,23 @@ Class Mds_indicator extends  Mdevsys_Controller{
 	
 	function save(){
 		$urlpage = $this->urlpage;
-		//$this->db->debug = true;
-		if(!is_login())redirect("home");
+		if (!is_login()) {
+			redirect("home");
+		}
 		$premit = is_permit(login_data('id'),'1');
 		
 		$premit_2 = is_permit(login_data('id'),'3');
 		if($premit_2 == ''){ set_notify('error', 'ท่านไม่มีสิทธิ์ในการใช้งาน'); redirect("mds");} // ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
 		$chk_keyer_indicator = chk_keyer_indicator(@$_POST['mds_set_indicator_id'],$_POST['mds_set_metrics_id']);
 		// ตรวจสอบว่ามีสิทธิ์ การใช่งาน หรือไม่
-		//echo "<pre>";
-		//print_r($_POST);
-		//echo "</pre>";
 		$chk_keyer_activity = "select mds_set_metrics_keyer.*
 										from mds_set_metrics_keyer 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".@$_POST['mds_set_metrics_id']."' 
 										and mds_set_metrics_keyer.round_month = '".@$_POST['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".@$_POST['keyer_users_id']."'";
-		$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
-		
-		if(login_data('id') != $result_keyer_activity['0']['keyer_users_id'] && @$result_keyer_activity['0']['change_keyer_users_id'] != login_data('id')){
+		$result_keyer_activity = $this->db->getrow($chk_keyer_activity); 
+		dbConvert($result_keyer_activity);
+			
+		if(login_data('id') != $result_keyer_activity['keyer_users_id'] && @$result_keyer_activity['change_keyer_users_id'] != login_data('id')){
 			set_notify('error', 'ท่านไม่มีสิทธิ์ในการบันทึกผลการปฎิบัติราชการ'); 
 			redirect($urlpage.'/form/'.@$_POST['mds_set_metrics_id']);
 		}
@@ -467,10 +473,8 @@ Class Mds_indicator extends  Mdevsys_Controller{
 		if($_POST){
 			
 			if($_POST['id']>0){
-		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
 				$_POST['UPDATE_BY'] = login_data('name');
 			}else{
-				$_POST['CREATE_DATE'] = date("Y-m-d");
 				$_POST['CREATE_BY'] = login_data('name');
 			}
 			
@@ -488,7 +492,6 @@ Class Mds_indicator extends  Mdevsys_Controller{
 					if(in_array($ext, $correct_type)) {
 						$upload_1['TYPE_DOC']= '1';	
 						$upload_1['MDS_METRICS_RESULT_ID'] = $id;
-						$upload_1['CREATE_DATE'] = date("Y-m-d");
 						$upload_1['CREATE_BY'] = login_data('name');
 						$file_name = pathinfo($_FILES['document_plan']['name'], PATHINFO_FILENAME)."_".date("YmdHis").'.'.$ext;
 						$upload_1['DOC_NAME_UPLOAD'] = $file_name;
@@ -505,19 +508,17 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				
 				if(@$_FILES['new_document_plan']['name'] != ''){
 					
-					$doc_name = $this->doc->get_row($_POST['document_plan_id']);
-					if($doc_name['id'] != ''){
-						$this->doc->delete($_POST['document_plan_id']);
-						unlink("uploads/mds/".$doc_name['doc_name_upload']);	
-					}
-					
 					$ext = pathinfo($_FILES['new_document_plan']['name'], PATHINFO_EXTENSION);
 					$correct_type = array('doc', 'docx');
-					$ext = pathinfo($_FILES['document_plan']['name'], PATHINFO_EXTENSION);
 					if(in_array($ext, $correct_type)) {
+						$doc_name = $this->doc->get_row($_POST['document_plan_id']);
+						if($doc_name['id'] != ''){
+							$this->doc->delete($_POST['document_plan_id']);
+							unlink("uploads/mds/".$doc_name['doc_name_upload']);	
+						}
+					
 						$upload_new_1['TYPE_DOC']= '1';	
 						$upload_new_1['MDS_METRICS_RESULT_ID'] = $id;
-						$upload_new_1['CREATE_DATE'] = date("Y-m-d");
 						$upload_new_1['CREATE_BY'] = login_data('name');
 						$file_name_new = pathinfo($_FILES['new_document_plan']['name'], PATHINFO_FILENAME)."_".date("YmdHis").'.'.$ext;
 						$upload_new_1['DOC_NAME_UPLOAD'] = $file_name_new;
@@ -531,13 +532,18 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						redirect($urlpage.'/form/'.@$_POST['mds_set_metrics_id']);
 					}
 				}
-				
+			
 			for ($i=1; $i <= $_POST['num_ref']; $i++) { 
-				if(@$_FILES['document_plan_ref']['name'][$i] !=''){
+				if (@$_FILES['document_plan_ref']['name'][$i] !='') {
+					$correct_type = array('exe');
 					$ext_2 = pathinfo($_FILES['document_plan_ref']['name'][$i], PATHINFO_EXTENSION);
+					if (in_array($ext_2, $correct_type)) {
+						set_notify('error', 'ไม่สามารถอัพโหลดไฟล์ ที่เป็นนามสกุล exe ได้'); 
+						redirect($urlpage.'/form/'.@$_POST['mds_set_metrics_id']);
+					}
+					
 					$upload_2['TYPE_DOC']= '2';	
 					$upload_2['MDS_METRICS_RESULT_ID'] = $id;
-					$upload_2['CREATE_DATE'] = date("Y-m-d");
 					$upload_2['CREATE_BY'] = login_data('name');
 					$file_name_2 = pathinfo($_FILES['document_plan_ref']['name'][$i], PATHINFO_FILENAME)."_".date("YmdHis").$i.".".$ext_2;
 					$upload_2['DOC_NAME_UPLOAD'] = $file_name_2;
@@ -548,12 +554,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 					move_uploaded_file($_FILES['document_plan_ref']['tmp_name'][$i], $fpicname_2);		
 				}
 			}
-			if($_POST['is_save'] == '2'){
+			if ($_POST['is_save'] == '2') {
 				$update_status['mds_metrics_result_id'] = $id;
 				$update_status['permit_type_id'] = '3';
 				$update_status['result_status_id'] = '2';
 				$update_status['users_id'] = login_data('id');
-				$update_status['CREATE_DATE'] = date("Y-m-d");
 				$update_status['CREATE_BY'] = login_data('name');
 				$this->result_status->save($update_status);
 			}
@@ -588,9 +593,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 										from mds_set_metrics_keyer 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$chk_result['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".@$chk_result['keyer_users_id']."'";
-				$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+				//$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+				$result_keyer_activity = $this->db->getrow($chk_keyer_activity); 
+				dbConvert($result_keyer_activity);
 				
-				if(login_data('id') == $chk_result['keyer_users_id'] || @$result_keyer_activity['0']['change_keyer_users_id'] == login_data('id')){
+				if(login_data('id') == $chk_result['keyer_users_id'] || @$result_keyer_activity['change_keyer_users_id'] == login_data('id')){
 					
 					if($chk_result['is_save'] != 2){
 						$chk_doc = $this->doc->where("mds_metrics_result_id = '".$id."' ")->get();
@@ -641,8 +648,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 										left join mds_set_permission_dtl on mds_set_metrics_keyer.keyer_permission_id = mds_set_permission_dtl.mds_set_permission_id 
 										where mds_set_metrics_keyer.mds_set_metrics_id = '".$metrics_id."' 
 										and mds_set_metrics_keyer.round_month = '".@$chk_result['round_month']."' and mds_set_metrics_keyer.keyer_users_id = '".@$chk_result['keyer_users_id']."'";
-			$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
-			if($chk_result['keyer_users_id'] == $keyer_users_id || @$result_keyer_activity['0']['change_keyer_users_id'] == login_data('id')){
+			//$result_keyer_activity = $this->keyer->get($chk_keyer_activity);
+			$result_keyer_activity = $this->db->getrow($chk_keyer_activity); 
+			dbConvert($result_keyer_activity);
+			
+			if($chk_result['keyer_users_id'] == $keyer_users_id || @$result_keyer_activity['change_keyer_users_id'] == login_data('id')){
 				if($chk_result['is_save'] != '2'){
 					$doc_name = $this->doc->get_row($id);
 					if($doc_name['id'] != ''){

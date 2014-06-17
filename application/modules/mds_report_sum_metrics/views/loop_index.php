@@ -73,7 +73,7 @@ $(function(){
 				}
 				$ass_id = @$dtl['ass_id'];
 				explode_list($indicator,$sub['id'],$ass_id,$metrics_on);
-				return $dtl;
+				//return $dtl;
 				unset($dtl);
     	}
 		
