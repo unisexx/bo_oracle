@@ -26,7 +26,7 @@ class Form extends Fund_Controller {
 	{
 		if($_POST) {
 			
-			$_POST["date_request"] = date_to_mysql($_POST["date_request"]);
+			$_POST["date_request"] = date_to_mysql($_POST["date_request"],true);
 			$_POST["fund_child_id"] = $_POST["child_id"];
 			$_POST["fund_child_name"] = $_POST["child_name"];
 			

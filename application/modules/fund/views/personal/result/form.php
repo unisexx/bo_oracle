@@ -63,8 +63,8 @@
 		<tr>
 			<th>มติที่ประชุมครั้งที่ / ลงวันที่<span class="Txt_red_12"> *</span></th>
 			<td>
-				<input name="metting_number" type="text" id="metting_number" value="<?php echo $value["meeting_number"]?>" style="width:50px;"/> /
-				<input type="text" class="datepicker" name="metting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
+				<input type="text" id="meeting_number" name="meeting_number" value="<?php echo $value["meeting_number"]?>" style="width:50px;"/> /
+				<input type="text" class="datepicker" name="meeting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
 			</td>
 		</tr>
 		<tr>

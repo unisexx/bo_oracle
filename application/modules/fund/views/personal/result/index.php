@@ -81,7 +81,9 @@
 		<td onclick="window.location='fund/personal/reg_fund/form/<?php echo $value["id"]?>'" ><?php echo $value["fund_reg_personal_name"]?></td>
 		<td onclick="window.location='fund/personal/reg_fund/form/<?php echo $value["id"]?>'" ><?php echo $status?></td>
 		<td>
+			<?php if($value["status"]==0):?>
 			<a href="fund/personal/result/form/<?php echo $value["id"]?>" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
+			<?php endif?>
 			<a href="#" onclick="return confirm('<?php echo 1?>')" ><button type="button" class="btn_delete" ></button></a>
 		</td>
 	</tr>

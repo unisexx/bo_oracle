@@ -1,7 +1,10 @@
 <h3>บันทึก ผลการจ่ายเงินขอรับเงินสนับสนุน กองทุนเด็กรายบุคคล</h3>
 
 <div class="topicDetail">
-	ปีงบประมาณ <span>2557</span> จังหวัด <span>นนทบุรี</span>	ชื่อผู้รับ (เด็ก)<span>ด.ช.ชูศักดิ์ เกียรติเฉลิมคุณ	</span> ชื่อผู้ขอ  <span>นายสมหวัง จตุรงค์ล้ำเลิศ</span>
+	<?php
+		$province = $this->province->get_row($value["province_id"]);
+	?>
+	ปีงบประมาณ <span><?php echo $value["year_budget"]?></span> จังหวัด <span><?php echo $province["title"]?></span>	ชื่อผู้รับ (เด็ก)<span><?php echo $value["fund_child_name"]?></span> ชื่อผู้ขอ  <span><?php echo $value["fund_reg_personal_name"]?></span>
 </div>
 
 <table class="tblist">

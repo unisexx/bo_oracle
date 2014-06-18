@@ -35,13 +35,15 @@ class Result extends Fund_Controller {
 	public function save($id)
 	{
 		if($_POST) {
+			$request = $this->form_request->get_row($id);
+			
 			$_POST["id"] = $id;
 			
 			//	วันเดือนปี ที่รับเรื่อง
-			$_POST["date_request"] = date_to_mysql($_POST["date_request"]);
+			$_POST["date_request"] = date_to_mysql($_POST["date_request"],true);
 			
 			//	มติที่ประชุมลงวันที่
-			$_POST["metting_date"] = date_to_mysql($_POST["metting_date"]);
+			$_POST["meeting_date"] = date_to_mysql($_POST["meeting_date"],true);
 			
 			//	เปลี่ยนค่าเดือนให้ถูก
 			$_POST["4_1_start_month"] = sprintf("%02d",$_POST["4_1_start_month"]);
@@ -85,8 +87,10 @@ class Result extends Fund_Controller {
 				}
 				
 				$payment = array(
+					"fund_request_support_id"	=> $id,
 					"payment_type"					=> 1,
-					"fund_support_personal_id"	=> 1,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 					"fund_year"						=> $year41,
 					"fund_month_number"		=> $i+1,
 					"fund_month"						=> sprintf("%02d",$month41),
@@ -108,8 +112,10 @@ class Result extends Fund_Controller {
 				for ($i=0; $i < $junior_year; $i++) { 
 					
 					$payment = array(
+						"fund_request_support_id"	=> $id,
 						"payment_type"					=> 2,
-						"fund_support_personal_id"	=> 1,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 						"fund_year_number"			=> $i+1,
 						"fund_cost"						=> $junior_peryear,
 						"status"								=> 0
@@ -127,8 +133,10 @@ class Result extends Fund_Controller {
 				for ($i=0; $i < $senior_year; $i++) { 
 					
 					$payment = array(
+						"fund_request_support_id"	=> $id,
 						"payment_type"					=> 2,
-						"fund_support_personal_id"	=> 1,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 						"fund_year_number"			=> $i+1,
 						"fund_cost"						=> $senior_peryear,
 						"status"								=> 0
@@ -146,8 +154,10 @@ class Result extends Fund_Controller {
 				for ($i=0; $i < $high_year; $i++) { 
 					
 					$payment = array(
+						"fund_request_support_id"	=> $id,
 						"payment_type"					=> 2,
-						"fund_support_personal_id"	=> 1,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 						"fund_year_number"			=> $i+1,
 						"fund_cost"						=> $high_peryear,
 						"status"								=> 0
@@ -161,8 +171,10 @@ class Result extends Fund_Controller {
 			 $payment43 = $_POST["4_3"];
 			 
 			 	$payment = array(
+					"fund_request_support_id"	=> $id,
 			 		"payment_type"					=> 3,
-					"fund_support_personal_id"	=> 1,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 					"fund_cost"						=> $payment43,
 					"status"								=> 0
 				);
@@ -174,8 +186,10 @@ class Result extends Fund_Controller {
 			 $payment44detail = $_POST["4_4_detail"];
 			 
 			 	$payment = array(
+					"fund_request_support_id"	=> $id,
 			 		"payment_type"					=> 4,
-					"fund_support_personal_id"	=> 1,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 					"fund_cost"						=> $payment44,
 					"fund_detail"						=> $payment44detail,
 					"status"								=> 0
@@ -195,8 +209,10 @@ class Result extends Fund_Controller {
 				}
 				
 				$payment = array(
+					"fund_request_support_id"	=> $id,
 					"payment_type"					=> 5,
-					"fund_support_personal_id"	=> 1,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 					"fund_year"						=> $year45,
 					"fund_month_number"		=> $i+1,
 					"fund_month"						=> sprintf("%02d",$month45),
@@ -220,8 +236,10 @@ class Result extends Fund_Controller {
 				}
 				
 				$payment = array(
+					"fund_request_support_id"	=> $id,
 					"payment_type"					=> 6,
-					"fund_support_personal_id"	=> 1,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 					"fund_year"						=> $year46,
 					"fund_month_number"		=> $i+1,
 					"fund_month"						=> sprintf("%02d",$month46),
@@ -237,8 +255,10 @@ class Result extends Fund_Controller {
 			 $payment47 = $_POST["4_7"];
 			 
 			 	$payment = array(
+					"fund_request_support_id"	=> $id,
 			 		"payment_type"					=> 7,
-					"fund_support_personal_id"	=> 0,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 					"fund_cost"						=> $payment47,
 					"status"								=> 0
 				);
