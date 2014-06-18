@@ -196,9 +196,9 @@ $(function(){
 <? } ?>
 	<input type="hidden" name="round_month" id="round_month" value="<?=@$round_month?>" />
 	<input type="hidden" name="mds_set_metrics_id" id="mds_set_metrics_id" value="<?=@$rs_metrics['id']?>" />
-	<? if(@$rs['id']==''){?>
+	<? if (@$rs['id']=='') {?>
 		<input type="hidden" name="mds_set_metrics_name" id="mds_set_metrics_name" value="<?=@$parent_on?> <?=@$rs_metrics['metrics_name']?>" />
-	<? }else{ ?>
+	<? } else { ?>
 		<input type="hidden" name="mds_set_metrics_name" id="mds_set_metrics_name" value="<?=@$rs['mds_set_metrics_name']?>" />
 	<? } ?>
 	<input type="hidden" name="mds_set_indicator_id" id="mds_set_indicator_id" value="<?=@$rs_indicator['id']?>" />
@@ -308,7 +308,9 @@ $(function(){
 			</td>
 		</tr>
 		<tr>
-			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4"><span style="margin-right: 10px;">&nbsp;</span><b><u>แบบฟอร์มรายงาน</u></b></td>
+			<td style="width: 15%;text-align: left;padding-top: 20px" colspan="4">
+				<span style="margin-right: 10px;">&nbsp;</span><b><u>แบบฟอร์มรายงาน</u> <span style="color: red;">*กรุณาแนบไฟล์ที่ชื่อเป็นภาษาอังกฤษ</span></b>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="4" style="text-align: left;padding-top: 10px">

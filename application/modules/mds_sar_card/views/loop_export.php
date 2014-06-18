@@ -67,23 +67,28 @@ $(function(){
 	$sum_indicator_score_12 = '';
 	
 	
-	function explode_list($indicator, $parent_id,$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,&$sum_score_6,&$sum_score_9,&$sum_score_12,$metrics_on){
+	function explode_list($indicator, $parent_id,$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,&$sum_score_6,&$sum_score_9,&$sum_score_12,$metrics_on, $old_parent){
 
 		$result_sub = metrics_dtl_indicator(@$indicator,$parent_id);
 		$sum_score['sum_score_6'] = $sum_score_6;
 		$sum_score['sum_score_9'] = $sum_score_9;
 		$sum_score['sum_score_12'] = $sum_score_12;
 		foreach ($result_sub as $key_sub => $sub) {
+			// ลำดับตัวชี้วัด
 			if($parent_id != '0'){
 				//echo $metrics_on;
-				if($metrics_on != ''){
+				if ($metrics_on != '' && $old_parent != $parent_id) {
 					$metrics_on = $metrics_on.".".$sub['metrics_on'];
-				}else{
-					$metrics_on = $sub['metrics_on'];
+					$old_parent = $parent_id;
+				} else {
+					$metrics_on = substr($metrics_on,0,-2);
+					$metrics_on = $metrics_on.".".$sub['metrics_on'];
 				}
 			}else{
 				$metrics_on = $sub['metrics_on'];
+				$old_parent = $parent_id;
 			}
+			// ลำดับตัวชี้วัด 
 				$dtl = mds_sar_card_metrics_dtl($sub,$metrics_on,@$_GET['sch_budget_year'],@$indicator_all_weight_6,@$indicator_all_weight_9,@$indicator_all_weight_12,FALSE,'export');
 				echo $sum_score['dtl'] = @$dtl['dtl'];
 				$sum_score['sum_score_6'] += $dtl['sum_score_6'];
@@ -94,7 +99,7 @@ $(function(){
 				$sum_score_9 = $sum_score['sum_score_9'];
 				$sum_score_12 = $sum_score['sum_score_12'];
 				
-				explode_list($indicator,$sub['id'],$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);
+				explode_list($indicator,$sub['id'],$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on,$old_parent);
 				//return $sum_score;
     	}
 		//return $sum_score;
@@ -170,9 +175,9 @@ $(function(){
 				$sum_score_6 =  0;
 				$sum_score_9 =  0;
 				$sum_score_12 =  0;
-				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);			
+				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on,'0');			
 			}else{
-				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on);
+				$list = explode_list(@$indicator['id'],'0',$indicator_all_weight_6,$indicator_all_weight_9,$indicator_all_weight_12,$sum_score_6,$sum_score_9,$sum_score_12,$metrics_on,'0');
 			}
 }
 ?>

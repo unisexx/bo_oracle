@@ -48,7 +48,7 @@ function metrics_dtl_indicator($indicator_id = null,$parent_id = null,$round_mon
 
 function chk_keyer_indicator($indicator_id = null,$id = null,$round_month=null){ //check ว่าเป็นผู้บันทึกตัวชี้วัดหรือไม่
 	$result = 'N';
-	if($indicator_id != '' && $id != '' && $round_month == ''){
+	if ($indicator_id != '' && $id != '' && $round_month == '') {
 			$CI =& get_instance();
 			$condition = '';
 			$sql = "select metrics.*
@@ -63,7 +63,7 @@ function chk_keyer_indicator($indicator_id = null,$id = null,$round_month=null){
 			if($num_result > 0){
 				$result = 'Y';
 			}
-	}else if($indicator_id != '' && $id != '' && $round_month != ''){
+	} else if($indicator_id != '' && $id != '' && $round_month != '') {
 			$CI =& get_instance();
 			$condition = '';
 			$sql = "select metrics.*
@@ -170,7 +170,7 @@ function metrics_set_indicator($mds_set_indicator_id = null,$mds_set_assessment_
 							from mds_set_metrics
 							where mds_set_metrics.parent_id = '".$parent_id."' 
 							and mds_set_metrics.mds_set_indicator_id = '".$mds_set_indicator_id."' 
-							$condition ";
+							$condition order by mds_set_metrics.metrics_on asc";
 			$result_1 = $CI->db->getarray($sql); 
 			dbConvert($result_1);
 			$result=$result_1;
@@ -511,7 +511,7 @@ function chk_date_approve($result_id = null , $permit_type = null,$status_id = n
 			$result_chk_status = $CI->db->getrow($sql_chk_status);
 			dbConvert($result_chk_status);
 			$result = @$result_chk_status;
-			if($result['create_date'] != ''){
+			if(@$result['create_date'] != ''){
 				$update = explode('-', @$result['create_date']);
 				$update_year =  substr(@$update['0'],2)+43;
 				$date = @$update['2'].'/'.@$update['1'].'/'.@$update_year;
@@ -631,7 +631,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 						if($data['round_month'] > '6' && $data['round_month'] != '' && ($data['round_month'] < @$result_round_month['metrics_cancel'])){
 							$chk_metrics_reound_month = @$result_round_month['keyer_round_month']-3;
 							// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
-							$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
+							echo $chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
 												 FROM  MDS_SET_METRICS_KEYER KEYER
 												 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
 															AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
@@ -882,7 +882,7 @@ function mds_report_sum_metrics_dtl($metrics_dtl = nul,$metrics_on = null,$sch_r
 	  		$dtl['dtl'] .=	'<td>';
 	  		$dtl['dtl'] .=	'ไม่มีผู้รับผิดชอบ';
 	  		$dtl['dtl'] .=	'</td>';
-	  		$dtl['dtl'] .=	'<td>';
+	  		$dtl['dtl'] .=	'<td colspan="3">';
 			$dtl['dtl'] .=	'ไม่มีผู้รับผิดชอบ';
 	  		$dtl['dtl'] .=	'</td>';
 	  		$dtl['dtl'] .= '</tr>';

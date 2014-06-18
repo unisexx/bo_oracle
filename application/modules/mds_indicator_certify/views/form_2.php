@@ -410,11 +410,10 @@ if((@$rs['control_status'] == '1' && @$rs['is_save'] == '2') || ($num_kpr > 0)){
 </div>
 <? } ?>
 <div align="center" style="margin-top: 10px">
-<?
+<? 
  if(is_permit(login_data('id'),'2') != '' || is_permit(login_data('id'),'1') != ''){
 	 $chk_control_indicator = chk_control_indicator(@$rs_indicator['id'],@$rs_metrics['id'],$rs['id']);
 		 if($chk_control_indicator == 'Y'){
-		 	
 		 	if(@$rs['control_status'] == '' && @$rs['is_save'] == '2'){
 ?>
   <input name="input" type="button" title="บันทึก" value=" " class="btn_save btn_save_control"/>

@@ -1,0 +1,155 @@
+/*@font-face {
+	font-family: 'Conv_THSarabun';
+	src: url('../../../../media/fonts/THSarabunNew.ttf');
+	src: local(''), url('../../../../media/fonts/THSarabunNew.ttf') format('woff'), url('../../../../media/fonts/THSarabunNew.ttf') format('truetype'), url('../../../../media/fonts/THSarabunNew.ttf') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+*/
+
+
+
+#report { width:100%; font-family:'Conv_THSarabun',Sans-Serif; font-size:16px; color:#000;}
+
+.tbReport
+{
+	font-family:'Conv_THSarabun',Sans-Serif; color:#000;
+	background: #fff;
+	margin:0;
+	margin-bottom:10px;
+	width: 100%;
+	border-collapse: collapse;
+	
+}
+.tbReport th
+{
+	font-size:18px;
+	font-weight: 700;
+	padding: 10px 5px 3px 5px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	text-align:center;
+	background-color:#fff;
+	color:#333;
+}
+.tbReport td
+{
+	font-size: 16px;
+	color:#333;
+	padding:5px;
+	height:30px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+.tbReport td.B, .tblist2 td strong { font-weight:700;}
+.tbReport tr.total {  background:url(../images/bg_total.gif) repeat-x;}
+.tbReport td.pattern-a { background:url(../images/pattern2.jpg) repeat;}
+
+.tbadd
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 13px;
+	background: #fff;
+	margin: 0;
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+	margin-top:10px;
+}
+.tbadd th
+{
+	font-size: 14px;
+	font-weight: normal;
+	color:#65358f;
+	padding: 10px 5px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	width:20%;
+}
+
+.tbadd th.padL15 { padding-left:20px; color:#666}
+
+.tbadd td
+{
+	color:#595959;
+	padding: 5px;
+	height:30px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	width:80%;
+}
+
+.tbadd tbody tr:hover td
+{
+	background:#FBF9FF;
+	
+}
+
+.tbadd td.B { font-weight:700;}
+.tbadd td strong { font-weight:700;}
+.tbadd td.red { color:#F00;}
+.tbadd td label2 { float:left; width:100px;}
+.tbadd td span { padding-right:20px; margin:5px 0; display:inline-block; white-space:nowrap;}
+
+.tbadd td.line div { border-bottom:1px solid #ccc; padding:5px 0;}
+
+.tbadd .topic { background:#FCC; border-top:1px dashed #ccc; width:100%; color:#000}
+
+
+.tbadd2
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 13px;
+	background: #fff;
+	margin: 0;
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+	margin-top:10px;
+}
+.tbadd2 th
+{
+	font-size: 14px;
+	font-weight: normal;
+	color:#65358f;
+	padding: 10px 5px;
+	border-top: 0px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	vertical-align:top;
+}
+
+.tbadd2 th.padL15 { padding-left:20px; color:#666}
+
+.tbadd2 td
+{
+	color:#595959;
+	padding: 5px;
+	height:30px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+.tbadd2 tbody tr:hover td
+{
+	background:#FBF9FF;
+	
+}
+
+.tbadd2 td.B { font-weight:700;}
+.tbadd2 td strong { font-weight:700;}
+.tbadd2 td.red { color:#F00;}
+
+/************************* TABLE STYLE **************************************/

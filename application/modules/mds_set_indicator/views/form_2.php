@@ -103,6 +103,7 @@ $(function(){
 	$('[name=metrics_responsible]').live('click',function(){
 		chang_responsible($(this).val());
 	});
+	
 	chang_responsible('<?=@$rs['metrics_responsible']?>');
 	$('[name=sem_9]').live('click',function(){
 		if($(this).val()=='9'){
@@ -426,34 +427,34 @@ $(function(){
         <? } ?>
     </td>
   </tr>
-  <tr>
+  <tr class="metrics_dtl">
     <th>ตัวชี้วัดเริ่มที่รอบ <span class="Txt_red_12">*</span></th>
-    <? 
+    <?php 
    // echo $rs['metrics_start'];
-    	if(@$rs['metrics_start'] == 6){
+    	if (@$rs['metrics_start'] == 6) {
     		$selcet_6 = 'selected="selected"';
-    	}else if(@$rs['metrics_start'] == 9){
+    	} else if (@$rs['metrics_start'] == 9) {
     		$selcet_9 = 'selected="selected"';
-    	}else if(@$rs['metrics_start'] == 12){
+    	} else if (@$rs['metrics_start'] == 12) {
     		$selcet_12 = 'selected="selected"';
     	}
 		
     ?>
     <td>
-    <? if($num_chk_result > 0){ ?> 
+    <?php if ($num_chk_result > 0) { ?> 
     	<input type="hidden" name="metrics_start" id="metrics_start" value="<?=@$rs['metrics_start']?>" />
-    <?	echo "เริ่มที่รอบ ".@$rs['metrics_start']." เดือน";
-      }else{ ?>
+    <?php echo "เริ่มที่รอบ ".@$rs['metrics_start']." เดือน";
+      	  } else { ?>
       <select name="metrics_start" id="metrics_start">
 	      <option value="">-- เลือกรอบตัวชี้วัด --</option>
-	      <option value="6" <?=@$selcet_6?>>เริ่มที่รอบ 6 เดือน</option>
-	      <option value="9" <?=@$selcet_9?>>เริ่มที่รอบ 9 เดือน</option>
-	      <option value="12" <?=@$selcet_12?>>เริ่มที่รอบ 12 เดือน</option>
+	      <option value="6" <?php echo @$selcet_6?>>เริ่มที่รอบ 6 เดือน</option>
+	      <option value="9" <?php echo @$selcet_9?>>เริ่มที่รอบ 9 เดือน</option>
+	      <option value="12" <?php echo @$selcet_12?>>เริ่มที่รอบ 12 เดือน</option>
    	  </select>
-   	  <? } ?>
+   <?php  } ?>
     </td>
   </tr>
-  <tr>
+  <tr class="metrics_dtl">
     <th>ตัวชี้วัดนี้ยกเลิกที่รอบ</th>
     <td>
       <span class="metrics_cancel_6"><input type="checkbox" name="metrics_cancel" id="metrics_cancel" class="metrics_cancel" <? if(@$rs['metrics_cancel']== '6'){ echo 'checked="checked"'; } ?> value="6" /> 6 เดือน </span>

@@ -69,8 +69,8 @@
 			<h3>ตั้งค่า กองทุนเด็กรายโครงการ</h3>
 			<div class="lineico">
 				<div class="ico"><a href="fund/setting/fund_project_typep_main" title="ประเภทโครงการ" ><img src="images/fund/icon/get_fund.png" width="48" height="48" alt="ประเภทโครงการ" /><h4>ประเภทโครงการ</h4></a></div>
-				<div class="ico"><a href="reg_child.php" title="กรอบทิศทาง ในการจัดสรรเงิน กองทุนคุ้มครองเด็ก" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="กรอบทิศทาง ในการจัดสรรเงิน กองทุนคุ้มครองเด็ก" /><h4>กรอบทิศทาง ในการจัดสรรเงิน กองทุนคุ้มครองเด็ก</h4></a></div>
-				<div class="ico"><a href="reg_child.php" title="กลุ่มเป้าหมาย ของโครงการ" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="กลุ่มเป้าหมาย ของโครงการ" /><h4>กลุ่มเป้าหมาย ของโครงการ</h4></a></div>
+				<div class="ico"><a href="fund/project/direction_set" title="กรอบทิศทาง ในการจัดสรรเงิน กองทุนคุ้มครองเด็ก" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="กรอบทิศทาง ในการจัดสรรเงิน กองทุนคุ้มครองเด็ก" /><h4>กรอบทิศทาง ในการจัดสรรเงิน กองทุนคุ้มครองเด็ก</h4></a></div>
+				<div class="ico"><a href="fund/project/target_set" title="กลุ่มเป้าหมาย ของโครงการ" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="กลุ่มเป้าหมาย ของโครงการ" /><h4>กลุ่มเป้าหมาย ของโครงการ</h4></a></div>
 				
 				<div class="clear"></div>
 			</div><!--lineico-->       

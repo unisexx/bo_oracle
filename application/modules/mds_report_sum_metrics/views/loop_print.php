@@ -33,27 +33,31 @@
   <th align="center" style="width: 15%">ผู้จัดเก็บข้อมูล</th>
 </tr>
 <? 
-	function explode_list($indicator,$parent_id,$ass_id,$metrics_on){
+	function explode_list($indicator,$parent_id,$ass_id,$metrics_on, $old_parent){
 		$result_sub = metrics_dtl_indicator(@$indicator['id'],$parent_id,@$_GET['sch_round_month']);
 			foreach ($result_sub as $key_sub => $sub) {
-				//$metrics_on = '';
+				// ลำดับตัวชี้วัด
 				if($parent_id != '0'){
 					//echo $metrics_on;
-					if(@$metrics_on != ''){
+					if ($metrics_on != '' && $old_parent != $parent_id) {
 						$metrics_on = $metrics_on.".".$sub['metrics_on'];
-					}else{
-						$metrics_on = $sub['metrics_on'];
+						$old_parent = $parent_id;
+					} else {
+						$metrics_on = substr($metrics_on,0,-2);
+						$metrics_on = $metrics_on.".".$sub['metrics_on'];
 					}
 				}else{
 					$metrics_on = $sub['metrics_on'];
+					$old_parent = $parent_id;
 				}
+				// ลำดับตัวชี้วัด
 				$dtl = mds_report_sum_metrics_dtl($sub,$metrics_on,@$_GET['sch_round_month'],$ass_id);
 				if( @$_GET['sch_round_month'] >= $sub['metrics_start']){
 					echo @$dtl['dtl'];
 				}
 				$ass_id = @$dtl['ass_id'];
-				explode_list($indicator,$sub['id'],$ass_id,$metrics_on);
-				return $dtl;
+				explode_list($indicator,$sub['id'],$ass_id,$metrics_on, $old_parent);
+				//return $dtl;
 				unset($dtl);
     	}	
 	}
@@ -72,7 +76,7 @@
  	
  			$ass_id = '';
 			$metrics_on='';
-			$list = explode_list(@$indicator['id'],'0',$ass_id,$metrics_on);
+			$list = explode_list(@$indicator['id'],'0',$ass_id,$metrics_on, '0');
 			$ass_id = $list['ass_id'];
 	} ?>
 </table>

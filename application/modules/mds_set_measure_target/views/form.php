@@ -277,7 +277,7 @@ $(document).ready(function(){
 									    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?php echo htmlspecialchars_decode(@$metrics_sub_5['metrics_target']);?>" class="metrics_target" />
 									  	</label>
 									  </td>
-									  <td><?=$metrics_sub_4['metrics_weight']?></td>
+									  <td><?=$metrics_sub_5['metrics_weight']?></td>
 										  <?
 									  		$chk_result_5_6 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'6');
 											
@@ -300,6 +300,44 @@ $(document).ready(function(){
 							  	  </script>
 							<?
 								$i++;
+									$result_metrics_sub_6 = metrics_set_indicator($mds_set_indicator_id,false,$metrics_sub_5['id']);
+									foreach (@$result_metrics_sub_6 as $key => $metrics_sub_6) { ?>
+										<tr>
+										  <td><?=$metrics['metrics_on']?>.<?=$metrics_sub_1['metrics_on']?>.<?=$metrics_sub_2['metrics_on']?>.<?=$metrics_sub_3['metrics_on']?>.<?=$metrics_sub_4['metrics_on']?>.<?=$metrics_sub_5['metrics_on']?>.<?=$metrics_sub_6['metrics_on']?></td>
+										  <td><?=$metrics_sub_6['metrics_name']?></td>
+										  <td>
+										  	<input type="hidden" name="id[<?=$i?>]" name="id[<?=$i?>]" value="<?=$metrics_sub_6['id']?>" />
+										  	<?php echo form_dropdown('mds_set_measure_id['.$i.']',get_option('id','measure_name',"mds_set_measure where status_id = '1' or id = '".@$metrics_sub_6['mds_set_measure_id']."'"),@$metrics_sub_6['mds_set_measure_id'],'','-- เลือกหน่วยวัด --') ?>
+										  </td>
+										  <td>
+										  	<label>
+										    	<input type="text" name="metrics_target[<?=$i?>]" id="metrics_target[<?=$i?>]" style="width:30px;" value="<?php echo htmlspecialchars_decode(@$metrics_sub_6['metrics_target']);?>" class="metrics_target" />
+										  	</label>
+										  </td>
+										  <td><?=$metrics_sub_6['metrics_weight']?></td>
+											  <?
+										  		$chk_result_6_6 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'6');
+												
+										  		$chk_result_6_9 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'9');
+												
+										  		$chk_result_6_12 = chk_reslut_keyer_scroe($metrics_sub_5['id'],'12');
+										  	?>
+										  <td><?=@$chk_result_6_6['result_metrics']?></td>
+										  <td><?=@$chk_result_6_6['score_metrics']?></td>
+										  <td><?=@$chk_result_6_9['result_metrics']?></td>
+										  <td><?=@$chk_result_6_9['score_metrics']?></td>
+										  <td><?=@$chk_result_6_12['result_metrics']?></td>
+										  <td><?=@$chk_result_6_12['score_metrics']?></td>
+									  </tr>
+									  <script language="JavaScript">
+								  		$(function(){
+												$("[name='mds_set_measure_id[<?=$i?>]']").rules( 'add', {required: true, messages: {required: "กรุณาเลือกหน่วยวัด" } });
+												$("[name='metrics_target[<?=$i?>]']").rules( 'add', {required: true, messages: {required: "กรุณาเป้าหมาย" } });
+										});
+								  	  </script>
+								<?
+									$i++;
+									}//foreach metrics_sub_6
 								}//foreach metrics_sub_5
 							}//foreach metrics_sub_4
 						}//foreach metrics_sub_3
