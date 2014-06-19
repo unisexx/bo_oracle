@@ -166,6 +166,7 @@
 	</div>
 		
 	<div id="btnBoxAdd">
+		<input type="hidden" name="fund_request_support_id" value="<?php echo $value["fund_request_support_id"]?>" />
 		<button type="submit" class="btn_save" title="บันทึก" ></button>
 	</div>
 	

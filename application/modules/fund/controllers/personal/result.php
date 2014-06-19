@@ -47,8 +47,13 @@ class Result extends Fund_Controller {
 			
 			//	เปลี่ยนค่าเดือนให้ถูก
 			$_POST["4_1_start_month"] = sprintf("%02d",$_POST["4_1_start_month"]);
+			$_POST["4_1_end_month"] = sprintf("%02d",$_POST["4_1_end_month"]);
+			
 			$_POST["4_5_start_month"] = sprintf("%02d",$_POST["4_5_start_month"]);
+			$_POST["4_5_end_month"] = sprintf("%02d",$_POST["4_5_end_month"]);
+			
 			$_POST["4_6_start_month"] = sprintf("%02d",$_POST["4_6_start_month"]);
+			$_POST["4_6_end_month"] = sprintf("%02d",$_POST["4_6_end_month"]);
 			
 			//	ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ รวม
 			$_POST["4_1_total"] = ($_POST["4_1_number"]*$_POST["4_1_permonth"]);
@@ -58,20 +63,6 @@ class Result extends Fund_Controller {
 			
 			//	ข้อ 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์ รวม
 			$_POST["4_6_total"] = ($_POST["4_6_number"]*$_POST["4_6_permonth"]);
-			
-			//	ข้อ 4(2) ค่าใช้จ่ายทางการศึกษา
-			
-				//	ประถมศึกษา
-				$_POST["4_2_junior_total"] = ($_POST["4_2_junior_year"]*$_POST["4_2_junior_peryear"]);
-				
-				//	มัธยมศึกษา
-				$_POST["4_2_senior_total"] = ($_POST["4_2_senior_year"]*$_POST["4_2_senior_peryear"]);
-				
-				//	อาชีวศึกษา
-				$_POST["4_2_high_total"] = ($_POST["4_2_high_year"]*$_POST["4_2_high_peryear"]);
-				
-				//	รวมเป็นเงิน
-				$_POST["4_2_total"] = $_POST["4_2_junior_total"]+$_POST["4_2_senior_total"]+$_POST["4_2_high_total"];
 
 			$this->form_request->save($_POST);
 			
@@ -105,6 +96,18 @@ class Result extends Fund_Controller {
 			//	-------------------------------------------------- 4(2) ค่าใช้จ่ายทางการศึกษา --------------------------------------------------
 			
 			//	ประถมศึกษา
+			$_POST["4_2_junior_total"] = ($_POST["4_2_junior_year"]*$_POST["4_2_junior_peryear"]);
+			
+			//	มัธยมศึกษา
+			$_POST["4_2_senior_total"] = ($_POST["4_2_senior_year"]*$_POST["4_2_senior_peryear"]);
+			
+			//	อาชีวศึกษา
+			$_POST["4_2_high_total"] = ($_POST["4_2_high_year"]*$_POST["4_2_high_peryear"]);
+			
+			//	รวมเป็นเงิน
+			$_POST["4_2_total"] = $_POST["4_2_junior_total"]+$_POST["4_2_senior_total"]+$_POST["4_2_high_total"];
+			
+			//	ประถมศึกษา
 			$junior_year = ($_POST["4_2_junior_year"]) ? $_POST["4_2_junior_year"] : 0;
 			$junior_peryear = ($_POST["4_2_junior_peryear"]) ? ($_POST["4_2_junior_peryear"]) : 0;
 			
@@ -117,6 +120,7 @@ class Result extends Fund_Controller {
 						"fund_support_personal_id"	=> $request["fund_child_id"],
 						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 						"fund_year_number"			=> $i+1,
+						"fund_edu_type"					=> 1,
 						"fund_cost"						=> $junior_peryear,
 						"status"								=> 0
 					);
@@ -138,6 +142,7 @@ class Result extends Fund_Controller {
 						"fund_support_personal_id"	=> $request["fund_child_id"],
 						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 						"fund_year_number"			=> $i+1,
+						"fund_edu_type"					=> 2,
 						"fund_cost"						=> $senior_peryear,
 						"status"								=> 0
 					);
@@ -159,6 +164,7 @@ class Result extends Fund_Controller {
 						"fund_support_personal_id"	=> $request["fund_child_id"],
 						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
 						"fund_year_number"			=> $i+1,
+						"fund_edu_type"					=> 3,
 						"fund_cost"						=> $high_peryear,
 						"status"								=> 0
 					);
@@ -265,12 +271,28 @@ class Result extends Fund_Controller {
 			 
 			$this->personal_payment->save($payment);
 			
+			//	-------------------------------------------------- (พิเศษ) ค่าตรวจ DNA --------------------------------------------------
+			$payment48 = $_POST["dna_charges"];
+			
+				$payment = array(
+					"fund_request_support_id"	=> $id,
+			 		"payment_type"					=> 8,
+					"fund_support_personal_id"	=> $request["fund_child_id"],
+					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+					"fund_cost"						=> $payment48,
+					"status"								=> 0
+				);
+			 
+			$this->personal_payment->save($payment);
+			
 		}
 		redirect("fund/personal/result");
 	}
 	
-	public function delete() {
-		
+	public function delete($id) {
+		if($id) {
+			$this->personal_payment->delete($id);
+		}
 	}
 	
 }

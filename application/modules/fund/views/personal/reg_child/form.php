@@ -81,6 +81,7 @@
 		})
 		
 		$("#province_id").live("change",function(){
+			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#province_id").val();
 			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
@@ -90,6 +91,7 @@
 		})
 		
 		$("#amphur_id").live("change",function(){
+			$("#span_district").html('<img src="images/ajax-loader.gif" />');
 			var amphur_id = $("#amphur_id").val();
 			$.get("fund/get_district/"+amphur_id,function(data) {
 				$("#span_district").html(data)
@@ -97,6 +99,7 @@
 		})
 		
 		<?php if($value["province_id"]):?>
+			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
 			var is_province_id = <?php echo $value["province_id"]?>;
 			$.get("fund/get_amphur/"+is_province_id,function(data) {
 				$("#span_amphur").html(data)
@@ -104,6 +107,7 @@
 			})
 			
 				<?php if($value["amphur_id"]):?>
+				$("#span_district").html('<img src="images/ajax-loader.gif" />');
 				var is_amphur_id = <?php echo $value["amphur_id"]?>;
 				$.get("fund/get_district/"+is_amphur_id,function(data) {
 					$("#span_district").html(data)
