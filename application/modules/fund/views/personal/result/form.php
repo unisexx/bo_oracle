@@ -125,14 +125,51 @@
 				<th>คำสั่งศาล  <span class="Txt_red_12">*</span></th>
 				<td>
 					<select name="command_status" id="command_status" >
-						<option value="0">ไม่มีคำสั่งศาล</option>
-						<option value="1">มีคำสั่งศาล</option>
+						<option value="0" <?php if($value["command_status"]==0) echo "selected"?> >ไม่มีคำสั่งศาล</option>
+						<option value="1" <?php if($value["command_status"]==1) echo "selected"?> >มีคำสั่งศาล</option>
 					</select>
 					
 					<div id="commandFile" class="boxAttachfile" <?php if(@$value["command_status"]==0) echo "style=\"display: none;\""?> >
-						<p><span>แนบคำสั่งศาล</span> <input name="file_command" type="file" /></p>
-						<p><span>แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)</span> <input name="file_idcard_child" type="file" /></p>
-						<p><span>แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)</span> <input name="file_idcard_request" type="file" /></p>
+						<?php if($value["file_command"]):?>
+							<p>
+								<span style="width: auto;" >
+									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="คำสั่งศาล" >
+										<img src="images/btn_saveform.png" />
+									</a>
+								</span>
+								คำสั่งศาล
+							</p>
+						<?php else:?>
+							<p><span>แนบคำสั่งศาล</span> <input name="file_command" type="file" accept="application/pdf,application/msword" /></p>
+						<?php endif?>
+						
+						<?php if($value["file_command"]):?>
+							<p>
+								<span style="width: auto;" >
+									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)" >
+										<img src="images/btn_saveform.png" />
+									</a>
+								</span>
+								แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)
+							</p>
+						<?php else:?>
+							<p><span>แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)</span> <input name="file_idcard_child" type="file" accept="application/pdf,application/msword" /></p>
+						<?php endif?>
+						
+						<?php if($value["file_idcard_request"]):?>
+							<p>
+								<span style="width: auto;" >
+									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_idcard_request"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)" >
+										<img src="images/btn_saveform.png" />
+									</a>
+								</span>
+								แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)
+							</p>
+						<?php else:?>
+							<p><span>แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)</span> <input name="file_idcard_request" type="file" accept="application/pdf,application/msword" /></p>
+						<?php endif?>
+						
+						
 					</div>
 				</td>
 			</tr>

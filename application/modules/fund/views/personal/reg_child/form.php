@@ -82,6 +82,7 @@
 		
 		$("#province_id").live("change",function(){
 			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
+			$("#span_district").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#province_id").val();
 			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {

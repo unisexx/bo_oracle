@@ -163,3 +163,9 @@
 	</div>
 
 </div>
+
+<?php if($this->session->flashdata("error")==1):?>
+<script type="text/javascript" >
+	alert("<?php echo $this->session->flashdata("msg")?>");
+</script>
+<?php endif?>

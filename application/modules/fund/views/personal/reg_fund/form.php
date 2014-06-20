@@ -129,6 +129,7 @@
 		
 		$("#province_id").live("change",function(){
 			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
+			$("#span_district").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#province_id").val();
 			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
@@ -166,6 +167,7 @@
 		
 		$("#office_province_id").live("change",function(){
 			$("#span_amphur_office").html('<img src="images/ajax-loader.gif" />');
+			$("#span_district_office").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#office_province_id").val();
 			var clear_district_id = "<select name='office_district_id' id='office_district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {

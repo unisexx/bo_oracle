@@ -1,6 +1,6 @@
 <h3><strong>รายละเอียดการจ่ายเงิน</strong></h3>
 
-<form action="fund/personal/pay/save/<?php echo $value["id"]?>" method="post" >
+<form action="fund/personal/pay/save/<?php echo $value["id"]?>" method="post" enctype="multipart/form-data" >
 	
 	<?php
 		switch ($value["payment_type"]) {
@@ -58,10 +58,11 @@
 			<td>
 				<select name="status" id="status">
 					<option>-- เลือกสถานะการจ่ายเงิน --</option>
-					<option value="1">จ่ายเงินไปแล้ว</option>
-					<option value="2">ยุติการช่วยเหลือ</option>
+					<option value="1" <?php if($value["status"]==1) echo "selected"?> >จ่ายเงินไปแล้ว</option>
+					<option value="2" <?php if($value["status"]==2) echo "selected"?> >ยุติการช่วยเหลือ</option>
 				</select>
-				<span class="note">* กรณีเลือกยุติการช่วยเหลือ ให้กรอกเฉพาะหมายเหตุ</span></td>
+				<span class="note">* กรณีเลือกยุติการช่วยเหลือ ให้กรอกเฉพาะหมายเหตุ</span>
+			</td>
 		</tr>
 	</table>    
 	
@@ -69,7 +70,7 @@
 		<table class="tbadd">
 			<tr>
 				<th>หมายเหตุ<span class="Txt_red_12"> *</span></th>
-				<td><textarea name="note" cols="" rows="" style="width:500px;" placeholder="หมายเหตุการยุติการช่วยเหลือ"></textarea></td>
+				<td><textarea name="note" cols="" rows="" style="width:500px;" placeholder="หมายเหตุการยุติการช่วยเหลือ" ><?php echo $value["note"]?></textarea></td>
 			</tr>
 		</table> 
 	</div>
@@ -78,7 +79,7 @@
 		<table class="tbadd">
 			<tr>
 				<th> วัน เดือน ปี ที่จ่ายเงิน<span class="Txt_red_12"> *</span></th>
-				<td><input type="text" class="datepicker" name="date_payment" readonly style="width:80px;" /></td>
+				<td><input type="text" class="datepicker" name="date_payment" readonly style="width:80px;" value="<?php echo mysql_to_date($value["date_payment"],true) ?>" /></td>
 			</tr>
 		    <tr>
 				<th>ผู้รับเงิน<span class="Txt_red_12"> *</span></th>
@@ -148,25 +149,26 @@
 		    
 		    <tr>
 				<th>สำเนาบัตรประชาชนผู้มอบ</th>
-				<td><input type="file" name="fileField2" id="fileField2" /></td>
+				<td><input type="file" name="file_payer" id="fileField2" accept="application/pdf,application/msword" /></td>
 		    </tr>
 		    <tr>
 				<th>สำเนาบัตรประชาชนผู้รับมอบ</th>
-				<td><input type="file" name="fileField2" id="fileField3" /></td>
+				<td><input type="file" name="file_payee" id="fileField3" accept="application/pdf,application/msword" /></td>
 		    </tr>
 		    <tr>
 				<th>ใบมอบฉันทะ</th>
-				<td><input type="file" name="fileField2" id="fileField4" /></td>
+				<td><input type="file" name="file_proxy" id="fileField4" accept="application/pdf,application/msword" /></td>
 		    </tr>
 		    <tr>
 				<th>ใบเสร็จการจ่ายเงิน</th>
-				<td><input type="file" name="fileField" id="fileField" /></td>
+				<td><input type="file" name="file_receipt" id="fileField" accept="application/pdf,application/msword" /></td>
 		    </tr>
 		</table>
 	</div>
 		
 	<div id="btnBoxAdd">
 		<input type="hidden" name="fund_request_support_id" value="<?php echo $value["fund_request_support_id"]?>" />
+		<input type="hidden" name="payment_type" value="<?php echo $value["payment_type"]?>" />
 		<button type="submit" class="btn_save" title="บันทึก" ></button>
 	</div>
 	
@@ -180,7 +182,11 @@
 			buttonImageOnly: true, 
 			buttonImage: 'js/jquery.datepick/calendar.png'
 		});
-
+		
+		<?php if($value["status"]==2):?>
+			$(".boxPaid").hide();
+			$(".boxStop").show();
+		<?php endif?>
 		
 		$("#status").live("change",function(){
 			var status_id = $(this).val();

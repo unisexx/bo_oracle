@@ -54,6 +54,7 @@
 			
 			$("#child_id", window.parent.document).val("");
 			$("#child_id", window.parent.document).val(id);
+			parent.$.colorbox.close();
 	 	});
 		
 	});

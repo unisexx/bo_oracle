@@ -65,15 +65,94 @@ class Pay extends Fund_Controller {
 			
 			if($_POST) {
 				
-				if($_POST["status"]) {
-					$_POST["id"] = $id;
-					$_POST["date_payment"] = ($_POST["date_payment"]) ? date_to_mysql($_POST["date_payment"],true) : null;
-					$this->personal_payment->save($_POST);
+				if($_POST["status"]==1) {
+					
+					$rq = $_POST["fund_request_support_id"];
+					$type = $_POST["payment_type"];
+					
+					if(!file_exists("uploads/fund/$rq/pay")) {
+						$old = umask(0);
+						mkdir("uploads/fund/$rq/pay",0777);
+						umask($old);
+					}
+					
+					if(!file_exists("uploads/fund/$rq/pay/section_$type")) {
+						$old = umask(0);
+						mkdir("uploads/fund/$rq/pay/section_$type",0777);
+						umask($old);
+					}
+					
+					if(!file_exists("uploads/fund/$rq/pay/section_$type/$id")) {
+						$old = umask(0);
+						mkdir("uploads/fund/$rq/pay/section_$type/$id",0777);
+						umask($old);
+					}
+					
+					if(@$_FILES["file_payer"]["name"]) {
+						$file_payer = uniqid().".".pathinfo($_FILES["file_payer"]["name"], PATHINFO_EXTENSION);
+						is_uploaded_file($_FILES["file_payer"]["tmp_name"]);
+						move_uploaded_file($_FILES["file_payer"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_payer");
+					}
+					
+					if(@$_FILES["file_payee"]["name"]) {
+						$file_payee = uniqid().".".pathinfo($_FILES["file_payee"]["name"], PATHINFO_EXTENSION);
+						is_uploaded_file($_FILES["file_payee"]["tmp_name"]);
+						move_uploaded_file($_FILES["file_payee"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_payee");
+					}
+					
+					if(@$_FILES["file_proxy"]["name"]) {
+						$file_proxy = uniqid().".".pathinfo($_FILES["file_proxy"]["name"], PATHINFO_EXTENSION);
+						is_uploaded_file($_FILES["file_proxy"]["tmp_name"]);
+						move_uploaded_file($_FILES["file_proxy"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_proxy");
+					}
+					
+					if(@$_FILES["file_receipt"]["name"]) {
+						$file_receipt = uniqid().".".pathinfo($_FILES["file_receipt"]["name"], PATHINFO_EXTENSION);
+						is_uploaded_file($_FILES["file_receipt"]["tmp_name"]);
+						move_uploaded_file($_FILES["file_receipt"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_receipt");
+					}
+					
+					$pay = array(
+						"id"							=> $id,
+						"status"						=> 1,
+						"date_payment"			=> ($_POST["date_payment"]) ? date_to_mysql($_POST["date_payment"],true) : null,
+						"personal_accept"		=> $_POST["personal_accept"],
+						"title"							=> $_POST["title"],
+						"firstname"				=> $_POST["firstname"],
+						"lastname"					=> $_POST["lastname"],
+						"addr_number"			=> $_POST["addr_number"],
+						"addr_moo"				=> $_POST["addr_moo"],
+						"addr_trok"				=> $_POST["addr_trok"],
+						"addr_soi"					=> $_POST["addr_soi"],
+						"addr_road"				=> $_POST["addr_road"],
+						"province_id"				=> $_POST["province_id"],
+						"amphur_id"				=> $_POST["amphur_id"],
+						"district_id"				=> $_POST["district_id"],
+						
+						"file_payer"				=> (@$_POST["file_payer"]) ? $file_payer : null,
+						"file_payee"				=> (@$_POST["file_payee"]) ? $file_payee : null,
+						"file_proxy"				=> (@$_POST["file_proxy"]) ? $file_proxy : null,
+						"file_receipt"				=> (@$_POST["file_receipt"]) ? $file_receipt : null
+					);
+					
+					$this->personal_payment->save($pay);
 				}
+				
+				if($_POST["status"]==2) {
+					
+					$pay = array(
+						"id"				=> $id,
+						"status"			=> 2,
+						"note"			=> $_POST["note"]
+					);
+
+					$this->personal_payment->save($pay);
+				}
+				
 			}
 			
 		}
-		redirect("fund/personal/pay/form/".$_POST["fund_support_personal_id"]);
+		redirect("fund/personal/pay/form/".$_POST["fund_request_support_id"]);
 	}
 	
 	public function delete() {

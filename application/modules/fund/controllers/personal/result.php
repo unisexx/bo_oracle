@@ -44,16 +44,46 @@ class Result extends Fund_Controller {
 			
 			//	มติที่ประชุมลงวันที่
 			$_POST["meeting_date"] = date_to_mysql($_POST["meeting_date"],true);
+
+			if(!file_exists("uploads/fund/$id")) {
+				$old = umask(0);
+				mkdir("uploads/fund/$id",0777);
+				umask($old);
+			}
+					
+			if(!file_exists("uploads/fund/$id/result")) {
+				$old = umask(0);
+				mkdir("uploads/fund/$id/result",0777);
+				umask($old);
+			}
+			
+			if(@$_FILES["file_command"]["name"]) {
+				$file_command = uniqid().".".pathinfo($_FILES["file_command"]["name"], PATHINFO_EXTENSION);
+				is_uploaded_file($_FILES["file_command"]["tmp_name"]);
+				move_uploaded_file($_FILES["file_command"]["tmp_name"], "uploads/fund/$id/result/$file_command");
+			}
+			
+			if(@$_FILES["file_idcard_child"]["name"]) {
+				$file_idcard_child = uniqid().".".pathinfo($_FILES["file_idcard_child"]["name"], PATHINFO_EXTENSION);
+				is_uploaded_file($_FILES["file_idcard_child"]["tmp_name"]);
+				move_uploaded_file($_FILES["file_idcard_child"]["tmp_name"], "uploads/fund/$id/result/$file_idcard_child");
+			}
+			
+			if(@$_FILES["file_idcard_request"]["name"]) {
+				$file_idcard_request = uniqid().".".pathinfo($_FILES["file_idcard_request"]["name"], PATHINFO_EXTENSION);
+				is_uploaded_file($_FILES["file_idcard_request"]["tmp_name"]);
+				move_uploaded_file($_FILES["file_idcard_request"]["tmp_name"], "uploads/fund/$id/result/$file_idcard_request");
+			}
 			
 			//	เปลี่ยนค่าเดือนให้ถูก
-			$_POST["4_1_start_month"] = sprintf("%02d",$_POST["4_1_start_month"]);
-			$_POST["4_1_end_month"] = sprintf("%02d",$_POST["4_1_end_month"]);
+			if($_POST["4_1_start_month"]) $_POST["4_1_start_month"] = sprintf("%02d",$_POST["4_1_start_month"]);
+			if($_POST["4_1_end_month"]) $_POST["4_1_end_month"] = sprintf("%02d",$_POST["4_1_end_month"]);
 			
-			$_POST["4_5_start_month"] = sprintf("%02d",$_POST["4_5_start_month"]);
-			$_POST["4_5_end_month"] = sprintf("%02d",$_POST["4_5_end_month"]);
+			if($_POST["4_5_start_month"]) $_POST["4_5_start_month"] = sprintf("%02d",$_POST["4_5_start_month"]);
+			if($_POST["4_5_end_month"]) $_POST["4_5_end_month"] = sprintf("%02d",$_POST["4_5_end_month"]);
 			
-			$_POST["4_6_start_month"] = sprintf("%02d",$_POST["4_6_start_month"]);
-			$_POST["4_6_end_month"] = sprintf("%02d",$_POST["4_6_end_month"]);
+			if($_POST["4_6_start_month"]) $_POST["4_6_start_month"] = sprintf("%02d",$_POST["4_6_start_month"]);
+			if($_POST["4_6_end_month"]) $_POST["4_6_end_month"] = sprintf("%02d",$_POST["4_6_end_month"]);
 			
 			//	ข้อ 4(1) ค่าเลี้ยงดู/ค่าพาหนะ รวม
 			$_POST["4_1_total"] = ($_POST["4_1_number"]*$_POST["4_1_permonth"]);
@@ -174,116 +204,136 @@ class Result extends Fund_Controller {
 			}
 				
 			//	-------------------------------------------------- 4(3) ทุนประกอบอาชีพ/ค่ารักษาพยาบาล --------------------------------------------------
-			 $payment43 = $_POST["4_3"];
-			 
-			 	$payment = array(
-					"fund_request_support_id"	=> $id,
-			 		"payment_type"					=> 3,
-					"fund_support_personal_id"	=> $request["fund_child_id"],
-					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
-					"fund_cost"						=> $payment43,
-					"status"								=> 0
-				);
-			 
-			$this->personal_payment->save($payment);
-			
+			if($_POST["4_3"]==true) {
+				
+				 $payment43 = $_POST["4_3"];
+				 
+				 	$payment = array(
+						"fund_request_support_id"	=> $id,
+				 		"payment_type"					=> 3,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+						"fund_cost"						=> $payment43,
+						"status"								=> 0
+					);
+				 
+				$this->personal_payment->save($payment);
+				
+			}
 			//	-------------------------------------------------- 4(4) ค่าใช้จ่ายเกี่ยวกับกายอุปกรณ์ --------------------------------------------------
-			 $payment44 = $_POST["4_4"];
-			 $payment44detail = $_POST["4_4_detail"];
-			 
-			 	$payment = array(
-					"fund_request_support_id"	=> $id,
-			 		"payment_type"					=> 4,
-					"fund_support_personal_id"	=> $request["fund_child_id"],
-					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
-					"fund_cost"						=> $payment44,
-					"fund_detail"						=> $payment44detail,
-					"status"								=> 0
-				);
-			 
-			$this->personal_payment->save($payment);
+			if($_POST["4_3"]==true) {
+				
+				 $payment44 = $_POST["4_4"];
+				 $payment44detail = $_POST["4_4_detail"];
+				 
+				 	$payment = array(
+						"fund_request_support_id"	=> $id,
+				 		"payment_type"					=> 4,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+						"fund_cost"						=> $payment44,
+						"fund_detail"						=> $payment44detail,
+						"status"								=> 0
+					);
+				 
+				$this->personal_payment->save($payment);
+			}
 			
 			//	-------------------------------------------------- 4(5) ค่าเครื่องอุปโภคบริโภค --------------------------------------------------
-			$payment45 = $_POST["4_5_number"];
-			$month45 = $_POST["4_5_start_month"];
-			$year45 = $_POST["4_5_start_year"];
-			
-			for ($i=0; $i < $payment45; $i++) { 
-				if($month45>12) {
-					$month45 = 1;
-					$year45++;
+			if($_POST["4_5_total"]==true) {
+				
+				$payment45 = $_POST["4_5_number"];
+				$month45 = $_POST["4_5_start_month"];
+				$year45 = $_POST["4_5_start_year"];
+				
+				for ($i=0; $i < $payment45; $i++) { 
+					if($month45>12) {
+						$month45 = 1;
+						$year45++;
+					}
+					
+					$payment = array(
+						"fund_request_support_id"	=> $id,
+						"payment_type"					=> 5,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+						"fund_year"						=> $year45,
+						"fund_month_number"		=> $i+1,
+						"fund_month"						=> sprintf("%02d",$month45),
+						"fund_cost"						=> $_POST["4_5_permonth"],
+						"status"								=> 0
+					);				
+					
+					$this->personal_payment->save($payment);
+					$month45++;
 				}
 				
-				$payment = array(
-					"fund_request_support_id"	=> $id,
-					"payment_type"					=> 5,
-					"fund_support_personal_id"	=> $request["fund_child_id"],
-					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
-					"fund_year"						=> $year45,
-					"fund_month_number"		=> $i+1,
-					"fund_month"						=> sprintf("%02d",$month45),
-					"fund_cost"						=> $_POST["4_5_permonth"],
-					"status"								=> 0
-				);				
-				
-				$this->personal_payment->save($payment);
-				$month45++;
 			}
-			
 			//	-------------------------------------------------- 4(6) ค่าสงเคราะห์ครอบครัวอุปถัมภ์ --------------------------------------------------
-			$payment46 = $_POST["4_6_number"]; 
-			$month46 = $_POST["4_6_start_month"];
-			$year46 = $_POST["4_6_start_year"];
-			
-			for ($i=0; $i < $payment46; $i++) { 
-				if($month46>12) {
-					$month46 = 1;
-					$year46++;
+			if($_POST["4_6_total"]==true) {
+				
+				$payment46 = $_POST["4_6_number"]; 
+				$month46 = $_POST["4_6_start_month"];
+				$year46 = $_POST["4_6_start_year"];
+				
+				for ($i=0; $i < $payment46; $i++) { 
+					if($month46>12) {
+						$month46 = 1;
+						$year46++;
+					}
+					
+					$payment = array(
+						"fund_request_support_id"	=> $id,
+						"payment_type"					=> 6,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+						"fund_year"						=> $year46,
+						"fund_month_number"		=> $i+1,
+						"fund_month"						=> sprintf("%02d",$month46),
+						"fund_cost"						=> $_POST["4_6_permonth"],
+						"status"								=> 0
+					);				
+					
+					$this->personal_payment->save($payment);
+					$month46++;
 				}
 				
-				$payment = array(
-					"fund_request_support_id"	=> $id,
-					"payment_type"					=> 6,
-					"fund_support_personal_id"	=> $request["fund_child_id"],
-					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
-					"fund_year"						=> $year46,
-					"fund_month_number"		=> $i+1,
-					"fund_month"						=> sprintf("%02d",$month46),
-					"fund_cost"						=> $_POST["4_6_permonth"],
-					"status"								=> 0
-				);				
-				
-				$this->personal_payment->save($payment);
-				$month46++;
 			}
-			
 			//	-------------------------------------------------- 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก  --------------------------------------------------
-			 $payment47 = $_POST["4_7"];
-			 
-			 	$payment = array(
-					"fund_request_support_id"	=> $id,
-			 		"payment_type"					=> 7,
-					"fund_support_personal_id"	=> $request["fund_child_id"],
-					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
-					"fund_cost"						=> $payment47,
-					"status"								=> 0
-				);
-			 
-			$this->personal_payment->save($payment);
+			if($_POST["4_7"]) {
 			
+				 $payment47 = $_POST["4_7"];
+				 
+				 	$payment = array(
+						"fund_request_support_id"	=> $id,
+				 		"payment_type"					=> 7,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+						"fund_cost"						=> $payment47,
+						"status"								=> 0
+					);
+				 
+				$this->personal_payment->save($payment);
+			
+			}
 			//	-------------------------------------------------- (พิเศษ) ค่าตรวจ DNA --------------------------------------------------
-			$payment48 = $_POST["dna_charges"];
+			if($_POST["dna_charges"]) {
 			
-				$payment = array(
-					"fund_request_support_id"	=> $id,
-			 		"payment_type"					=> 8,
-					"fund_support_personal_id"	=> $request["fund_child_id"],
-					"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
-					"fund_cost"						=> $payment48,
-					"status"								=> 0
-				);
-			 
-			$this->personal_payment->save($payment);
+				$payment48 = $_POST["dna_charges"];
+				
+					$payment = array(
+						"fund_request_support_id"	=> $id,
+				 		"payment_type"					=> 8,
+						"fund_support_personal_id"	=> $request["fund_child_id"],
+						"fund_reg_personal_id"		=> $request["fund_reg_personal_id"],
+						"fund_cost"						=> $payment48,
+						"status"								=> 0
+					);
+				 
+				$this->personal_payment->save($payment);
+			
+			}
+			//	-------------------------------------------------- Close save --------------------------------------------------
 			
 		}
 		redirect("fund/personal/result");
