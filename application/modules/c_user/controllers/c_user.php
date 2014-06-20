@@ -99,23 +99,31 @@ class c_user extends Admin_Controller
 		
 		$url_parameter = GetCurrentUrlGetParameter();	
 		
+		
+		if($_POST){
 		// save permission
 		   if(!empty($_POST['group_type']) && $_POST['group_type'] == 2)
 		   {
-		   		$group_id = $this->pg_mdl->save($_POST);
+		   		$this->pg_mdl->delete('group_name', $_POST['id']);
+		   		$pg = array('group_type' => 2);
+		   		$group_id = $this->pg_mdl->save($pg);
 				$vals = array();
 				$actions = array('action_view', 'action_add', 'action_edit', 'action_delete', 'action_extra1', 'action_extra2', 'action_extra3');
 				$this->pd_mdl->delete('permission_group_id', $group_id);
+				$_POST['permission_group_id'] = $group_id;
 				foreach($actions as $action)
 				{
-					foreach($_POST[$action] as $system_id => $permissions)
+					if(isset($_POST[$action]))
 					{
-						foreach($permissions as $permission_id => $value)
+						foreach($_POST[$action] as $system_id => $permissions)
 						{
-							$vals[$permission_id]['system_id'] = $system_id;
-							$vals[$permission_id]['permission_group_id'] = $group_id;
-							$vals[$permission_id]['permission_id'] = $permission_id;
-							$vals[$permission_id][$action] = $value;
+							foreach($permissions as $permission_id => $value)
+							{
+								$vals[$permission_id]['system_id'] = $system_id;
+								$vals[$permission_id]['permission_group_id'] = $group_id;
+								$vals[$permission_id]['permission_id'] = $permission_id;
+								$vals[$permission_id][$action] = $value;
+							}
 						}
 					}
 				}
@@ -124,13 +132,15 @@ class c_user extends Admin_Controller
 					$this->pd_mdl->save($val);
 				}
 		   }		
-		
-		if($_POST){
+		   
 		   $_POST['password'] = $_POST['password'] !='' ? $_POST['password'] :$_POST['hdpassword']; 		   
 		   $_POST['registerdate'] =  $_POST['registerdate']=='' ? th_to_stamp(date("d-m-Y H:i:s"),TRUE) : $_POST['registerdate'];
 		   $_POST['updatedate'] = th_to_stamp(date("d-m-Y H:i:s"),TRUE);
-		   $data['status']= 1;		   		   		   				
+		   $data['status'] = 1;		   		   		   				
 		   $id = $this->users->save($_POST);
+		   
+		   // update permission custom group name = user_id
+		   if(!empty($_POST['group_type']) && $_POST['group_type'] == 2) $this->pg_mdl->save(array('id' => $group_id, 'group_name' => $id));
 		   
 		   set_notify('success', lang('save_data_complete'));
 		   

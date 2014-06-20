@@ -84,7 +84,7 @@ $(document).ready(function(){
 </script>
 
 <h3>ข้อมูลผู้ใช้งาน (เพิ่ม / แก้ไข)</h3>
-
+<form name="fmUser" method="post" action="c_user/save<?=$url_parameter;?>">
 <div id="tabs" style="margin-top: 20px;">
 	<ul>
 		<li><a href="#tab-1">ข้อมูลผู้ใช้งาน</a></li>
@@ -92,7 +92,7 @@ $(document).ready(function(){
 	</ul>
 
 <div id="tab-1">
-<form name="fmUser" enctype="multipart/form-data"  method="post" action="c_user/save<?=$url_parameter;?>">
+
 
 <table class="tbadd">
   <th>ชื่อ - นามสกุล<span class="Txt_red_12"> *</span></th>
@@ -218,12 +218,13 @@ $(document).ready(function(){
 					<?php echo form_dropdown('permission_group_id', get_option('id', 'group_name', 'permission_group', 'group_type = 1'), $result['permission_group_id']); ?></td>
 			</tr>
 		</table>
-		</form>
+		
 		<div id="permission"></div>
 		
 	</div>
 	
 </div>
+</form>
 <script src="http://jquery-loadmask.googlecode.com/svn/trunk/src/jquery.loadmask.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	$(function(){
@@ -236,14 +237,12 @@ $(document).ready(function(){
 			});
 		});
 		$('[name=group_type]').each(function(i, index){
-			if($(index).attr('checked') == true && $(index).val() == 1) {
-				$("#permission").html("Waiting...");
-				var pg_id = ($('[name=group_type]:checked').val() == 1) ? $('[name=permission_group_id]').val() : null;
-				$.get('user/permission/ajax_get/' + pg_id, function(data){
+
+				$.get('user/permission/ajax_get/' + <?php echo $result['permission_group_id']; ?>, function(data){
 					$('#permission').html(data);
 					$("#permission").unmask();
 				});
-			}
+			
 		});
 	});
 </script>

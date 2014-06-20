@@ -30,7 +30,7 @@ class Permission extends Admin_Controller {
 	
 	public function index()
 	{
-		$data['result'] = $this->pg_mdl->get();
+		$data['result'] = $this->pg_mdl->where('group_type = 1')->get();
 		$this->template->build('permission/index', $data);
 	}
 	
