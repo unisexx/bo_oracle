@@ -128,6 +128,8 @@
 	$(document).ready(function(){
 		
 		$("#province_id").live("change",function(){
+			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
+			$("#span_district").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#province_id").val();
 			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
@@ -137,6 +139,7 @@
 		})
 		
 		$("#amphur_id").live("change",function(){
+			$("#span_district").html('<img src="images/ajax-loader.gif" />');
 			var amphur_id = $("#amphur_id").val();
 			$.get("fund/get_district/"+amphur_id,function(data) {
 				$("#span_district").html(data)
@@ -144,6 +147,7 @@
 		})
 		
 		<?php if($value["province_id"]):?>
+			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
 			var is_province_id = <?php echo $value["province_id"]?>;
 			$.get("fund/get_amphur/"+is_province_id,function(data) {
 				$("#span_amphur").html(data)
@@ -151,6 +155,7 @@
 			})
 			
 				<?php if($value["amphur_id"]):?>
+				$("#span_district").html('<img src="images/ajax-loader.gif" />');
 				var is_amphur_id = <?php echo $value["amphur_id"]?>;
 				$.get("fund/get_district/"+is_amphur_id,function(data) {
 					$("#span_district").html(data)
@@ -161,6 +166,8 @@
 		<?php endif?>
 		
 		$("#office_province_id").live("change",function(){
+			$("#span_amphur_office").html('<img src="images/ajax-loader.gif" />');
+			$("#span_district_office").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#office_province_id").val();
 			var clear_district_id = "<select name='office_district_id' id='office_district_id'><option value='0' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
@@ -172,6 +179,7 @@
 		})
 		
 		$("#office_amphur_id").live("change",function(){
+			$("#span_district_office").html('<img src="images/ajax-loader.gif" />');
 			var amphur_id = $("#office_amphur_id").val();
 			$.get("fund/get_district/"+amphur_id,function(data) {
 				$("#span_district_office").html(data);
@@ -181,6 +189,7 @@
 		})
 		
 		<?php if($value["office_province_id"]):?>
+			$("#span_amphur_office").html('<img src="images/ajax-loader.gif" />');
 			var is_office_province_id = <?php echo $value["office_province_id"]?>;
 			$.get("fund/get_amphur/"+is_office_province_id,function(data) {
 				$("#span_amphur_office").html(data)
@@ -190,6 +199,7 @@
 			})
 			
 				<?php if($value["office_amphur_id"]):?>
+				$("#span_district_office").html('<img src="images/ajax-loader.gif" />');
 				var is_office_amphur_id = <?php echo $value["office_amphur_id"]?>;
 				$.get("fund/get_district/"+is_office_amphur_id,function(data) {
 					$("#span_district_office").html(data)

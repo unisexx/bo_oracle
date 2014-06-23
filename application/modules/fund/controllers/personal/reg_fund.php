@@ -59,8 +59,16 @@ class Reg_Fund extends Fund_Controller {
 	public function delete($id)
 	{
 		if($id) {
-			$this->reg_personal->delete($id);
+			$chk_used = $this->reg_personal->get_row($id);
+			
+			if(@$chk_used["id"]==false) {
+				$delete = $this->reg_personal->delete($id);
+			} else {
+				$this->session->set_flashdata("error",1);
+				$this->session->set_flashdata("msg","ไม่สามารถลบได้เนื่องจากได้ลงทะเบียนขอรับเงินสนับสนุนแล้ว");
+			}
 		}
+		redirect("fund");
 	}
 	
 }

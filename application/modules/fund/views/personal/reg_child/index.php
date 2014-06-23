@@ -3,11 +3,11 @@
 <div id="search">
 	<div id="searchBox">
 		<form method="get" >
-  		<input type="text" name="textfield3" id="textfield3"  style="width:250px;" placeholder="ชื่อเด็ก" />
+  		<input type="text" name="keyword" id="keyword"  style="width:250px;" placeholder="ชื่อเด็ก" />
   		
   		<?php echo form_dropdown("p",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$_GET["p"],NULL,"-- เลือกจังหวัด --",0)?>
   		
-		<button type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" ></button>
+		<button type="submit" id="button9" title="ค้นหา" value=" " class="btn_search" ></button>
   		</form>
   	</div>
 </div>

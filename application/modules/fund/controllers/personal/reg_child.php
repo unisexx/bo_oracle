@@ -16,8 +16,19 @@ class Reg_Child extends Fund_Controller {
 	
 	public function index() 
 	{
+		$where = " 1=1 ";
 		
-		$data['variable'] = $this->fund_child->get();
+		if(@$_GET["p"]) {
+			$where .= " AND PROVINCE_ID = ".$_GET["p"];
+		}
+		
+		if(@$_GET["keyword"]) {
+			$where .= " AND (FIRSTNAME LIKE '%".$_GET["keyword"]."%' OR LASTNAME LIKE '%".$_GET["keyword"]."%')";
+		}
+		
+		$sql = "SELECT * FROM FUND_REG_PERSONAL WHERE ".$where;
+		
+		$data['variable'] = $this->fund_child->get($sql);
 		$data['pagination'] = $this->fund_child->pagination();
 		$this->template->build("personal/reg_child/index", $data);
 	}
@@ -47,7 +58,17 @@ class Reg_Child extends Fund_Controller {
 	
 	public function delete($id)
 	{
-		
+		if($id) {
+			$chk_used = $this->fund_child->get_row($id);
+			
+			if(@$chk_used["id"]==false) {
+				$delete = $this->fund_child->delete($id);
+			} else {
+				$this->session->set_flashdata("error",1);
+				$this->session->set_flashdata("msg","ไม่สามารถลบได้เนื่องจากได้ลงทะเบียนขอรับเงินสนับสนุนแล้ว");
+			}
+		}
+		@redirect("fund");
 	}
 	
 }

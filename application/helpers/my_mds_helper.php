@@ -551,10 +551,10 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 						where result.mds_set_metrics_id = '".$metrics_id."'
 									and  (mds_set_metrics_keyer.keyer_users_id = '".$users_keyer."' or mds_set_metrics_keyer.change_keyer_users_id = '".$users_keyer."' )
 									order by result.id asc ";
-		$result_chk = $CI->db->getrow($sql_result);
+		$result_chk = $CI->db->getarray($sql_result);
 		dbConvert($result_chk);
 		
-		if(@$result_chk['id'] == ''){
+		if(count($result_chk) == 0){
 				$sql_chk_users="SELECT MIN(KEYER.ROUND_MONTH) AS MIN_MONTH
 								FROM MDS_SET_METRICS_KEYER KEYER 
 								LEFT JOIN MDS_METRICS_RESULT RESULT ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
@@ -602,19 +602,16 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 			}
 			$data['round_month'] = $chk_metrics_start;
 		}else{
-			//var_dump($result_chk);
-			//echo "<HR/>";
-			//foreach ($result_chk as $key => $chk) {
+			foreach ($result_chk as $key => $chk) {
 				if($chk['control_status'] == '' && $chk['kpr_status'] == ''){
-					$data['round_month'] = $result_chk['round_month'];
+					$data['round_month'] = $result_chk['round_month']['0'];
 					$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบ ".$result_chk['round_month']." เดือน ยังไม่มีการตรวจรับรอง";
 				}else if($chk['control_status'] == '1' && $chk['kpr_status'] == ''){
-						
-					$data['round_month'] = $result_chk['round_month'];
+					$data['round_month'] = $result_chk['round_month']['0'];
 					$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบ ".$result_chk['round_month']."ไม่ผ่านการอนุมัติ";
 					
 				}else if($chk['control_status'] == '1' && $chk['kpr_status'] == '1'){
-					if($result_chk['round_month'] < '12'){
+					if(@$result_chk['round_month']['0'] < '12'){
 						// หาว่ารอบที่รับผิดชอบรอบถัดไปคือเดือนไหน
 						$sql_round_month = "select mds_set_metrics_keyer.change_keyer_users_id ,mds_set_metrics_keyer.round_month as keyer_round_month,result.* ,mds_set_metrics.metrics_cancel
 												from mds_set_metrics 
@@ -631,7 +628,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 						if($data['round_month'] > '6' && $data['round_month'] != '' && ($data['round_month'] < @$result_round_month['metrics_cancel'])){
 							$chk_metrics_reound_month = @$result_round_month['keyer_round_month']-3;
 							// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
-							echo $chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
+							$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
 												 FROM  MDS_SET_METRICS_KEYER KEYER
 												 LEFT JOIN MDS_METRICS_RESULT RESULT  ON KEYER.MDS_SET_METRICS_ID = RESULT.MDS_SET_METRICS_ID 
 															AND KEYER.ROUND_MONTH = RESULT.ROUND_MONTH AND KEYER.KEYER_USERS_ID = RESULT.KEYER_USERS_ID
@@ -666,7 +663,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 						$data['error'] = "ท่านทำการกรอกข้อมูลถึงรอบ 12 เดือนแล้ว ไม่สามารถเพิ่มผลการปฎิบัติราชการได้";
 					}	
 				}
-			//}
+			}
 		}
 		
 	}
