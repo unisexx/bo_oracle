@@ -1,7 +1,10 @@
 <h3>บันทึก ผลการจ่ายเงินขอรับเงินสนับสนุน กองทุนเด็กรายบุคคล</h3>
 
 <div class="topicDetail">
-	ปีงบประมาณ <span>2557</span> จังหวัด <span>นนทบุรี</span>	ชื่อผู้รับ (เด็ก)<span>ด.ช.ชูศักดิ์ เกียรติเฉลิมคุณ	</span> ชื่อผู้ขอ  <span>นายสมหวัง จตุรงค์ล้ำเลิศ</span>
+	<?php
+		$province = $this->province->get_row($value["province_id"]);
+	?>
+	ปีงบประมาณ <span><?php echo $value["year_budget"]?></span> จังหวัด <span><?php echo $province["title"]?></span>	ชื่อผู้รับ (เด็ก)<span><?php echo $value["fund_child_name"]?></span> ชื่อผู้ขอ  <span><?php echo $value["fund_reg_personal_name"]?></span>
 </div>
 
 <table class="tblist">
@@ -43,6 +46,9 @@
 					if($value41["status"]==1) {
 						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
 					}
+					if($value41["status"]==2) {
+						$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+					}
 					
 					if($key41%2==0) {
 						$odd = " odd";
@@ -55,8 +61,8 @@
 			<td><?php echo $value41["fund_year"]+543?></td>
 			<td><?php echo month_th($value41["fund_month"])?></td>
 			<td><?php echo number_format($value41["fund_cost"])?></td>
-			<td style="text-align: center;" ><?php echo $status?></td>
-			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" ><?php if($value41["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($value41["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
 				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value41["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
@@ -76,44 +82,41 @@
 		<td>&nbsp;</td>
 	</tr>
 	
-		<?php if(empty($variable42)):?>
+		<?php if(empty($variable42_1)):?>
 		<tr>
 			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
 		</tr>
 		<?php
 			else:
-				foreach ($variable42 as $key42 => $value42):
+				foreach ($variable42_1 as $key42_1 => $value42_1):
 					$page = 0;
 					$status = "รอดำเนินการ";
 					
 					if(@$_GET["page"]) {
 						$page = ($_GET["page"]-1)*20;
 					}
-					$number = $page+($key42+1);
-					$province = $this->province->get_row($value42["province_id"]);
+					$number = $page+($key42_1+1);
+					$province = $this->province->get_row($value42_1["province_id"]);
 					
-					if($value42["status"]==0) {
+					if($value42_1["status"]==0) {
 						$status = "รอดำเนินการ";
 					}
-					if($value42["status"]==1) {
+					if($value42_1["status"]==1) {
 						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
 					}
-					
-					if($key41%2==0) {
-						$odd = " odd";
-					} else {
-						$odd = null;
+					if($value42_1["status"]==2) {
+						$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
 					}
 		?>
 		<tr>
 			<td>ปีที่ <?php echo $number?></td>
 			<td></td>
 			<td></td>
-			<td><?php echo number_format($value41["fund_cost"])?></td>
-			<td style="text-align: center;" ><?php echo $status?></td>
-			<td style="text-align: center;" >&nbsp;</td>
+			<td><?php echo number_format($value42_1["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($value42_1["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($value42_1["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
-				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value42["id"]?>" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value42_1["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
 				</a>
 			</td>
@@ -127,6 +130,48 @@
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
+	
+		<?php if(empty($variable42_2)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable42_2 as $key42_2 => $value42_2):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key42_2+1);
+					$province = $this->province->get_row($value42_2["province_id"]);
+					
+					if($value42_2["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value42_2["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+					if($value42_2["status"]==2) {
+						$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+					}
+		?>
+		<tr>
+			<td>ปีที่ <?php echo $number?></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($value42_2["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($value42_2["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($value42_2["status"]==2) echo $status?></td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value42_2["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
 		
 	<tr class="odd">
 		<td colspan="4">อาชีวศึกษา</td>
@@ -134,6 +179,48 @@
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
+	
+		<?php if(empty($variable42_3)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php
+			else:
+				foreach ($variable42_3 as $key42_3 => $value42_3):
+					$page = 0;
+					$status = "รอดำเนินการ";
+					
+					if(@$_GET["page"]) {
+						$page = ($_GET["page"]-1)*20;
+					}
+					$number = $page+($key42_3+1);
+					$province = $this->province->get_row($value42_3["province_id"]);
+					
+					if($value42_3["status"]==0) {
+						$status = "รอดำเนินการ";
+					}
+					if($value42_3["status"]==1) {
+						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+					}
+					if($value42_3["status"]==2) {
+						$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+					}
+		?>
+		<tr>
+			<td>ปีที่ <?php echo $number?></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($value42_3["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($value42_3["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($value42_3["status"]==2) echo $status?></td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value42_3["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endforeach?>
+		<?php endif?>
 
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(3) ทุนประกอบอาชีพ/ค่ารักษาพยาบาล</td>
@@ -143,38 +230,32 @@
 		<tr>
 			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
 		</tr>
-		<?php
+		<?php 
 			else:
-				foreach ($variable43 as $key43 => $value43):
-					$page = 0;
+				
+				if($variable43["status"]==0) {
 					$status = "รอดำเนินการ";
-					
-					if(@$_GET["page"]) {
-						$page = ($_GET["page"]-1)*20;
-					}
-					$number = $page+($key43+1);
-					
-					if($value43["status"]==0) {
-						$status = "รอดำเนินการ";
-					}
-					if($value43["status"]==1) {
-						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
-					}
+				}
+				if($variable43["status"]==1) {
+					$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+				}
+				if($variable43["status"]==2) {
+					$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+				}
 		?>
 		<tr>
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><?php echo number_format($value43["fund_cost"])?></td>
-			<td style="text-align: center;" ><?php echo $status?></td>
-			<td style="text-align: center;" >&nbsp;</td>
+			<td><?php echo number_format($variable43["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($variable43["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($variable43["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
-				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value43["id"]?>" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $variable43["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
 				</a>
 			</td>
 		</tr>
-		<?php endforeach?>
 		<?php endif?>
 		
 	<tr class="topic">
@@ -185,38 +266,32 @@
 		<tr>
 			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
 		</tr>
-		<?php
+		<?php 
 			else:
-				foreach ($variable44 as $key44 => $value44):
-					$page = 0;
+				
+				if($variable44["status"]==0) {
 					$status = "รอดำเนินการ";
-					
-					if(@$_GET["page"]) {
-						$page = ($_GET["page"]-1)*20;
-					}
-					$number = $page+($key44+1);
-					
-					if($value43["status"]==0) {
-						$status = "รอดำเนินการ";
-					}
-					if($value43["status"]==1) {
-						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
-					}
+				}
+				if($variable44["status"]==1) {
+					$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+				}
+				if($variable44["status"]==2) {
+					$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+				}
 		?>
 		<tr>
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><?php echo number_format($value44["fund_cost"])?></td>
-			<td style="text-align: center;" ><?php echo $status?></td>
-			<td style="text-align: center;" >&nbsp;</td>
+			<td><?php echo number_format($variable44["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($variable44["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($variable44["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
-				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value44["id"]?>" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $variable44["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
 				</a>
 			</td>
 		</tr>
-		<?php endforeach?>
 		<?php endif?>
 		
 	<tr class="topic">
@@ -245,6 +320,9 @@
 					if($value45["status"]==1) {
 						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
 					}
+					if($value45["status"]==2) {
+						$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+					}
 					
 					if($key45%2==0) {
 						$odd = " odd";
@@ -257,8 +335,8 @@
 			<td><?php echo $value45["fund_year"]+543?></td>
 			<td><?php echo month_th($value45["fund_month"])?></td>
 			<td><?php echo number_format($value45["fund_cost"])?></td>
-			<td style="text-align: center;" ><?php echo $status?></td>
-			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" ><?php if($value45["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($value45["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
 				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value45["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
@@ -294,6 +372,9 @@
 					if($value46["status"]==1) {
 						$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
 					}
+					if($value46["status"]==2) {
+						$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+					}
 					
 					if($key46%2==0) {
 						$odd = " odd";
@@ -306,8 +387,8 @@
 			<td><?php echo $value46["fund_year"]+543?></td>
 			<td><?php echo month_th($value46["fund_month"])?></td>
 			<td><?php echo number_format($value46["fund_cost"])?></td>
-			<td style="text-align: center;" ><?php echo $status?></td>
-			<td style="text-align: center;" >&nbsp;</td>
+			<td style="text-align: center;" ><?php if($value46["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($value46["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
 				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value46["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
@@ -320,27 +401,75 @@
 	<tr class="topic">
 		<td colspan="7">ข้อ 4(7) ค่าใช้จ่ายในการให้ความรู้/ฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก</td>
 	</tr>
-	<tr>
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable47)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php 
+			else:
+				
+				if($variable47["status"]==0) {
+					$status = "รอดำเนินการ";
+				}
+				if($variable47["status"]==1) {
+					$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+				}
+				if($variable47["status"]==2) {
+					$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+				}
+		?>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($variable47["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($variable47["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($variable47["status"]==2) echo $status?></td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $variable47["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endif?>
+		
 	<tr class="topic">
 		<td colspan="7">(พิเศษ) ค่าตรวจ DNA</td>
 	</tr>
-	<tr>
-		<td>1</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	</tr>
+	
+		<?php if(empty($variable48)):?>
+		<tr>
+			<td colspan="7" class="text-center" >- ไม่มีข้อมูล -</td>
+		</tr>
+		<?php 
+			else:
+				
+				if($variable48["status"]==0) {
+					$status = "รอดำเนินการ";
+				}
+				if($variable48["status"]==1) {
+					$status = "<img src=\"images/fund/ico_check.png\" width=\"24\" height=\"24\" />";
+				}
+				if($variable48["status"]==2) {
+					$status = "<img src=\"images/fund/ico_warning.png\" width=\"24\" height=\"24\" />";
+				}
+		?>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><?php echo number_format($variable48["fund_cost"])?></td>
+			<td style="text-align: center;" ><?php if($variable48["status"]!=2) echo $status?></td>
+			<td style="text-align: center;" ><?php if($variable48["status"]==2) echo $status?></td>
+			<td style="text-align: center;" >
+				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $variable48["id"]?>" >
+					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
+				</a>
+			</td>
+		</tr>
+		<?php endif?>
+
 </table>
 
 

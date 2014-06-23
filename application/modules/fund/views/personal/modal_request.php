@@ -67,6 +67,7 @@
 			
 			$("#personal_id", window.parent.document).val("");
 			$("#personal_id", window.parent.document).val(id);
+			parent.$.colorbox.close();
 	 	});
 		
 	});

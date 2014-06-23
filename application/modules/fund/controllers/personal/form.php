@@ -26,7 +26,7 @@ class Form extends Fund_Controller {
 	{
 		if($_POST) {
 			
-			$_POST["date_request"] = date_to_mysql($_POST["date_request"]);
+			$_POST["date_request"] = date_to_mysql($_POST["date_request"],true);
 			$_POST["fund_child_id"] = $_POST["child_id"];
 			$_POST["fund_child_name"] = $_POST["child_name"];
 			
@@ -45,14 +45,14 @@ class Form extends Fund_Controller {
 	
 	public function modal_child()
 	{
-		$data["variable"] = $this->fund_child->get();
+		$data["variable"] = $this->fund_child->limit(15)->get();
 		$data["pagination"] = $this->fund_child->pagination();
 		$this->load->view("personal/modal_child",$data);
 	}
 	
 	public function modal_request()
 	{
-		$data["variable"] = $this->reg_personal->get();
+		$data["variable"] = $this->reg_personal->limit(15)->get();
 		$data["pagination"] = $this->reg_personal->pagination();
 		$this->load->view("personal/modal_request",$data);
 	}

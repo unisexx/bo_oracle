@@ -63,8 +63,8 @@
 		<tr>
 			<th>มติที่ประชุมครั้งที่ / ลงวันที่<span class="Txt_red_12"> *</span></th>
 			<td>
-				<input name="metting_number" type="text" id="metting_number" value="<?php echo $value["meeting_number"]?>" style="width:50px;"/> /
-				<input type="text" class="datepicker" name="metting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
+				<input type="text" id="meeting_number" name="meeting_number" value="<?php echo $value["meeting_number"]?>" style="width:50px;"/> /
+				<input type="text" class="datepicker" name="meeting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
 			</td>
 		</tr>
 		<tr>
@@ -125,14 +125,51 @@
 				<th>คำสั่งศาล  <span class="Txt_red_12">*</span></th>
 				<td>
 					<select name="command_status" id="command_status" >
-						<option value="0">ไม่มีคำสั่งศาล</option>
-						<option value="1">มีคำสั่งศาล</option>
+						<option value="0" <?php if($value["command_status"]==0) echo "selected"?> >ไม่มีคำสั่งศาล</option>
+						<option value="1" <?php if($value["command_status"]==1) echo "selected"?> >มีคำสั่งศาล</option>
 					</select>
 					
 					<div id="commandFile" class="boxAttachfile" <?php if(@$value["command_status"]==0) echo "style=\"display: none;\""?> >
-						<p><span>แนบคำสั่งศาล</span> <input name="file_command" type="file" /></p>
-						<p><span>แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)</span> <input name="file_idcard_child" type="file" /></p>
-						<p><span>แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)</span> <input name="file_idcard_request" type="file" /></p>
+						<?php if($value["file_command"]):?>
+							<p>
+								<span style="width: auto;" >
+									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="คำสั่งศาล" >
+										<img src="images/btn_saveform.png" />
+									</a>
+								</span>
+								คำสั่งศาล
+							</p>
+						<?php else:?>
+							<p><span>แนบคำสั่งศาล</span> <input name="file_command" type="file" accept="application/pdf,application/msword" /></p>
+						<?php endif?>
+						
+						<?php if($value["file_command"]):?>
+							<p>
+								<span style="width: auto;" >
+									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)" >
+										<img src="images/btn_saveform.png" />
+									</a>
+								</span>
+								แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)
+							</p>
+						<?php else:?>
+							<p><span>แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)</span> <input name="file_idcard_child" type="file" accept="application/pdf,application/msword" /></p>
+						<?php endif?>
+						
+						<?php if($value["file_idcard_request"]):?>
+							<p>
+								<span style="width: auto;" >
+									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_idcard_request"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)" >
+										<img src="images/btn_saveform.png" />
+									</a>
+								</span>
+								แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)
+							</p>
+						<?php else:?>
+							<p><span>แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)</span> <input name="file_idcard_request" type="file" accept="application/pdf,application/msword" /></p>
+						<?php endif?>
+						
+						
 					</div>
 				</td>
 			</tr>
@@ -148,13 +185,13 @@
 				
 					<span style="margin-left:20px; display:block;">
 						ตั้งแต่เดือน 
-							<?php echo form_dropdown("4_1_start_month",get_month(),null,"id=\"month41_start\" class=\"calculate-number\" data-target=\"1\" ")?>
+							<?php echo form_dropdown("4_1_start_month",get_month(),$value["4_1_start_month"],"id=\"month41_start\" class=\"calculate-number\" data-target=\"1\" ","-- เลือกเดือน --")?>
 						
 						พ.ศ.
 							<?php echo form_dropdown("4_1_start_year",get_year(),$value["4_1_start_year"],"id=\"year41_start\" class=\"calculate-number\" data-target=\"1\"","-- เลือกปี --")?>
 							
 						ถึง เดือน
-							<?php echo form_dropdown("4_1_end_month",get_month(),null,"id=\"month41_end\" class=\"calculate-number\" data-target=\"1\"")?>
+							<?php echo form_dropdown("4_1_end_month",get_month(),$value["4_1_end_month"],"id=\"month41_end\" class=\"calculate-number\" data-target=\"1\"","-- เลือกเดือน --")?>
 							
 						พ.ศ.
 							<?php echo form_dropdown("4_1_end_year",get_year(),$value["4_1_end_year"],"id=\"year41_end\" class=\"calculate-number\" data-target=\"1\"","-- เลือกปี --")?>
@@ -254,13 +291,13 @@
 			
 					<span style="margin-left:20px; display:block;">
 						ตั้งแต่เดือน
-						<?php echo form_dropdown("4_5_start_month",get_month(),null,"id=\"month45_start\" class=\"calculate-number\" data-target=\"5\" ")?>
+							<?php echo form_dropdown("4_5_start_month",get_month(),$value["4_5_start_month"],"id=\"month45_start\" class=\"calculate-number\" data-target=\"5\" ","-- เลือกเดือน --")?>
 						
 						พ.ศ.
 							<?php echo form_dropdown("4_5_start_year",get_year(),$value["4_5_start_year"],"id=\"year45_start\" class=\"calculate-number\" data-target=\"5\"","-- เลือกปี --")?>
 							
 						ถึง เดือน
-							<?php echo form_dropdown("4_5_end_month",get_month(),null,"id=\"month45_end\" class=\"calculate-number\" data-target=\"5\" ")?>
+							<?php echo form_dropdown("4_5_end_month",get_month(),$value["4_5_end_month"],"id=\"month45_end\" class=\"calculate-number\" data-target=\"5\" ","-- เลือกเดือน --")?>
 						
 						พ.ศ.
 							<?php echo form_dropdown("4_5_end_year",get_year(),$value["4_5_end_year"],"id=\"year45_end\" class=\"calculate-number\" data-target=\"5\"","-- เลือกปี --")?>
@@ -283,13 +320,13 @@
 			
 					<span style="margin-left:20px; display:block;">
 						ตั้งแต่เดือน
-							<?php echo form_dropdown("4_6_start_month",get_month(),null,"id=\"month46_start\" class=\"calculate-number\" data-target=\"6\" ")?>
+							<?php echo form_dropdown("4_6_start_month",get_month(),$value["4_6_start_month"],"id=\"month46_start\" class=\"calculate-number\" data-target=\"6\" ","-- เลือกเดือน --")?>
 						
 						พ.ศ.
 							<?php echo form_dropdown("4_6_start_year",get_year(),$value["4_6_start_year"],"id=\"year46_start\" class=\"calculate-number\" data-target=\"6\"","-- เลือกปี --")?>
 							
 						ถึง เดือน
-							<?php echo form_dropdown("4_6_end_month",get_month(),null,"id=\"month46_end\" class=\"calculate-number\" data-target=\"6\" ")?>
+							<?php echo form_dropdown("4_6_end_month",get_month(),$value["4_6_end_month"],"id=\"month46_end\" class=\"calculate-number\" data-target=\"6\" ","-- เลือกเดือน --")?>
 						
 						พ.ศ.
 							<?php echo form_dropdown("4_6_end_year",get_year(),$value["4_6_end_year"],"id=\"year46_end\" class=\"calculate-number\" data-target=\"6\"","-- เลือกปี --")?>
@@ -317,194 +354,6 @@
 		<button type="submit" class="btn_back" title="ย้อนกลับ" onclick="history.back(-1)" ></button>
 	</div>
 	
-	<!-- This contains the hidden content for inline calls -->
-	<div style="display:none">
-		<div id="inline_example82" style="padding:10px; background:#fff;">
-			<h3>รายละเอียดการขอเงิน</h3>
-			
-			<table class="tbadd2">
-				<tr>
-			   		<th>ประเภทหลักเกณฑ์</th>
-			   		<th>จำนวนเงิน (บาท)</th>
-			    </tr>
-			    <tr>
-			       		<td>ค่าเลี้ยงดู ค่าพาหนะ หรือค่าใช้จ่ายอื่น ๆ</td>
-			       		<td><input name="textfield11" type="text" id="textfield10" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ค่าใช้จ่ายในการศึกษาและอุปกรณ์การศึกษา</td>
-			   		<td><input name="textfield12" type="text" id="textfield11" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ค่าใช้จ่ายของครอบครัวเด็ก</td>
-			   		<td><input name="textfield16" type="text" id="textfield16" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ค่าใช้จ่ายเกี่ยวกับกายอุปกรณ์แก่เด็กพิการ </td>
-			   		<td><input name="textfield17" type="text" id="textfield17" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ให้การสงเคราะห์เกี่ยวกับเครื่องอุปโภคบริโภค</td>
-			   		<td><input name="textfield18" type="text" id="textfield18" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ให้ความรู้และฝึกอบรมเกี่ยวกับวิธีการอุปการะเลี้ยงดูเด็ก</td>
-			   		<td><input name="textfield19" type="text" id="textfield19" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ให้การสงเคราะห์ครอบครัวอุปถัมภ์</td>
-			   		<td><input name="textfield20" type="text" id="textfield20" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ตามคำสั่งศาล</td>
-			   		<td><input name="textfield21" type="text" id="textfield21" style="width:120px;" /></td>
-			    </tr>
-			    <tr>
-			   		<td>ค่าตรวจ DNA</td>
-			   		<td><input name="textfield22" type="text" id="textfield22" style="width:120px;" /></td>
-			    </tr>
-		    </table>
-		
-			<div id="btnBoxAdd">
-				<button type="submit" class="btn_save" title="บันทึก" ></button>
-			</div>
-		
-		</div>
-	</div>
-	
-	
-	
-	<!-- This contains the hidden content for inline calls -->
-	<div style="display:none;">
-		<div id="inline_example83" style="padding:10px; background:#fff;">
-			
-			<h3>รายละเอียดการจ่ายเงิน</h3>
-			
-				<table class="tbadd2">
-		    		<tr>
-		      			<th>ครั้งที่</th>
-		      			<th>จำนวนเงิน (บาท)</th>
-		    			<th>วันที่จ่ายเงิน</th>
-		    			<th>ผู้รับเงิน</th>
-		    		</tr>
-		    		<tr>
-		      			<td>1</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>2</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>3</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>4</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>5</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>6</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>7</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>8</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>9</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    		<tr>
-		      			<td>10</td>
-		      			<td><input name="textfield3" type="text" id="textfield4" style="width:120px;" /></td>
-		    			<td>
-		    				<input type="text" class="datepicker" style="width:80px;" />
-	      				</td>
-		    			<td>
-		    				<input type="text" name="textfield6" id="textfield7" style="width:200px;" placeholder="ชื่อ - สกุล" />
-							<input type="text" name="textfield5" id="textfield6" style="width:350px;" placeholder="ที่อยู่" />
-						</td>
-		    		</tr>
-		    	</table>
-		
-			<div id="btnBoxAdd">
-				<button type="submit" class="btn_save" title="บันทึก" ></button>
-			</div>
-		
-		</div>
-	</div>
 </form>
 
 <script type="text/javascript" >
@@ -513,6 +362,14 @@
 		$("#date_request").click(function(){
 			$(this).val("");
 		})
+		
+		<?php if($value["status"]==1):?>
+			$(".dvReject").fadeOut();
+			$(".dvApprove").fadeIn();
+		<?php else:?>
+			$(".dvReject").fadeIn();
+			$(".dvApprove").fadeOut();
+		<?php endif?>
 		
 		$("input[name=status]").click(function(){
 			var status = $(this).val();
