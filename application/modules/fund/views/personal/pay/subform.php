@@ -173,7 +173,6 @@
 	</div>
 	
 </form>
-
 <script type="text/javascript">
 	$(document).ready(function(){
 		
@@ -182,10 +181,15 @@
 			buttonImageOnly: true, 
 			buttonImage: 'js/jquery.datepick/calendar.png'
 		});
-		
 		<?php if($value["status"]==2):?>
 			$(".boxPaid").hide();
 			$(".boxStop").show();
+		<?php elseif($value["status"]=='0'):?>
+			$(".boxPaid").hide();
+			$(".boxStop").hide();
+		<?php else:?>
+			$(".boxPaid").show();
+			$(".boxStop").hide();
 		<?php endif?>
 		
 		$("#status").live("change",function(){
@@ -218,6 +222,39 @@
 			}
 			
 		})
+		
+		$("form").validate({
+			rules: {
+				status:{required:true},
+				note:{required: function(element) {return $("[name=status]").val() == '2'} },
+				datepicker:{required: function(element) {return $("[name=status]").val() == '1'} },
+				personal_accept:{required: function(element) {return $("[name=status]").val() == '1'} },
+				title:{required: function(element) {return $("[name=personal_accept]").val() == '1'} },
+				firstname:{required: function(element) {return $("[name=personal_accept]").val() == '1'} },
+				lastname:{required: function(element) {return $("[name=personal_accept]").val() == '1'} },
+			},
+			messages:{
+				status:{required:"กรุณาระบุ สถานะ"},
+				note:{required:"กรุณาระบุ หมายเหตุ"},
+				datepicker:{required:"กรุณาระบุ วัน เดือน ปี ที่จ่ายเงิน"},
+				personal_accept:{required:"กรุณาระบุ ผู้รับเงิน"},
+				title:{required:"กรุณาระบุ ชื่อ - สกุล ให้ครบถ้วน"},
+				firstname:{required:"กรุณาระบุ ชื่อ - สกุล ให้ครบถ้วน"},
+				lastname:{required:"กรุณาระบุ ชื่อ - สกุล ให้ครบถ้วน"},
+			},
+			errorPlacement: function(error, element) 
+	   		{
+				if (element.attr("name") == "date_request" ) {
+					$('#error_span_date_request').html(error);
+				} else if (element.attr("name") == "child_name") {
+					$('#error_span_child_name').html(error);
+				} else if (element.attr("name") == "personal_name") {
+					$('#error_span_personal_name').html(error);
+				} else {
+				   error.insertAfter(element);
+				}
+			}
+		});
 		
 	})
 </script>
