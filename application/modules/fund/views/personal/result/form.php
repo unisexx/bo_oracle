@@ -369,10 +369,6 @@
 <script type="text/javascript" >
 	$(document).ready(function(){
 		
-		$("#date_request").click(function(){
-			$(this).val("");
-		})
-		
 		<?php if($value["status"]!='0'):?>
 			$('.form_1 input').attr('disabled', 'disabled');
 			$('.form_1 select').attr('disabled', 'disabled');

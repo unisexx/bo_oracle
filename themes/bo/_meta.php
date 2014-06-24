@@ -92,6 +92,14 @@
 				buttonImageOnly: true, 
 				buttonImage: 'js/jquery.datepick/calendar.png'
 			});
+		
+			$(".datepicker").click(function(){
+				$(this).val("");
+			})
+			
+			$(".datepick-trigger").click(function(){
+				$(this).prev().val("");
+			})
 
 		//----- Disabled Enter Key Submit -----
 		   var textboxes = $("input:text");

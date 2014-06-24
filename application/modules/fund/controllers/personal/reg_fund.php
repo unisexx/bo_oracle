@@ -69,7 +69,7 @@ class Reg_Fund extends Fund_Controller {
 				$delete = $this->reg_personal->delete($id);
 			}
 		}
-		redirect("fund");
+		redirect("fund/personal/reg_fund");
 	}
 	
 }
