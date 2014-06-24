@@ -9,7 +9,9 @@
 		</select>
     	
 		<input type="text" name="firstname" id="firstname" placeholder="ชื่อ" />
-    	<input type="text" name="lastname" id="lastname" placeholder="นามสกุล"/></td>
+    	<input type="text" name="lastname" id="lastname" placeholder="นามสกุล"/>
+    	<span id="error_span_name"></span>
+    </td>
 </tr>
 <tr>
 	<th>ที่อยู่ <span class="Txt_red_12">*</span></th>
@@ -39,7 +41,7 @@
 				<option value="0" >-- เลือกตำบล --</option>
 			</select>
 		</span>
-			
+		<span id="error_span_addr"></span>	
 	</td>
 </tr>
 

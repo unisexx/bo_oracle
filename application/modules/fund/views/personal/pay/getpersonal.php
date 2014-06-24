@@ -9,7 +9,8 @@
 		</select>
     	
 		<input type="text" name="firstname" id="firstname" value="<?php echo $value["firstname"]?>" disabled placeholder="ชื่อ" />
-    	<input type="text" name="lastname" id="lastname" value="<?php echo $value["lastname"]?>" disabled placeholder="นามสกุล"/></td>
+    	<input type="text" name="lastname" id="lastname" value="<?php echo $value["lastname"]?>" disabled placeholder="นามสกุล"/>
+    </td>
 </tr>
 <tr>
 	<th>ที่อยู่ <span class="Txt_red_12">*</span></th>
@@ -49,6 +50,5 @@
 					<option value="<?php echo $value["district_id"]?>" ><?php echo $district["title"]?></option>
 				</select>
 			</span>
-			
 	</td>
 </tr>
