@@ -490,6 +490,12 @@
 			$("#edu_total").val(parseInt(total));
 		})
 		
+		$.validator.setDefaults({
+			submitHandler:function(form){
+				$('.btn_save').attr('disabled', 'disabled');
+				form.submit();		      
+			}
+		});
 		$("form").validate({
 			rules: {
 				year_budget:{required:true},
@@ -501,7 +507,7 @@
 			messages:{
 				year_budget:{required:"กรุณาระบุ ปีงบประมาณ"},
 				province_id:{required:"กรุณาระบุ จังหวัด"},
-				date_request:{required:"กรุณาระบุ จังหวัด"},
+				date_request:{required:"กรุณาระบุ วันเดือนปี ที่รับเรื่อง"},
 				child_name:{required:"กรุณาระบุ ข้อมูลเด็ก"},
 				personal_name:{required:"กรุณาระบุ ข้อมูลผู้ขอ"}
 			},
