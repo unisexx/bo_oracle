@@ -8,6 +8,7 @@ class Reg_Fund extends Fund_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model("fund_form_request_model","form_request");
 		$this->load->model("fund_reg_personal_model","reg_personal");
 		$this->load->model("fund_province","province");
 		$this->load->model("fund_district","district");
@@ -59,9 +60,9 @@ class Reg_Fund extends Fund_Controller {
 	public function delete($id)
 	{
 		if($id) {
-			$chk_used = $this->reg_personal->get_row($id);
+			$chk_used = $this->form_request->get_one("FUND_REG_PERSONAL_ID","FUND_REG_PERSONAL_ID",$id);
 			
-			if(@$chk_used["id"]==false) {
+			if(!empty($chk_used)) {
 				$delete = $this->reg_personal->delete($id);
 			} else {
 				$this->session->set_flashdata("error",1);
