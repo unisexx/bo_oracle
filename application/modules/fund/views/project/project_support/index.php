@@ -27,7 +27,8 @@
   		<td nowrap="nowrap" onclick="window.location='fund/project/project_support/form/<?php echo $item['id']; ?>'"><?php echo $item['project_name'] ?></td>
   		<td nowrap="nowrap" onclick="window.location='fund/project/project_support/form/<?php echo $item['id']; ?>'"><?php echo $item['organization'] ?></td>
   		<td>
-  			<? echo anchor('fund/project/project_support/form/'.$item['id'], '<img src="images/btn_edit.png"'); ?>
+  			<? echo anchor('fund/project/project_support/form/'.$item['id'], '<img src="images/btn_edit.png">'); ?>
+  			<? echo anchor('fund/project/project_support/delete/'.$item['id'], '<img src="images/btn_delete.gif">'); ?>
   		</td>
   	</tr>
   	<?php endforeach; ?>
