@@ -45,6 +45,18 @@ class Result extends Fund_Controller {
 			//	มติที่ประชุมลงวันที่
 			$_POST["meeting_date"] = date_to_mysql($_POST["meeting_date"],true);
 
+			if(!file_exists("uploads/fund")) {
+				$old = umask(0);
+				mkdir("uploads/fund",0777);
+				umask($old);
+			}
+
+			if(!file_exists("uploads/fund/personal")) {
+				$old = umask(0);
+				mkdir("uploads/fund/personal",0777);
+				umask($old);
+			}
+
 			if(!file_exists("uploads/fund/personal/$id")) {
 				$old = umask(0);
 				mkdir("uploads/fund/personal/$id",0777);
@@ -341,8 +353,10 @@ class Result extends Fund_Controller {
 	
 	public function delete($id) {
 		if($id) {
-			$this->personal_payment->delete($id);
+			$this->form_request->delete($id);
+			$this->personal_payment->delete("FUND_REQUEST_SUPPORT_ID",$id);
 		}
+		redirect("fund/personal/result");
 	}
 	
 }

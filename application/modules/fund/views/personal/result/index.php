@@ -84,7 +84,7 @@
 			<?php if($value["status"]==0):?>
 			<a href="fund/personal/result/form/<?php echo $value["id"]?>" ><img src="images/fund/btn_approve.png" width="32" height="32" class="vtip" title="ผลการพิจารณา" /></a>
 			<?php endif?>
-			<a href="#" onclick="return confirm('<?php echo $value["id"]?>')" ><button type="button" class="btn_delete" ></button></a>
+			<a href="fund/personal/result/delete/<?php echo $value["id"]?>" onclick="return confirm('ต้องการลบผลการพิจารณา <?php echo $number?>')" ><button type="button" class="btn_delete" ></button></a>
 		</td>
 	</tr>
 	<?php endforeach?>
@@ -94,3 +94,9 @@
 </table>
 
 <?php echo @$pagination?>
+
+<?php if($this->session->flashdata("error")==1):?>
+<script type="text/javascript" >
+	alert("<?php echo $this->session->flashdata("msg")?>");
+</script>
+<?php endif?>
