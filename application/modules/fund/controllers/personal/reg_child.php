@@ -26,7 +26,7 @@ class Reg_Child extends Fund_Controller {
 			$where .= " AND (FIRSTNAME LIKE '%".$_GET["keyword"]."%' OR LASTNAME LIKE '%".$_GET["keyword"]."%')";
 		}
 		
-		$sql = "SELECT * FROM FUND_REG_PERSONAL WHERE ".$where;
+		$sql = "SELECT * FROM FUND_CHILDS WHERE ".$where;
 		
 		$data['variable'] = $this->fund_child->get($sql);
 		$data['pagination'] = $this->fund_child->pagination();
