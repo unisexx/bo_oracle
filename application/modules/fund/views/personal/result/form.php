@@ -1,6 +1,6 @@
 <h3>รายละเอียดการขอรับเงินสนับสนุน รายบุคคล</h3>
 <form action="fund/personal/result/save/<?php echo $value["id"]?>" method="post"  enctype="multipart/form-data" >
-	<table class="tbadd">
+	<table class="tbadd form_1">
 		<tr>
 			<th>ปีงบประมาณ <span class="Txt_red_12">*</span></th>
 			<td>กองทุนคุ้มครองเด็ก
@@ -14,19 +14,25 @@
 			<th>จังหวัด <span class="Txt_red_12">*</span></th>
 			<td>
 				<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value["province_id"],"id=\"province_id\"","-- เลือกจังหวัด --",null)?>
+				<span id="error_span_province_id"></span>
 			</td>
 		</tr>
 		<tr>
 			<th>วันเดือนปี ที่รับเรื่อง<span class="Txt_red_12"> *</span></th>
 			<td>
 				<input type="text" id="date_request" class="datepicker" name="date_request" value="<?php echo mysql_to_date($value["date_request"],TRUE)?>" readonly style="width:80px;" />
+				<span id="error_span_date_request"></span>
 			</td>
 		</tr>
 		<tr>
 			<th>ข้อมูลเด็ก <span class="Txt_red_12">*</span></th>
 			<td>
 				<input type="text" name="child_name" id="child_name" value="<?php echo $value["fund_child_name"]?>" readonly style="width:350px;" />
+				<?php if(@$value["status"]=='0'):?>
 				<a href="fund/personal/form/modal_child" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
+				<input type="hidden" id="child_id" name="child_id" value="<?php echo @$value["fund_child_id"]?>" />
+				<?php endif?>
+				<span id="error_span_child_name"></span>
 			</td>
 		</tr>
 		<tr>
@@ -44,7 +50,11 @@
 			<th>ข้อมูลผู้ขอ <span class="Txt_red_12">*</span></th>
 			<td>
 				<input type="text" name="personal_name" id="personal_name" value="<?php echo $value["fund_reg_personal_name"]?>" readonly style="width:350px;" />
+				<?php if(@$value["status"]=='0'):?>
 				<a href="fund/personal/form/modal_request" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
+				<input type="hidden" id="personal_id" name="personal_id" value="<?php echo @$value["fund_reg_personal_id"]?>" />
+				<?php endif?>
+				<span id="error_span_personal_name"></span>
 			</td>
 		</tr>
 		<tr>
@@ -70,7 +80,7 @@
 		<tr>
 			<th>รายละเอียดการอนุมัติ <span class="Txt_red_12">*</span></th>
 			<td>
-				<span><label><input type="radio" name="status" value="0" <?php if($value["status"]==0) echo "checked"?> />ไม่อนุมัติ</label></span>
+				<span><label><input type="radio" name="status" value="2" <?php if($value["status"]==2) echo "checked"?> />ไม่อนุมัติ</label></span>
 				<span><label><input type="radio" name="status" value="1" <?php if($value["status"]==1) echo "checked"?> />อนุมัติ</label></span>
 			</td>
 		</tr>
@@ -363,6 +373,12 @@
 			$(this).val("");
 		})
 		
+		<?php if($value["status"]!='0'):?>
+			$('.form_1 input').attr('disabled', 'disabled');
+			$('.form_1 select').attr('disabled', 'disabled');
+			$('.form_1 textarea').attr('disabled', 'disabled');
+		<?php endif?>
+		
 		<?php if($value["status"]==1):?>
 			$(".dvReject").fadeOut();
 			$(".dvApprove").fadeIn();
@@ -474,5 +490,33 @@
 			$("#edu_total").val(parseInt(total));
 		})
 		
+		$("form").validate({
+			rules: {
+				year_budget:{required:true},
+				province_id:{required:true},
+				date_request:{required:true},
+				child_name:{required:true},
+				personal_name:{required:true}
+			},
+			messages:{
+				year_budget:{required:"กรุณาระบุ ปีงบประมาณ"},
+				province_id:{required:"กรุณาระบุ จังหวัด"},
+				date_request:{required:"กรุณาระบุ จังหวัด"},
+				child_name:{required:"กรุณาระบุ ข้อมูลเด็ก"},
+				personal_name:{required:"กรุณาระบุ ข้อมูลผู้ขอ"}
+			},
+			errorPlacement: function(error, element) 
+	   		{
+				if (element.attr("name") == "date_request" ) {
+					$('#error_span_date_request').html(error);
+				} else if (element.attr("name") == "child_name") {
+					$('#error_span_child_name').html(error);
+				} else if (element.attr("name") == "personal_name") {
+					$('#error_span_personal_name').html(error);
+				} else {
+				   error.insertAfter(element);
+				}
+			}
+		});
 	})
 </script>

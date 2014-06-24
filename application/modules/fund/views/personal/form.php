@@ -20,6 +20,7 @@
 		<th>วันเดือนปี ที่รับเรื่อง<span class="Txt_red_12"> *</span></th>
 		<td>
 			<input type="text" id="date_request" class="datepicker" name="date_request" readonly style="width:80px;" />
+			<span id="error_span_date_request"></span>
 		</td>
 	</tr>
 	<tr>
@@ -27,6 +28,7 @@
 		<td>
 			<input type="text" name="child_name" id="child_name" readonly style="width:350px;" />
 			<a href="fund/personal/form/modal_child" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
+			<span id="error_span_child_name"></span>
 		</td>
 	</tr>
 	<tr>
@@ -45,6 +47,7 @@
 		<td>
 			<input type="text" name="personal_name" id="personal_name" readonly style="width:350px;" />
 			<a href="fund/personal/form/modal_request" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
+			<span id="error_span_personal_name"></span>
 		</td>
 	</tr>
 	<tr>
@@ -73,5 +76,33 @@
 			$(this).val("");
 		})
 		
+		$("form").validate({
+			rules: {
+				year_budget:{required:true},
+				province_id:{required:true},
+				date_request:{required:true},
+				child_name:{required:true},
+				personal_name:{required:true}
+			},
+			messages:{
+				year_budget:{required:"กรุณาระบุ ปีงบประมาณ"},
+				province_id:{required:"กรุณาระบุ จังหวัด"},
+				date_request:{required:"กรุณาระบุ จังหวัด"},
+				child_name:{required:"กรุณาระบุ ข้อมูลเด็ก"},
+				personal_name:{required:"กรุณาระบุ ข้อมูลผู้ขอ"}
+			},
+			errorPlacement: function(error, element) 
+	   		{
+				if (element.attr("name") == "date_request" ) {
+					$('#error_span_date_request').html(error);
+				} else if (element.attr("name") == "child_name") {
+					$('#error_span_child_name').html(error);
+				} else if (element.attr("name") == "personal_name") {
+					$('#error_span_personal_name').html(error);
+				} else {
+				   error.insertAfter(element);
+				}
+			}
+		});
 	});
 </script>
