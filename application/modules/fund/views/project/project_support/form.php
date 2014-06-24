@@ -52,6 +52,14 @@
 					organiztion_type_:{required:"กรุณาระบุข้อมูล"}
 				}
 			});
+			
+		$('.cal_project_budget').keyup(function(){
+			/*project_budget
+			budget_request
+			budget_other*/
+			
+			$('[name=project_budget]').val( ($('[name=budget_request]').val() * 1) + ($('[name=budget_other]').val() * 1));
+		});
 	});
 </script>
 	
@@ -173,14 +181,14 @@
 		<th>งบประมาณโครงการและแหล่งสนับสนุน (เฉพาะปีปัจจุบัน) <span class="Txt_red_12"> *</span></th>
 		<td>
 			<div>
-				<span style='width:240px;'>งบประมาณทั้งโครงการ </span><? echo form_input('project_budget', @$rs['project_budget'], 'style="width:180px;" disabled="disabled"'); ?>  บาท
+				<span style='width:240px;'>งบประมาณทั้งโครงการ </span><? echo form_input('project_budget', @$rs['project_budget'], 'style="width:180px; background:#EEE;" readonly="readonly"'); ?>  บาท
 			</div>
 			<div>
-				<span style='width:240px;'>งบประมาณที่ขอรับการสนับสนุน  </span><? echo form_input('budget_request', @$rs['budget_request'], 'style="width:180px;"'); ?> บาท
+				<span style='width:240px;'>งบประมาณที่ขอรับการสนับสนุน  </span><? echo form_input('budget_request', @$rs['budget_request'], 'class="cal_project_budget" style="width:180px;"'); ?> บาท
 				<span class='note'>* จะคำนวณเป็นขนาดโครงการ</span>
 			</div>
 			<div>
-				<span style='width:240px;'>งบประมาณที่ได้รับสมทบจากแหล่งอื่น*(ถ้ามี) </span><? echo form_input('budget_other', @$rs['budget_other'], 'style="width:180px;"'); ?> บาท
+				<span style='width:240px;'>งบประมาณที่ได้รับสมทบจากแหล่งอื่น*(ถ้ามี) </span><? echo form_input('budget_other', @$rs['budget_other'], 'class="cal_project_budget" style="width:180px;"'); ?> บาท
 				<span style='margin-left:20px;'> 
 					<? echo form_checkbox('budget_other_type[]',1,@$rs['budget_other_type'][1]); ?> หน่วยงานภาครัฐ 
 					<? echo form_checkbox('budget_other_type[]',2,@$rs['budget_other_type'][2]); ?> ท้องถิ่น  
