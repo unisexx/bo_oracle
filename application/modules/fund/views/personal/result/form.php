@@ -195,16 +195,16 @@
 				
 					<span style="margin-left:20px; display:block;">
 						ตั้งแต่เดือน 
-							<?php echo form_dropdown("4_1_start_month",get_month(),$value["4_1_start_month"],"id=\"month41_start\" class=\"calculate-number\" data-target=\"1\" ","-- เลือกเดือน --")?>
+							<?php echo form_dropdown("4_1_start_month",get_month(),$value["4_1_start_month"],"id=\"month41_start\" class=\"calculate-number\" data-target=\"1\" data-type=\"start-month\"","-- เลือกเดือน --")?>
 						
 						พ.ศ.
-							<?php echo form_dropdown("4_1_start_year",get_year(),$value["4_1_start_year"],"id=\"year41_start\" class=\"calculate-number\" data-target=\"1\"","-- เลือกปี --")?>
+							<?php echo form_dropdown("4_1_start_year",get_year(),$value["4_1_start_year"],"id=\"year41_start\" class=\"calculate-number\" data-target=\"1\" data-type=\"start-year\"","-- เลือกปี --")?>
 							
 						ถึง เดือน
-							<?php echo form_dropdown("4_1_end_month",get_month(),$value["4_1_end_month"],"id=\"month41_end\" class=\"calculate-number\" data-target=\"1\"","-- เลือกเดือน --")?>
+							<?php echo form_dropdown("4_1_end_month",get_month(),$value["4_1_end_month"],"id=\"month41_end\" class=\"calculate-number\" data-target=\"1\" data-type=\"end-month\"","-- เลือกเดือน --")?>
 							
 						พ.ศ.
-							<?php echo form_dropdown("4_1_end_year",get_year(),$value["4_1_end_year"],"id=\"year41_end\" class=\"calculate-number\" data-target=\"1\"","-- เลือกปี --")?>
+							<?php echo form_dropdown("4_1_end_year",get_year(),$value["4_1_end_year"],"id=\"year41_end\" class=\"calculate-number\" data-target=\"1\" data-type=\"end-year\"","-- เลือกปี --")?>
 					</span>
 				</td>
 			</tr>
@@ -301,16 +301,16 @@
 			
 					<span style="margin-left:20px; display:block;">
 						ตั้งแต่เดือน
-							<?php echo form_dropdown("4_5_start_month",get_month(),$value["4_5_start_month"],"id=\"month45_start\" class=\"calculate-number\" data-target=\"5\" ","-- เลือกเดือน --")?>
+							<?php echo form_dropdown("4_5_start_month",get_month(),$value["4_5_start_month"],"id=\"month45_start\" class=\"calculate-number\" data-target=\"5\" data-type=\"start-month\"","-- เลือกเดือน --")?>
 						
 						พ.ศ.
-							<?php echo form_dropdown("4_5_start_year",get_year(),$value["4_5_start_year"],"id=\"year45_start\" class=\"calculate-number\" data-target=\"5\"","-- เลือกปี --")?>
+							<?php echo form_dropdown("4_5_start_year",get_year(),$value["4_5_start_year"],"id=\"year45_start\" class=\"calculate-number\" data-target=\"5\" data-type=\"start-year\"","-- เลือกปี --")?>
 							
 						ถึง เดือน
-							<?php echo form_dropdown("4_5_end_month",get_month(),$value["4_5_end_month"],"id=\"month45_end\" class=\"calculate-number\" data-target=\"5\" ","-- เลือกเดือน --")?>
+							<?php echo form_dropdown("4_5_end_month",get_month(),$value["4_5_end_month"],"id=\"month45_end\" class=\"calculate-number\" data-target=\"5\" data-type=\"end-month\"","-- เลือกเดือน --")?>
 						
 						พ.ศ.
-							<?php echo form_dropdown("4_5_end_year",get_year(),$value["4_5_end_year"],"id=\"year45_end\" class=\"calculate-number\" data-target=\"5\"","-- เลือกปี --")?>
+							<?php echo form_dropdown("4_5_end_year",get_year(),$value["4_5_end_year"],"id=\"year45_end\" class=\"calculate-number\" data-target=\"5\" data-type=\"end-year\"","-- เลือกปี --")?>
 					</span>
 					
 				</td>
@@ -330,16 +330,16 @@
 			
 					<span style="margin-left:20px; display:block;">
 						ตั้งแต่เดือน
-							<?php echo form_dropdown("4_6_start_month",get_month(),$value["4_6_start_month"],"id=\"month46_start\" class=\"calculate-number\" data-target=\"6\" ","-- เลือกเดือน --")?>
+							<?php echo form_dropdown("4_6_start_month",get_month(),$value["4_6_start_month"],"id=\"month46_start\" class=\"calculate-number\" data-target=\"6\" data-type=\"start-month\"","-- เลือกเดือน --")?>
 						
 						พ.ศ.
-							<?php echo form_dropdown("4_6_start_year",get_year(),$value["4_6_start_year"],"id=\"year46_start\" class=\"calculate-number\" data-target=\"6\"","-- เลือกปี --")?>
+							<?php echo form_dropdown("4_6_start_year",get_year(),$value["4_6_start_year"],"id=\"year46_start\" class=\"calculate-number\" data-target=\"6\" data-type=\"start-year\"","-- เลือกปี --")?>
 							
 						ถึง เดือน
-							<?php echo form_dropdown("4_6_end_month",get_month(),$value["4_6_end_month"],"id=\"month46_end\" class=\"calculate-number\" data-target=\"6\" ","-- เลือกเดือน --")?>
+							<?php echo form_dropdown("4_6_end_month",get_month(),$value["4_6_end_month"],"id=\"month46_end\" class=\"calculate-number\" data-target=\"6\" data-type=\"end-month\"","-- เลือกเดือน --")?>
 						
 						พ.ศ.
-							<?php echo form_dropdown("4_6_end_year",get_year(),$value["4_6_end_year"],"id=\"year46_end\" class=\"calculate-number\" data-target=\"6\"","-- เลือกปี --")?>
+							<?php echo form_dropdown("4_6_end_year",get_year(),$value["4_6_end_year"],"id=\"year46_end\" class=\"calculate-number\" data-target=\"6\" data-type=\"end-year\"","-- เลือกปี --")?>
 					</span>
 					
 				</td>
@@ -406,6 +406,51 @@
 				$("input[name=file_idcard_child]").val("");
 				$("input[name=file_idcard_request]").val("");
 			}
+		})
+		
+		$("select[data-type]").live("change",function(){
+			var target = $(this).attr("data-target");
+			var type = $(this).attr("data-type");
+			
+			if(type=="start-month"){
+				var start_month = $(this).val();
+				var rs = parseInt(start_month)+parseInt(1);
+				$("select[data-target="+target+"][data-type=end-month]").val(rs);
+			}
+			if(type=="start-year"){
+				var start_year = $(this).val();
+				var rs = parseInt(start_year)+parseInt(1);
+				$("select[data-target="+target+"][data-type=end-year]").val(rs);
+			}
+			
+			if(type=="end-month"){
+				var start_month = $("select[data-target="+target+"][data-type=start-month]").val();
+				var start_year = $("select[data-target="+target+"][data-type=start-year]").val();
+				var end_month = $(this).val();
+				var end_year = $("select[data-target="+target+"][data-type=end-year]").val();
+				
+				if(end_year<start_year) {
+					alert("ไม่สามารถเลือกปีย้อนหลังได้");
+					$(this).val(start_year);
+				}
+				if(end_year==start_year) {
+					if(end_month<start_month) {
+						alert("ไม่สามารถเลือกเดือนย้อนหลังได้");
+						$(this).val(start_month);
+					}
+				}
+				
+			}
+			if(type=="end-year"){
+				var start_year = $("select[data-target="+target+"][data-type=start-year]").val();
+				var end_year = $(this).val();
+				if(end_year<start_year) {
+					alert("ไม่สามารถเลือกปีย้อนหลังได้");
+					$(this).val(start_year);
+				}
+			}
+			
+			
 		})
 		
 		$(".calculate-number").live("change",function(){
