@@ -40,10 +40,18 @@ class Result extends Fund_Controller {
 			$_POST["id"] = $id;
 			
 			//	วันเดือนปี ที่รับเรื่อง
-			$_POST["date_request"] = date_to_mysql($_POST["date_request"],true);
+			if(!empty($_POST["date_request"])) {
+				$_POST["date_request"] = date_to_mysql($_POST["date_request"],true);
+			} else {
+				$_POST["date_request"] = date('Y-m-d');
+			}
 			
 			//	มติที่ประชุมลงวันที่
-			$_POST["meeting_date"] = date_to_mysql($_POST["meeting_date"],true);
+			if(!empty($_POST["meeting_date"])) {
+				$_POST["meeting_date"] = date_to_mysql($_POST["meeting_date"],true);
+			} else {
+				$_POST["meeting_date"] = date('Y-m-d');
+			}
 
 			if(!file_exists("uploads/fund/personal/$id")) {
 				$old = umask(0);
