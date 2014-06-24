@@ -8,6 +8,7 @@ class Reg_Child extends Fund_Controller {
 	function __construct() 
 	{
 		parent::__construct();
+		$this->load->model("fund_form_request_model","form_request");
 		$this->load->model('fund_child_model',"fund_child");
 		$this->load->model("fund_province","province");
 		$this->load->model("fund_district","district");
@@ -59,13 +60,13 @@ class Reg_Child extends Fund_Controller {
 	public function delete($id)
 	{
 		if($id) {
-			$chk_used = $this->fund_child->get_row($id);
+			$chk_used = $this->form_request->get_one("FUND_CHILD_ID","FUND_CHILD_ID",$id);
 			
-			if(@$chk_used["id"]==false) {
-				$delete = $this->fund_child->delete($id);
-			} else {
+			if(!empty($chk_used)) {
 				$this->session->set_flashdata("error",1);
 				$this->session->set_flashdata("msg","ไม่สามารถลบได้เนื่องจากได้ลงทะเบียนขอรับเงินสนับสนุนแล้ว");
+			} else {
+				$delete = $this->fund_child->delete($id);
 			}
 		}
 		@redirect("fund");
