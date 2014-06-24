@@ -30,6 +30,14 @@ Class Mds_public_sar_card extends  Mdevsys_Controller{
 		$data['urlpage'] = $this->urlpage;	
 		$condition = " 1=1 ";
 		$condition_join = '';
+		if (@$_GET['sch_budget_year'] == '') {
+			$month = date('m');
+			if ($month>'9') {
+				$_GET['sch_budget_year'] = date('Y')+544;
+			} else {
+				$_GET['sch_budget_year'] = date('Y')+543;
+			}
+		}
 		if(@$_GET['sch_budget_year'] != ''){
 			$condition .= " and mds_set_indicator.budget_year = '".@$_GET['sch_budget_year']."' ";
 		}
