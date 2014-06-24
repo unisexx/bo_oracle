@@ -51,7 +51,7 @@
 
 			<h3>บันทึกข้อมูล กองทุนเด็กรายโครงการ</h3>
 			<div class="lineico">
-				<div class="ico"><a href="fund/support_project/list_request" title="รายการ ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_project.png" width="48" height="48" alt="รายการ ขอรับเงินสนับสนุน" /><h4>รายการ ขอรับเงินสนับสนุน</h4></a></div>
+				<div class="ico"><a href="fund/project/project_support" title="รายการ ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_project.png" width="48" height="48" alt="รายการ ขอรับเงินสนับสนุน" /><h4>รายการ ขอรับเงินสนับสนุน</h4></a></div>
 				<div class="ico"><a href="fund/support_project/list_result" title="ผลการพิจารณา ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_project.png" width="48" height="48" alt="ผลการพิจารณา ขอรับเงินสนับสนุน" /><h4>ผลการพิจารณา ขอรับเงินสนับสนุน</h4></a></div>
 				
 				<div class="clear"></div>
