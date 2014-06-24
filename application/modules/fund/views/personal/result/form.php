@@ -133,7 +133,7 @@
 						<?php if($value["file_command"]):?>
 							<p>
 								<span style="width: auto;" >
-									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="คำสั่งศาล" >
+									<a href="uploads/fund/personal/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="คำสั่งศาล" >
 										<img src="images/btn_saveform.png" />
 									</a>
 								</span>
@@ -146,7 +146,7 @@
 						<?php if($value["file_command"]):?>
 							<p>
 								<span style="width: auto;" >
-									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)" >
+									<a href="uploads/fund/personal/<?php echo $value["id"]?>/result/<?php echo $value["file_command"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (เด็ก)" >
 										<img src="images/btn_saveform.png" />
 									</a>
 								</span>
@@ -159,7 +159,7 @@
 						<?php if($value["file_idcard_request"]):?>
 							<p>
 								<span style="width: auto;" >
-									<a href="uploads/fund/<?php echo $value["id"]?>/result/<?php echo $value["file_idcard_request"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)" >
+									<a href="uploads/fund/personal/<?php echo $value["id"]?>/result/<?php echo $value["file_idcard_request"]?>" title="แนบสำเนาบัตรประจำตัวประชาชน (ผู้ขอ)" >
 										<img src="images/btn_saveform.png" />
 									</a>
 								</span>

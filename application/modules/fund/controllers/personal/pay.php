@@ -70,46 +70,46 @@ class Pay extends Fund_Controller {
 					$rq = $_POST["fund_request_support_id"];
 					$type = $_POST["payment_type"];
 					
-					if(!file_exists("uploads/fund/$rq/pay")) {
+					if(!file_exists("uploads/fund/personal/$rq/pay")) {
 						$old = umask(0);
-						mkdir("uploads/fund/$rq/pay",0777);
+						mkdir("uploads/fund/personal/$rq/pay",0777);
 						umask($old);
 					}
 					
-					if(!file_exists("uploads/fund/$rq/pay/section_$type")) {
+					if(!file_exists("uploads/fund/personal/$rq/pay/section_$type")) {
 						$old = umask(0);
-						mkdir("uploads/fund/$rq/pay/section_$type",0777);
+						mkdir("uploads/fund/personal/$rq/pay/section_$type",0777);
 						umask($old);
 					}
 					
-					if(!file_exists("uploads/fund/$rq/pay/section_$type/$id")) {
+					if(!file_exists("uploads/fund/personal/$rq/pay/section_$type/$id")) {
 						$old = umask(0);
-						mkdir("uploads/fund/$rq/pay/section_$type/$id",0777);
+						mkdir("uploads/fund/personal/$rq/pay/section_$type/$id",0777);
 						umask($old);
 					}
 					
 					if(@$_FILES["file_payer"]["name"]) {
 						$file_payer = uniqid().".".pathinfo($_FILES["file_payer"]["name"], PATHINFO_EXTENSION);
 						is_uploaded_file($_FILES["file_payer"]["tmp_name"]);
-						move_uploaded_file($_FILES["file_payer"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_payer");
+						move_uploaded_file($_FILES["file_payer"]["tmp_name"], "uploads/fund/personal/$rq/pay/section_$type/$id/$file_payer");
 					}
 					
 					if(@$_FILES["file_payee"]["name"]) {
 						$file_payee = uniqid().".".pathinfo($_FILES["file_payee"]["name"], PATHINFO_EXTENSION);
 						is_uploaded_file($_FILES["file_payee"]["tmp_name"]);
-						move_uploaded_file($_FILES["file_payee"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_payee");
+						move_uploaded_file($_FILES["file_payee"]["tmp_name"], "uploads/fund/personal/$rq/pay/section_$type/$id/$file_payee");
 					}
 					
 					if(@$_FILES["file_proxy"]["name"]) {
 						$file_proxy = uniqid().".".pathinfo($_FILES["file_proxy"]["name"], PATHINFO_EXTENSION);
 						is_uploaded_file($_FILES["file_proxy"]["tmp_name"]);
-						move_uploaded_file($_FILES["file_proxy"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_proxy");
+						move_uploaded_file($_FILES["file_proxy"]["tmp_name"], "uploads/fund/personal/$rq/pay/section_$type/$id/$file_proxy");
 					}
 					
 					if(@$_FILES["file_receipt"]["name"]) {
 						$file_receipt = uniqid().".".pathinfo($_FILES["file_receipt"]["name"], PATHINFO_EXTENSION);
 						is_uploaded_file($_FILES["file_receipt"]["tmp_name"]);
-						move_uploaded_file($_FILES["file_receipt"]["tmp_name"], "uploads/fund/$rq/pay/section_$type/$id/$file_receipt");
+						move_uploaded_file($_FILES["file_receipt"]["tmp_name"], "uploads/fund/personal/$rq/pay/section_$type/$id/$file_receipt");
 					}
 					
 					$pay = array(

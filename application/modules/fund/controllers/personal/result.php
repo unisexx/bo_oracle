@@ -45,34 +45,34 @@ class Result extends Fund_Controller {
 			//	มติที่ประชุมลงวันที่
 			$_POST["meeting_date"] = date_to_mysql($_POST["meeting_date"],true);
 
-			if(!file_exists("uploads/fund/$id")) {
+			if(!file_exists("uploads/fund/personal/$id")) {
 				$old = umask(0);
-				mkdir("uploads/fund/$id",0777);
+				mkdir("uploads/fund/personal/$id",0777);
 				umask($old);
 			}
 					
-			if(!file_exists("uploads/fund/$id/result")) {
+			if(!file_exists("uploads/fund/personal/$id/result")) {
 				$old = umask(0);
-				mkdir("uploads/fund/$id/result",0777);
+				mkdir("uploads/fund/personal/$id/result",0777);
 				umask($old);
 			}
 			
 			if(@$_FILES["file_command"]["name"]) {
 				$file_command = uniqid().".".pathinfo($_FILES["file_command"]["name"], PATHINFO_EXTENSION);
 				is_uploaded_file($_FILES["file_command"]["tmp_name"]);
-				move_uploaded_file($_FILES["file_command"]["tmp_name"], "uploads/fund/$id/result/$file_command");
+				move_uploaded_file($_FILES["file_command"]["tmp_name"], "uploads/fund/personal/$id/result/$file_command");
 			}
 			
 			if(@$_FILES["file_idcard_child"]["name"]) {
 				$file_idcard_child = uniqid().".".pathinfo($_FILES["file_idcard_child"]["name"], PATHINFO_EXTENSION);
 				is_uploaded_file($_FILES["file_idcard_child"]["tmp_name"]);
-				move_uploaded_file($_FILES["file_idcard_child"]["tmp_name"], "uploads/fund/$id/result/$file_idcard_child");
+				move_uploaded_file($_FILES["file_idcard_child"]["tmp_name"], "uploads/fund/personal/$id/result/$file_idcard_child");
 			}
 			
 			if(@$_FILES["file_idcard_request"]["name"]) {
 				$file_idcard_request = uniqid().".".pathinfo($_FILES["file_idcard_request"]["name"], PATHINFO_EXTENSION);
 				is_uploaded_file($_FILES["file_idcard_request"]["tmp_name"]);
-				move_uploaded_file($_FILES["file_idcard_request"]["tmp_name"], "uploads/fund/$id/result/$file_idcard_request");
+				move_uploaded_file($_FILES["file_idcard_request"]["tmp_name"], "uploads/fund/personal/$id/result/$file_idcard_request");
 			}
 			
 			//	เปลี่ยนค่าเดือนให้ถูก
