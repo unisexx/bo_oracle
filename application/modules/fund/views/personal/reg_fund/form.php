@@ -5,7 +5,7 @@
 	<tr>
 		<th>กองทุน <span class="Txt_red_12">*</span></th>
 		<td>
-			<?php echo form_dropdown("FUND_MST_FUND_NAME_ID",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$value["fund_mst_fund_name_id"],"id=\"fund_mst_fund_name\"","-- เลือกกองทุน --",0)?>
+			<?php echo form_dropdown("FUND_MST_FUND_NAME_ID",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),@$value["fund_mst_fund_name_id"],"id=\"fund_mst_fund_name\"","-- เลือกกองทุน --")?>
 		</td>
 	</tr>
 	<tr>
@@ -16,20 +16,23 @@
 		<th>ชื่อ - สกุล <span class="Txt_red_12">*</span></th>
 		<td>
 			<select name="title" id="title">
-				<option <?php if($value["title"]==null) echo "selected"?> >-- คำนำหน้า --</option>
+				<option value="" <?php if($value["title"]==null) echo "selected"?> >-- คำนำหน้า --</option>
 				<option value="นาย" <?php if($value["title"]=="นาย") echo "selected"?> >นาย</option>
 				<option value="นางสาว" <?php if($value["title"]=="นางสาว") echo "selected"?> >นางสาว</option>
 				<option value="นาง" <?php if($value["title"]=="นาง") echo "selected"?> >นาง</option>
 			</select>
 			
 			<input type="text" name="FIRSTNAME" id="FIRSTNAME" value="<?php echo $value["firstname"]?>" placeholder="ชื่อ" />
-			<input type="text" name="LASTNAME" id="LASTNAME" value="<?php echo $value["lastname"]?>" placeholder="นามสกุล"/></td>
+			<input type="text" name="LASTNAME" id="LASTNAME" value="<?php echo $value["lastname"]?>" placeholder="นามสกุล"/>
+			<span id="error_span_name"></span>
+		</td>
 	</tr>
 	<tr>
     	<th>เพศ <span class="Txt_red_12">*</span></th>
 		<td>
 			<span><label><input type="radio" name="sex" value="ชาย" <?php if($value["sex"]=="ชาย") echo "checked"?> />ชาย</label></span>
 			<span><label><input type="radio" name="sex" value="หญิง" <?php if($value["sex"]=="หญิง") echo "checked"?> />หญิง</label></span>
+			<span id="error_span_sex"></span>
 		</td>
 	</tr>
 	<tr>
@@ -42,6 +45,7 @@
 			?>
 			<input type="text" class="datepicker" id="birthday" name="birthday" value="<?php echo mysql_to_date($value["birthday"],TRUE)?>" readonly style="width:80px;"/>
 			อายุ <input type="text" id="personal_age" style="width:50px;" value="<?php echo $value["age"]?>" readonly="readonly"/> ปี
+			<span id="error_span_birthday"></span>
 		</td>
 	</tr>
 	<tr>
@@ -57,22 +61,22 @@
       		<br />
       		
       		จังหวัด 
-			<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",null,"TITLE"),@$value["province_id"],"id=\"province_id\"","-- เลือกจังหวัด --",0)?>
+			<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",null,"TITLE"),@$value["province_id"],"id=\"province_id\"","-- เลือกจังหวัด --")?>
      		
       		อำเภอ
       		<span id="span_amphur">
 				<select name="amphur_id" id="amphur_id" >
-					<option value="0" >-- เลือกอำเภอ --</option>
+					<option value="" >-- เลือกอำเภอ --</option>
 				</select>
 			</span>
 			
 			ตำบล
       		<span id="span_district">
 				<select name="district_id" id="district_id" >
-					<option value="0" >-- เลือกตำบล --</option>
+					<option value="" >-- เลือกตำบล --</option>
 				</select>
 			</span>
-			
+			<span id="error_span_addr"></span>
 		</td>
 	</tr>
 	<tr>
@@ -131,7 +135,7 @@
 			$("#span_amphur").html('<img src="images/ajax-loader.gif" />');
 			$("#span_district").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#province_id").val();
-			var clear_district_id = "<select name='district_id' id='district_id'><option value='0' >-- เลือกตำบล --</option></select>";
+			var clear_district_id = "<select name='district_id' id='district_id'><option value='' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
 				$("#span_amphur").html(data);
 				$("#span_district").html(clear_district_id);
@@ -169,7 +173,7 @@
 			$("#span_amphur_office").html('<img src="images/ajax-loader.gif" />');
 			$("#span_district_office").html('<img src="images/ajax-loader.gif" />');
 			var province_id = $("#office_province_id").val();
-			var clear_district_id = "<select name='office_district_id' id='office_district_id'><option value='0' >-- เลือกตำบล --</option></select>";
+			var clear_district_id = "<select name='office_district_id' id='office_district_id'><option value='' >-- เลือกตำบล --</option></select>";
 			$.get("fund/get_amphur/"+province_id,function(data) {
 				$("#span_amphur_office").html(data);
 				$("#span_amphur_office select").attr("id","office_amphur_id");
@@ -222,5 +226,59 @@
 			$("#personal_age").val(age);
 		})
 		
+		$("form").validate({
+			rules: {
+				FUND_MST_FUND_NAME_ID:{required:true},
+				title:{required:true},
+				FIRSTNAME:{required:true},
+				LASTNAME:{required:true},
+				sex:{required:true},
+				birthday:{required:true},
+				ADDR_NUMBER:{required:true},
+				ADDR_MOO:{required:true},
+				ADDR_TROK:{required:true},
+				ADDR_SOI:{required:true},
+				ADDR_ROAD:{required:true},
+				province_id:{required:true},
+				amphur_id:{required:true},
+				district_id:{required:true},
+				phone:{required:true},
+			},
+			messages:{
+				FUND_MST_FUND_NAME_ID:{required:"กรุณาระบุ กองทุน"},
+				title:{required:"กรุณาระบุ ชื่อ - สกุล ให้ครบถ้วน"},
+				FIRSTNAME:{required:"กรุณาระบุ ชื่อ - สกุล ให้ครบถ้วน"},
+				LASTNAME:{required:"กรุณาระบุ ชื่อ - สกุล ให้ครบถ้วน"},
+				sex:{required:"กรุณาระบุ เพศ"},
+				birthday:{required:"กรุณาระบุ วันเกิด"},
+				ADDR_NUMBER:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				ADDR_MOO:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				ADDR_TROK:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				ADDR_SOI:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				ADDR_ROAD:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				province_id:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				amphur_id:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				district_id:{required:"กรุณาระบุ ข้อมูลที่อยู่ ให้ครบถ้วน หากข้อมูลใดไม่มี กรุณาใส่ -"},
+				phone:{required:"กรุณาระบุ เบอร์โทรศัพท์ "},
+			},
+			errorPlacement: function(error, element) 
+	   		{
+				if (element.attr("name") == "title" || element.attr("name") == "FIRSTNAME" || element.attr("name") == "LASTNAME") {
+					$('#error_span_name').html(error);
+				} else if (element.attr("name") == "sex") {
+					$('#error_span_sex').html(error);
+				} else if (element.attr("name") == "birthday") {
+					$('#error_span_birthday').html(error);
+				}  else if (
+							element.attr("name") == "ADDR_NUMBER" || element.attr("name") == "ADDR_MOO" || element.attr("name") == "ADDR_TROK" ||
+							element.attr("name") == "ADDR_SOI" || element.attr("name") == "ADDR_ROAD" || element.attr("name") == "province_id" ||
+							element.attr("name") == "amphur_id" || element.attr("name") == "district_id" 
+							) {
+					$('#error_span_addr').html(error);
+				} else {
+				   error.insertAfter(element);
+				}
+			}
+		});
 	});
 </script>
