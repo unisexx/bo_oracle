@@ -145,12 +145,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 						redirect($data['urlpage'].'/form/'.@$metrics_id);
 					}
 				}
-				 
 				  $data['round_month'] = $chk_round_month['round_month']; //รอบการส่งประเมิน
 				  //return false;
 				  $chk_keyer_indicator = chk_keyer_indicator(@$data['rs_metrics']['mds_set_indicator_id'],$data['rs_metrics']['id'],$data['round_month']);
 				  if($chk_keyer_indicator != 'Y'){
-				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในบันทึกตัวชี้วัดรอบ '.$data['round_month']); 
+				  	set_notify('error', 'ท่านไม่มีสิทธิ์ในบันทึกตัวชี้วัดรอบ '.$data['round_month'].' เดือน'); 
 				  	redirect($data['urlpage'].'/form/'.$metrics_id);
 				  }	
 				
@@ -188,13 +187,11 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				}
 				$data['rs_indicator'] = $this->indicator->get_row($data['rs_metrics']['mds_set_indicator_id']);
 				
-				
 					
 				// หา น้ำหนักของทั้งมิติ //
 				$data['weight_perc_tot'] = indicator_all_weight($data['rs_indicator']['budget_year'],$data['round_month']);
 				// หา น้ำหนักของทั้งมิติ //
 				
-				//$this->db->debug = true;
 				$chk_kpr = "select mds_set_metrics_kpr.*,
 							mds_set_position.pos_name , cnf_division.title , cnf_department.title as department_name 
 							from mds_set_metrics_kpr 
@@ -204,7 +201,6 @@ Class Mds_indicator extends  Mdevsys_Controller{
 							where mds_set_metrics_kpr.mds_set_metrics_id = '".$metrics_id."' and mds_set_metrics_kpr.round_month = '".@$data['round_month']."'";
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$data['kpr'] = @$result_kpr['0'];
-				
 				//$this->db->debug =true;
 				$chk_keyer = "select mds_set_metrics_keyer.*
 								from mds_set_metrics_keyer 
@@ -243,7 +239,6 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				$data['keyer_activity'] = @$result_keyer_activity;
 				
 				$data['rs']['keyer_users_id'] = @$data['keyer_activity']['keyer_users_id'];
-			
 		}else if($result_id != '' && $metrics_id != ''){
 				$data['rs_metrics'] = $this->metrics->get_row($metrics_id);
 				if($premit == ''){
@@ -297,7 +292,6 @@ Class Mds_indicator extends  Mdevsys_Controller{
 				// หา น้ำหนักของทั้งมิติ //
 				$data['weight_perc_tot'] = indicator_all_weight($data['rs_indicator']['budget_year'],$data['rs']['round_month']);
 				// หา น้ำหนักของทั้งมิติ //
-				
 				
 				//$this->db->debug = true;
 				$chk_kpr = "select mds_set_metrics_kpr.*,
