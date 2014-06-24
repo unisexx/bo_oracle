@@ -63,10 +63,10 @@ class Reg_Child extends Fund_Controller {
 			$chk_used = $this->form_request->get_one("FUND_CHILD_ID","FUND_CHILD_ID",$id);
 			
 			if(!empty($chk_used)) {
-				$delete = $this->fund_child->delete($id);
-			} else {
 				$this->session->set_flashdata("error",1);
 				$this->session->set_flashdata("msg","ไม่สามารถลบได้เนื่องจากได้ลงทะเบียนขอรับเงินสนับสนุนแล้ว");
+			} else {
+				$delete = $this->fund_child->delete($id);
 			}
 		}
 		@redirect("fund");
