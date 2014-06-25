@@ -1,26 +1,49 @@
 <link rel='stylesheet' type='text/css' href='css/report.css'>
 
-<h3>สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)</h3>
-<div id="search">
-<div id="searchBox">
-  <select name="select2" id="select2">
-    <option>-- ระบุจังหวัด --</option>
-  </select>
-  <select name="select" id="select">
-  	<option>-- ระบุปีงบประมาณ --</option>
-    <option>2557</option>
-    <option>2556</option>
-  </select>
-    <select name="select" id="select">
-    <option>-- ระบุครั้งที่ --</option>
-    <option>1</option>
-    <option>2</option>
-  </select>
+<?
+	function __construct() {
+		parent::__construct();
+	}
+	
+	function find_age($birth = false) {
+		if(!$birth) {
+			return false;
+		}
+		
+		$date_now = array(
+			'd'=>(date('d')*1),
+			'm'=>(date('m')*1),
+			'y'=>date('Y')
+		);
+		
+		$date_birth = array(
+			'd'=>(date('d', (strtotime($birth)))*1),
+			'm'=>(date('m', (strtotime($birth)))*1),
+			'y'=>date('Y', strtotime($birth))
+		);
+	
+		$date_now_ = gregoriantojd($date_now['m'], $date_now['d'], $date_now['y']);
+		$date_birth_ = gregoriantojd($date_birth['m'], $date_birth['d'], $date_birth['y']);
+		
+		return ceil(($date_now_ - $date_birth_)/365);
+	} //End : (f) find_age(); 
+?>
 
-      <input type="text" name="textfield" id="textfield" style="width:100px;" />
-    <img src="images/calendar.png" width="16" height="16" style="margin-right:20px;" />   
-  <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
-</div>
+<h3>สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)</h3>
+<form action='' method='get' id="search">
+	<div id="searchBox">
+		<? echo form_dropdown('province_id', get_option('ID', 'TITLE', 'fund_province order by title asc'), @$_GET['province_id'], '', '-- ระบุจังหวัด --'); ?> 
+		<? echo form_dropdown('year_budget', get_option('year_budget as a', 'year_budget as b', 'fund_request_support group by year_budget order by year_budget desc'), @$_GET['year_budget'], '', '-- ระบุปีงบประมาณ --'); ?>
+		<? echo form_dropdown('times', get_option('meeting_number as a', 'meeting_number as b', 'fund_request_support where meeting_number is not null group by meeting_number order by meeting_number asc'), @$_GET['times'], '', '-- ระบุครั้งที่ --'); ?>
+	  	
+	  	<? echo form_input(false, false, 'class="datepicker" style="width:80px;"'); ?>
+		<!--
+		<input type="text" name="textfield" id="textfield" style="width:100px;" />
+		<img src="images/calendar.png" width="16" height="16" style="margin-right:20px;" />
+		-->   
+		<input type="submit" title="ค้นหา" value=" " class="btn_search" />
+	</div>
+</form>
 
 <div id="report">
 	
@@ -59,121 +82,46 @@
 	      (ปี)</strong></th>
 	  </tr>
 	  <?
+	
+	  	$relation_type_detail = array(
+	  		1=>'บิดา/มารดา',
+	  		2=>'ญาติ',
+	  		3=>'ผู้ดูแล/อุปถัมภ์',
+	  		4=>'คนรู้จัก'
+		);
+		
+		$request_type_detail = array(
+	  		1=>'เด็กและครอบครัว',
+	  		2=>'ครอบครัวอุปถัมภ์'
+		);
+		
+		$status_detail = array(
+	  		1=>'อนุมัติ',
+	  		2=>'ไม่อนุมัติ'
+		);
+	  
 	  	$no = 0;
 	  	foreach ( $items as $item ) {
 	  		$no++;
-			echo '<pre>';
-	  		print_r($item);
-			echo '</pre>';
-			echo '<BR>';
 			?>
 			<tr>
-				<td><? echo $no; ?></td>
+				<td class='text-center'><? echo $no; ?></td>
 				<td><? echo $item['fund_reg_personal_name']; ?></td>
 				<td><? echo $item['per_idcard']; ?></td>
 				<td><? echo db2date($item['per_birth']); ?></td>
-				<td>
-					<? 
-						echo date('Y-m-d');
-						echo '<br>';
-						echo $item['per_birth'];
-					
-						echo '<HR>';
-						echo strtotime(date('Y-m-d'));
-						echo '<BR>'; 
-						echo strtotime($item['per_birth']);
-						
-						
-						echo strtotime(strtotime(date('Y-m-d')) - strtotime($item['per_birth']));
-					?>
-				</td>
-				<td>xxx</td>
+				<td class='text-center'> <? echo find_age($item['per_birth']); ?> ปี </td>
+				<td><? echo @$relation_type_detail[$item['relation_type']]; ?></td>
 				<td><? echo $item['fund_child_name']; ?></td>
 				<td><? echo $item['child_idcard']; ?></td>
 				<td><? echo db2date($item['child_birth']); ?></td>
-				<td>xxx</td>
-				<td>xxx</td>
-				<td>xxx</td>
-				<td>xxx</td>
+				<td class='text-center'><? echo find_age($item['child_birth']); ?> ปี</td>
+				<td><? echo @$request_type_detail[$item['request_type']]; ?></td>
+				<td><? echo $item['abstract']; ?></td>
+				<td><? echo @$status_detail[$item['status']]; ?></td>
 			</tr>
 			<?
 	  	}
 	  ?>
-	  <tr>
-	    <td align="center">1</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	  </tr>
-	  <tr>
-	    <td align="center">2</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	  </tr>
-	  <tr>
-	    <td align="center">3</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	  </tr>
-	  <tr>
-	    <td align="center">4</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	  </tr>
-	  <tr>
-	    <td align="center"> 5</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	  </tr>
 	</table>
 	<div style="margin:0 auto; width:100%">
 	    <div style="float:left; margin-top:30px; width:270px; text-align:center;">

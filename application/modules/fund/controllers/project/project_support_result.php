@@ -70,7 +70,7 @@ class project_support_result extends Fund_Controller {
 			}
 			
 			//Set project code 
-			$province = $this->db->getOne("SELECT TITLE FROM CNF_PROVINCE WHERE ID = '".$_POST['province_id']."'");
+			$province = $this->db->getOne("SELECT TITLE FROM fund_province WHERE ID = '".$_POST['province_id']."'");
 			dbConvert($province);
 			
 			

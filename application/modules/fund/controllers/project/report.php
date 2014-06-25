@@ -5,9 +5,8 @@
  */
 class Report extends Fund_Controller {
 	
-	function __construct() {
-		parent::__construct();
-	}
+
+	
 	
 	function report_01() {
 		
