@@ -8,6 +8,17 @@
 */
 
 
+@font-face {
+	font-family: 'Conv_THSarabun';
+	src: url('fonts/THSarabun.eot');
+	src: local(''), url('fonts/THSarabun.woff') format('woff'), url('fonts/THSarabun.ttf') format('truetype'), url('fonts/THSarabun.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#report * {
+	font-family:"Conv_THSarabun";
+}
 
 #report { width:100%; font-family:'Conv_THSarabun',Sans-Serif; font-size:16px; color:#000;}
 

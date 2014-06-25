@@ -15,8 +15,8 @@
 			<h3>บันทึกข้อมูล กองทุนเด็กรายบุคคล</h3>
 			<div class="lineico">
 				<div class="ico"><a href="fund/personal/form" title="แบบฟอร์ม ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal.png" width="48" height="48"  alt="แบบฟอร์ม ขอรับเงินสนับสนุน" /><h4>แบบฟอร์ม ขอรับเงินสนับสนุน</h4></a></div>
-				<div class="ico"><a href="fund/personal/result" title="ผลการพิจารณา ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal2.png" width="48" height="48" alt="ผลการพิจารณา ขอรับเงินสนับสนุน" /><h4>ผลการพิจารณา ขอรับเงินสนับสนุน</h4></a></div>
-				<div class="ico"><a href="fund/personal/pay" title="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" ><img src="images/fund/icon/get_support_personal2.png" width="48" height="48" alt="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" /><h4>ผลการจ่ายเงิน ขอรับเงินสนับสนุน</h4></a></div>
+				<div class="ico"><a href="fund/personal/result" title="ผลการพิจารณา ขอรับเงินสนับสนุน" ><img src="images/fund/icon/list_result.png" width="48" height="48" alt="ผลการพิจารณา ขอรับเงินสนับสนุน" /><h4>ผลการพิจารณา ขอรับเงินสนับสนุน</h4></a></div>
+				<div class="ico"><a href="fund/personal/pay" title="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" ><img src="images/fund/icon/list_pay.png" width="48" height="48" alt="ผลการจ่ายเงิน ขอรับเงินสนับสนุน" /><h4>ผลการจ่ายเงิน ขอรับเงินสนับสนุน</h4></a></div>
 				
 				<div class="clear"></div>
 			</div><!--lineico-->

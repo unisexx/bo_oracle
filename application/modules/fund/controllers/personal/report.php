@@ -10,10 +10,41 @@ class Report extends Fund_Controller {
 		/*$this->load->model("fund_form_request_model","form_request");
 		$this->load->model("fund_personal_reportment_model","personal_reportment");
 		$this->load->model("fund_province","province");*/
+		
+		$this->load->model("fund_form_request_model","form_request");
+		
 	}
 	
 	function report_01() {
-		$this->template->build('personal/report/report_01');
+		
+		$select = 'fund_request_support.*,
+					fund_reg_personal.idcard as per_idcard,
+					fund_reg_personal.birthday as per_birth,
+					fund_childs.idcard as child_idcard,
+					fund_childs.birthday as child_birth';
+					
+		$join = "left join fund_reg_personal on fund_request_support.fund_reg_personal_id = fund_reg_personal.id
+				left join fund_childs on fund_request_support.fund_child_id = fund_childs.id";
+		
+		$data['items'] = $this->form_request->select($select)->join($join)->order_by('fund_request_support.id','asc')->get();
+		
+		$this->template->build('personal/report/report_01', @$data);
+	}
+	
+	function report_02() {
+		$this->template->build('personal/report/report_02');
+	}
+	
+	function report_03() {
+		$this->template->build('personal/report/report_03');
+	}
+	
+	function report_04() {
+		$this->template->build('personal/report/report_04');
+	}
+	
+	function report_05() {
+		$this->template->build('personal/report/report_05');
 	}
 	
 	public function index()
