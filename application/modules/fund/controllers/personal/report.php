@@ -26,7 +26,12 @@ class Report extends Fund_Controller {
 		$join = "left join fund_reg_personal on fund_request_support.fund_reg_personal_id = fund_reg_personal.id
 				left join fund_childs on fund_request_support.fund_child_id = fund_childs.id";
 		
-		$data['items'] = $this->form_request->select($select)->join($join)->order_by('fund_request_support.id','asc')->get();
+		$where = '1=1';
+			$where .= (empty($_GET['province_id']))?'':" and fund_request_support.province_id = '".$_GET['province_id']."'";
+			$where .= (empty($_GET['year_budget']))?'':" and fund_request_support.year_budget = '".$_GET['year_budget']."'";
+			$where .= (empty($_GET['times']))?'':" and fund_request_support.meeting_number = '".$_GET['times']."'";
+		
+		$data['items'] = $this->form_request->select($select)->join($join)->where($where)->order_by('fund_request_support.id','asc')->get();
 		
 		$this->template->build('personal/report/report_01', @$data);
 	}

@@ -80,7 +80,7 @@
 	
 	<tr>
 		<th>จังหวัด<span class="Txt_red_12"> *</span></th>
-		<td> <? echo form_dropdown('province_id', get_option('ID', 'TITLE', 'CNF_PROVINCE'), @$rs['province_id']); ?> <span class='note'>* จังหวัดแสดงตามสิทธิ์ล็อกอิน แต่ถ้าเป็นส่วนกลางก็จะมีให้เลือกทุกจังหวัด</span> </td>
+		<td> <? echo form_dropdown('province_id', get_option('ID', 'TITLE', 'fund_province'), @$rs['province_id']); ?> <span class='note'>* จังหวัดแสดงตามสิทธิ์ล็อกอิน แต่ถ้าเป็นส่วนกลางก็จะมีให้เลือกทุกจังหวัด</span> </td>
 	</tr>
 	
 	<? if(!empty($rs['id'])) { ?> 
