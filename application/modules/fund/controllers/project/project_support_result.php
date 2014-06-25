@@ -39,10 +39,11 @@ class project_support_result extends Fund_Controller {
 	
 	function save() {
 		if(!empty($_POST)) {
+
 			$update_project['id'] = $_POST['id'];
 			$update_project['allocate_type'] = $_POST['allocate_type'];
 			$this->project_support->save($update_project);
-			set_notify('success', lang('save_data_complete'));
+
 		}
 
 		redirect('fund/project/project_support_result/');
