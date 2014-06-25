@@ -83,6 +83,8 @@
 						echo '<BR>'; 
 						echo strtotime($item['per_birth']);
 						
+						
+						echo strtotime(strtotime(date('Y-m-d')) - strtotime($item['per_birth']));
 					?>
 				</td>
 				<td>xxx</td>
