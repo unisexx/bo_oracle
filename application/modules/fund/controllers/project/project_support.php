@@ -12,7 +12,11 @@ class project_support extends Fund_Controller {
 	}
 	
 	function index(){
-		$data['items'] = $this->project_support->get();
+		$sql = "select * from fund_project_support where 1=1 ";
+		if (!empty($_GET['keyword'])) {
+			$sql .= " and ( project_code like '%".$_GET['keyword']."%' or project_name like '%".$_GET['keyword']."%' or organization like '%".$_GET['keyword']."%' ) ";
+		}
+		$data['items'] = $this->project_support->get($sql);
 		$data['pagination'] = $this->project_support->pagination();
 		$data['no'] = (empty($_GET['page']))?0:($_GET['page']-1)*20;
 
