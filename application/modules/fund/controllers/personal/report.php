@@ -103,7 +103,51 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_05() {
-		$this->template->build('personal/report/report_05');
+			
+		$_GET['year_budget'] = (empty($_GET['year_budget']))?(date('Y')+543):$_GET['year_budget'];
+		
+		$qry = "select 
+				fund_province.id province_id,
+				FUND_PROVINCE.title as province_title,
+				sum(fppd.fund_cost) subvention_present,
+				sum(fppd_1.fund_Cost) actual_cost 
+				from 
+					FUND_REQUEST_SUPPORT frs
+					left join fund_province on frs.province_id = fund_province.id
+					left join FUND_PERSONAL_PAYMENT_DETAIL fppd on  frs.id = fppd.FUND_REQUEST_SUPPORT_ID
+					left join FUND_PERSONAL_PAYMENT_DETAIL fppd_1 on fppd.id = fppd_1.id and fppd_1.status = 1
+				where 
+					frs.year_budget = '".$_GET['year_budget']."'
+				group by fund_province.id, fund_province.title
+				order by fund_province.title asc";
+		$data['rs'] = $this->form_request->get($qry);
+		foreach($data['rs'] as $key=>$item) {
+			$qry = 'select
+						sum(case when (FUND_REQUEST_SUPPORT ."4_1_TOTAL" is null) then \'0\' else FUND_REQUEST_SUPPORT ."4_1_TOTAL" end
+						+ case when (FUND_REQUEST_SUPPORT ."4_2_TOTAL" is null) then \'0\' else FUND_REQUEST_SUPPORT ."4_2_TOTAL" end
+						+ case when (FUND_REQUEST_SUPPORT ."4_3" is null) then \'0\' else FUND_REQUEST_SUPPORT ."4_3" end
+						+ case when (FUND_REQUEST_SUPPORT ."4_4" is null) then \'0\' else FUND_REQUEST_SUPPORT ."4_4" end
+						+ case when (FUND_REQUEST_SUPPORT ."4_5_TOTAL" is null) then \'0\' else FUND_REQUEST_SUPPORT ."4_5_TOTAL" end
+						+ case when (FUND_REQUEST_SUPPORT ."4_6_TOTAL" is null) then \'0\' else FUND_REQUEST_SUPPORT ."4_6_TOTAL" end) approve_amount
+						, count(id) approve_count
+						
+					from FUND_REQUEST_SUPPORT 
+					where
+						FUND_REQUEST_SUPPORT .province_id = '.$item['province_id'].'
+						and 
+						FUND_REQUEST_SUPPORT .status = 1
+					group by province_id';
+			$tmp = $this->form_request->get($qry);
+			$tmp = @$tmp[0];
+			
+			if(empty($tmp)) {
+				$tmp = array('approve_amount'=>0, 'approve_count'=>0);
+			}
+
+			$data['rs'][$key] = array_merge($data['rs'][$key], $tmp);
+		}
+
+		$this->template->build('personal/report/report_05', @$data);
 	}
 	
 	public function index()
