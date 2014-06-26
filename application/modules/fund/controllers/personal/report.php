@@ -30,6 +30,12 @@ class Report extends Fund_Controller {
 			$where .= (empty($_GET['province_id']))?'':" and fund_request_support.province_id = '".$_GET['province_id']."'";
 			$where .= (empty($_GET['year_budget']))?'':" and fund_request_support.year_budget = '".$_GET['year_budget']."'";
 			$where .= (empty($_GET['times']))?'':" and fund_request_support.meeting_number = '".$_GET['times']."'";
+			
+			if(!empty($_GET['meeting_date'])) {
+				$tmp = explode('-', $_GET['meeting_date']);
+				$tmp = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
+			}
+			$where .= (empty($tmp))?'':" and fund_request_support.meeting_date = '".$tmp."'";
 		
 		$data['items'] = $this->form_request->select($select)->join($join)->where($where)->order_by('fund_request_support.id','asc')->get();
 		
