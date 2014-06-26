@@ -43,11 +43,14 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_02() {
+		
 		$this->template->build('personal/report/report_02');
 	}
 	
-	function report_03() {
-		$this->template->build('personal/report/report_03');
+	function report_03()
+	{
+		$data["variable"] = $this->form_request->get();
+		$this->template->build("personal/report/report_03",$data);
 	}
 	
 	function report_04() {

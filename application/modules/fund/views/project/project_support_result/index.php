@@ -1,4 +1,4 @@
-<h3>รายการขอรับเงินสนับสนุน กองทุนเด็กรายโครงการ</h3>
+<h3>ผลการพิจารณาขอรับเงินสนับสนุน กองทุนเด็กรายโครงการ</h3>
 <div id="search">
 	<form method="get" action="fund/project/project_support_result">	
 		<div id="searchBox">
@@ -17,8 +17,8 @@
   		<th align="left">ลำดับ</th>
   		<th align="left">รหัสโครงการ</th>
   		<th align="left">ชื่อโครงการ</th>
-  		<th align="left">ชื่อองค์กรที่เสนอรับ</th>
-  		<th align="left" width="80">ลบ</th>
+  		<th align="left">ชื่อองค์กรที่เสนอขอรับ</th>
+  		<th align="left" width="150">บันทึกผลการพิจารณา</th>
   	</tr>
 	<?php $i=0; foreach($items as $key => $item): $no++; $i++; if($i==2) $i = 0; ?>
 	<tr class="<? echo ($i==1)?'odd':''; ?> cursor">
@@ -27,7 +27,7 @@
   		<td nowrap="nowrap" onclick="window.location='fund/project/project_support_result/form/<?php echo $item['id']; ?>'"><?php echo $item['project_name'] ?></td>
   		<td nowrap="nowrap" onclick="window.location='fund/project/project_support_result/form/<?php echo $item['id']; ?>'"><?php echo $item['organization'] ?></td>
   		<td>
-  			<? echo anchor('fund/project/project_support_result/form/'.$item['id'], '<img src="images/btn_edit.png">'); ?>
+  			<? echo anchor('fund/project/project_support_result/form/'.$item['id'], '<img src="images/fund/btn_approve.png">'); ?>
   		</td>
   	</tr>
   	<?php endforeach; ?>
