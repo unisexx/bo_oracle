@@ -35,12 +35,8 @@
 		<? echo form_dropdown('province_id', get_option('ID', 'TITLE', 'fund_province order by title asc'), @$_GET['province_id'], '', '-- ระบุจังหวัด --'); ?> 
 		<? echo form_dropdown('year_budget', get_option('year_budget as a', 'year_budget as b', 'fund_request_support group by year_budget order by year_budget desc'), @$_GET['year_budget'], '', '-- ระบุปีงบประมาณ --'); ?>
 		<? echo form_dropdown('times', get_option('meeting_number as a', 'meeting_number as b', 'fund_request_support where meeting_number is not null group by meeting_number order by meeting_number asc'), @$_GET['times'], '', '-- ระบุครั้งที่ --'); ?>
-	  	
-	  	<? echo form_input(false, false, 'class="datepicker" style="width:80px;"'); ?>
-		<!--
-		<input type="text" name="textfield" id="textfield" style="width:100px;" />
-		<img src="images/calendar.png" width="16" height="16" style="margin-right:20px;" />
-		-->   
+	  	<? echo form_input('meeting_date', $_GET['meeting_date'], 'class="datepicker" style="width:80px;"'); ?>
+
 		<input type="submit" title="ค้นหา" value=" " class="btn_search" />
 	</div>
 </form>
