@@ -11,8 +11,11 @@ class Report extends Fund_Controller {
 		$this->load->model("fund_personal_reportment_model","personal_reportment");
 		$this->load->model("fund_province","province");*/
 		
+		//(f) report_01
 		$this->load->model("fund_form_request_model","form_request");
 		
+		//(f) report_02
+		$this->load->model("fund_personal_payment_model","personal_payment");
 	}
 	
 	function report_01() {
@@ -43,8 +46,28 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_02() {
+		echo $_GET['year_budget'] = (empty($_GET['year_budget']))?(date('Y')+543):$_GET['year_budget'];
+		$qry = "SELECT
+					FUND_REQUEST_SUPPORT.YEAR_BUDGET,
+					FUND_PROVINCE.TITLE AS PROVINCE_TITLE,
+					SUM(FUND_PERSONAL_PAYMENT_DETAIL.FUND_COST) as cost_2
+					
+				FROM 
+					FUND_REQUEST_SUPPORT
+					LEFT JOIN FUND_PERSONAL_PAYMENT_DETAIL ON FUND_REQUEST_SUPPORT.ID = FUND_PERSONAL_PAYMENT_DETAIL.FUND_REQUEST_SUPPORT_ID
+					LEFT JOIN FUND_PROVINCE ON FUND_REQUEST_SUPPORT.PROVINCE_ID = FUND_PROVINCE.ID
+				WHERE
+					FUND_REQUEST_SUPPORT.YEAR_BUDGET = '".$_GET['year_budget']."'
+				GROUP BY 
+					FUND_REQUEST_SUPPORT.YEAR_BUDGET,
+					FUND_PROVINCE.TITLE
+				ORDER BY 
+					FUND_PROVINCE.TITLE ASC";
+					
+					
+		$data['rs'] = $this->personal_payment->get($qry);
 		
-		$this->template->build('personal/report/report_02');
+		$this->template->build('personal/report/report_02', @$data);
 	}
 	
 	function report_03()
