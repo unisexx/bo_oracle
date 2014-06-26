@@ -23,6 +23,12 @@ class project_support extends Fund_Controller {
 		if($id) {
 			$data['rs'] = $this->project_support->get_row($id);
 			
+			if(!empty($data['rs']['center_receive_date'])) {
+				set_notify('error', 'ไม่สามารถแก้ไขรายการนี้ได้');
+				redirect('fund/project/project_support');
+			}
+			
+			
 			if(!empty($data['rs']['budget_other_type'])) {
 				$tmp = explode(',', $data['rs']['budget_other_type']);
 				unset($data['rs']['budget_other_type']);
@@ -169,6 +175,11 @@ class project_support extends Fund_Controller {
 	function delete($id = false) {
 		if(!$id) {
 			set_notify('error', 'ไม่สามารถดำเนินการได้');
+			redirect('fund/project/project_support');
+		}
+		
+		if(!empty($data['rs']['center_receive_date'])) {
+			set_notify('error', 'ไม่สามารถลบรายการนี้ได้');
 			redirect('fund/project/project_support');
 		}
 		
