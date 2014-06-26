@@ -76,7 +76,7 @@
 <table class="tblist">
 	<tr>
 		<th style="width: 10%">ครั้งที่</th>
-		<th style="width: 30%">ว-ด-ป</th>
+		<th style="width: 30%">ว/ด/ป</th>
 		<th style="width: 30%">ผลพิจารณา</th>
 		<th style="width: 20%">รายละเอียด</th>
 		<th style="width: 10%">จัดการ</th>
@@ -86,7 +86,7 @@
 		foreach ($rs_result_1 as $key => $result_1) { ?>
 	<tr>
 		<td><?php echo $result_1['time']; ?></td>
-		<td><?php echo mysql_to_date($result_1['date_appoved']); ?></td>
+		<td><?php echo db2date($result_1['date_appoved']); ?></td>
 		<td>
 			<?php
 				switch ($result_1['appoved_id']) {
@@ -151,7 +151,7 @@
 <table class="tblist">
 	<tr>
 		<th style="width: 10%">ครั้งที่</th>
-		<th style="width: 30%">ว-ด-ป</th>
+		<th style="width: 30%">ว/ด/ป</th>
 		<th style="width: 30%">ผลพิจารณา</th>
 		<th style="width: 20%">รายละเอียด</th>
 		<th style="width: 10%">จัดการ</th>
@@ -159,7 +159,7 @@
 	<?php foreach ($rs_result_2 as $key => $result_2) { ?>
 	<tr>
 		<td><?php echo $result_2['time']; ?></td>
-		<td><?php echo mysql_to_date($result_2['date_appoved']); ?></td>
+		<td><?php echo db2date($result_2['date_appoved']); ?></td>
 		<td>
 			<?php
 				switch ($result_2['appoved_id']) {
@@ -225,7 +225,7 @@
 <table class="tblist">
 	<tr>
 		<th style="width: 10%">ครั้งที่</th>
-		<th style="width: 30%">ว-ด-ป</th>
+		<th style="width: 30%">ว/ด/ป</th>
 		<th style="width: 30%">ผลพิจารณา</th>
 		<th style="width: 20%">รายละเอียด</th>
 		<th style="width: 10%">จัดการ</th>
@@ -233,7 +233,7 @@
 	<?php foreach ($rs_result_3 as $key => $result_3) { ?>
 	<tr>
 		<td><?php echo $result_3['time']; ?></td>
-		<td><?php echo mysql_to_date($result_3['date_appoved']); ?></td>
+		<td><?php echo db2date($result_3['date_appoved']); ?></td>
 		<td>
 			<?php
 				switch ($result_3['appoved_id']) {

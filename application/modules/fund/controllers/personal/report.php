@@ -77,7 +77,29 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_04() {
-		$this->template->build('personal/report/report_04');
+		if(@$_GET['fund_year'] != '' && @$_GET['fund_month'] != '' && @$_GET['province_id'] != '') {
+			$fund_year = $_GET['fund_year']-543;
+			if (@$_GET['fund_month'] > '9' ){
+				 $fund_year =  $fund_year-1;
+			}
+			$sql_result = "select support.date_request, support.meeting_date, support.fund_child_name, 
+								  payment.fund_month, payment.fund_cost , payment.title || payment.firstname ||' '|| payment.lastname as presonal_name, 
+								  payment.date_payment, payment.addr_number, payment.addr_moo, payment.addr_trok, payment.addr_soi, payment.addr_road, 
+								  fund_province.title as province_name, fund_amphur.title as amphur_name, fund_district.title as district_name
+						  from fund_request_support support
+						  left join fund_personal_payment_detail payment on support.id = payment.fund_request_support_id
+						  left join fund_province on payment.province_id = fund_province.id
+						  left join fund_amphur on payment.amphur_id = fund_amphur.id
+						  left join fund_district on payment.district_id = fund_district.id
+						  where support.status = '1' and support.province_id = '".$_GET['province_id']."' and payment.status = '1'  
+								and payment.fund_month = '".@$_GET['fund_month']."' and payment.fund_year = '".$fund_year."'
+						  order by payment.fund_year asc, payment.fund_month asc";
+			$data['rs'] = $this->form_request->get($sql_result,true);
+			
+			$data['provine_name'] = get_one('title','fund_province','id',$_GET['province_id']);
+		}
+		
+		$this->template->build('personal/report/report_04',@$data);
 	}
 	
 	function report_05() {
