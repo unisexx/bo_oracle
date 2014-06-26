@@ -20,7 +20,7 @@ class Report extends Fund_Controller {
 						left join fund_province on fund_project_support.province_id = fund_province.id 
 						where fund_project_support.budget_year = '".@$_GET['budget_year']."' 
 						group by fund_project_support.province_id , fund_province.title
-						order by fund_project_support.province_id asc ";
+						order by fund_province.title asc ";
 		$data["data_province"] = $this->project_support->get($sql_project,true);
 		foreach ($data["data_province"] as $key => $data_province) {
 			$sql_project = "select count(id) as total_project_1
