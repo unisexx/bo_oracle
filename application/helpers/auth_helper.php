@@ -192,21 +192,38 @@ function get_logaction($action_type,$modules_title){
 
 
 
-function db2date($date) 
-{
+function db2date($date, $type = false) {
 	if(!$date) return false;
 	
-	$tmp = explode(' ', $date);
-	if(count($tmp) == 1)
-	{
+	if($type == 'datepicker') {
 		$tmp = explode('-', $date);
-		$rs = $tmp[2].'/'.$tmp[1].'/'.($tmp[0]+543);
+		$rs = $tmp[2].'-'.$tmp[1].'-'.($tmp[0]+543);
 		return $rs;
-	} else if(count($tmp) == 2) {
-		$time = $tmp[1];
-		$tmp = explode('-', $tmp[0]);
-		$rs = $tmp[2].'/'.$tmp[1].'/'.($tmp[0]+543).' '.substr($time, 0, 5);
+	} else {
+		$tmp = explode(' ', $date);
+		if(count($tmp) == 1)
+		{
+			$tmp = explode('-', $date);
+			$rs = $tmp[2].'/'.$tmp[1].'/'.($tmp[0]+543);
+			return $rs;
+		} else if(count($tmp) == 2) {
+			$time = $tmp[1];
+			$tmp = explode('-', $tmp[0]);
+			$rs = $tmp[2].'/'.$tmp[1].'/'.($tmp[0]+543).' '.substr($time, 0, 5);
+			return $rs;
+		}
+	}
+	
+}
+
+function date2db($date, $type = false) {
+	if(!$date) return false;
+
+	if($type == 'datepicker') {
+		$tmp = explode('-', $date);
+		$rs = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
 		return $rs;
 	}
 }
+
 ?>

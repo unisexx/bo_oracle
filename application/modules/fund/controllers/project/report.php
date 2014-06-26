@@ -8,11 +8,13 @@ class Report extends Fund_Controller {
 	function __construct() {
 		parent::__construct();
 		
+		#$this->load->model('fund_project_support_model', 'project_support');
 		$this->load->model('fund_project_support_model', 'project_support');
 	}
 	
 	
 	function report_01() {
+		/*
 		$sql_project = "select fund_project_support.province_id , fund_province.title as province_name
 						from fund_project_support
 						left join fund_province on fund_project_support.province_id = fund_province.id 
@@ -26,7 +28,7 @@ class Report extends Fund_Controller {
 							where fund_project_support.province_id = '".$data_province['province_id']."' ";
 			$data["project_01"] = $this->db->getrow($sql_project);
 		}
-		
+		*/
 		$this->template->build('project/report/report_01', @$data);
 	}
 	
@@ -35,7 +37,10 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_03() {
-		$this->template->build('project/report/report_03');
+		$_GET['receive_date'] = (empty($_GET['receive_date']))?date('Y'):$_GET['receive_date'];
+		$data['rs'] = $this->project_support->where("receive_date LIKE '".$_GET['receive_date']."%'")->get();
+		
+		$this->template->build('project/report/report_03', @$data);
 	}
 	
 	function report_04() {
@@ -45,7 +50,7 @@ class Report extends Fund_Controller {
 	function report_05() {
 		$this->template->build('project/report/report_05');
 	}
-	
+	/*
 	public function index()
 	{
 		$where = " STATUS=1 ";
@@ -93,5 +98,5 @@ class Report extends Fund_Controller {
 	public function delete() {
 		
 	}
-	
+	*/
 }

@@ -3,6 +3,25 @@
 <h3>ผลการพิจารณา ของคณะกรรมการ บริหาร คคด.03 (ค)</h3>
 <div id="search">
 <div id="searchBox">
+	<?
+		$goption = array(
+			1=>'มกราคม',
+			2=>'กุมภาพันธ์',
+			3=>'มีนาคม',
+			4=>'เมษายน',
+			5=>'พฤษภาคม',
+			6=>'มิถุนายน',
+			7=>'กรกฏาคม',
+			8=>'สิงหาคม',
+			9=>'กันยายน',
+			10=>'ตุลาคม',
+			11=>'พฤศจิกายน',
+			12=>'ธันวาคม'
+		);
+	
+		echo form_dropdown('month', $goption, @$_GET['month'], '', '-- เลือกเดือน --'); ?>
+		
+	<? echo form_dropdown('year', array(2557=>2557), @$_GET['year'], '', '-- เลือกปี --'); ?>
   <select name="select3" id="select3">
     <option>-- เลือกเดือน --</option>
   </select>
@@ -34,87 +53,25 @@
     <th width="13%" align="center">อยู่ระหว่างดำเนินการ</th>
     <th width="12%" align="center">ไม่อนุมัติ</th>
   </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tfoot>
-    <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tfoot>
+  	<? $no = 0;
+  		foreach($rs as $item){
+  			$no++ ;
+			$item['project_budget'] = (empty($item['project_budget']))?0:$item['project_budget'];
+  			?>
+  			  <tr>
+			    <td class='text-center'><? echo $no; ?></td>
+			    <td><? echo $item['organization']; ?></td>
+			    <td><? echo $item['project_code']; ?></td>
+			    <td><? echo $item['project_name']; ?></td>
+			    <td class='text-right'><? echo number_format($item['project_budget']); ?></td>
+			    <td>&nbsp;</td>
+			    <td>&nbsp;</td>
+			    <td>&nbsp;</td>
+			  </tr>
+  			<?
+  		}
+	?>
+	
 </table>
     <div style="margin-top:10px;"><strong>หมายเหตุ </strong>:	 แบบรายงานนี้ใช้สำหรับแจ้งผลการพิจารณาของคณะกรรมการบริหารกองทุนคุ้มครองเด็ก/คณะอนุกรรมการบริหารกองทุนคุ้มครองเด็กจังหวัด<br />
      <div style="padding-left:80px;">ให้องค์กรภาคเอกชน/หน่วยงานผู้ขอรับการสนับสนุนฯ ทราบผ่านช่องทางประชาสัมพันธ์ของระบบงานบริหารบริหารกองทุน </div></div>

@@ -39,6 +39,9 @@ class project_support extends Fund_Controller {
 			}
 		}
 		
+		$data['rs']['receive_date'] = db2date($data['rs']['receive_date'], 'datepicker');
+		$data['rs']['center_receive_date'] = db2date($data['rs']['center_receive_date'], 'datepicker');
+		
 		$this->template->build('project/project_support/form', @$data);
 	}
 	
@@ -143,6 +146,8 @@ class project_support extends Fund_Controller {
 				}
 			}
 
+			$_POST['receive_date'] = date2db($_POST['receive_date'], 'datepicker');
+			$_POST['center_receive_date'] = date2db($_POST['center_receive_date'], 'datepicker');
 			
 			$this->project_support->save($_POST);
 			
