@@ -113,7 +113,7 @@
 			<?php
 				if ($result_1['appoved_id'] == '4') {
 					if ($result_1['sub_appoved_id'] != '4' ) {
-						switch ($result_1['appoved_id']) {
+						switch ($result_1['sub_appoved_id']) {
 							case '1':
 								$title = "ไม่สอดคล้องกับวัตถุประสงค์ของกองทุนฯ";
 								break;
@@ -185,7 +185,7 @@
 			<?php
 				if ($result_2['appoved_id'] == '4') {
 					if ($result_2['sub_appoved_id'] != '4' ) {
-						switch ($result_2['appoved_id']) {
+						switch ($result_2['sub_appoved_id']) {
 							case '1':
 								$title = "ไม่สอดคล้องกับวัตถุประสงค์ของกองทุนฯ";
 								break;
@@ -279,8 +279,8 @@
 					} else {
 						$title = "อื่นๆ : ".$result_2['note'];
 					}
-				} else if ($result_3['appoved_id'] == '1') {
-					switch ($result_3['appoved_id']) {
+				} else if ($result_3['appoved_id'] == '5') {
+					switch ($result_3['sub_appoved_id']) {
 							case '1':
 								$title = "เกินกรอบวงเงินระบบกระจาย";
 								break;
