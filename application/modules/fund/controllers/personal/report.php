@@ -124,7 +124,7 @@ class Report extends Fund_Controller {
 					left join FUND_PERSONAL_PAYMENT_DETAIL fppd on  frs.id = fppd.FUND_REQUEST_SUPPORT_ID
 					left join FUND_PERSONAL_PAYMENT_DETAIL fppd_1 on fppd.id = fppd_1.id and fppd_1.status = 1
 				where 
-					frs.year_budget = '".$_GET['year_budget']."'
+					frs.year_budget = '".@$_GET['year_budget']."'
 				group by fund_province.id, fund_province.title
 				order by fund_province.title asc";
 		$data['rs'] = $this->form_request->get($qry);
@@ -156,7 +156,7 @@ class Report extends Fund_Controller {
 
 		$this->template->build('personal/report/report_05', @$data);
 	}
-	
+	/*
 	public function index()
 	{
 		$where = " STATUS=1 ";
@@ -204,5 +204,5 @@ class Report extends Fund_Controller {
 	public function delete() {
 		
 	}
-	
+	*/
 }

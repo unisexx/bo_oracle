@@ -3,7 +3,7 @@
 <h3>สรุปการเบิกจ่ายเงิน สงเคราะห์รายบุคคล (คคด.05) (บ)</h3>
 <form id="search" action='' method='get'>
 	<div id="searchBox">
-		<? echo form_dropdown('year_budget', get_option('year_budget a', 'year_budget b', 'fund_request_support group by year_budget'), $_GET['year_budget'], '', '--ระบุปีงบประมาณ--'); ?>
+		<? echo form_dropdown('year_budget', get_option('year_budget a', 'year_budget b', 'fund_request_support group by year_budget'), @$_GET['year_budget'], '', '--ระบุปีงบประมาณ--'); ?>
 		<input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" />
 	</div>
 </form>
