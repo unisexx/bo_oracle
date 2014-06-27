@@ -2,30 +2,27 @@
 
 <h3>ผลการพิจารณา ของคณะกรรมการ บริหาร คคด.03 (ค)</h3>
 <div id="search">
-<div id="searchBox">
-	<?
-		$goption = array(
-			1=>'มกราคม',
-			2=>'กุมภาพันธ์',
-			3=>'มีนาคม',
-			4=>'เมษายน',
-			5=>'พฤษภาคม',
-			6=>'มิถุนายน',
-			7=>'กรกฏาคม',
-			8=>'สิงหาคม',
-			9=>'กันยายน',
-			10=>'ตุลาคม',
-			11=>'พฤศจิกายน',
-			12=>'ธันวาคม'
-		);
-	
-		echo form_dropdown('month', $goption, @$_GET['month'], '', '-- เลือกเดือน --'); ?>
+	<div id="searchBox">
+		<?
+			$goption = array(
+				1=>'มกราคม',
+				2=>'กุมภาพันธ์',
+				3=>'มีนาคม',
+				4=>'เมษายน',
+				5=>'พฤษภาคม',
+				6=>'มิถุนายน',
+				7=>'กรกฏาคม',
+				8=>'สิงหาคม',
+				9=>'กันยายน',
+				10=>'ตุลาคม',
+				11=>'พฤศจิกายน',
+				12=>'ธันวาคม'
+			);
 		
-	<? echo form_dropdown('year', array(2557=>2557), @$_GET['year'], '', '-- เลือกปี --'); ?>
-  <select name="select3" id="select3">
-    <option>-- เลือกเดือน --</option>
-  </select>
-  <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
+			echo form_dropdown('month', $goption, @$_GET['month'], '', '-- เลือกเดือน --'); ?>
+		<? echo form_dropdown('year', array(2557=>2557), @$_GET['year'], '', '-- เลือกปี --'); ?>
+		<input type="submit" title="ค้นหา" value=" " class="btn_search" />
+	</div>
 </div>
 
 <div id="report">

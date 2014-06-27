@@ -37,8 +37,30 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_03() {
+		
+		$_GET['month'] = (date('m')*1);
+		$_GET['year'] = (date('Y')+543);
+		
 		$_GET['receive_date'] = (empty($_GET['receive_date']))?date('Y'):$_GET['receive_date'];
-		$data['rs'] = $this->project_support->where("receive_date LIKE '".$_GET['receive_date']."%'")->get();
+		
+		$where = '1 = 1 ';
+			if(!empty($_GET['month']) || !empty($_GET['year'])) {
+				$where .= ' AND (';
+					foreach(array('month', 'year') as $key=>$item) {
+						if($key != 0) {
+							$where .= ' or ';
+						}
+						if($item == 'month') {
+							$where .= (empty($_GET['month']))?'':"receive_date LIKE '%-".$_GET['month']."-%'";
+						} else if($item=='year') {
+							$where .= (empty($_GET['year']))?'':"receive_date LIKE '".$_GET['year']."-%'";
+						}
+					}
+				$where .= ')';
+			}
+				
+		
+		$data['rs'] = $this->project_support->where($where)->get();
 		
 		$this->template->build('project/report/report_03', @$data);
 	}
