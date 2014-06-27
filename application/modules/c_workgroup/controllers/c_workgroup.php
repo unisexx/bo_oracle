@@ -21,7 +21,8 @@ class c_workgroup extends Admin_Controller
 		$condition .= @$_GET['txtsearch']!=""? " AND CNF_WORKGROUP.TITLE LIKE '%".$_GET['txtsearch']."%'" : "";
 		$condition .= @$_GET['department']>0 ? " AND DEPARTMENTID =".$_GET['department']."" : "";
 		$condition .= @$_GET['division'] > 0 ? " AND DIVISIONID=".$_GET['division'] : "";
-		$data['result']=  $this->workgroup->where($condition)->get();
+		
+		$data['result']=  $this->workgroup->where($condition)->order_by('CNF_WORKGROUP.id', 'asc')->get();
 		$data['pagination'] = $this->workgroup->pagination();		
 		$this->template->build('workgroup_index',$data);	
 	}
