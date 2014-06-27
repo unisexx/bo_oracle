@@ -77,7 +77,7 @@ class project_support_result extends Fund_Controller {
 	function save_subform(){
 		if ($_POST) {
 			if ($_POST['date_appoved'] != ''){
-				$_POST['date_appoved'] = date_to_mysql($_POST['date_appoved']);
+				echo $_POST['date_appoved'] = date_to_mysql($_POST['date_appoved'],true);
 			}
 
 				if ($_POST['appoved_id'] == '2') {
