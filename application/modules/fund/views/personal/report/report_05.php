@@ -11,7 +11,7 @@
 <div id="report">
 
  <div style="float:right; font-size:20px;">แบบรายงาน คคด.05(บ)</div><div style="clear:both;"></div>
-    <div style="text-align:center; font-weight:bold; font-size:20px;">รายงานสรุปการเบิกจ่ายเงินสงเคราะห์รายบุคคล (กองทุนคุ้มครองเด็ก)<br>ปีงบประมาณ <? echo $_GET['year_budget']; ?></div>
+    <div style="text-align:center; font-weight:bold; font-size:20px;">รายงานสรุปการเบิกจ่ายเงินสงเคราะห์รายบุคคล (กองทุนคุ้มครองเด็ก)<br>ปีงบประมาณ  พ.ศ. <? echo (empty($_GET['year_budget']))?'..............':$_GET['year_budget']; ?></div>
     <div style="clear:both;"></div><br>
   <div style="float:right; font-size:20px; margin-top:-30px;">หน่วย : บาท</div>
     <table class="tbReport">

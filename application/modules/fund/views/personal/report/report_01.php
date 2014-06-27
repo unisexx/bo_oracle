@@ -1,6 +1,21 @@
 <link rel='stylesheet' type='text/css' href='css/report.css'>
 
 <?
+	$month_ary = array(
+		1=>'มกราคม',
+		2=>'กุมภาพันธ์',
+		3=>'มีนาคม',
+		4=>'เมษายน',
+		5=>'พฤษภาคม',
+		6=>'มิถุนายน',
+		7=>'กรกฏาคม',
+		8=>'สิงหาคม',
+		9=>'กันยายน',
+		10=>'ตุลาคม',
+		11=>'พฤศจิกายน',
+		12=>'ธันวาคม'
+	);
+	
 	function __construct() {
 		parent::__construct();
 	}
@@ -35,7 +50,7 @@
 		<? echo form_dropdown('province_id', get_option('ID', 'TITLE', 'fund_province order by title asc'), @$_GET['province_id'], '', '-- ระบุจังหวัด --'); ?> 
 		<? echo form_dropdown('year_budget', get_option('year_budget as a', 'year_budget as b', 'fund_request_support group by year_budget order by year_budget desc'), @$_GET['year_budget'], '', '-- ระบุปีงบประมาณ --'); ?>
 		<? echo form_dropdown('times', get_option('meeting_number as a', 'meeting_number as b', 'fund_request_support where meeting_number is not null group by meeting_number order by meeting_number asc'), @$_GET['times'], '', '-- ระบุครั้งที่ --'); ?>
-	  	<? echo form_input('meeting_date', $_GET['meeting_date'], 'class="datepicker" style="width:80px;"'); ?>
+	  	<? echo form_input('meeting_date', @$_GET['meeting_date'], 'class="datepicker" style="width:80px;"'); ?>
 
 		<input type="submit" title="ค้นหา" value=" " class="btn_search" />
 	</div>
@@ -45,7 +60,36 @@
 	
 	<div style="text-align:center; font-weight:bold; font-size:20px;">รายงานสรุปผลการพิจารณาอนุมัติการช่วยเหลือเด็กและครอบครัว ครอบครัวอุปถัมภ์</div>
 	<div style="float:right; margin-top:-30px; font-size:20px;">แบบรายงาน คคด.บ 01</div>
-	<div style="text-align:center; font-size:20px;"><strong>ของคณะอนุกรรมการบริหารกองทุนคุ้มครองเด็กจังหวัด จังหวัด............................................. (ครั้งที่......./..............    วันที่....... เดือน......................... พ.ศ. ..............)</strong></div><br>
+	<div style="text-align:center; font-size:20px; font-weight:bold;">
+		ของคณะอนุกรรมการบริหารกองทุนคุ้มครองเด็กจังหวัด จังหวัด <? echo (empty($province_title))?'............................................. ':$province_title; ?> 
+		(ครั้งที่  <? echo (empty($_GET['times']))?'.......':$_GET['times']; ?> / <? echo (empty($_GET['year_budget']))?'.............. ':$_GET['year_budget']; ?>
+		<? 
+		
+		$goption = array(
+			1=>'มกราคม',
+			2=>'กุมภาพันธ์',
+			3=>'มีนาคม',
+			4=>'เมษายน',
+			5=>'พฤษภาคม',
+			6=>'มิถุนายน',
+			7=>'กรกฏาคม',
+			8=>'สิงหาคม',
+			9=>'กันยายน',
+			10=>'ตุลาคม',
+			11=>'พฤศจิกายน',
+			12=>'ธันวาคม'
+		);
+		
+		if(empty($_GET['meeting_date'])) {
+			echo 'วันที่....... เดือน......................... พ.ศ. ..............';
+		} else {
+			$tmp = explode('-', $_GET['meeting_date']);
+			echo 'วันที่ '.$tmp[0].' เดือน '.$goption[($tmp[1]*1)].' พ.ศ. '.$tmp[2];
+		} ?>
+		)
+		
+	</div>
+	<br>
 	<table class="tbReport">
 	  <tr>
 	    <th rowspan="2" align="center"><strong>ลำดับที่</strong></th>
@@ -78,45 +122,49 @@
 	      (ปี)</strong></th>
 	  </tr>
 	  <?
-	
-	  	$relation_type_detail = array(
-	  		1=>'บิดา/มารดา',
-	  		2=>'ญาติ',
-	  		3=>'ผู้ดูแล/อุปถัมภ์',
-	  		4=>'คนรู้จัก'
-		);
 		
-		$request_type_detail = array(
-	  		1=>'เด็กและครอบครัว',
-	  		2=>'ครอบครัวอุปถัมภ์'
-		);
-		
-		$status_detail = array(
-	  		1=>'อนุมัติ',
-	  		2=>'ไม่อนุมัติ'
-		);
-	  
-	  	$no = 0;
-	  	foreach ( $items as $item ) {
-	  		$no++;
-			?>
-			<tr>
-				<td class='text-center'><? echo $no; ?></td>
-				<td><? echo $item['fund_reg_personal_name']; ?></td>
-				<td><? echo $item['per_idcard']; ?></td>
-				<td><? echo db2date($item['per_birth']); ?></td>
-				<td class='text-center'> <? echo find_age($item['per_birth']); ?> ปี </td>
-				<td><? echo @$relation_type_detail[$item['relation_type']]; ?></td>
-				<td><? echo $item['fund_child_name']; ?></td>
-				<td><? echo $item['child_idcard']; ?></td>
-				<td><? echo db2date($item['child_birth']); ?></td>
-				<td class='text-center'><? echo find_age($item['child_birth']); ?> ปี</td>
-				<td><? echo @$request_type_detail[$item['request_type']]; ?></td>
-				<td><? echo $item['abstract']; ?></td>
-				<td><? echo @$status_detail[$item['status']]; ?></td>
-			</tr>
-			<?
-	  	}
+		if(empty($data['rs']) || empty($province_title) || empty($_GET['times']) || empty($_GET['year_budget'])) {
+			?> <tr> <td colspan='13' class='text-center'>กรุณาระบุข้อมูลก่อนการแสดงรายงาน</td> </tr> <?
+		} else {
+		  	$relation_type_detail = array(
+		  		1=>'บิดา/มารดา',
+		  		2=>'ญาติ',
+		  		3=>'ผู้ดูแล/อุปถัมภ์',
+		  		4=>'คนรู้จัก'
+			);
+			
+			$request_type_detail = array(
+		  		1=>'เด็กและครอบครัว',
+		  		2=>'ครอบครัวอุปถัมภ์'
+			);
+			
+			$status_detail = array(
+		  		1=>'อนุมัติ',
+		  		2=>'ไม่อนุมัติ'
+			);
+		  
+		  	$no = 0;
+		  	foreach ( $items as $item ) {
+		  		$no++;
+				?>
+				<tr>
+					<td class='text-center'><? echo $no; ?></td>
+					<td><? echo $item['fund_reg_personal_name']; ?></td>
+					<td><? echo $item['per_idcard']; ?></td>
+					<td><? echo db2date($item['per_birth']); ?></td>
+					<td class='text-center'> <? echo find_age($item['per_birth']); ?> ปี </td>
+					<td><? echo @$relation_type_detail[$item['relation_type']]; ?></td>
+					<td><? echo $item['fund_child_name']; ?></td>
+					<td><? echo $item['child_idcard']; ?></td>
+					<td><? echo db2date($item['child_birth']); ?></td>
+					<td class='text-center'><? echo find_age($item['child_birth']); ?> ปี</td>
+					<td><? echo @$request_type_detail[$item['request_type']]; ?></td>
+					<td><? echo $item['abstract']; ?></td>
+					<td><? echo @$status_detail[$item['status']]; ?></td>
+				</tr>
+				<?
+		  	}
+		  }
 	  ?>
 	</table>
 	<div style="margin:0 auto; width:100%">

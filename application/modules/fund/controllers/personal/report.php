@@ -16,6 +16,8 @@ class Report extends Fund_Controller {
 		
 		//(f) report_02
 		$this->load->model("fund_personal_payment_model","personal_payment");
+		
+		$this->load->model('fund_province', 'province');
 	}
 	
 	function report_01() {
@@ -39,6 +41,13 @@ class Report extends Fund_Controller {
 				$tmp = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
 			}
 			$where .= (empty($tmp))?'':" and fund_request_support.meeting_date = '".$tmp."'";
+		
+		//Get head data
+		if(!empty($_GET['province_id'])) {
+			$tmp = $this->province->get_row($_GET['province_id']);
+			$data['province_title'] = $tmp['title'];
+		}
+		
 		
 		$data['items'] = $this->form_request->select($select)->join($join)->where($where)->order_by('fund_request_support.id','asc')->get();
 		
@@ -103,8 +112,6 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_05() {
-			
-		$_GET['year_budget'] = (empty($_GET['year_budget']))?(date('Y')+543):$_GET['year_budget'];
 		
 		$qry = "select 
 				fund_province.id province_id,

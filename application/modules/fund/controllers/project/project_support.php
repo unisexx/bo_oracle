@@ -43,8 +43,8 @@ class project_support extends Fund_Controller {
 			}
 		}
 		
-		$data['rs']['receive_date'] = db2date($data['rs']['receive_date'], 'datepicker');
-		$data['rs']['center_receive_date'] = db2date($data['rs']['center_receive_date'], 'datepicker');
+		$data['rs']['receive_date'] = @db2date($data['rs']['receive_date'], 'datepicker');
+		$data['rs']['center_receive_date'] = @db2date($data['rs']['center_receive_date'], 'datepicker');
 		
 		$this->template->build('project/project_support/form', @$data);
 	}
@@ -129,7 +129,9 @@ class project_support extends Fund_Controller {
 						if(move_uploaded_file($_FILES[$field]['tmp_name'], $dir.$filename)) {
 							$_POST[$field] = $filename;
 							
-							unlink($dir.$old_file[$field]);
+							if(file_exists($dir.$old_file[$field]) && !empty($old_file[$field])) {
+								unlink($dir.$old_file[$field]);
+							}
 						}
 					}
 				}
@@ -144,7 +146,9 @@ class project_support extends Fund_Controller {
 						if(move_uploaded_file($_FILES[$field]['tmp_name'], $dir.$filename)) {
 							$_POST[$field] = $filename;
 							
-							unlink($dir.$old_file[$field]);
+							if(file_exists($dir.$old_file[$field]) && !empty($old_file[$field])) {
+								unlink($dir.$old_file[$field]);
+							}
 						}
 					}
 				}
@@ -152,9 +156,9 @@ class project_support extends Fund_Controller {
 
 			$_POST['receive_date'] = date2db($_POST['receive_date'], 'datepicker');
 			$_POST['center_receive_date'] = date2db($_POST['center_receive_date'], 'datepicker');
-			
+
 			$this->project_support->save($_POST);
-			
+
 			set_notify('success', lang('save_data_complete'));
 		}
 
