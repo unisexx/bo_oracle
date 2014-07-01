@@ -65,7 +65,11 @@
 	
 <h3>แบบฟอร์มการขอรับเงินสนับสนุน กองทุนเด็กรายโครงการ (เพิ่ม / แก้ไข)</h3>
 
-<?php echo form_open('fund/project/project_support/save', 'enctype="multipart/form-data"'); ?>
+<?php
+	if(!empty($rs['center_recieve_date'])) {
+		echo form_open('fund/project/project_support/save', 'enctype="multipart/form-data"'); 
+	} 
+?>
 
 <table class="tbadd">
 	<tr>
@@ -101,17 +105,22 @@
 			<? if(!empty($rs['project_attachment'])) { ?> 
 				<div style='display:inline-block; margin-bottom:10px; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
 					<strong>ตัวอย่างไฟล์ : </strong>
-					<? echo anchor('uploads/fund/project/project_support/'.@$rs['id'].'/'.$rs['project_attachment'], @$rs['project_attachment'], 'target="_blank"'); ?>
-					<? echo anchor('fund/project/project_support/delete_file?id='.$rs['id'].'&type=project_attachment', 'Delete', 'class="btn btn-sm btn-danger"'); ?>
+					<? echo anchor('uploads/fund/project/project_support/'.@$rs['id'].'/'.$rs['project_attachment'], @$rs['project_attachment'], 'target="_blank"'); 
+						if(!empty($rs['center_receive_date'])) {
+							echo anchor('fund/project/project_support/delete_file?id='.$rs['id'].'&type=project_attachment', 'Delete', 'class="btn btn-sm btn-danger"');
+						} 
+					?>
+				</div>
+			<? } 
+			
+			if(!empty($rs['center_receive_date'])) { ?>
+				<div>
+					<div style='display:inline-block; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
+						<strong>แนบไฟล์ : </strong>
+						<input type='file' name='project_attachment'>
+					</div>
 				</div>
 			<? } ?>
-			
-			<div>
-				<div style='display:inline-block; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
-					<strong>แนบไฟล์ : </strong>
-					<input type='file' name='project_attachment'>
-				</div>
-			</div>
 		</td>
 	</tr>
 	
@@ -121,16 +130,22 @@
 			<? if(!empty($rs['project_pay_attachment'])) { ?>
 				<div style='display:inline-block; margin-bottom:10px; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
 					<strong>ตัวอย่างไฟล์ : </strong>
-					<? echo anchor('uploads/fund/project/project_support/'.@$rs['id'].'/'.$rs['project_pay_attachment'], @$rs['project_pay_attachment'], 'target="_blank"'); ?>
-					<? echo anchor('fund/project/project_support/delete_file?id='.$rs['id'].'&type=project_pay_attachment', 'Delete', 'class="btn btn-sm btn-danger"'); ?>
+					<? echo anchor('uploads/fund/project/project_support/'.@$rs['id'].'/'.$rs['project_pay_attachment'], @$rs['project_pay_attachment'], 'target="_blank"');
+						if(!empty($rs['center_receive_date'])) {
+							echo anchor('fund/project/project_support/delete_file?id='.$rs['id'].'&type=project_pay_attachment', 'Delete', 'class="btn btn-sm btn-danger"'); 
+						}
+					?>
+				</div>
+			<? } 
+			
+			if(!empty($rs['center_receive_date'])) { ?>
+				<div>
+					<div style='display:inline-block; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
+						<strong>แนบไฟล์ : </strong>
+						<input type='file' name='project_pay_attachment'>
+					</div>
 				</div>
 			<? } ?>
-			<div>
-				<div style='display:inline-block; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
-					<strong>แนบไฟล์ : </strong>
-					<input type='file' name='project_pay_attachment'>
-				</div>
-			</div>
 		</td>
 	</tr>
 	
@@ -245,13 +260,16 @@
 </table>
 
 
-<div id="btnBoxAdd">
-	<input type="submit" value="" class="btn_save"/>
-	<input type="button" onclick="history.back(-1)" class="btn_back"/>
-</div>
+	<div id="btnBoxAdd">
+		<? if(!empty($rs['center_receive_date'])) { ?><input type="submit" value="" class="btn_save"/><? } ?>
+		<input type="button" onclick="history.back(-1)" class="btn_back"/>
+	</div>
+
 
 <?php 
 		echo form_hidden('project_code', @$rs['project_code']);
 		echo form_hidden('id', @$rs['id']); 
-	echo form_close(); 
+	if(!empty($rs['center_receive_date'])) {
+		echo form_close(); 
+	}
 ?>
