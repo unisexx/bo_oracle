@@ -6,6 +6,7 @@ $(document).ready(function(){
 			
 			$(".search_users").colorbox({inline:true, href:"#inline_content", width:"80%",height:"80%"});
 			$('.search_users').click(function(){
+				$("#result_users").html("");
 				$("<img class='loading' src='images/loading.gif' style='vertical-align:bottom'>").appendTo("#result_users");
 				$('[name=sch_txt]').val('');
 				$.get(url, function(data){ $("#result_users").html(data); })
@@ -14,7 +15,7 @@ $(document).ready(function(){
 			
 			$("#btn_search_users").click(function(){
 				sch_txt = $('[name=sch_txt]').val(); 	
-				
+				$("#result_users").html("");
 				$("<img class='loading' src='images/loading.gif' style='vertical-align:bottom'>").appendTo("#result_users");
 	
 				$.get(url,{

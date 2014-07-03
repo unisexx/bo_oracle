@@ -33,7 +33,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 						    or users.username like '%".@$_GET['sch_txt']."%' )";
 		}
 		if(@$_GET['premit_type'] != ''){
-			$condition .= " and permission.mds_set_permit_type_id = '".@$_GET['permit_type']."' ";
+			$condition .= " and permission.mds_set_permit_type_id = '".@$_GET['premit_type']."' ";
 		}
 		
 		//$this->db->debug = true;
@@ -165,7 +165,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 					left join user_type_title on users.id = user_type_title.user_id
 					join usertype on  user_type_title.id = usertype.usertypetitleid 
 									   and usertype.systemid = '7' and usertype.menuid = '1'
-					where 1=1 $condition  order by id asc";
+					where 1=1 $condition  order by users.id asc";
 			$data['rs_users'] = $this->users->get($sql);
 			$data['pagination'] = $this->users->pagination();	
 		$_GET['page'] = (empty($_GET['page']))?0:($_GET['page']-1)*20;
