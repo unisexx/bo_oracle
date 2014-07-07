@@ -41,23 +41,66 @@ class Form extends Fund_Controller {
 		redirect("fund");
 	}
 	
-	public function delete()
-	{
-		
-	}
-	
 	public function modal_child()
 	{
-		$data["variable"] = $this->fund_child->limit(15)->get();
+		$where = " 1=1 ";
+		
+		if(@$_GET["keyword"]) {
+			$where .= " AND (FIRSTNAME LIKE '%".$_GET["keyword"]."%' OR LASTNAME LIKE '%".$_GET["keyword"]."%')";
+		}
+		
+		$sql = "SELECT * FROM FUND_CHILDS WHERE ".$where;
+		 
+		$data["variable"] = $this->fund_child->get($sql);
+		
+		// $data["variable"] = $this->fund_child->limit(15)->get();
 		$data["pagination"] = $this->fund_child->pagination();
 		$this->load->view("personal/modal_child",$data);
 	}
 	
+	public function modal_child_form()
+	{
+		$this->load->view("personal/modal_child_form");
+	}
+	
+	public function modal_child_save()
+	{
+		if($_POST) {
+			if(!empty($_POST["date_request"])) {
+				$_POST["date_request"] = date_to_mysql($_POST["date_request"],true);
+			} else {
+				$_POST["date_request"] = date('Y-m-d');
+			}
+			$_POST["fund_child_id"] = $_POST["child_id"];
+			$_POST["fund_child_name"] = $_POST["child_name"];
+			
+			$_POST["fund_reg_personal_id"] = $_POST["personal_id"];
+			$_POST["fund_reg_personal_name"] = $_POST["personal_name"];
+			
+			$this->form_request->save($_POST);
+		}
+	}
+	
 	public function modal_request()
 	{
-		$data["variable"] = $this->reg_personal->limit(15)->get();
+		$where = " 1=1 ";
+		
+		if(@$_GET["keyword"]) {
+			$where .= " AND (FIRSTNAME LIKE '%".$_GET["keyword"]."%' OR LASTNAME LIKE '%".$_GET["keyword"]."%')";
+		}
+		
+		$sql = "SELECT * FROM FUND_REG_PERSONAL WHERE ".$where;
+		 
+		$data["variable"] = $this->fund_child->get($sql);
+		
+		// $data["variable"] = $this->reg_personal->limit(15)->get();
 		$data["pagination"] = $this->reg_personal->pagination();
 		$this->load->view("personal/modal_request",$data);
+	}
+	
+	public function modal_request_form()
+	{
+		$this->load->view("personal/modal_request_form");
 	}
 	
 }
