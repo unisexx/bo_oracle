@@ -41,6 +41,9 @@ $(function(){
     <td><input name="textfield2" type="text" id="textfield2" style="width:600px;" value="<?=@$parent_on?> : <?=@$rs_metrics['metrics_name']?>" readonly="readonly"/></td>
   </tr>
 </table>
+	<div id="btnBox">
+		<input name="input2" type="button" title="ย้อนกลับ" value=" " onclick="history.back(-1)" class="btn_back">
+	</div>
 <?=@$pagination;?> 
 <table class="tblist2">
 <tr>
