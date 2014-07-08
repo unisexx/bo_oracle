@@ -16,7 +16,7 @@
 						<form method="get" >
 							<input type="text" name="keyword" />
 							<button type="submit" style="background: transparent;border: none;" ><img src="images/see.png" width="24" height="24"></button>
-							<a href="fund/personal/reg_fund/form"><button class="btn_add"></button></a>
+							<button type="button" class="btn_add" onclick="window.location='fund/personal/form/modal_request_form'" ></button>
 						</form>
 					</th>
 				</tr>

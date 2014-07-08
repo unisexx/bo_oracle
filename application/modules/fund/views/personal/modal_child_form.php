@@ -9,7 +9,7 @@
 	<body>
 		<div id="page"><h3>ทะเบียนข้อมูลเด็ก (เพิ่ม / แก้ไข)</h3>
 
-		<form action="fund/personal/reg_child/save" method="post" >
+		<form action="fund/personal/form/modal_child_save" method="post" >
 			<table class="tbadd">
 			  	<tr>
 			    	<th>เลขบัตรประชาชน</th>
