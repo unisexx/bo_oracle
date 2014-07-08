@@ -34,7 +34,7 @@
 			            
 			<h3>ตั้งค่า กองทุนเด็กรายบุคคล</h3>
 			<div class="lineico">
-				<div class="ico"><a href="fund/personal/reg_fund" title="ทะเบียนบุคคล ขอรับเงินกองทุน" ><img src="images/fund/icon/get_fund.png" width="48" height="48" alt="ทะเบียนบุคคล ขอรับเงินกองทุน" /><h4>ทะเบียนผู้ขอรับการช่วยเหลือ (แทน)</h4></a></div>
+				<div class="ico"><a href="fund/personal/reg_fund" title="ทะเบียนบุคคล ขอรับเงินกองทุน" ><img src="images/fund/icon/get_fund.png" width="48" height="48" alt="ทะเบียนบุคคล ขอรับเงินกองทุน" /><h4>ทะเบียนบุคคล ขอรับเงินกองทุน</h4></a></div>
 				<div class="ico"><a href="fund/personal/reg_child" title="ทะเบียนข้อมูลเด็ก" ><img src="images/fund/icon/reg_child.png" width="48" height="48" alt="ทะเบียนข้อมูลเด็ก" /><h4>ทะเบียนข้อมูลเด็ก</h4></a></div>
 				
 				<div class="clear"></div>

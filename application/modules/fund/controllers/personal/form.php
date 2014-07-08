@@ -30,12 +30,13 @@ class Form extends Fund_Controller {
 			} else {
 				$_POST["date_request"] = date('Y-m-d');
 			}
+			
 			$_POST["fund_child_id"] = $_POST["child_id"];
 			$_POST["fund_child_name"] = $_POST["child_name"];
-			
+
 			$_POST["fund_reg_personal_id"] = $_POST["personal_id"];
 			$_POST["fund_reg_personal_name"] = $_POST["personal_name"];
-			
+
 			$this->form_request->save($_POST);
 		}
 		redirect("fund");
@@ -68,9 +69,9 @@ class Form extends Fund_Controller {
 	{
 		if($_POST) {
 			
-			$_POST["birthday"] = date_to_mysql($_POST["birthday"],TRUE);				
+			$_POST["birthday"] = date_to_mysql($_POST["birthday"],TRUE);
 			$id = $this->fund_child->save($_POST);
-			
+
 			$data["value"] = $this->fund_child->get_row($id);
 			$this->load->view("personal/modal_child_save",$data);
 		}
@@ -80,13 +81,13 @@ class Form extends Fund_Controller {
 	{
 		//	ข้อมูลทะเบียนผู้ขอรับการช่วยเหลือ (แทน)
 		$where = " 1=1 ";
-		
+
 		if(@$_GET["keyword"]) {
 			$where .= " AND (FIRSTNAME LIKE '%".$_GET["keyword"]."%' OR LASTNAME LIKE '%".$_GET["keyword"]."%')";
 		}
 		
 		$sql = "SELECT * FROM FUND_REG_PERSONAL WHERE ".$where;
-		 
+
 		$data["variable"] = $this->reg_personal->get($sql);
 		
 		// $data["variable"] = $this->reg_personal->limit(15)->get();
@@ -107,7 +108,7 @@ class Form extends Fund_Controller {
 			
 			$_POST["birthday"] = date_to_mysql($_POST["birthday"],TRUE);				
 			$id = $this->reg_personal->save($_POST);
-			
+
 			$data["value"] = $this->reg_personal->get_row($id);
 			$this->load->view("personal/modal_request_save",$data);
 		}
