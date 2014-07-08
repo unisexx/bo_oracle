@@ -40,7 +40,7 @@ Class Mds_set_position extends  Mdevsys_Controller{
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		
 		if($id != ''){
-				$chk_position = "select * from mds_set_permission_dtl where mds_set_position_id = '".$id."'";
+				$chk_position = "select * from mds_set_permission where mds_set_position_id = '".$id."'";
 				$result_chk_position =  $this->permission_dtl->get($chk_position);
 				$num_chk = count($result_chk_position);
 			if($num_chk == '0'){
