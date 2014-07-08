@@ -16,6 +16,18 @@ class Result extends Fund_Controller {
 	{
 		$where = " 1=1 ";
 		
+		if(@$_GET["keyword"]) {
+			$where .= " AND (FUND_CHILD_NAME LIKE '%".$_GET["keyword"]."%' OR FUND_REG_PERSONAL_NAME LIKE '%".$_GET["keyword"]."%')";
+		}
+		
+		if(@$_GET["p"]) {
+			$where .= " AND PROVINCE_ID = ".$_GET["p"];
+		}
+		
+		if(@!empty($_GET["s"])) {
+			$where .= " AND STATUS = ".$_GET["s"];
+		}
+		
 		$sql = "SELECT * FROM FUND_REQUEST_SUPPORT WHERE ".$where;
 		
 		$data["variable"] = $this->form_request->get($sql);
@@ -24,10 +36,16 @@ class Result extends Fund_Controller {
 	}
 	
 	public function form($id) {
-		if($id) {
+		if(@$id==true) {
 			$data["value"] = $this->form_request->get_row($id);
-			$this->template->build("personal/result/form",$data);
+			if(@$data["value"]["id"]==true) {
+				$this->template->build("personal/result/form",$data);
+			} else {
+				set_notify('error', 'ไม่พบแบบฟอร์มขอรับเงินสนับสนุน');
+				redirect("fund/personal/result");
+			}
 		} else {
+			set_notify('error', 'ไม่พบแบบฟอร์มขอรับเงินสนับสนุน');
 			redirect("fund/personal/result");
 		}
 	}

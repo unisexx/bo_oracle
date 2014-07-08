@@ -12,6 +12,16 @@
 			<table class="tblist" >
 				
 				<tr>
+					<th colspan="3" style="text-align: right;" >
+						<form method="get" >
+							<input type="text" name="keyword" />
+							<button type="submit" style="background: transparent;border: none;" ><img src="images/see.png" width="24" height="24"></button>
+							<button type="button" class="btn_add" onclick="window.location='fund/personal/form/modal_request_form'" ></button>
+						</form>
+					</th>
+				</tr>
+				
+				<tr>
 					<th>ชื่อ</th>
 					<th>ที่อยู่</th>
 					<th></th>

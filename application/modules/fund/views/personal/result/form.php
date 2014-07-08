@@ -47,7 +47,7 @@
 			<td><textarea name="abstract" id="textarea3" style="width:500px; height:80px;"><?php echo $value["abstract"]?></textarea></td>
 		</tr>
 		<tr>
-			<th>ข้อมูลผู้ขอ <span class="Txt_red_12">*</span></th>
+			<th>ข้อมูลผู้ขอรับการช่วยเหลือ (แทน) <span class="Txt_red_12">*</span></th>
 			<td>
 				<input type="text" name="personal_name" id="personal_name" value="<?php echo $value["fund_reg_personal_name"]?>" readonly style="width:350px;" />
 				<?php if(@$value["status"]=='0'):?>
