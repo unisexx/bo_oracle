@@ -152,7 +152,24 @@ class Pay extends Fund_Controller {
 						"note"			=> $_POST["note"]
 					);
 
-					$this->personal_payment->save($pay);
+					$last_id = $this->personal_payment->save($pay);
+					
+					//	เปลี่ยนสถานะที่ที่เหลือ ในกรณีที่ยุติการช่วยเหลือ
+					$row = $this->personal_payment->get_row($last_id);
+					
+					$fund_request_support_id = $row["fund_request_support_id"];
+					$payment_type = $row["payment_type"];
+					
+					$variable = $this->personal_payment->where("FUND_REQUEST_SUPPORT_ID=$fund_request_support_id AND PAYMENT_TYPE=$payment_type AND ID>$last_id")->get(false,true);
+					foreach ($variable as $key => $value) {
+						$chg = array(
+							"id"				=> $value["id"],
+							"status"			=> 2,
+							"note"			=> $_POST["note"]
+						);
+						$this->personal_payment->save($chg);
+					}
+					
 				}
 				
 			}
