@@ -31,6 +31,18 @@ $(document).ready(function(){
 		}
 	})
 	
+	function chenge_access(){
+		var can_use_admin = $('[name=intranet_use_admin]:checked').val();
+		var intranet_access_all = $('[name=intranet_access_all]:checked').val();
+		if(can_use_admin == 'on' && intranet_access_all == 'all'){
+			$('.can_admin_1').show();
+			$('.can_admin_1 input').removeAttr('disabled')
+		}else{
+			$('.can_admin_1').hide();
+			$('.can_admin_1 input').attr('disabled','disabled')
+		}
+	}
+	
 	function change_use_admin(){
 		var can_use_admin = $('[name=intranet_use_admin]');
 		if(can_use_admin.is(':checked')){
@@ -38,11 +50,19 @@ $(document).ready(function(){
 		}else{
 			$('.can_admin').hide();
 		}
+		chenge_access();
 	}
+	
 	change_use_admin();
 	$('[name=intranet_use_admin]').live('change',function(){
 		change_use_admin()
 	})
+	
+	chenge_access();
+	$('[name=intranet_access_all]').live('click',function(){
+		chenge_access()
+	})
+	
 })
 function CheckAll(pSystemID, pMenuID,pValue)
 {
@@ -1173,11 +1193,11 @@ function CheckAll(pSystemID, pMenuID,pValue)
          	 <input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',true);" style="cursor:pointer;" value="เลือกทั้งหมด"><input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',false);" style="cursor:pointer;" value="ไม่เลือกทั้งหมด">
           </td> 
         </tr>
-        <tr class="can_admin">
+        <tr class="can_admin_1">
         	<th colspan="3">ตั้งค่าข้อมูล</th>
         </tr>
           <? $menu_id=5;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ไฮไลท์กิจกรรม </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1194,7 +1214,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=6;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ประเภทหนังสือเวียน </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1211,7 +1231,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
          <? $menu_id=7;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> หมวดหมู่เวทีแชร์ไฟล์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1228,7 +1248,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=8;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ประเภทปฏิทินกิจกรรม </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1245,7 +1265,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=9;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> กำหนดขนาดและประเภทไฟล์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1258,7 +1278,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=10;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ข้อตกลงในการแชร์ไฟล์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1271,7 +1291,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
          <? $menu_id=11;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> เว็บลิงค์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
