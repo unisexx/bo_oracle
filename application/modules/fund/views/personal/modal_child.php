@@ -47,7 +47,7 @@
 				<tr>
 					<td><?php echo $name?></td>
 					<td><?php echo $address?></td>
-					<td><a href="#" class="child-list" data-name="<?php echo $name?>" data-id="<?php echo $value["id"]?>" ><button type="button" >เพิ่ม</button></a></td>
+					<td><a href="#" class="child-list" data-name="<?php echo $name?>" data-id="<?php echo $value["id"]?>" ><button type="button" >เลือก</button></a></td>
 				</tr>
 				<?php endforeach?>
 				

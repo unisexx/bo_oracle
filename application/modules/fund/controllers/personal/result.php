@@ -38,8 +38,17 @@ class Result extends Fund_Controller {
 	public function form($id) {
 		if(@$id==true) {
 			$data["value"] = $this->form_request->get_row($id);
+			
+			//	เช็คว่ามี id จริง
 			if(@$data["value"]["id"]==true) {
-				$this->template->build("personal/result/form",$data);
+				
+				//	เช็ค status ถ้าเป็น "รอดำเนินการ" สามารถแก้ไขได้
+				if(@$data["value"]["status"]==0) {
+					$this->template->build("personal/result/form",$data);
+				} else {
+					$this->template->build("personal/result/view",$data);
+				}
+				
 			} else {
 				set_notify('error', 'ไม่พบแบบฟอร์มขอรับเงินสนับสนุน');
 				redirect("fund/personal/result");
