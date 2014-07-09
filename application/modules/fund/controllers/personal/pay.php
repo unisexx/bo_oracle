@@ -32,16 +32,16 @@ class Pay extends Fund_Controller {
 		if($id) {
 			$data["value"] = $this->form_request->get_row($id);
 			
-			$data["variable41"] = $this->personal_payment->where("PAYMENT_TYPE=1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable42_1"] = $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable42_2"] = $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 2 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable42_3"] = $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 3 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable43"] = $this->personal_payment->where("PAYMENT_TYPE=3 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
-			$data["variable44"] = $this->personal_payment->where("PAYMENT_TYPE=4 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
-			$data["variable45"] = $this->personal_payment->where("PAYMENT_TYPE=5 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable46"] = $this->personal_payment->where("PAYMENT_TYPE=6 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable47"] = $this->personal_payment->where("PAYMENT_TYPE=7 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
-			$data["variable48"] = $this->personal_payment->where("PAYMENT_TYPE=8 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable41"]		= $this->personal_payment->where("PAYMENT_TYPE=1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable42_1"]	= $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable42_2"]	= $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 2 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable42_3"]	= $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 3 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable43"]		= $this->personal_payment->where("PAYMENT_TYPE=3 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable44"]		= $this->personal_payment->where("PAYMENT_TYPE=4 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable45"]		= $this->personal_payment->where("PAYMENT_TYPE=5 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable46"]		= $this->personal_payment->where("PAYMENT_TYPE=6 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable47"]		= $this->personal_payment->where("PAYMENT_TYPE=7 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable48"]		= $this->personal_payment->where("PAYMENT_TYPE=8 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
 			
 			$this->template->build("personal/pay/form",$data);
 		} else {

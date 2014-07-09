@@ -4,7 +4,7 @@
 		<tr>
 			<th>ปีงบประมาณ <span class="Txt_red_12">*</span></th>
 			<td>กองทุนคุ้มครองเด็ก
-			    <select name="year_budget" id="select">
+			    <select name="year_budget" id="select" disabled >
 					<option>2557</option>
 					<option>2556</option>
 			    </select>
@@ -13,14 +13,14 @@
 		<tr>
 			<th>จังหวัด <span class="Txt_red_12">*</span></th>
 			<td>
-				<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value["province_id"],"id=\"province_id\"","-- เลือกจังหวัด --",null)?>
+				<?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$value["province_id"],"id=\"province_id\" disabled ","-- เลือกจังหวัด --",null)?>
 				<span id="error_span_province_id"></span>
 			</td>
 		</tr>
 		<tr>
 			<th>วันเดือนปี ที่รับเรื่อง<span class="Txt_red_12"> *</span></th>
 			<td>
-				<input type="text" id="date_request" class="datepicker" name="date_request" value="<?php echo mysql_to_date($value["date_request"],TRUE)?>" readonly style="width:80px;" />
+				<input type="text" id="date_request" value="<?php echo mysql_to_date($value["date_request"],TRUE)?>" readonly style="width:80px;" />
 				<span id="error_span_date_request"></span>
 			</td>
 		</tr>
@@ -28,11 +28,6 @@
 			<th>ข้อมูลเด็ก <span class="Txt_red_12">*</span></th>
 			<td>
 				<input type="text" name="child_name" id="child_name" value="<?php echo $value["fund_child_name"]?>" readonly style="width:350px;" />
-				<?php if(@$value["status"]=='0'):?>
-				<a href="fund/personal/form/modal_child" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
-				<input type="hidden" id="child_id" name="child_id" value="<?php echo @$value["fund_child_id"]?>" />
-				<?php endif?>
-				<span id="error_span_child_name"></span>
 			</td>
 		</tr>
 		<tr>
@@ -44,7 +39,7 @@
 		</tr>
 		<tr>
 			<th>สภาพปัญหาความเดือดร้อนโดยสรุป</th>
-			<td><textarea name="abstract" id="textarea3" style="width:500px; height:80px;"><?php echo $value["abstract"]?></textarea></td>
+			<td><textarea id="textarea3" disabled style="width:500px; height:80px;"><?php echo $value["abstract"]?></textarea></td>
 		</tr>
 		<tr>
 			<th>ข้อมูลผู้ขอรับการช่วยเหลือ (แทน) <span class="Txt_red_12">*</span></th>
@@ -60,10 +55,10 @@
 		<tr>
 			<th>ความเกี่ยวข้องกับเด็ก</th>
 			<td>
-				<span><label><input type="radio" name="relation_type" id="radio3" value="1" <?php if($value["relation_type"]==1) echo "checked"?> /> บิดา/มารดา</label></span>
-		    	<span><label><input type="radio" name="relation_type" id="radio4" value="2" <?php if($value["relation_type"]==2) echo "checked"?> />ญาติ</label></span>
-				<span><label><input type="radio" name="relation_type" id="radio4" value="3" <?php if($value["relation_type"]==3) echo "checked"?> />ผู้ดูแล/ผู้อุปถัมภ์</label></span>
-				<span><label><input type="radio" name="relation_type" id="radio4" value="4" <?php if($value["relation_type"]==4) echo "checked"?> />คนรู้จัก</label></span>
+				<span><label><input type="radio" name="relation_type" id="radio3" value="1" disabled <?php if($value["relation_type"]==1) echo "checked"?> /> บิดา/มารดา</label></span>
+		    	<span><label><input type="radio" name="relation_type" id="radio4" value="2" disabled <?php if($value["relation_type"]==2) echo "checked"?> />ญาติ</label></span>
+				<span><label><input type="radio" name="relation_type" id="radio4" value="3" disabled <?php if($value["relation_type"]==3) echo "checked"?> />ผู้ดูแล/ผู้อุปถัมภ์</label></span>
+				<span><label><input type="radio" name="relation_type" id="radio4" value="4" disabled <?php if($value["relation_type"]==4) echo "checked"?> />คนรู้จัก</label></span>
 			</td>
 		</tr>
 	</table>
