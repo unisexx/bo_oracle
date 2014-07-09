@@ -31,21 +31,6 @@ $(document).ready(function(){
 		}
 	})
 	
-	function change_active_user(){
-		var access_all = $('[name=intranet_access_all]:checked').val();
-		if(access_all == 'on'){
-			$('.active_user_all').show();
-			$('.active_user_on').hide();
-		}else{
-			$('.active_user_all').hide();
-			$('.active_user_on').show();
-		}
-	}
-	change_active_user()
-	$('[name=intranet_access_all]').live('click',function(){
-		change_active_user()
-	})
-	
 	function change_use_admin(){
 		var can_use_admin = $('[name=intranet_use_admin]');
 		if(can_use_admin.is(':checked')){
@@ -1111,8 +1096,9 @@ function CheckAll(pSystemID, pMenuID,pValue)
       	<tr>
           <th>การเข้าถึงข้อมูล</th>
           <td colspan="2">
-          	<input type="radio" name="intranet_access_all" value="on" <? if(@$result['intranet_access_all']=='on')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
-          	<input type="radio" name="intranet_access_all" value="off" <? if(@$result['intranet_access_all']=='off')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
+          	<input type="radio" name="intranet_access_all" value="all" <? if(@$result['intranet_access_all']=='all')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
+          	<input type="radio" name="intranet_access_all" value="on" <? if(@$result['intranet_access_all']=='on')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
+          	<input type="radio" name="intranet_access_all" value="self" <? if(@$result['intranet_access_all']=='self')echo 'checked="checked"';?>>ผู้ใช้สำหรับนำเข้าข้อมูล/ดูข้อมูลตามสิทธ์ที่ได้รับ
           	&nbsp;
           </td>
         </tr>
@@ -1122,17 +1108,6 @@ function CheckAll(pSystemID, pMenuID,pValue)
           	<input type="checkbox" name="intranet_use_admin"  value="on" <? if(@$result['intranet_use_admin']=='on')echo 'checked="checked"';?>>
           </td>
         </tr>  
-        <tr class="can_admin">
-          <th>สิทธิ์การอนุมัติผู้ใช้งานใหม่</th>
-          <td colspan="2">
-          	<span class="active_user_all">
-          		<input type="checkbox" name="intranet_active_user" class="active_user" value="all" <? if(@$result['intranet_active_user']=='all')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
-          	</span>
-          	<span class="active_user_on">
-          		<input type="checkbox" name="intranet_active_user" class="active_user" value="on" <? if(@$result['intranet_active_user']=='on')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
-          	</span>
-          </td>
-        </tr>
       <? $menu_id=1;?>     
         <tr class="can_admin">
           <th><?=$menu_id;?> หนังสือเวียน </th>
