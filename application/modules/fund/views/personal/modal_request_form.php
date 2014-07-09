@@ -15,7 +15,12 @@
 				<tr>
 					<th>กองทุน <span class="Txt_red_12">*</span></th>
 					<td>
-						<?php echo form_dropdown("FUND_MST_FUND_NAME_ID",get_option("ID","FUND_NAME","FUND_MST_FUND_NAME",NULL,"FUND_CODE"),null,"id=\"fund_mst_fund_name\"","-- เลือกกองทุน --")?>
+						<select name="fund_mst_fund_name_id" id="fund_mst_fund_name">
+							<option value="" >-- เลือกกองทุน --</option>
+							<option value="4">กองทุนคุ้มครองเด็ก</option>
+							<option value="7">กองทุนส่งเสริมการจัดสวัสดิการสังคม</option>
+							<option value="8">กองทุนเพื่อการป้องกันและปราบปรามการค้ามนุษย์</option>
+						</select>
 					</td>
 				</tr>
 				<tr>

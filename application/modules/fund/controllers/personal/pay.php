@@ -70,6 +70,12 @@ class Pay extends Fund_Controller {
 					$rq = $_POST["fund_request_support_id"];
 					$type = $_POST["payment_type"];
 					
+					if(!file_exists("uploads/fund/personal/$rq")) {
+						$old = umask(0);
+						mkdir("uploads/fund/personal/$rq",0777);
+						umask($old);
+					}
+					
 					if(!file_exists("uploads/fund/personal/$rq/pay")) {
 						$old = umask(0);
 						mkdir("uploads/fund/personal/$rq/pay",0777);

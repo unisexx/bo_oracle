@@ -1,5 +1,5 @@
 <h3>รายละเอียดการขอรับเงินสนับสนุน รายบุคคล</h3>
-<form action="fund/personal/result/save/<?php echo $value["id"]?>" method="post"  enctype="multipart/form-data" >
+<form id="preview-form" >
 	<table class="tbadd form_1">
 		<tr>
 			<th>ปีงบประมาณ <span class="Txt_red_12">*</span></th>
@@ -20,7 +20,7 @@
 		<tr>
 			<th>วันเดือนปี ที่รับเรื่อง<span class="Txt_red_12"> *</span></th>
 			<td>
-				<input type="text" id="date_request" class="datepicker" name="date_request" value="<?php echo mysql_to_date($value["date_request"],TRUE)?>" readonly style="width:80px;" />
+				<input type="text" id="date_request" name="date_request" value="<?php echo mysql_to_date($value["date_request"],TRUE)?>" readonly style="width:80px;" />
 				<span id="error_span_date_request"></span>
 			</td>
 		</tr>
@@ -74,7 +74,7 @@
 			<th>มติที่ประชุมครั้งที่ / ลงวันที่<span class="Txt_red_12"> *</span></th>
 			<td>
 				<input type="text" id="meeting_number" name="meeting_number" value="<?php echo $value["meeting_number"]?>" style="width:50px;"/> /
-				<input type="text" class="datepicker" name="meeting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
+				<input type="text" name="meeting_date" value="<?php echo mysql_to_date($value["meeting_date"],TRUE)?>" readonly style="width:80px;" />
 			</td>
 		</tr>
 		<tr>
@@ -150,7 +150,7 @@
 								คำสั่งศาล
 							</p>
 						<?php else:?>
-							<p><span>แนบคำสั่งศาล</span> <input name="file_command" type="file"  /></p>
+							<p><span>แนบคำสั่งศาล</span> <input name="file_command" type="file" accept="application/pdf,application/msword" /></p>
 						<?php endif?>
 						
 						<?php if($value["file_command"]):?>
@@ -360,7 +360,6 @@
 	</div>
 	
 	<div id="btnBoxAdd">
-		<button type="submit" class="btn_save" title="บันทึก" ></button>
 		<button type="submit" class="btn_back" title="ย้อนกลับ" onclick="history.back(-1)" ></button>
 	</div>
 	
@@ -368,6 +367,9 @@
 
 <script type="text/javascript" >
 	$(document).ready(function(){
+		
+		$("#preview-form input").attr("disabled","disabled");
+		$("#preview-form select").attr("disabled","disabled");
 		
 		<?php if($value["status"]!='0'):?>
 			$('.form_1 input').attr('disabled', 'disabled');
