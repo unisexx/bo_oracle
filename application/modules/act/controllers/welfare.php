@@ -46,15 +46,21 @@ Class Welfare extends  Act_Controller{
 	
 	function form($id=false){
 		$data['services'] = $this->service->order_by('service_id','asc')->get(FALSE,TRUE);
+		
+		// หน่วยงานของรัฐ
 		$data['target_groups'] = $this->target_group->order_by('target_id','asc')->get(FALSE,TRUE);
 		$data['processes'] = $this->process->order_by('process_id','asc')->get(FALSE,TRUE);
+		
+		// องค์กรสาธารณะประโยชน์
 		$data['formats'] = $this->format->order_by('format_id','asc')->get(FALSE,TRUE);
 		$data['methods'] = $this->method->order_by('method_id','asc')->get(FALSE,TRUE);
 		$data['service_types'] = $this->service_type->order_by('service_type_id','asc')->get(FALSE,TRUE);
 		$data['promotes'] = $this->promote->order_by('promote_id','asc')->get(FALSE,TRUE);
 		$data['promote_gets'] = $this->promote_get->order_by('promote_get_id','asc')->get(FALSE,TRUE);
-		$data['pcommunities'] = $this->pcommunity->order_by('pcommunity_id','asc')->get(FALSE,TRUE);
-		$data['scommunities'] = $this->scommunity->order_by('scommunity_id','asc')->get(FALSE,TRUE);
+		
+		// องค์กรสวัสดิการชุมชน
+		// $data['pcommunities'] = $this->pcommunity->order_by('pcommunity_id','asc')->get(FALSE,TRUE);
+		// $data['scommunities'] = $this->scommunity->order_by('scommunity_id','asc')->get(FALSE,TRUE);
 		$this->template->build('welfare/form',$data);
 	}
 	

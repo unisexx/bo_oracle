@@ -126,4 +126,15 @@ if(!function_exists('act_get_fund_name'))
 		return $result;
 	}
 }
+
+if(!function_exists('act_get_target_group_name'))
+{
+	function act_get_target_group_name($target_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select target_name from act_target_group where target_id = ?',$target_id);
+		dbConvert($result);
+		return $result;
+	}
+}
 ?>
