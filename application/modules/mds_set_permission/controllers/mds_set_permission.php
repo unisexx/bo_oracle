@@ -132,7 +132,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		   	//new_save_logfile("ADD",$this->modules_title,$this->permission->table,"ID",$id,$_POST['users_id'],"name",$this->modules_name2);
 		   }		   
 		}
-		//redirect($urlpage);
+		redirect($urlpage);
 
 	}
 	function delete($ID=FALSE){
