@@ -93,6 +93,7 @@
 				buttonImage: 'js/jquery.datepick/calendar.png'
 			});
 		
+			//	Click to default
 			$(".datepicker").click(function(){
 				$(this).val("");
 			})

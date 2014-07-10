@@ -43,7 +43,7 @@
 		<td><textarea name="abstract" id="textarea3" style="width:500px; height:80px;"></textarea></td>
 	</tr>
 	<tr>
-		<th>ข้อมูลผู้ขอ <span class="Txt_red_12">*</span></th>
+		<th>ข้อมูลผู้ขอรับการช่วยเหลือ (แทน) <span class="Txt_red_12">*</span></th>
 		<td>
 			<input type="text" name="personal_name" id="personal_name" readonly style="width:350px;" />
 			<a href="fund/personal/form/modal_request" class="example7" ><img src="images/see.png" width="24" height="24" /></a>
@@ -56,7 +56,7 @@
 			<span><label><input type="radio" name="relation_type" id="radio3" value="1" /> บิดา/มารดา</label></span>
 	    	<span><label><input type="radio" name="relation_type" id="radio4" value="2" />ญาติ</label></span>
 			<span><label><input type="radio" name="relation_type" id="radio4" value="3" />ผู้ดูแล/ผู้อุปถัมภ์</label></span>
-			<span><label><input type="radio" name="relation_type" id="radio4" value="4" />คนรู้จัก</label></span>
+			<span><label><input type="radio" name="relation_type" id="radio4" value="4" />ครู/อาจารย์</label></span>
 		</td>
 	</tr>
 </table>

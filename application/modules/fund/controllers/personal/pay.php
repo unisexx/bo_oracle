@@ -32,16 +32,16 @@ class Pay extends Fund_Controller {
 		if($id) {
 			$data["value"] = $this->form_request->get_row($id);
 			
-			$data["variable41"] = $this->personal_payment->where("PAYMENT_TYPE=1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable42_1"] = $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable42_2"] = $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 2 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable42_3"] = $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 3 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable43"] = $this->personal_payment->where("PAYMENT_TYPE=3 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
-			$data["variable44"] = $this->personal_payment->where("PAYMENT_TYPE=4 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
-			$data["variable45"] = $this->personal_payment->where("PAYMENT_TYPE=5 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable46"] = $this->personal_payment->where("PAYMENT_TYPE=6 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
-			$data["variable47"] = $this->personal_payment->where("PAYMENT_TYPE=7 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
-			$data["variable48"] = $this->personal_payment->where("PAYMENT_TYPE=8 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable41"]		= $this->personal_payment->where("PAYMENT_TYPE=1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable42_1"]	= $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 1 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable42_2"]	= $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 2 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable42_3"]	= $this->personal_payment->where("PAYMENT_TYPE=2 AND FUND_EDU_TYPE = 3 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable43"]		= $this->personal_payment->where("PAYMENT_TYPE=3 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable44"]		= $this->personal_payment->where("PAYMENT_TYPE=4 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable45"]		= $this->personal_payment->where("PAYMENT_TYPE=5 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable46"]		= $this->personal_payment->where("PAYMENT_TYPE=6 AND FUND_REQUEST_SUPPORT_ID= $id")->limit(50)->get();
+			$data["variable47"]		= $this->personal_payment->where("PAYMENT_TYPE=7 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
+			$data["variable48"]		= $this->personal_payment->where("PAYMENT_TYPE=8 AND FUND_REQUEST_SUPPORT_ID= $id")->get_row();
 			
 			$this->template->build("personal/pay/form",$data);
 		} else {
@@ -69,6 +69,12 @@ class Pay extends Fund_Controller {
 					
 					$rq = $_POST["fund_request_support_id"];
 					$type = $_POST["payment_type"];
+					
+					if(!file_exists("uploads/fund/personal/$rq")) {
+						$old = umask(0);
+						mkdir("uploads/fund/personal/$rq",0777);
+						umask($old);
+					}
 					
 					if(!file_exists("uploads/fund/personal/$rq/pay")) {
 						$old = umask(0);
@@ -146,7 +152,24 @@ class Pay extends Fund_Controller {
 						"note"			=> $_POST["note"]
 					);
 
-					$this->personal_payment->save($pay);
+					$last_id = $this->personal_payment->save($pay);
+					
+					//	เปลี่ยนสถานะที่ที่เหลือ ในกรณีที่ยุติการช่วยเหลือ
+					$row = $this->personal_payment->get_row($last_id);
+					
+					$fund_request_support_id = $row["fund_request_support_id"];
+					$payment_type = $row["payment_type"];
+					
+					$variable = $this->personal_payment->where("FUND_REQUEST_SUPPORT_ID=$fund_request_support_id AND PAYMENT_TYPE=$payment_type AND ID>$last_id")->get(false,true);
+					foreach ($variable as $key => $value) {
+						$chg = array(
+							"id"				=> $value["id"],
+							"status"			=> 2,
+							"note"			=> $_POST["note"]
+						);
+						$this->personal_payment->save($chg);
+					}
+					
 				}
 				
 			}

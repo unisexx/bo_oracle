@@ -31,20 +31,17 @@ $(document).ready(function(){
 		}
 	})
 	
-	function change_active_user(){
-		var access_all = $('[name=intranet_access_all]:checked').val();
-		if(access_all == 'on'){
-			$('.active_user_all').show();
-			$('.active_user_on').hide();
+	function chenge_access(){
+		var can_use_admin = $('[name=intranet_use_admin]:checked').val();
+		var intranet_access_all = $('[name=intranet_access_all]:checked').val();
+		if(can_use_admin == 'on' && intranet_access_all == 'all'){
+			$('.can_admin_1').show();
+			$('.can_admin_1 input').removeAttr('disabled')
 		}else{
-			$('.active_user_all').hide();
-			$('.active_user_on').show();
+			$('.can_admin_1').hide();
+			$('.can_admin_1 input').attr('disabled','disabled')
 		}
 	}
-	change_active_user()
-	$('[name=intranet_access_all]').live('click',function(){
-		change_active_user()
-	})
 	
 	function change_use_admin(){
 		var can_use_admin = $('[name=intranet_use_admin]');
@@ -53,11 +50,19 @@ $(document).ready(function(){
 		}else{
 			$('.can_admin').hide();
 		}
+		chenge_access();
 	}
+	
 	change_use_admin();
 	$('[name=intranet_use_admin]').live('change',function(){
 		change_use_admin()
 	})
+	
+	chenge_access();
+	$('[name=intranet_access_all]').live('click',function(){
+		chenge_access()
+	})
+	
 })
 function CheckAll(pSystemID, pMenuID,pValue)
 {
@@ -1111,8 +1116,9 @@ function CheckAll(pSystemID, pMenuID,pValue)
       	<tr>
           <th>การเข้าถึงข้อมูล</th>
           <td colspan="2">
-          	<input type="radio" name="intranet_access_all" value="on" <? if(@$result['intranet_access_all']=='on')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
-          	<input type="radio" name="intranet_access_all" value="off" <? if(@$result['intranet_access_all']=='off')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
+          	<input type="radio" name="intranet_access_all" value="all" <? if(@$result['intranet_access_all']=='all')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
+          	<input type="radio" name="intranet_access_all" value="on" <? if(@$result['intranet_access_all']=='on')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
+          	<input type="radio" name="intranet_access_all" value="self" <? if(@$result['intranet_access_all']=='self')echo 'checked="checked"';?>>ผู้ใช้สำหรับนำเข้าข้อมูล/ดูข้อมูลตามสิทธ์ที่ได้รับ
           	&nbsp;
           </td>
         </tr>
@@ -1122,17 +1128,6 @@ function CheckAll(pSystemID, pMenuID,pValue)
           	<input type="checkbox" name="intranet_use_admin"  value="on" <? if(@$result['intranet_use_admin']=='on')echo 'checked="checked"';?>>
           </td>
         </tr>  
-        <tr class="can_admin">
-          <th>สิทธิ์การอนุมัติผู้ใช้งานใหม่</th>
-          <td colspan="2">
-          	<span class="active_user_all">
-          		<input type="checkbox" name="intranet_active_user" class="active_user" value="all" <? if(@$result['intranet_active_user']=='all')echo 'checked="checked"';?>>ทุกสำนัก/กอง (หน่วยงาน)
-          	</span>
-          	<span class="active_user_on">
-          		<input type="checkbox" name="intranet_active_user" class="active_user" value="on" <? if(@$result['intranet_active_user']=='on')echo 'checked="checked"';?>>เฉพาะสำนัก/กอง (หน่วยงาน) ของตนเอง
-          	</span>
-          </td>
-        </tr>
       <? $menu_id=1;?>     
         <tr class="can_admin">
           <th><?=$menu_id;?> หนังสือเวียน </th>
@@ -1198,11 +1193,11 @@ function CheckAll(pSystemID, pMenuID,pValue)
          	 <input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',true);" style="cursor:pointer;" value="เลือกทั้งหมด"><input type="button" onclick="CheckAll('<?=$system_id;?>','<?=$menu_id;?>',false);" style="cursor:pointer;" value="ไม่เลือกทั้งหมด">
           </td> 
         </tr>
-        <tr class="can_admin">
+        <tr class="can_admin_1">
         	<th colspan="3">ตั้งค่าข้อมูล</th>
         </tr>
           <? $menu_id=5;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ไฮไลท์กิจกรรม </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1219,7 +1214,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=6;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ประเภทหนังสือเวียน </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1236,7 +1231,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
          <? $menu_id=7;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> หมวดหมู่เวทีแชร์ไฟล์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1253,7 +1248,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=8;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ประเภทปฏิทินกิจกรรม </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1270,7 +1265,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=9;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> กำหนดขนาดและประเภทไฟล์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1283,7 +1278,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
         <? $menu_id=10;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> ข้อตกลงในการแชร์ไฟล์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />
@@ -1296,7 +1291,7 @@ function CheckAll(pSystemID, pMenuID,pValue)
           </td> 
         </tr>
          <? $menu_id=11;?>     
-        <tr class="can_admin">
+        <tr class="can_admin_1">
           <th><?=$menu_id;?> เว็บลิงค์ </th>
           <td>
           	<input type="checkbox" name="View_<?=$system_id;?>_<?=$menu_id;?>" id="View_<?=$system_id;?>_<?=$menu_id;?>" <? if(@$srow[$system_id][$menu_id]["CANVIEW"]=='on')echo "checked";?> />

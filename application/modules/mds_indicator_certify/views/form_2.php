@@ -161,15 +161,20 @@ $(function(){
                                         <input type="hidden" name="weight_perc_tot" id="weight_perc_tot" value="<?=@$weight_perc_tot?>">
                                         <?=@$metrics_weight?>
                                     </center></td>
-                                    <td><center>
-                                      <input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?>" >
-                                    </center><?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?></td>
-                                    <td id="ac"><center> 
-                                    <input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$score['score_metrics']?>"  maxlength="6" class="numDecimal2" >
-                                    </center><?=@$score['score_metrics']?></td>
-                                    <td id="score_weight"><center>
-                                      <span name="score_weight"></span>
-                                    </center> 
+                                    <td>
+                                    	<center>
+                                      	<input type="hidden" name="result_metrics" style="width: 60px" size="7" id="result_metrics" value="<?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?>" >
+                                    	</center><?=(empty($score['result_metrics']))?'N/A':$score['result_metrics'];?>
+                                    </td>
+                                    <td id="ac">
+                                    	<center> 
+                                    	<input type="hidden" name="score_metrics" style="width: 60px" id="score_mertics" size="7" value="<?=@$score['score_metrics']?>"  maxlength="6" class="numDecimal2" >
+                                    	</center><?=number_format(@$score['score_metrics'],4)?>
+                                    </td>
+                                    <td id="score_weight">
+                                    	<center>
+                                      	<span name="score_weight"></span>
+                                    	</center> 
                                     </td>
                                   </tr>
                               </tbody>
