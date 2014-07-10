@@ -78,7 +78,6 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
-		   $this->db->debug = true;
 		   if($_POST['id'] > '0'){
 		   		$_POST['UPDATE_BY'] = login_data('name');
 				$id = $this->permission->save($_POST);
