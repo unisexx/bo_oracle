@@ -159,8 +159,8 @@ Class Mds_indicator_certify extends  Mdevsys_Controller{
 				$result_kpr = $this->kpr->get($chk_kpr);
 				$data['kpr'] = @$result_kpr['0'];
 				
-				
-			$data['rs_metrics'] = $this->metrics->get_row(@$data['rs']['0']['mds_set_metrics_id']);
+			$data['mds_set_metrics_id'] = @$data['rs']['0']['mds_set_metrics_id'];
+			$data['rs_metrics'] = $this->metrics->get_row(@$data['mds_set_metrics_id']);
 			
 				if($premit == "")
 				{

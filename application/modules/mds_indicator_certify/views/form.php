@@ -42,7 +42,7 @@ $(function(){
   </tr>
 </table>
 	<div id="btnBox">
-		<input name="input2" type="button" title="ย้อนกลับ" value=" " onclick="history.back(-1)" class="btn_back">
+		<input name="input2" type="button" title="ย้อนกลับ" value=" " onclick="document.location='<?=base_url()?>mds_indicator_certify'" class="btn_back">
 	</div>
 <?=@$pagination;?> 
 <table class="tblist2">
