@@ -11,12 +11,12 @@ $(document).ready(function(){
 });
 </script>
 
-<h3>ตั้งค่า ประเภทอนุกรรมการ (บันทึก / แก้ไข)</h3>
+<h3>ตั้งค่า ประเภทคณะกรรมการ (บันทึก / แก้ไข)</h3>
 
 <form method="post" action="act/set_committee_type/save">
 <table class="tbadd">
 <tr>
-  <th>ชื่อประเภทอนุกรรมการ<span class="Txt_red_12"> *</span></th>
+  <th>ชื่อประเภทคณะกรรมการ<span class="Txt_red_12"> *</span></th>
   <td><input name="sub_type_name" type="text" id="textfield" class="form-control" style="width:500px;" value="<?php echo $committee_type['sub_type_name']?>" /></td>
 </tr>
 </table>

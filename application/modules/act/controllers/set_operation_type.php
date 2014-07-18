@@ -6,8 +6,9 @@ Class Set_operation_type extends  Act_Controller{
 	}
 	
 	function index(){
+		// $this->db->debug = true;
 		$condition = @$_GET['search']!='' ? " pcommunity_name like '%".$_GET['search']."%'" : "";
-		$data['operation_types'] = $this->process_com->where($condition)->order_by('id','desc')->get(false,true);
+		$data['operation_types'] = $this->process_com->where($condition)->order_by('pcommunity_id','desc')->get(false,true);
 		$data['pagination'] = $this->process_com->pagination();
 		$this->template->build('set_operation_type/index',$data);
 	}
@@ -27,7 +28,7 @@ Class Set_operation_type extends  Act_Controller{
 	
 	function delete($id){
 		if($id){
-			$this->process_com->delete($id);
+			$this->process_com->delete('pcommunity_id',$id);
 			set_notify('success', lang('delete_data_complete'));
 		}
 		redirect($_SERVER["HTTP_REFERER"]);
