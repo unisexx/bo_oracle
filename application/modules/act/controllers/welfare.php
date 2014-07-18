@@ -87,7 +87,6 @@ Class Welfare extends  Act_Controller{
 		$text = ($type == 'report') ? '-- ทุกอำเภอ --' : '- เลือกอำเภอ -';
 		$result = $this->db->GetArray('select ampor_code,ampor_name as text from act_ampor where province_code = ? order by ampor_name',$_GET['q']);
         dbConvert($result);
-        if($type == 'report' and !empty($_GET['q'])) array_unshift($result, array('ampor_code' => '', 'text' => $text));
 		echo $result ? json_encode($result) : '[{"id":"","text":"'.$text.'"}]';
 	}
 	
@@ -96,7 +95,6 @@ Class Welfare extends  Act_Controller{
 		$text = ($type == 'report') ? '-- ทุกตำบล --' : '- เลือกตำบล -';
 		$result = $this->db->GetArray('select tumbon_code,tumbon_name as text from act_tumbon where province_code = ? and ampor_code = ?',array($_GET['p'],$_GET['q']));
 		dbConvert($result);
-        if($type == 'report' and !empty($_GET['q'])) array_unshift($result, array('tumbon_code' => '', 'text' => $text));
 		echo $result ? json_encode($result) : '[{"id":"","text":"'.$text.'"}]';
 	}
 	

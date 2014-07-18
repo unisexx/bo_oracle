@@ -1,5 +1,5 @@
 <?php
-Class Welfare_state extends  Act_Controller{
+Class Welfare_benefit extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
 		$this->load->model("target_group_model","target_group");
@@ -44,13 +44,13 @@ Class Welfare_state extends  Act_Controller{
 		LEFT JOIN ACT_PROVINCE ON ACT_ORGANIZATION_MAIN.PROVINCE_CODE = ACT_PROVINCE.PROVINCE_CODE
 		LEFT JOIN ACT_AMPOR ON ACT_ORGANIZATION_MAIN.AMPOR_CODE = ACT_AMPOR.AMPOR_CODE AND ACT_PROVINCE.PROVINCE_CODE = ACT_AMPOR.PROVINCE_CODE
 		LEFT JOIN ACT_TUMBON ON ACT_ORGANIZATION_MAIN.TUMBON_CODE = ACT_TUMBON.TUMBON_CODE AND ACT_PROVINCE.PROVINCE_CODE = ACT_TUMBON.PROVINCE_CODE AND ACT_AMPOR.AMPOR_CODE = ACT_TUMBON.AMPOR_CODE
-		WHERE ACT_ORGANIZATION_MAIN.UNDER_TYPE = 1 ".@$condition." 
+		WHERE ACT_ORGANIZATION_MAIN.UNDER_TYPE = 2 ".@$condition." 
 		ORDER BY ACT_ORGANIZATION_MAIN.CREATE_DATE DESC"; // select หาเฉพาะหน่วยงานของรัฐ
 		
 		// echo $sql;
 		$data['orgmains'] = $this->orgmain->get($sql,FALSE);
 		$data['pagination'] = $this->orgmain->pagination();
-		$this->template->build('welfare_state/index',$data);
+		$this->template->build('welfare_benefit/index',$data);
 	}
 	
 	function form($id=false){
@@ -65,27 +65,32 @@ Class Welfare_state extends  Act_Controller{
 		if($id != ""){
 			$data['targetgroup_select'] = $this->orgsub->where("question_name = 'target' and organ_id = ".$id)->get(FALSE,TRUE);
 			$data['service_select'] = $this->orgsub->where("question_name = 'service' and organ_id = ".$id)->get(FALSE,TRUE);
-			$data['process_select'] = $this->orgsub->where("question_name = 'process' and organ_id = ".$id)->get(FALSE,TRUE);	
+			$data['process_select'] = $this->orgsub->where("question_name = 'process' and organ_id = ".$id)->get(FALSE,TRUE);
+			$data['format_select'] = $this->orgsub->where("question_name = 'format' and organ_id = ".$id)->get(FALSE,TRUE);
+			$data['method_select'] = $this->orgsub->where("question_name = 'method' and organ_id = ".$id)->get(FALSE,TRUE);
+			$data['service_type_select'] = $this->orgsub->where("question_name = 'service_type' and organ_id = ".$id)->get(FALSE,TRUE);
+			$data['promote_select'] = $this->orgsub->where("question_name = 'promote' and organ_id = ".$id)->get(FALSE,TRUE);
+			$data['promote_get_select'] = $this->orgsub->where("question_name = 'promote_get' and organ_id = ".$id)->get(FALSE,TRUE);
 		}
 		
 		// องค์กรสาธารณะประโยชน์
-		// $data['formats'] = $this->format->order_by('format_id','asc')->get(FALSE,TRUE);
-		// $data['methods'] = $this->method->order_by('method_id','asc')->get(FALSE,TRUE);
-		// $data['service_types'] = $this->service_type->order_by('service_type_id','asc')->get(FALSE,TRUE);
-		// $data['promotes'] = $this->promote->order_by('promote_id','asc')->get(FALSE,TRUE);
-		// $data['promote_gets'] = $this->promote_get->order_by('promote_get_id','asc')->get(FALSE,TRUE);
+		$data['formats'] = $this->format->order_by('format_id','asc')->get(FALSE,TRUE);
+		$data['methods'] = $this->method->order_by('method_id','asc')->get(FALSE,TRUE);
+		$data['service_types'] = $this->service_type->order_by('service_type_id','asc')->get(FALSE,TRUE);
+		$data['promotes'] = $this->promote->order_by('promote_id','asc')->get(FALSE,TRUE);
+		$data['promote_gets'] = $this->promote_get->order_by('promote_get_id','asc')->get(FALSE,TRUE);
 		
 		// องค์กรสวัสดิการชุมชน
 		// $data['pcommunities'] = $this->pcommunity->order_by('pcommunity_id','asc')->get(FALSE,TRUE);
 		// $data['scommunities'] = $this->scommunity->order_by('scommunity_id','asc')->get(FALSE,TRUE);
-		$this->template->build('welfare_state/form',$data);
+		$this->template->build('welfare_benefit/form',$data);
 	}
 	
 	function save(){
 		if($_POST){
 			// $this->db->debug = true;
 			// $_POST['create_date'] = date("Y-m-d H:i:s");
-			if(@!$_POST['organ_id']){
+			if(@$_POST['organ_id'] == ""){
 				$sql = "SELECT MAX(ORGAN_MAX_ID) AS CNT FROM ACT_ORGANIZATION_MAIN WHERE PROVINCE_CODE='".$_POST['province_code']."' ";
 				$organ_max_id = $this->db->getone($sql);
 				$_POST['ORGAN_MAX_ID'] = $organ_max_id+1;
@@ -115,7 +120,8 @@ Class Welfare_state extends  Act_Controller{
 			}
 			set_notify('success', lang('save_data_complete'));
 		}
-		redirect('act/welfare_state');
+		redirect('act/welfare_benefit');
+		// redirect($_SERVER["HTTP_REFERER"]);
 	}
 	
 	function delete($id){

@@ -137,4 +137,37 @@ if(!function_exists('act_get_target_group_name'))
 		return $result;
 	}
 }
+
+if(!function_exists('act_get_service_name'))
+{
+	function act_get_service_name($service_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select service_name from act_service where service_id = ?',$service_id);
+		dbConvert($result);
+		return $result;
+	}
+}
+
+if(!function_exists('act_get_process_name'))
+{
+	function act_get_process_name($process_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select process_name from act_process where process_id = ?',$process_id);
+		dbConvert($result);
+		return $result;
+	}
+}
+
+if(!function_exists('act_get_service_com_name'))
+{
+	function act_get_service_com_name($scommunity_id)
+	{
+		$CI =& get_instance();
+		$result = $CI->db->getone('select scommunity_name from act_service_community where scommunity_id = ?',$scommunity_id);
+		dbConvert($result);
+		return $result;
+	}
+}
 ?>

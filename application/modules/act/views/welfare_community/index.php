@@ -4,8 +4,8 @@
 	$step_status_arr = array('1'=>'รับเรื่อง','2'=>'อนุรับรอง','3'=>'ส่งใบสำคัญ','4'=>'ประกาศกิจจานุเบกษา','5'=>'ไม่รับรอง');
 ?>
 
-<h3>บันทึก หน่วยงานของรัฐ</h3>
-<form method="get" action="act/welfare_state">
+<h3>บันทึก องค์กรสาธารณประโยชน์</h3>
+<form method="get" action="act/welfare_community">
 <div id="search">
 <div id="searchBox">
   <input type="text" name="organ_name" value="<?=@$_GET['organ_name']?>" placeholder="ชื่อหน่วยงาน/ โทรศัพท์" style="width:300px;" />
@@ -29,7 +29,7 @@
 </div>
 </form>
 
-<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='act/welfare_state/form'" class="btn_add"/></div>
+<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='act/welfare_community/form'" class="btn_add"/></div>
 
 <?php echo $pagination;?>
 
@@ -47,7 +47,7 @@
 </tr>
 <?php $i=(isset($_GET['page']))? (($_GET['page'] -1)* 10)+1:1; ?>
 <?php foreach($orgmains as $row):?>
-<tr class="cursor" onclick="window.location='act/welfare_state/form/<?php echo $row['organ_id']?>'">
+<tr class="cursor" onclick="window.location='act/welfare_community/form/<?php echo $row['organ_id']?>'">
   <td><?php echo $i?></td>
   <td nowrap="nowrap"><?php echo $under_type_sub_arr[$row['under_type_sub']]?></td>
   <td nowrap="nowrap"><?php echo $row['organ_id']?></td>
@@ -65,7 +65,7 @@
   <td nowrap="nowrap"><?php echo $row['tel']?></td>
   <td nowrap="nowrap"><?php echo $row['fax']?></td>
   <td><?=@$step_status_arr[$row['step_status']]?></td>
-  <td><a href="act/welfare_state/delete/<?php echo $row['organ_id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
+  <td><a href="act/welfare_community/delete/<?php echo $row['organ_id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></a></td>
 </tr>
 <?$i++;?> 
 <?php endforeach;?>

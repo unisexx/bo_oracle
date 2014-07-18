@@ -12,7 +12,7 @@
     <div id="BOico">        
 <h3>บันทึกข้อมูล องค์กรสาธารณประโยชน์</h3>
             <div class="lineico">
-            <div class="ico"><a href="welfare_benefit.php"><img src="themes/act/images/icon/welfare_benefit.png" width="48" height="48" /><h4>องค์กร สาธารณะประโยชน์</h4></a></div>
+            <div class="ico"><a href="act/welfare_benefit"><img src="themes/act/images/icon/welfare_benefit.png" width="48" height="48" /><h4>องค์กร สาธารณะประโยชน์</h4></a></div>
 
             <div class="clear"></div>
             </div><!--lineico-->
@@ -40,7 +40,7 @@
     <div id="BOico">        
 <h3>บันทึกข้อมูล องค์กรสวัสดิการชุมชน</h3>
             <div class="lineico">
-            <div class="ico"><a href="welfare_community.php"><img src="themes/act/images/icon/welfare_community.png" width="48" height="48" /><h4>องค์กร สวัสดิการชุมชน</h4></a></div>
+            <div class="ico"><a href="act/welfare_community"><img src="themes/act/images/icon/welfare_community.png" width="48" height="48" /><h4>องค์กร สวัสดิการชุมชน</h4></a></div>
 
             <div class="clear"></div>
             </div><!--lineico-->

@@ -7,7 +7,7 @@ Class Set_branch_service extends  Act_Controller{
 	
 	function index(){
 		$condition = @$_GET['search']!='' ? " scommunity_name like '%".$_GET['search']."%'" : "";
-		$data['branch_services'] = $this->scommunity->where($condition)->order_by('id','desc')->get(false,true);
+		$data['branch_services'] = $this->scommunity->where($condition)->order_by('scommunity_id','desc')->get(false,true);
 		$data['pagination'] = $this->scommunity->pagination();
 		$this->template->build('set_branch_service/index',$data);
 	}
@@ -27,7 +27,7 @@ Class Set_branch_service extends  Act_Controller{
 	
 	function delete($id){
 		if($id){
-			$this->scommunity->delete($id);
+			$this->scommunity->delete('SCOMMUNITY_ID',$id);
 			set_notify('success', lang('delete_data_complete'));
 		}
 		redirect($_SERVER["HTTP_REFERER"]);
