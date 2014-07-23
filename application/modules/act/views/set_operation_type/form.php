@@ -23,7 +23,7 @@ $(document).ready(function(){
 
 
 <div id="btnBoxAdd">
-	<input type="hidden" name="id" value="<?php echo $operation_type['id']?>">
+	<input type="hidden" name="pcommunity_id" value="<?php echo $operation_type['pcommunity_id']?>">
   <input type="submit" title="บันทึก" value=" " class="btn_save"/>
   <input type="button" title="ย้อนกลับ" value=" "  onclick="history.back(-1)" class="btn_back"/>
 </div>

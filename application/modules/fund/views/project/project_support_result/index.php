@@ -8,8 +8,6 @@
 	</form>
 </div>
 
-<div id="btnBox"><input type="button" title="เพิ่มรายการ" value=" " onclick="document.location='fund/project/project_support_result/form'" class="btn_add"/></div>
-
 <?php echo $pagination; ?>
 
 <table class="tblist">

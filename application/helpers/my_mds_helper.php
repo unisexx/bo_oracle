@@ -582,11 +582,11 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 							foreach ($result_keyer_result as $key => $keyer_result) {
 								if($keyer_result['result_id'] == '' || $keyer_result['is_save'] != '2' || $keyer_result['control_status'] != '1' || $keyer_result['kpr_status'] != '1'){   
 									$result_all = "no";
-								}else{		
-									$i = '5';
 								}
 								if($users_round_month > $metrics_start && $result_all == "no"){
 									$data['error'] = "ไม่สามารถเพิ่มผลการปฎิบัติราชการได้ เนื่องจากผลการปฎิบัติราชการรอบเดือนก่อนหน้าที่ท่านรับผิดชอบยังไม่ผ่านการอนุมัติ";
+									return $data;
+									break;
 								}
 							}
 							if($result_all == "ok"){
@@ -626,7 +626,7 @@ function chk_result_round_month($users_keyer = null,$metrics_id = null,$metrics_
 						$data['round_month'] = @$result_round_month['keyer_round_month'];
 						
 						if($data['round_month'] > '6' && $data['round_month'] != '' && ($data['round_month'] < @$result_round_month['metrics_cancel'])){
-							$chk_metrics_reound_month = @$result_round_month['keyer_round_month']-3;
+							$chk_metrics_reound_month = @$result_round_month['keyer_round_month']-3; // ตรวจสอบผลการบันทึกเดือนก่อนหน้า
 							// ตรวจสอบว่า มีการบันทึกข้อมูลครบทุกคนและผ่าน กพร. แล้ว
 							$chk_keyer_result ="SELECT KEYER.KEYER_USERS_ID , RESULT.ID AS RESULT_ID ,RESULT.IS_SAVE ,RESULT.CONTROL_STATUS ,RESULT.KPR_STATUS,RESULT.RESULT_METRICS
 												 FROM  MDS_SET_METRICS_KEYER KEYER
@@ -749,7 +749,7 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
 		$dtl['dtl'] .=	"<td>".@$metrics_dtl['result_budget_year_1']."</td>";
 		$dtl['dtl'] .=	'<td style="text-align: right">'.htmlspecialchars_decode(@$metrics_dtl['metrics_target']).'</td>';
 
-				$metrics_dtl_6 = metrics_weight(@$metrics_dtl['id'],6,$sch_budget_year,$link);
+				$metrics_dtl_6 = metrics_weight(@$metrics_dtl['id'],6,$sch_budget_year,$link); // หาน้ำหนักรอบ 6 เดือน
 				if($indicator_all_weight_6 != '0'){
 					$dtl['sum_score_6'] = (@$metrics_dtl_6['weight']*@$metrics_dtl_6['score_metrics'])/@$indicator_all_weight_6;
 				}else{
@@ -770,7 +770,7 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
   		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_6['score_metrics'],4).'</td>';
   		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_6['img'].'</td>';
 
-  				$metrics_dtl_9 = metrics_weight(@$metrics_dtl['id'],9,$sch_budget_year,$link);
+  				$metrics_dtl_9 = metrics_weight(@$metrics_dtl['id'],9,$sch_budget_year,$link); // หาน้ำหนักรอบ 9 เดือน
 				if($indicator_all_weight_9 != '0'){
 					$dtl['sum_score_9'] = (@$metrics_dtl_9['weight']*@$metrics_dtl_9['score_metrics'])/@$indicator_all_weight_9;
 				}else{
@@ -791,7 +791,7 @@ function mds_sar_card_metrics_dtl($metrics_dtl=null,$metrics_on=null,$sch_budget
   		$dtl['dtl'] .=	'<td style="text-align: right">'.number_format(@$metrics_dtl_9['score_metrics'],4).'</td>';
   		$dtl['dtl'] .=	'<td style="text-align: center">'.@$metrics_dtl_9['img'].'</td>';
  
-  				$metrics_dtl_12 = metrics_weight(@$metrics_dtl['id'],12,$sch_budget_year,$link);
+  				$metrics_dtl_12 = metrics_weight(@$metrics_dtl['id'],12,$sch_budget_year,$link); // หาน้ำหนักรอบ 12 เดือน
 				if($indicator_all_weight_12 != '0'){
 					$dtl['sum_score_12'] = (@$metrics_dtl_12['weight']*@$metrics_dtl_12['score_metrics'])/@$indicator_all_weight_12;
 				}else{

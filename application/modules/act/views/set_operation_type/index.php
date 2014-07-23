@@ -20,10 +20,10 @@
   </tr>
   <?php $i=(isset($_GET['page']))? (($_GET['page'] -1)* 10)+1:1; ?>
   <?php foreach($operation_types as $row):?>
-  <tr class="cursor" onclick="window.location='act/set_operation_type/form/<?php echo $row['id']?>'">
+  <tr class="cursor" onclick="window.location='act/set_operation_type/form/<?php echo $row['pcommunity_id']?>'">
 	  <td><?php echo $i?></td>
 	  <td nowrap="nowrap"><?php echo $row['pcommunity_name']?></td>
-	  <td><a href="act/set_operation_type/delete/<?php echo $row['id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td></a>
+	  <td><a href="act/set_operation_type/delete/<?php echo $row['pcommunity_id']?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')"><input type="submit" name="button" id="button" value="x" class="btn_delete" /></td></a>
   </tr>
   <?$i++;?> 
   <?php endforeach;?>

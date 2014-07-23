@@ -33,7 +33,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 						    or users.username like '%".@$_GET['sch_txt']."%' )";
 		}
 		if(@$_GET['premit_type'] != ''){
-			$condition .= " and permission.mds_set_permit_type_id = '".@$_GET['permit_type']."' ";
+			$condition .= " and permission.mds_set_permit_type_id = '".@$_GET['premit_type']."' ";
 		}
 		
 		//$this->db->debug = true;
@@ -78,14 +78,11 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 		if(!is_login())redirect("home");
 		if(is_permit(login_data('id'),1) == '')redirect("mds"); // ตรวจสอบว่าเป็น กพร. หรือไม่
 		if($_POST){
-		   
 		   if($_POST['id'] > '0'){
-		   		$_POST['UPDATE_DATE'] = date("Y-m-d");
 		   		$_POST['UPDATE_BY'] = login_data('name');
 				$id = $this->permission->save($_POST);
 		   }else{
 		   	
-		   		$_POST['CREATE_DATE'] = date("Y-m-d");
 		   		$_POST['CREATE_BY'] = login_data('name');
 		   		$id = $this->permission->save($_POST);
 		   }
@@ -165,7 +162,7 @@ Class Mds_set_permission extends  Mdevsys_Controller{
 					left join user_type_title on users.id = user_type_title.user_id
 					join usertype on  user_type_title.id = usertype.usertypetitleid 
 									   and usertype.systemid = '7' and usertype.menuid = '1'
-					where 1=1 $condition  order by id asc";
+					where 1=1 $condition  order by users.id asc";
 			$data['rs_users'] = $this->users->get($sql);
 			$data['pagination'] = $this->users->pagination();	
 		$_GET['page'] = (empty($_GET['page']))?0:($_GET['page']-1)*20;

@@ -1,4 +1,4 @@
-<h3>ทะเบียนบุคคลขอรับเงินกองทุน (เพิ่ม / แก้ไข)</h3>
+<h3>ทะเบียนผู้ขอรับการช่วยเหลือ (แทน) (เพิ่ม / แก้ไข)</h3>
 
 <form action="fund/personal/reg_fund/save/<?php echo $value["id"]?>" method="post" >
 <table class="tbadd">

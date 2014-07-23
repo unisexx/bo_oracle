@@ -2,24 +2,22 @@
 
 <div id="search">
 	<div id="searchBox">
-		<form>
+		<form method="get" >
 			
-		<input type="text" name="keyword" style="width:250px;" placeholder="ชื่อผู้ขอ/ ชื่อเด็ก" />
+		<input type="text" name="keyword" style="width:250px;" value="<?php echo @$_GET["keyword"]?>" placeholder="ชื่อผู้ขอ/ ชื่อเด็ก" />
 		
 		<select name="select" id="select">
 			<option>2557</option>
 			<option>2556</option>
 		</select>
+  		
+  		<?php echo form_dropdown("p",get_option("ID","TITLE","FUND_PROVINCE",null,"TITLE"),@$_GET["p"],null,"-- เลือกจังหวัด --",null)?>
 		
-		<select name="select2" id="select2">
-			<option>-- ทุกจังหวัด --</option>
-		</select>
-		
-		<select name="select3" id="select3">
-		    <option>-- ทุกผลการพิจารณา --</option>
-		    <option>รอดำเนินการ</option>
-		    <option>อนุมัติ</option>
-		    <option>ไม่อนุมัติ</option>
+		<select name="s" id="s">
+		    <option value="" <?php if(@$_GET["s"]==false) echo "selected"?> >-- ทุกผลการพิจารณา --</option>
+		    <option value="0" <?php if(@$_GET["s"]==0) echo "selected"?> >รอดำเนินการ</option>
+		    <option value="1" <?php if(@$_GET["s"]==1) echo "selected"?> >อนุมัติ</option>
+		    <option value="2" <?php if(@$_GET["s"]==2) echo "selected"?> >ไม่อนุมัติ</option>
 		</select>
 		
 		<button type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" ></button>

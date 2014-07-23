@@ -2,38 +2,32 @@
 <div id="home"><a href="act/index"><img src="themes/bo/images/home.png" width="32" height="32" class="vtip" title="หน้าหลักระบบงานบริหารกองทุน"/></a></div>
 <div id="menu">
 <ul id="navmenu-h">
+        
         <li><a href="#">บันทึก +</a>
-          <ul style="width:300px;">
-            <li><a href="act/welfare">องค์การสวัสดิการสังคม</a></li>
+          <ul style="width:220px;">
+            <li><a href="act/welfare_benefit">องค์กรสาธาณประโยชน์</a></li>
+            <li><a href="act/welfare_community">องค์กรสวัสดิการชุมชน</a></li>
             <li><a href="act/social_worker">นักสังคมสงเคราะห์</a></li>
+            <li><a href="act/welfare_state">หน่วยงานของรัฐ</a></li>
             <li><a href="act/volunteer">อาสาสมัคร</a></li>
-            <li><a href="act/welfare_service">ผู้รับบริการสวัสดิการสังคม</a></li>
             <li><a href="act/director">คณะกรรมการ</a></li>
             <li><a href="act/committee">คณะอนุกรรมการ</a></li>
-            <li><a href="act/competent">รายชื่อพนักงานเจ้าหน้าที่</a></li>
-            <li><a href="act/workinggroup">รายชื่อคณะทำงาน</a></li>
-            <li><a href="act/meet_report">รายงานการประชุม</a></li>
-            <li><a href="act/requirement">ข้อกำหนด/ระเบียบ/ประกาศ</a></li>
-            <li><a href="act/fund_welfare">กองทุนส่งเสริมการจัดสวัสดิการสังคม</a></li>
-            <li><a href="act/kss">แบบฟอร์มผลการปฏิบัติงานกองทุนส่งเสริม (แบบกสส.๐๓)</a></li>
+            <li><a href="act/workinggroup">คณะทำงาน</a></li>
+            <li><a href="act/competent">พนักงานเจ้าหน้าที่</a></li>
           </ul>
         </li>
         <li><a href="#">ตั้งค่า +</a>
-          <ul style="width:260px;">
-            <li><a href="act/set_affiliate">หน่วยงานที่สังกัด (รายชื่อพนักงาน)</a></li>
-            <li><a href="act/set_position_committee">ตำแหน่งในคณะอนุกรรมการ</a></li>
-            <li><a href="act/set_position_director">ตำแหน่งในคณะกรรมการ</a></li>
-            <li><a href="act/set_committee_expert">กรรมการผู้ทรงคุณวุฒิด้าน</a></li>
-            <li><a href="act/set_practice_type">ลักษณะงานที่ปฏิบัติ (นักสังคมสงเคราะห์)</a></li>
-            <li><a href="act/set_committee_type">ประเภทอนุกรรมการ</a></li>
-            <li><a href="act/set_volunteer_type">ประเภทอาสาสมัคร</a></li>
-            <li><a href="act/set_strategic">ยุทธศาสตร์</a></li>
-            <li><a href="act/set_consistent_plan">ความสอดคล้องกับนโยบายแผน</a></li>
-            <li><a href="act/set_plan">แผน</a></li>
-            <li><a href="act/set_subplan">แผนย่อย</a></li>
-            <li><a href="act/set_operation_type">ลักษณะการดำเนินงาน (องค์กรสวัสดิการชุมชน)</a></li>
+          <ul style="width:380px;">
+          	<li><a href="act/set_operation_type">ลักษณะการดำเนินงาน (องค์กรสวัสดิการชุมชน)</a></li>
             <li><a href="act/set_branch_service">สาขาการให้บริการ (องค์กรสวัสดิการชุมชน)</a></li>
-			<li><a href="act/set_project">ลักษณะโครงการ</a></li>
+            <li><a href="act/set_practice_type">ลักษณะงานที่ปฏิบัติ (นักสังคมสงเคราะห์)</a></li>
+            <li><a href="act/set_volunteer_type">ประเภทอาสาสมัคร</a></li>
+            <li><a href="act/set_affiliate">หน่วยงานที่สังกัด (รายชื่อพนักงาน, พนักงานเจ้าหน้าที่)</a></li>
+            <li><a href="act/set_position_director">ตำแหน่งในคณะกรรมการ</a></li>
+            <li><a href="act/set_committee_type">ประเภทคณะกรรมการ</a></li>
+            <li><a href="act/set_position_committee">ตำแหน่งในคณะอนุกรรมการ</a></li>
+            <li><a href="act/set_subcommittee_type">ประเภทอนุกรรมการ</a></li>
+            <li><a href="act/set_committee_expert">กรรมการผู้ทรงคุณวุฒิด้าน</a></li>
             <li><a href="act/set_social_welfare">ส่วนงานสวัสดิการสังคม</a></li>
           </ul>
         </li>

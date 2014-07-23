@@ -2,7 +2,7 @@
 Class Set_committee_type extends  Act_Controller{
 	public function __construct(){
 		parent::__construct();
-		$this->load->model("subcommittee_type_model","committee_type");
+		$this->load->model("committee_type_model","committee_type");
 	}
 	
 	function index(){

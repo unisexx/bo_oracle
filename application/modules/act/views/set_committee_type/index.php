@@ -1,8 +1,8 @@
-<h3>ตั้งค่า ประเภทอนุกรรมการ </h3>
+<h3>ตั้งค่า ประเภทคณะกรรมการ </h3>
 
 <form method="get" action="act/set_committee_type">
 <div id="search">
-<div id="searchBox">ชื่อประเภทอนุกรรมการ
+<div id="searchBox">ชื่อประเภทคณะกรรมการ
   <input name="search" type="text" id="textfield" style="width:300px;" value="<?php echo @$_GET['search']?>"/>
   <input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
 </div>
@@ -16,7 +16,7 @@
 <table class="tblist">
 <tr>
   <th align="left">ลำดับ</th>
-  <th align="left">ชื่อประเภทอนุกรรมการ</th>
+  <th align="left">ชื่อประเภทคณะกรรมการ</th>
   <th align="left">ลบ</th>
   </tr>
   <?php $i=(isset($_GET['page']))? (($_GET['page'] -1)* 10)+1:1; ?>

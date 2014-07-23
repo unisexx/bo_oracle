@@ -64,9 +64,11 @@
 			<td style="text-align: center;" ><?php if($value41["status"]!=2) echo $status?></td>
 			<td style="text-align: center;" ><?php if($value41["status"]==2) echo $status?></td>
 			<td style="text-align: center;" >
+				<?php if($value41["status"]!=2):?>
 				<a href="inline_example82" class="example82 cboxElement subform" data-value="<?php echo $value41["id"]?>" >
 					<img src="images/fund/list_data.png" alt="" width="32" height="32" />
 				</a>
+				<?php endif?>
 			</td>
 		</tr>
 		<?php endforeach?>
