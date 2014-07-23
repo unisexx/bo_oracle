@@ -55,7 +55,7 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_02() {
-		echo $_GET['year_budget'] = (empty($_GET['year_budget']))?(date('Y')+543):$_GET['year_budget'];
+		$_GET['year_budget'] = (empty($_GET['year_budget']))?(date('Y')+543):$_GET['year_budget'];
 		$qry = "SELECT
 					FUND_REQUEST_SUPPORT.YEAR_BUDGET,
 					FUND_PROVINCE.TITLE AS PROVINCE_TITLE,
