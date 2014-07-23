@@ -19,9 +19,12 @@
             
 <h3>รายงาน องค์กรสาธารณประโยชน์</h3>
             <div class="lineico">
-           		<div class="ico"><a href="#"><img src="themes/act/images/icon/report1_1.png" width="48" height="48" /><h4>รายงาน 1</h4></a></div>
-<div class="ico"><a href="#"><img src="themes/act/images/icon/report1_2.png" width="48" height="48" /><h4>รายงาน 2</h4></a></div>
-<div class="ico"><a href="#"><img src="themes/act/images/icon/report1_3.png" width="48" height="48" /><h4>รายงาน 3</h4></a></div>
+            	<div class="ico"><a href="act/report/report_main"><img src="images/icon/report1_1.png" width="48" height="48" /><h4>จำนวนองค์กร สวัสดิการสังคม จำแนกรายจังหวัด</h4></a></div>
+           		<div class="ico"><a href="act/report/report1_1"><img src="themes/act/images/icon/report1_1.png" width="48" height="48" /><h4>จำแนกรายจังหวัด และสาขาการจัด สวัสดิการสังคม</h4></a></div>
+				<div class="ico"><a href="act/report/report1_2"><img src="themes/act/images/icon/report1_2.png" width="48" height="48" /><h4>จำแนกรายจังหวัด และลักษณะ การดำเนินงาน</h4></a></div>
+				<div class="ico"><a href="act/report/report1_3"><img src="themes/act/images/icon/report1_3.png" width="48" height="48" /><h4>จำแนกรายจังหวัด และกลุ่มเป้าหมาย ผู้ได้รับบริการ สวัสดิการสังคม</h4></a></div>
+				<div class="ico"><a href="act/report/report1_4"><img src="themes/act/images/icon/report1_4.png" width="48" height="48" /><h4>จำแนกรายจังหวัด และประเภทองค์กร ที่ได้รับการสนับสนุน</h4></a></div>
+			<div class="ico"><a href="act/report/report1_5"><img src="themes/act/images/icon/report1_5.png" width="48" height="48" /><h4>จำแนกรายจังหวัด และการสนับสนุนตาม พรบ.ส่งเสริมฯ พ.ศ.2546</h4></a></div>
 
             <div class="clear"></div>
             </div><!--lineico-->
