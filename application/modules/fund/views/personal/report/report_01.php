@@ -1,26 +1,4 @@
-<link rel='stylesheet' type='text/css' href='css/report.css'>
-
-<?
-	$month_ary = array(
-		1=>'มกราคม',
-		2=>'กุมภาพันธ์',
-		3=>'มีนาคม',
-		4=>'เมษายน',
-		5=>'พฤษภาคม',
-		6=>'มิถุนายน',
-		7=>'กรกฏาคม',
-		8=>'สิงหาคม',
-		9=>'กันยายน',
-		10=>'ตุลาคม',
-		11=>'พฤศจิกายน',
-		12=>'ธันวาคม'
-	);
-	
-	function __construct() {
-		parent::__construct();
-	}
-	
-	function find_age($birth = false) {
+<? function find_age($birth = false) {
 		if(!$birth) {
 			return false;
 		}
@@ -44,46 +22,88 @@
 	} //End : (f) find_age(); 
 ?>
 
+<script language='javascript'>
+	$(function(){
+		$('#search').submit(function(){
+			for(i=0; i<$('.s_input').length; i++) { // วน for หา input, select ของขอบเขตข้อมูลการค้นหารายงาน
+				if($('.s_input').eq(i).val() == '') {
+					alert('กรุณาระบุข้อมูลเขตของรายงานให้ครบถ้วน');
+					
+					$('.s_input').eq(i).focus();
+					
+					i = $('.s_input').length; // ทำให้ i เท่ากับ $('.s_input').length; โดยโปรแกรมจะได้ไม่ต้องไปวน for ต่ออีก (เพราะได้ focus ตัวที่ไม่มีค่าไปแล้ว)
+					
+					return false; // หยุดการทำงานของ submit เพื่อให้ผู้ใช้งานเลือกขอบเขตการค้นหาก่อน
+				}
+			} //end : for(i=0; i<$('.s_input').length; i++)
+		});
+	});
+</script>
+
+<link rel='stylesheet' type='text/css' href='css/report.css'>
+<style type='text/css'>
+	#search input, #search select {
+		margin-left:5px;
+	}
+</style>
+
 <h3>สรุปผลการพิจารณา อนุมัติการช่วยเหลือ เด็กฯ (คคด.01) (บ)</h3>
+
 <form action='' method='get' id="search">
 	<div id="searchBox">
-		<? echo form_dropdown('province_id', get_option('ID', 'TITLE', 'fund_province order by title asc'), @$_GET['province_id'], '', '-- ระบุจังหวัด --'); ?> 
-		<? echo form_dropdown('year_budget', get_option('year_budget as a', 'year_budget as b', 'fund_request_support group by year_budget order by year_budget desc'), @$_GET['year_budget'], '', '-- ระบุปีงบประมาณ --'); ?>
-		<? echo form_dropdown('times', get_option('meeting_number as a', 'meeting_number as b', 'fund_request_support where meeting_number is not null group by meeting_number order by meeting_number asc'), @$_GET['times'], '', '-- ระบุครั้งที่ --'); ?>
-	  	<? echo form_input('meeting_date', @$_GET['meeting_date'], 'class="datepicker" style="width:80px;"'); ?>
-
-		<input type="submit" title="ค้นหา" value=" " class="btn_search" />
+		<? 
+			echo form_dropdown(
+					'sch_province', 
+					get_option('ID', 'TITLE', 'fund_province order by title asc'), 
+					@$_GET['sch_province'], 
+					'class="s_input"', 
+					'-- ระบุจังหวัด --'
+				); 
+			
+			echo form_dropdown(
+					'sch_year', 
+					get_option('year_budget as a', 'year_budget as b', 'fund_request_support group by year_budget order by year_budget desc'), 
+					@$_GET['sch_year'], 
+					'class="s_input"',
+					'-- ระบุปีงบประมาณ --'
+				); 
+			echo form_dropdown(
+					'sch_times', 
+					get_option('meeting_number as a', 'meeting_number as b', 'fund_request_support where meeting_number is not null group by meeting_number order by meeting_number asc'), 
+					@$_GET['sch_times'], 
+					'class="s_input"',
+					'-- ระบุครั้งที่ --'
+				); 
+				
+			echo form_input(
+					'sch_date_meeting', 
+					@$_GET['sch_date_meeting'], 
+					'class="datepicker s_input" style="width:90px; height:20px;"'
+				); 
+			
+			echo form_submit(false, 'ค้นหา', 'class="btn_search"'); 
+		?>
 	</div>
 </form>
+
+<? if(empty($_GET['sch_province']) || empty($_GET['sch_year']) || empty($_GET['sch_times']) || empty($_GET['sch_date_meeting'])) {
+	return false; //ถ้าไม่มีการระบุขอบเขตข้อมูล จะไม่แสดงรายงาน
+} ?>
 
 <div id="report">
 	
 	<div style="text-align:center; font-weight:bold; font-size:20px;">รายงานสรุปผลการพิจารณาอนุมัติการช่วยเหลือเด็กและครอบครัว ครอบครัวอุปถัมภ์</div>
 	<div style="float:right; margin-top:-30px; font-size:20px;">แบบรายงาน คคด.บ 01</div>
 	<div style="text-align:center; font-size:20px; font-weight:bold;">
-		ของคณะอนุกรรมการบริหารกองทุนคุ้มครองเด็กจังหวัด จังหวัด <? echo (empty($province_title))?'............................................. ':$province_title; ?> 
-		(ครั้งที่  <? echo (empty($_GET['times']))?'.......':$_GET['times']; ?> / <? echo (empty($_GET['year_budget']))?'.............. ':$_GET['year_budget']; ?>
+		ของคณะอนุกรรมการบริหารกองทุนคุ้มครองเด็กจังหวัด <? echo (empty($province_title))?'............................................. ':$province_title; ?> 
+		(ครั้งที่  <? echo (empty($_GET['sch_times']))?'.......':$_GET['sch_times']; ?> / <? echo (empty($_GET['sch_year']))?'.............. ':$_GET['sch_year']; ?>
 		<? 
+		$goption = $month_ary;
 		
-		$goption = array(
-			1=>'มกราคม',
-			2=>'กุมภาพันธ์',
-			3=>'มีนาคม',
-			4=>'เมษายน',
-			5=>'พฤษภาคม',
-			6=>'มิถุนายน',
-			7=>'กรกฏาคม',
-			8=>'สิงหาคม',
-			9=>'กันยายน',
-			10=>'ตุลาคม',
-			11=>'พฤศจิกายน',
-			12=>'ธันวาคม'
-		);
-		
-		if(empty($_GET['meeting_date'])) {
+		if(empty($_GET['sch_date_meeting'])) {
 			echo 'วันที่....... เดือน......................... พ.ศ. ..............';
 		} else {
-			$tmp = explode('-', $_GET['meeting_date']);
+			$tmp = explode('-', $_GET['sch_date_meeting']);
 			echo 'วันที่ '.$tmp[0].' เดือน '.$goption[($tmp[1]*1)].' พ.ศ. '.$tmp[2];
 		} ?>
 		)
@@ -123,7 +143,7 @@
 	  </tr>
 	  <?
 		
-		if(empty($data['rs']) || empty($province_title) || empty($_GET['times']) || empty($_GET['year_budget'])) {
+		if(empty($_GET['sch_province']) || empty($_GET['sch_year']) || empty($_GET['sch_times']) || empty($_GET['sch_date_meeting'])) {
 			?> <tr> <td colspan='13' class='text-center'>กรุณาระบุข้อมูลก่อนการแสดงรายงาน</td> </tr> <?
 		} else {
 		  	$relation_type_detail = array(

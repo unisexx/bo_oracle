@@ -21,6 +21,21 @@ class Report extends Fund_Controller {
 	}
 	
 	function report_01() {
+		$data['month_ary'] = array(
+			1=>'มกราคม',
+			2=>'กุมภาพันธ์',
+			3=>'มีนาคม',
+			4=>'เมษายน',
+			5=>'พฤษภาคม',
+			6=>'มิถุนายน',
+			7=>'กรกฏาคม',
+			8=>'สิงหาคม',
+			9=>'กันยายน',
+			10=>'ตุลาคม',
+			11=>'พฤศจิกายน',
+			12=>'ธันวาคม'
+		);
+		
 		
 		$select = 'fund_request_support.*,
 					fund_reg_personal.idcard as per_idcard,
@@ -32,25 +47,26 @@ class Report extends Fund_Controller {
 				left join fund_childs on fund_request_support.fund_child_id = fund_childs.id";
 		
 		$where = '1=1';
-			$where .= (empty($_GET['province_id']))?'':" and fund_request_support.province_id = '".$_GET['province_id']."'";
-			$where .= (empty($_GET['year_budget']))?'':" and fund_request_support.year_budget = '".$_GET['year_budget']."'";
-			$where .= (empty($_GET['times']))?'':" and fund_request_support.meeting_number = '".$_GET['times']."'";
+			$where .= (empty($_GET['sch_province']))?'':" and fund_request_support.province_id = '".$_GET['sch_province']."'";
+			$where .= (empty($_GET['sch_year']))?'':" and fund_request_support.year_budget = '".$_GET['sch_year']."'";
+			$where .= (empty($_GET['sch_times']))?'':" and fund_request_support.meeting_number = '".$_GET['sch_times']."'";
 			
-			if(!empty($_GET['meeting_date'])) {
-				$tmp = explode('-', $_GET['meeting_date']);
+			
+			if(!empty($_GET['sch_date_meeting'])) {
+				$tmp = explode('-', $_GET['sch_date_meeting']);
 				$tmp = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
 			}
+			
 			$where .= (empty($tmp))?'':" and fund_request_support.meeting_date = '".$tmp."'";
 		
 		//Get head data
-		if(!empty($_GET['province_id'])) {
-			$tmp = $this->province->get_row($_GET['province_id']);
+		if(!empty($_GET['sch_province'])) {
+			$tmp = $this->province->get_row($_GET['sch_province']);
 			$data['province_title'] = $tmp['title'];
 		}
 		
-		
 		$data['items'] = $this->form_request->select($select)->join($join)->where($where)->order_by('fund_request_support.id','asc')->get();
-		
+
 		$this->template->build('personal/report/report_01', @$data);
 	}
 	
@@ -81,32 +97,126 @@ class Report extends Fund_Controller {
 	
 	function report_03()
 	{
-		$data["variable"] = $this->form_request->get();
+		$data['month_ary'] = array(
+			1=>'มกราคม',
+			2=>'กุมภาพันธ์',
+			3=>'มีนาคม',
+			4=>'เมษายน',
+			5=>'พฤษภาคม',
+			6=>'มิถุนายน',
+			7=>'กรกฏาคม',
+			8=>'สิงหาคม',
+			9=>'กันยายน',
+			10=>'ตุลาคม',
+			11=>'พฤศจิกายน',
+			12=>'ธันวาคม'
+		);
+		
+		//Get head data
+		if(!empty($_GET['sch_province'])) {
+			$tmp = $this->province->get_row($_GET['sch_province']);
+			$data['province_title'] = $tmp['title'];
+		}
+		
+		$where = '1=1';
+			$where .= (empty($_GET['sch_province']))?'':" and fund_request_support.province_id = '".$_GET['sch_province']."'";
+			$where .= (empty($_GET['sch_year']))?'':" and fund_request_support.year_budget = '".$_GET['sch_year']."'";
+			$where .= (empty($_GET['sch_times']))?'':" and fund_request_support.meeting_number = '".$_GET['sch_times']."'";
+			
+			if(!empty($_GET['sch_date_meeting'])) {
+				$tmp = explode('-', $_GET['sch_date_meeting']);
+				$tmp = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
+			}
+			$where .= (empty($tmp))?'':" and fund_request_support.meeting_date = '".$tmp."'";
+		
+		$data["variable"] = $this->form_request->where($where)->get();
 		$this->template->build("personal/report/report_03",$data);
 	}
 	
 	function report_04() {
-		if(@$_GET['fund_year'] != '' && @$_GET['fund_month'] != '' && @$_GET['province_id'] != '') {
-			$fund_year = $_GET['fund_year']-543;
-			if (@$_GET['fund_month'] > '9' ){
-				 $fund_year =  $fund_year-1;
-			}
-			$sql_result = "select support.date_request, support.meeting_date, support.fund_child_name, 
-								  payment.fund_month, payment.fund_cost , payment.title || payment.firstname ||' '|| payment.lastname as presonal_name, 
-								  payment.date_payment, payment.addr_number, payment.addr_moo, payment.addr_trok, payment.addr_soi, payment.addr_road, 
-								  fund_province.title as province_name, fund_amphur.title as amphur_name, fund_district.title as district_name
-						  from fund_request_support support
-						  left join fund_personal_payment_detail payment on support.id = payment.fund_request_support_id
-						  left join fund_province on payment.province_id = fund_province.id
-						  left join fund_amphur on payment.amphur_id = fund_amphur.id
-						  left join fund_district on payment.district_id = fund_district.id
-						  where support.status = '1' and support.province_id = '".$_GET['province_id']."' and payment.status = '1'  
-								and payment.fund_month = '".@$_GET['fund_month']."' and payment.fund_year = '".$fund_year."'
-						  order by payment.fund_year asc, payment.fund_month asc";
-			$data['rs'] = $this->form_request->get($sql_result,true);
-			
-			$data['provine_name'] = get_one('title','fund_province','id',$_GET['province_id']);
+		$data['month_ary'] = array(
+			1=>'มกราคม',
+			2=>'กุมภาพันธ์',
+			3=>'มีนาคม',
+			4=>'เมษายน',
+			5=>'พฤษภาคม',
+			6=>'มิถุนายน',
+			7=>'กรกฏาคม',
+			8=>'สิงหาคม',
+			9=>'กันยายน',
+			10=>'ตุลาคม',
+			11=>'พฤศจิกายน',
+			12=>'ธันวาคม'
+		);
+		
+		//Get head data
+		if(!empty($_GET['sch_province'])) {
+			$tmp = $this->province->get_row($_GET['sch_province']);
+			$data['province_title'] = $tmp['title'];
 		}
+		
+		$fund_year = $_GET['sch_year']-543;
+		if (@$_GET['sch_month'] > '9' ){
+			 $fund_year =  $fund_year-1;
+		}
+		/*
+		select 
+			fund_request_support.date_request,
+			fund_request_support.updated,
+			fund_request_support.fund_child_name,
+			fund_request_support.fund_reg_personal_name,
+				fund_personal_payment_detail.addr_number,
+				fund_personal_payment_detail.addr_moo,
+				fund_personal_payment_detail.addr_trok,
+				fund_personal_payment_detail.addr_soi,
+				fund_personal_payment_detail.addr_road,
+					fund_province.title as province_title,
+					fund_amphur.title as amphur_title,
+					fund_district.title as district_title,
+				fund_personal_payment_detail.fund_cost,
+				fund_personal_payment_detail.date_payment
+		from fund_request_support 
+			left join fund_personal_payment_detail on fund_request_support.id = fund_personal_payment_detail.fund_request_support_id
+				left join fund_province on fund_personal_payment_detail.province_id = fund_province.id
+				left join fund_amphur on fund_personal_payment_detail.amphur_id = fund_amphur.id
+				left join fund_district on fund_personal_payment_detail.district_id = fund_district.id
+		where
+			fund_request_support.status = '1'
+			and fund_personal_payment_detail.status = '1'
+			and fund_request_support.province_id = '1'
+			and fund_personal_payment_detail.fund_month = '01' 
+			and fund_personal_payment_detail.fund_year = '2014'
+		*/
+		
+		$select = "fund_request_support.date_request,
+					fund_request_support.updated,
+					fund_request_support.fund_child_name,
+					fund_request_support.fund_reg_personal_name,
+						fund_personal_payment_detail.addr_number,
+						fund_personal_payment_detail.addr_moo,
+						fund_personal_payment_detail.addr_trok,
+						fund_personal_payment_detail.addr_soi,
+						fund_personal_payment_detail.addr_road,
+							fund_province.title as province_title,
+							fund_amphur.title as amphur_title,
+							fund_district.title as district_title,
+						fund_personal_payment_detail.fund_cost,
+						fund_personal_payment_detail.date_payment";
+		$join = "left join fund_personal_payment_detail on fund_request_support.id = fund_personal_payment_detail.fund_request_support_id
+					left join fund_province on fund_personal_payment_detail.province_id = fund_province.id
+					left join fund_amphur on fund_personal_payment_detail.amphur_id = fund_amphur.id
+					left join fund_district on fund_personal_payment_detail.district_id = fund_district.id";
+		$where = "fund_request_support.status = '1'
+					and fund_personal_payment_detail.status = '1'";
+		//Fund_request_support.status = 1 : คือคำขอที่ได้รับอนุมัติแล้ว
+		//Fund_personal_payment_detail.statsu = '1' : คือรายการเบิกจ่ายที่ได้รับการอนุมัติ (จ่ายเงินไปแล้ว)
+		
+		$where .= (empty($_GET['sch_province']))?'':"and fund_request_support.province_id = '".$_GET['sch_province']."'";
+		$where .= (empty($_GET['sch_month']))?'':"and fund_personal_payment_detail.fund_month = '".substr('0'.$_GET['sch_month'], -2, 2)."'"; 
+		$where .= (empty($_GET['sch_year']))?'':"and fund_personal_payment_detail.fund_year = '".($_GET['sch_year']-543)."'";
+		
+		$data['rs'] = $this->form_request->select($select)->join($join)->where($where)->order_by('fund_request_support.id', '')->get(false, true);
+		
 		
 		$this->template->build('personal/report/report_04',@$data);
 	}
@@ -156,53 +266,4 @@ class Report extends Fund_Controller {
 
 		$this->template->build('personal/report/report_05', @$data);
 	}
-	/*
-	public function index()
-	{
-		$where = " STATUS=1 ";
-		
-		$sql = "SELECT * FROM FUND_REQUEST_SUPPORT WHERE ".$where;
-		
-		$data["variable"] = $this->form_request->get($sql);
-		$data["pagination"] = $this->form_request->pagination();
-		$this->template->build("personal/report/index",$data);
-	}
-	
-	public function form($id)
-	{
-		if($id) {
-			$data["value"] = $this->form_request->get_row($id);
-			
-			$data["variable41"] = $this->personal_reportment->where("reportMENT_TYPE=1 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			$data["variable42"] = $this->personal_reportment->where("reportMENT_TYPE=2 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			$data["variable43"] = $this->personal_reportment->where("reportMENT_TYPE=3 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			$data["variable44"] = $this->personal_reportment->where("reportMENT_TYPE=4 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			$data["variable45"] = $this->personal_reportment->where("reportMENT_TYPE=5 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			$data["variable46"] = $this->personal_reportment->where("reportMENT_TYPE=6 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			$data["variable47"] = $this->personal_reportment->where("reportMENT_TYPE=7 AND FUND_SUPPORT_PERSONAL_ID=$id")->limit(50)->get();
-			
-			$this->template->build("personal/report/form",$data);
-		} else {
-			redirect("fund/personal/report",$data);
-		}
-	}
-
-	public function subform($id)
-	{
-		if($id) {
-			$data["value"] = $this->personal_reportment->get_row($id);
-			$this->load->view("personal/report/subform",$data);
-		} else {
-			echo "- ไม่มีข้อมูล -";
-		}
-	}
-	
-	public function save() {
-		
-	}
-	
-	public function delete() {
-		
-	}
-	*/
 }

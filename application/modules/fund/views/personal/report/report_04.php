@@ -1,25 +1,72 @@
-<?php $month_array = array('01'=>'มกราคม', '02'=>'กุมภาพันธ์', '03'=>'มีนาคม', '04'=>'เมษายน', '05'=>'พฤษภาคม', '06'=>'มิถุนายน', '07'=>'กรกฏาคม', '08'=>'สิงหาคม', '09'=>'กันยายน', '10'=>'ตุลาคม', '11'=>'พฤศจิกายน', '12'=>'ธันวาคม'); ?>
+<script language='javascript'>
+	$(function(){
+		$('#search').submit(function(){
+			for(i=0; i<$('.s_input').length; i++) { // วน for หา input, select ของขอบเขตข้อมูลการค้นหารายงาน
+				if($('.s_input').eq(i).val() == '') {
+					alert('กรุณาระบุข้อมูลเขตของรายงานให้ครบถ้วน');
+					
+					$('.s_input').eq(i).focus();
+					
+					i = $('.s_input').length; // ทำให้ i เท่ากับ $('.s_input').length; โดยโปรแกรมจะได้ไม่ต้องไปวน for ต่ออีก (เพราะได้ focus ตัวที่ไม่มีค่าไปแล้ว)
+					
+					return false; // หยุดการทำงานของ submit เพื่อให้ผู้ใช้งานเลือกขอบเขตการค้นหาก่อน
+				}
+			} //end : for(i=0; i<$('.s_input').length; i++)
+		});
+	});
+</script>
+
 <link rel='stylesheet' type='text/css' href='css/report.css'>
+<style type='text/css'>
+	#search input, #search select {
+		margin-left:5px;
+	}
+</style>
+<br />
+
 <h3>สรุปผลการเบิกจ่าย เงินสงเคราะห์ รายบุคคล (คคด.04) (บ)</h3>
 
-<form action='' method='get' id="search">
-<div id="search">
-<div id="searchBox">
-  <?php echo form_dropdown("province_id",get_option("ID","TITLE","FUND_PROVINCE",NULL,"TITLE"),@$_GET["province_id"],"id=\"province_id\"","-- เลือกหน่วยงาน --",null)?>
-  <?php echo form_dropdown('fund_year', get_year_option('2556'), @$_GET['fund_year'], '', '-- ระบุปีงบประมาณ --'); ?>
-  <?php echo form_dropdown('fund_month',$month_array , @$_GET['fund_month'], '', '-- เลือกเดือน --'); ?>
-<input type="submit" name="button9" id="button9" title="ค้นหา" value=" " class="btn_search" /></div>
-</div>
+
+<form id="search" action ='' method='get'>
+	<div id="searchBox">
+	  	<?php
+	  		echo form_dropdown(
+					'sch_province', 
+					get_option('ID', 'TITLE', 'fund_province order by title asc'), 
+					@$_GET['sch_province'], 
+					'class="s_input"', 
+					'-- เลือกหน่วยงาน (จังหวัด) --'
+				); 
+			echo form_dropdown(
+					'sch_month', 
+					$month_ary, 
+					@$_GET['sch_month'], 
+					'class="s_input"', 
+					'-- เลือกเดือน --'
+				); 
+				
+			echo form_dropdown(
+					'sch_year', 
+					get_option('year_budget as a', 'year_budget as b', 'fund_request_support group by year_budget order by year_budget desc'), 
+					@$_GET['sch_year'], 
+					'class="s_input"',
+					'-- ระบุปีงบประมาณ --'
+				); 
+				
+			echo form_submit(false, 'ค้นหา', 'class="btn_search"');
+		?>
+	</div>
 </form>
 
-<?php 
-if(@$_GET['fund_year'] != '' && @$_GET['fund_month'] != '' && @$_GET['province_id'] != '') {
-	if (count($rs) > 0 ) {
-?>
+<? if(empty($_GET['sch_province']) || empty($_GET['sch_year']) || empty($_GET['sch_month'])) {
+	return false; //ถ้าไม่มีการระบุขอบเขตข้อมูล จะไม่แสดงรายงาน
+} ?>
+
+
 <div id="report">
  	<div style="float:right; font-size:20px;">แบบรายงาน คคด.04 (บ)</div><div style="clear:both;"></div>
-    <div style="text-align:center; font-weight:bold; font-size:20px;">สรุปผลการเบิกจ่ายเงินสงเคราะห์รายบุคคล (กองทุนคุ้มครองเด็ก)<br>หน่วยงาน <?php echo $provine_name; ?><br />
-	ประจำเดือน <?php echo $month_array[@$_GET['fund_month']]; ?> ปีงบประมาณ <?php echo @$_GET['fund_year']; ?><br> </div>วัน/เดือน/ปี ที่พิมพ์ : 
+    <div style="text-align:center; font-weight:bold; font-size:20px;">สรุปผลการเบิกจ่ายเงินสงเคราะห์รายบุคคล (กองทุนคุ้มครองเด็ก)<br>หน่วยงาน <?php echo $province_title; ?><br />
+	ประจำเดือน <?php echo $month_ary[@$_GET['sch_month']]; ?> ปีงบประมาณ <?php echo @$_GET['sch_year']; ?><br> </div>วัน/เดือน/ปี ที่พิมพ์ : 
     <div style="clear:both;"></div><br>
   	<div style="float:right; font-size:20px; margin-top:-30px;">หน่วย : บาท</div>
 <table class="tbReport">
@@ -38,17 +85,18 @@ if(@$_GET['fund_year'] != '' && @$_GET['fund_month'] != '' && @$_GET['province_i
     <th width="96" align="center"><strong>จำนวนเงิน</strong></th>
     <th width="85" align="center"><strong>วันที่จ่ายเงิน</strong></th>
   </tr>
-  <?php 
-  		$sum_fund_cost = '0';
+  	<?php 
+	$sum_fund_cost = '0';
+	if(!empty($rs)) { 
   		foreach ($rs as $key => $item) {
   			$sum_fund_cost += $item['fund_cost']; 
-  ?>
+  			?>
 		  <tr>
 		    <td class='text-center'><?php echo $key+1; ?></td>
 		    <td class='text-center'><?php echo db2date($item['date_request']); ?></td>
-		    <td class='text-center'><?php echo db2date($item['meeting_date']); ?></td>
+		    <td class='text-center'><?php echo db2date($item['updated']); ?></td>
 		    <td><?php echo $item['fund_child_name'] ?></td>
-		    <td><?php echo $item['presonal_name'] ?></td>
+		    <td><?php echo $item['fund_reg_personal_name'] ?></td>
 		    <td>
 		    	<?php
 		    		echo "เลขที่ ".$item['addr_number']." ";
@@ -57,15 +105,20 @@ if(@$_GET['fund_year'] != '' && @$_GET['fund_month'] != '' && @$_GET['province_i
 					echo "ซอย ".$item['addr_soi']." ";
 					echo "ถนน  ".$item['addr_road']." ";
 					echo "<br />";
-					echo "ตำบล  ".$item['district_name']." ";
-					echo "อำเภท  ".$item['amphur_name']." ";
-					echo "จังหวัด  ".$item['province_name']." ";
+					echo "ตำบล  ".$item['district_title']." ";
+					echo "อำเภท  ".$item['amphur_title']." ";
+					echo "จังหวัด  ".$item['province_title']." ";
 		    	?>
 		    </td>
 		    <td class='text-center'><?php echo number_format($item['fund_cost'],2); ?></td>
 		    <td class='text-center'><?php echo db2date($item['date_payment']); ?></td>
 		  </tr>
-  <?php } ?>  
+  	<?php } 
+  } else { ?>
+  	<tr>
+  		<td colspan='8' class='text-center' style='color:#777'>ไม่พบข้อมูล</td>
+  	</tr>
+  <? }?>  
 	      <tr>
 	        <td colspan="3" align="center"><strong>รวม</strong></td>
 	        <td class="pattern-a">&nbsp;</td>
@@ -77,7 +130,3 @@ if(@$_GET['fund_year'] != '' && @$_GET['fund_month'] != '' && @$_GET['province_i
 </table>
 
 </div></div><!--page-->
-<?php 
-	} else { echo "<div align='center'>ไม่พบข้อมูล</div>"; }
-} else { echo "<div align='center'>กรุณาเลือก ปีงบประมาณ และ เดือน</div>"; } 
-?>
