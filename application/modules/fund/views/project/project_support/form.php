@@ -1,5 +1,70 @@
-<script type="text/javascript">
-	$(document).ready(function(){
+<style type='text/css'>
+	.div_attach {
+		margin:5px;
+	}
+	
+	.div_attach>div {
+		display:inline-block;
+		border:solid 1px #AAA; 
+		padding:10px; 
+		border-radius:4px; 
+		background:#EEE;
+		line-height:30px;
+		min-width:420px;
+	}
+	
+	.btn_delete_file {
+		display:inline-block;
+		width:70px; 
+		float:right;
+	}
+</style>
+			
+<script language='javascript'>
+	function add_input_attach(name, obj_sector) {
+		content = "<div class='div_attach'>";
+			content += "<div>";
+				content += "<strong>แนบไฟล์ : </strong>";
+					content += "<input type='file' name='"+name+"[]'>";
+					content += "<input type='button' value='Delete' class='btn btn-danger btn_delete_file'>";
+			content += "</div>";
+		content += "</div>";
+		
+		obj_sector.prepend(content);
+	}
+	
+
+	$(function(){
+		$('#btn_add_files1').click(function(){
+			add_input_attach('attach_file', $('#file_sector1'));
+		});
+		
+		$('#btn_add_files2').click(function(){
+			add_input_attach('attach_file_pay', $('#file_sector2'));
+		});
+		
+		//--button delete click
+		$('.btn_delete_file').live('click', function(){
+			obj_this = $(this); 
+			
+			if(!obj_this.attr('rel')) {
+				obj_this.parent().parent().remove();
+				
+			} else {
+				if(!confirm('กรุณายืนยันการลบข้อมูล')) { return false; }
+				
+				$('.btn_delete_file').attr('disabled', 'disabled');
+				obj_this.attr('value', 'Loading');
+				
+				$.get('<? echo site_url(); ?>fund/project/project_support/file_delete/'+obj_this.attr('rel'), function(data){
+					obj_this.parent().parent().remove();
+					$('.btn_delete_file').removeAttr('disabled');
+				});
+				
+			}
+		}); 
+
+
 		$('[name=project_status]').change(function(){
 			$('[name=project_status_]').val($(this).val());
 		});
@@ -54,10 +119,6 @@
 			});
 			
 		$('.cal_project_budget').keyup(function(){
-			/*project_budget
-			budget_request
-			budget_other*/
-			
 			$('[name=project_budget]').val( ($('[name=budget_request]').val() * 1) + ($('[name=budget_other]').val() * 1));
 		});
 	});
@@ -65,11 +126,7 @@
 	
 <h3>แบบฟอร์มการขอรับเงินสนับสนุน กองทุนเด็กรายโครงการ (เพิ่ม / แก้ไข)</h3>
 
-<?php
-	if(!empty($rs['center_recieve_date'])) {
-		echo form_open('fund/project/project_support/save', 'enctype="multipart/form-data"'); 
-	} 
-?>
+<?php echo form_open('fund/project/project_support/save', 'enctype="multipart/form-data"'); ?>
 
 <table class="tbadd">
 	<tr>
@@ -102,50 +159,39 @@
 	<tr>
 		<th>แนบไฟล์เอกสารโครงการ<span class="Txt_red_12"> *</span></th>
 		<td>
-			<? if(!empty($rs['project_attachment'])) { ?> 
-				<div style='display:inline-block; margin-bottom:10px; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
-					<strong>ตัวอย่างไฟล์ : </strong>
-					<? echo anchor('uploads/fund/project/project_support/'.@$rs['id'].'/'.$rs['project_attachment'], @$rs['project_attachment'], 'target="_blank"'); 
-						if(!empty($rs['center_receive_date'])) {
-							echo anchor('fund/project/project_support/delete_file?id='.$rs['id'].'&type=project_attachment', 'Delete', 'class="btn btn-sm btn-danger"');
-						} 
-					?>
-				</div>
-			<? } 
 			
-			if(!empty($rs['center_receive_date'])) { ?>
-				<div>
-					<div style='display:inline-block; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
-						<strong>แนบไฟล์ : </strong>
-						<input type='file' name='project_attachment'>
+
+			
+			
+			<? echo form_button(false, '+ เพิ่มไฟล์แนบ', 'class="btn btn-success" id="btn_add_files1"'); ?>
+			
+			<div id='file_sector1'>
+				<? foreach($attach_file as $item) { ?>
+					<div class='div_attach'>
+						<div>
+							<? echo anchor('fund/project/project_support/file_download/'.$item['id'], $item['attach_name']); ?>
+							<input type='button' value='Delete' class='btn btn-danger btn_delete_file' rel='<? echo $item['id']; ?>'>
+						</div>
 					</div>
-				</div>
-			<? } ?>
+				<? } ?>
+			</div>
 		</td>
 	</tr>
 	
 	<tr>
 		<th>แนบไฟล์เอกสารรายละเอียดค่าใช้จ่ายของโครงการ <span class="Txt_red_12"> *</span></th>
 		<td>
-			<? if(!empty($rs['project_pay_attachment'])) { ?>
-				<div style='display:inline-block; margin-bottom:10px; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
-					<strong>ตัวอย่างไฟล์ : </strong>
-					<? echo anchor('uploads/fund/project/project_support/'.@$rs['id'].'/'.$rs['project_pay_attachment'], @$rs['project_pay_attachment'], 'target="_blank"');
-						if(!empty($rs['center_receive_date'])) {
-							echo anchor('fund/project/project_support/delete_file?id='.$rs['id'].'&type=project_pay_attachment', 'Delete', 'class="btn btn-sm btn-danger"'); 
-						}
-					?>
-				</div>
-			<? } 
-			
-			if(!empty($rs['center_receive_date'])) { ?>
-				<div>
-					<div style='display:inline-block; border:solid 1px #AAA; padding:10px; border-radius:4px; background:#EEE;'>
-						<strong>แนบไฟล์ : </strong>
-						<input type='file' name='project_pay_attachment'>
+			<? echo form_button(false, '+ เพิ่มไฟล์แนบ', 'class="btn btn-success" id="btn_add_files2"'); ?>
+			<div id='file_sector2'>
+				<? foreach($attach_file_pay as $item) { ?>
+					<div class='div_attach'>
+						<div>
+							<? echo anchor('fund/project/project_support/file_download/'.$item['id'], $item['attach_name']); ?>
+							<input type='button' value='Delete' class='btn btn-danger btn_delete_file' rel='<? echo $item['id']; ?>'>
+						</div>
 					</div>
-				</div>
-			<? } ?>
+				<? } ?>
+			</div>
 		</td>
 	</tr>
 	
@@ -261,15 +307,15 @@
 
 
 	<div id="btnBoxAdd">
-		<? if(!empty($rs['center_receive_date'])) { ?><input type="submit" value="" class="btn_save"/><? } ?>
+		<input type="submit" value="" class="btn_save"/>
 		<input type="button" onclick="history.back(-1)" class="btn_back"/>
 	</div>
 
 
+
 <?php 
-		echo form_hidden('project_code', @$rs['project_code']);
-		echo form_hidden('id', @$rs['id']); 
-	if(!empty($rs['center_receive_date'])) {
-		echo form_close(); 
-	}
+	echo form_hidden('project_code', @$rs['project_code']);
+	echo form_hidden('id', @$rs['id']); 
+
+	echo form_close(); 
 ?>

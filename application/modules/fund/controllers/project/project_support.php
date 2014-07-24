@@ -9,6 +9,7 @@ class project_support extends Fund_Controller {
 		parent::__construct();
 		
 		$this->load->model('fund_project_support_model', 'project_support');
+		$this->load->model('fund_attach_model', 'fund_attach');
 	}
 	
 	function index(){
@@ -35,8 +36,13 @@ class project_support extends Fund_Controller {
 					$data['rs']['budget_other_type'][$item] = $item;
 				}
 			}
+
+			//--Attach files
+			$data['attach_file'] = $this->fund_attach->select('id, attach_name')->where("module = 'project_support_attach' and module_id = '".$id."'")->get(false, true);
+			//--Attach pay files
+			$data['attach_file_pay'] = $this->fund_attach->select('id, attach_name')->where("module = 'project_support_attach_pay' and module_id = '".$id."'")->get(false, true);
 		}
-		
+
 		if(!empty($data['rs']['receive_date'])) {
 			$data['rs']['receive_date'] = @db2date($data['rs']['receive_date'], 'datepicker');
 		}
@@ -45,8 +51,41 @@ class project_support extends Fund_Controller {
 			$data['rs']['center_receive_date'] = @db2date($data['rs']['center_receive_date'], 'datepicker');
 		}
 		
-		$this->template->build('project/project_support/form', @$data);
+		
+		if(!empty($rs['center_receive_date'])) {
+			 $this->template->build('project/project_support/form', @$data);
+		} else {
+			$this->template->build('project/project_support/viewer', @$data);
+		}
+		
 	}
+		function file_delete($id = false) {
+			if(!$id) { return false; }
+			
+			
+			$tmp = $this->fund_attach->get_row($id);
+			$dir = 'uploads/fund/project/project_support/'.$tmp['attach_name'];
+			
+			if(file_exists($dir)) {
+				unlink($dir);
+			}
+			
+			$this->fund_attach->delete($id);
+		}
+
+		function file_download($id = false) {
+			if(!$id) { return false; }
+			$dir = 'uploads/';
+			$module_dir = array(
+				'project_support_attach' => 'fund/project/project_support'
+			);
+
+			$tmp = $this->fund_attach->select('attach_name, module')->get_row($id);
+			$dir .= $module_dir[$tmp['module']];
+			
+			
+			output_file($dir.'/'.$tmp['attach_name'], $tmp['attach_name']);
+		}
 	
 	function save() {
 		if(!empty($_POST)) {
@@ -105,58 +144,49 @@ class project_support extends Fund_Controller {
 				}
 				
 			}
-
-			$_POST['id'] = $this->project_support->save($_POST);
-
-			//--Upload file field "project_attachment"
-			if($_FILES['project_attachment']['error'] == 0 || $_FILES['project_pay_attachment']['error'] == 0) {
-				$dir = 'uploads/fund/project/project_support/'.$_POST['id'].'/';
-	
-				if(!file_exists($dir)) {
-					mkdir($dir);
-				}
-				
-				$old_file = $this->project_support->select('project_attachment, project_pay_attachment')->get_row($_POST['id']);
-				
-				$field = 'project_attachment';
-				if($_FILES[$field]['error'] == 0) {
-					if(file_exists($dir)) {
-						//--Gen filename
-						$filename = uniqid().".".pathinfo($_FILES[$field]["name"], PATHINFO_EXTENSION);
-						
-						//--Upload file
-						if(move_uploaded_file($_FILES[$field]['tmp_name'], $dir.$filename)) {
-							$_POST[$field] = $filename;
-							
-							if(file_exists($dir.$old_file[$field]) && !empty($old_file[$field])) {
-								unlink($dir.$old_file[$field]);
-							}
-						}
-					}
-				}
-	
-				$field = 'project_pay_attachment';
-				if($_FILES[$field]['error'] == 0) {
-					if(file_exists($dir)) {
-						//--Gen filename
-						$filename = uniqid().".".pathinfo($_FILES[$field]["name"], PATHINFO_EXTENSION);
-						
-						//--Upload file
-						if(move_uploaded_file($_FILES[$field]['tmp_name'], $dir.$filename)) {
-							$_POST[$field] = $filename;
-							
-							if(file_exists($dir.$old_file[$field]) && !empty($old_file[$field])) {
-								unlink($dir.$old_file[$field]);
-							}
-						}
-					}
-				}
+			
+			
+			if(!empty($_POST['center_receive_date'])) {
+				$tmp = explode('-', $_POST['center_receive_date']);
+				$_POST['center_receive_date'] = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
 			}
 
-			$_POST['receive_date'] = date2db($_POST['receive_date'], 'datepicker');
-			$_POST['center_receive_date'] = date2db($_POST['center_receive_date'], 'datepicker');
+			if(!empty($_POST['receive_date'])) {
+				$tmp = explode('-', $_POST['receive_date']);
+				$_POST['receive_date'] = ($tmp[2]-543).'-'.$tmp[1].'-'.$tmp[0];
+			}
+				
+				
+			$_POST['id'] = $this->project_support->save($_POST);
 
-			$this->project_support->save($_POST);
+
+			//-- Upload file 'project_support_attach'
+			if(!empty($_FILES['attach_file'])) {
+				$dir_ = 'uploads/fund/project/project_support/';
+				$data = array( 'module'=>'project_support_attach', 'module_id'=>$_POST['id'] );
+				
+				for($i=0; $i<count($_FILES['attach_file']['tmp_name']); $i++) {
+					$file_title = strtolower(uniqid().".".pathinfo($_FILES["attach_file"]["name"][$i], PATHINFO_EXTENSION));
+					$data['attach_name'] = $file_title;
+					
+					$this->fund_attach->save($data);
+					move_uploaded_file($_FILES['attach_file']['tmp_name'][$i], $dir_.$file_title);
+				}
+			}
+			
+			//-- Upload file 'project_support_attach_pay'
+			if(!empty($_FILES['attach_file_pay'])) {
+				$dir_ = 'uploads/fund/project/project_support/';
+				$data = array( 'module'=>'project_support_attach_pay', 'module_id'=>$_POST['id'] );
+
+				for($i=0; $i<count($_FILES['attach_file_pay']['tmp_name']); $i++) {
+					$file_title = strtolower(uniqid().".".pathinfo($_FILES["attach_file_pay"]["name"][$i], PATHINFO_EXTENSION));
+					$data['attach_name'] = $file_title;
+					
+					$this->fund_attach->save($data);
+					move_uploaded_file($_FILES['attach_file_pay']['tmp_name'][$i], $dir_.$file_title);
+				}
+			}
 
 			set_notify('success', lang('save_data_complete'));
 		}
